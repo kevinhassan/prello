@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  api:
+    container_name: prello-api
+    restart: always
+    build: ./server
+    environment:
+      - MONGODB_URI_LOCAL=mongodb://mongo:27017
+    ports:
+      - "9090:9090"
+    links:
+      - mongo
+    volumes:
+      - ./server:/usr/src/app
+  mongo:
+    container_name: prello-mongo
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongo-data:
