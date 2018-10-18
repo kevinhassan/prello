@@ -23,7 +23,7 @@ export class Header extends React.Component<Header.Props> {
   render() {
     return (
       <header>
-        <h1>Todos</h1>
+        <h1>Prello</h1>
         <TodoTextInput newTodo onSave={this.handleSave} placeholder="What needs to be done?" />
       </header>
     );
