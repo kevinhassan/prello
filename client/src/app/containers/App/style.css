@@ -75,3 +75,9 @@ button, input[type='checkbox'] {
     -ms-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
 }
+
+
+.cards {
+    background-color: #ddd;
+    margin-top: 50px;
+}

@@ -1,7 +1,7 @@
 import { TodoActions } from "app/actions/todos";
 import { TodoModel } from "app/models/TodoModel";
-import * as React from "react";
 import { TodoItem } from "../TodoItem";
+import * as React from "react";
 import * as style from "./style.css";
 
 export namespace TodoList {

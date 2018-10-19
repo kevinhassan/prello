@@ -2,6 +2,7 @@ import { routerReducer, RouterState } from "react-router-redux";
 import { combineReducers } from "redux";
 import { RootState } from "./state";
 import { todoReducer } from "./todos";
+import { cardReducer } from "./cards";
 
 export { RootState, RouterState };
 
@@ -10,4 +11,5 @@ export { RootState, RouterState };
 export const rootReducer = combineReducers<RootState>({
     router: routerReducer as any,
     todos: todoReducer as any,
+    cards: cardReducer as any
 });

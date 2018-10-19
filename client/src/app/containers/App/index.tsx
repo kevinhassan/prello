@@ -1,5 +1,5 @@
-import { TodoActions } from "app/actions";
-import { Footer, Header, TodoList } from "app/components";
+import { TodoActions, CardActions } from "app/actions";
+import { Footer, Header, TodoList, CardList } from "app/components";
 import { TodoModel } from "app/models";
 import { RootState } from "app/reducers";
 import { omit } from "app/utils";
@@ -21,23 +21,27 @@ const FILTER_FUNCTIONS: Record<TodoModel.Filter, (todo: TodoModel) => boolean> =
 
 export namespace App {
     export interface Props extends RouteComponentProps<void> {
+        cards: RootState.CardState;
         todos: RootState.TodoState;
-        actions: TodoActions;
+        cardActions: CardActions;
+        todoActions: TodoActions;
         filter: TodoModel.Filter;
     }
 }
 
 // @ts-ignore
 @connect(
-    (state: RootState): Pick<App.Props, "todos" | "filter"> => {
+    (state: RootState): Pick<App.Props, "todos" | "filter" | "cards"> => {
         const hash = state.router.location && state.router.location.hash.replace("#", "");
         const filter = FILTER_VALUES.find((value) => value === hash) || TodoModel.Filter.SHOW_ALL;
-        return { todos: state.todos, filter };
+        return { todos: state.todos, cards: state.cards, filter };
     },
-    (dispatch: Dispatch): Pick<App.Props, "actions"> => ({
-        actions: bindActionCreators(omit(TodoActions, "Type"), dispatch),
+    (dispatch: Dispatch): Pick<App.Props, "todoActions" |  "cardActions"> => ({
+        todoActions: bindActionCreators(omit(TodoActions, "Type"), dispatch),
+        cardActions: bindActionCreators(omit(CardActions, "Type"), dispatch),
     }),
 )
+
 export class App extends React.Component<App.Props> {
     public static defaultProps: Partial<App.Props> = {
         filter: TodoModel.Filter.SHOW_ALL,
@@ -52,7 +56,7 @@ export class App extends React.Component<App.Props> {
     public handleClearCompleted(): void {
         const hasCompletedTodo = this.props.todos.some((todo) => todo.completed || false);
         if (hasCompletedTodo) {
-            this.props.actions.clearCompleted();
+            this.props.todoActions.clearCompleted();
         }
     }
 
@@ -61,22 +65,27 @@ export class App extends React.Component<App.Props> {
     }
 
     public render() {
-        const { todos, actions, filter } = this.props;
+        const { todos, todoActions, filter, cards, cardActions } = this.props;
         const activeCount = todos.length - todos.filter((todo) => todo.completed).length;
         const filteredTodos = filter ? todos.filter(FILTER_FUNCTIONS[filter]) : todos;
         const completedCount = todos.reduce((count, todo) => (todo.completed ? count + 1 : count), 0);
 
         return (
-            <div className={style.normal}>
-                <Header addTodo={actions.addTodo} />
-                <TodoList todos={filteredTodos} actions={actions} />
-                <Footer
-                    filter={filter}
-                    activeCount={activeCount}
-                    completedCount={completedCount}
-                    onClickClearCompleted={this.handleClearCompleted}
-                    onClickFilter={this.handleFilterChange}
-                />
+            <div>
+                <div className={style.normal}>
+                    <Header addTodo={todoActions.addTodo} />
+                    <TodoList todos={filteredTodos} actions={todoActions} />
+                    <Footer
+                        filter={filter}
+                        activeCount={activeCount}
+                        completedCount={completedCount}
+                        onClickClearCompleted={this.handleClearCompleted}
+                        onClickFilter={this.handleFilterChange}
+                    />
+                </div>
+                <div className={style.cards}>
+                    <CardList cards={cards} actions={cardActions} />
+                </div>
             </div>
         );
     }
