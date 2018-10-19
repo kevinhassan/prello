@@ -47,14 +47,37 @@
 
 .normal .destroy:hover {
     color: #af5b5e;
+    cursor: pointer;
 }
 
 .normal .destroy:after {
     content: '×';
 }
 
-.normal:hover .destroy {
+.normal:hover .destroy, .normal:hover .highlightButton {
     display: block;
+}
+
+.normal .highlightButton {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 35px;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    font-size: 30px;
+    color: #dee46f;
+    margin-bottom: 11px;
+    transition: color 0.2s ease-out;
+}
+.normal .highlightButton:after {
+    content: 'o';
+}
+.normal .highlightButton:hover {
+    color: #bec46f;
+    cursor: pointer;
 }
 
 .normal .edit {
@@ -85,6 +108,11 @@
 .completed label {
     color: #d9d9d9;
     text-decoration: line-through;
+}
+
+.highlighted {
+    color: #cccc22;
+    text-decoration: underline;
 }
 
 /*

@@ -8,6 +8,7 @@ const initialState: RootState.TodoState = [
         completed: false,
         id: 1,
         text: "Use Redux",
+        isHighlighted: false
     },
 ];
 
@@ -20,6 +21,7 @@ export const todoReducer = handleActions<RootState.TodoState, TodoModel>(
                         completed: false,
                         id: state.reduce((max, todo) => Math.max(todo.id || 1, max), 0) + 1,
                         text: action.payload.text,
+                        isHighlighted: false
                     },
                     ...state,
                 ];
@@ -44,6 +46,11 @@ export const todoReducer = handleActions<RootState.TodoState, TodoModel>(
         [TodoActions.Type.COMPLETE_TODO]: (state, action) => {
             return state.map(
                 (todo) => (todo.id === (action.payload as any) ? { ...todo, completed: !todo.completed } : todo),
+            );
+        },
+        [TodoActions.Type.HIGHTLIGHT_TODO]: (state, action) => {
+            return state.map(
+                (todo) => (todo.id === (action.payload as any) ? { ...todo, isHighlighted: !todo.isHighlighted } : todo),
             );
         },
         [TodoActions.Type.COMPLETE_ALL]: (state, action) => {

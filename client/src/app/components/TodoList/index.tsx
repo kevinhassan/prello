@@ -40,6 +40,7 @@ export class TodoList extends React.Component<TodoList.Props> {
                             completeTodo={actions.completeTodo}
                             deleteTodo={actions.deleteTodo}
                             editTodo={actions.editTodo}
+                            hightlightTodo={actions.hightlightTodo}
                         />
                     ))}
                 </ul>

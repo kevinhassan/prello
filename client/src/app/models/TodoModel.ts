@@ -4,6 +4,7 @@ export interface TodoModel {
     id: number;
     text: string;
     completed: boolean;
+    isHighlighted: boolean;
 }
 
 export namespace TodoModel {

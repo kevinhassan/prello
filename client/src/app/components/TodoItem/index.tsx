@@ -11,6 +11,7 @@ export namespace TodoItem {
         editTodo: typeof TodoActions.editTodo;
         deleteTodo: typeof TodoActions.deleteTodo;
         completeTodo: typeof TodoActions.completeTodo;
+        hightlightTodo: typeof TodoActions.hightlightTodo;
     }
 
     export interface State {
@@ -38,7 +39,7 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
     }
 
     public render() {
-        const { todo, completeTodo, deleteTodo } = this.props;
+        const { todo, completeTodo, deleteTodo, hightlightTodo } = this.props;
 
         let element;
         if (this.state.editing) {
@@ -58,13 +59,21 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
                         checked={todo.completed}
                         onChange={() => todo.id && completeTodo(todo.id)}
                     />
-                    <label onDoubleClick={() => this.handleDoubleClick()}>{todo.text}</label>
+                    <label onDoubleClick={() => this.handleDoubleClick()} className={todo.isHighlighted ? style.highlighted : null}>{todo.text}</label>
                     <button
                         className={style.destroy}
                         onClick={() => {
                             if (todo.id) { deleteTodo(todo.id); }
                         }}
                     />
+
+                    <button
+                        className={style.highlightButton}
+                        onClick={() => {
+                            if (todo.id) { hightlightTodo(todo.id); }
+                        }}
+                    />
+
                 </div>
             );
         }
@@ -73,7 +82,7 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
         const classes = classNames({
             [style.completed]: todo.completed,
             [style.editing]: this.state.editing,
-            [style.normal]: !this.state.editing,
+            [style.normal]: !this.state.editing
         });
 
         return <li className={classes}>{element}</li>;
