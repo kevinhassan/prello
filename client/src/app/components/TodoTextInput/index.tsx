@@ -1,6 +1,6 @@
-import * as React from 'react';
-import * as classNames from 'classnames';
-import * as style from './style.css';
+import * as classNames from "classnames";
+import * as React from "react";
+import * as style from "./style.css";
 
 export namespace TodoTextInput {
   export interface Props {
@@ -19,40 +19,40 @@ export namespace TodoTextInput {
 export class TodoTextInput extends React.Component<TodoTextInput.Props, TodoTextInput.State> {
   constructor(props: TodoTextInput.Props, context?: any) {
     super(props, context);
-    this.state = { text: this.props.text || '' };
+    this.state = { text: this.props.text || "" };
     this.handleBlur = this.handleBlur.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleSubmit(event: React.KeyboardEvent<HTMLInputElement>) {
+  public handleSubmit(event: React.KeyboardEvent<HTMLInputElement>) {
     const text = event.currentTarget.value.trim();
     if (event.which === 13) {
       this.props.onSave(text);
       if (this.props.newTodo) {
-        this.setState({ text: '' });
+        this.setState({ text: "" });
       }
     }
   }
 
-  handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  public handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ text: event.target.value });
   }
 
-  handleBlur(event: React.FocusEvent<HTMLInputElement>) {
+  public handleBlur(event: React.FocusEvent<HTMLInputElement>) {
     const text = event.target.value.trim();
     if (!this.props.newTodo) {
       this.props.onSave(text);
     }
   }
 
-  render() {
+  public render() {
     const classes = classNames(
       {
         [style.edit]: this.props.editing,
-        [style.new]: this.props.newTodo
+        [style.new]: this.props.newTodo,
       },
-      style.normal
+      style.normal,
     );
 
     return (

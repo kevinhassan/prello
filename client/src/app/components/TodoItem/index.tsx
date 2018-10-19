@@ -1,9 +1,9 @@
-import * as React from 'react';
-import * as classNames from 'classnames';
-import * as style from './style.css';
-import { TodoModel } from 'app/models';
-import { TodoActions } from 'app/actions';
-import { TodoTextInput } from '../TodoTextInput';
+import { TodoActions } from "app/actions";
+import { TodoModel } from "app/models";
+import * as classNames from "classnames";
+import * as React from "react";
+import { TodoTextInput } from "../TodoTextInput";
+import * as style from "./style.css";
 
 export namespace TodoItem {
     export interface Props {
@@ -24,11 +24,11 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
         this.state = { editing: false };
     }
 
-    handleDoubleClick() {
+    public handleDoubleClick() {
         this.setState({ editing: true });
     }
 
-    handleSave(id: number, text: string) {
+    public handleSave(id: number, text: string) {
         if (text.length === 0) {
             this.props.deleteTodo(id);
         } else {
@@ -37,7 +37,7 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
         this.setState({ editing: false });
     }
 
-    render() {
+    public render() {
         const { todo, completeTodo, deleteTodo } = this.props;
 
         let element;
@@ -62,7 +62,7 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
                     <button
                         className={style.destroy}
                         onClick={() => {
-                            if (todo.id) deleteTodo(todo.id);
+                            if (todo.id) { deleteTodo(todo.id); }
                         }}
                     />
                 </div>
@@ -73,7 +73,7 @@ export class TodoItem extends React.Component<TodoItem.Props, TodoItem.State> {
         const classes = classNames({
             [style.completed]: todo.completed,
             [style.editing]: this.state.editing,
-            [style.normal]: !this.state.editing
+            [style.normal]: !this.state.editing,
         });
 
         return <li className={classes}>{element}</li>;

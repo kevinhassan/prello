@@ -1,8 +1,8 @@
-import * as React from 'react';
-import * as style from './style.css';
-import { TodoActions } from 'app/actions/todos';
-import { TodoItem } from '../TodoItem';
-import { TodoModel } from 'app/models/TodoModel';
+import { TodoActions } from "app/actions/todos";
+import { TodoModel } from "app/models/TodoModel";
+import * as React from "react";
+import { TodoItem } from "../TodoItem";
+import * as style from "./style.css";
 
 export namespace TodoList {
     export interface Props {
@@ -12,7 +12,7 @@ export namespace TodoList {
 }
 
 export class TodoList extends React.Component<TodoList.Props> {
-    renderToggleAll(): JSX.Element | void {
+    public renderToggleAll(): JSX.Element | void {
         const { todos, actions } = this.props;
         if (todos.length > 0) {
             const hasIncompleted = todos.some((todo) => !todo.completed);
@@ -27,7 +27,7 @@ export class TodoList extends React.Component<TodoList.Props> {
         }
     }
 
-    render() {
+    public render() {
         const { todos, actions } = this.props;
         return (
             <section className={style.main}>
