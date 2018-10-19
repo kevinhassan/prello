@@ -5,10 +5,12 @@ services:
     restart: always
     build: ./client
     environment:
-      - API_URI=mongodb://api:9090
+      - API_URI=http://api:9090
     ports:
       - "3000:3000"
     links:
+      - api:api
+    depends_on:
       - api
     volumes:
       - ./client:/usr/src/app
