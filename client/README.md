@@ -1,9 +1,20 @@
-# Prello client
+<p align="center"><a href="https://medium.com/@notrab/getting-started-with-create-react-app-redux-react-router-redux-thunk-d6a19259f71f"><img src="https://i.imgur.com/PATsTx2.png" title="View tutorial" alt="React, React Router, Redux and Redux Thunk" width="900"></a></p>
 
-Based on [react-redux-typescript-boilerplate](https://github.com/rokoroku/react-redux-typescript-boilerplate). 
+* Tutorial: [Getting started with create-react-app, Redux, React Router & Redux Thunk](https://medium.com/@notrab/getting-started-with-create-react-app-redux-react-router-redux-thunk-d6a19259f71f)
+* [Demo](https://create-react-app-redux.now.sh) 🙌
 
-React + Redux + Typescript.
+## Installation
 
-## License
+```bash
+git clone https://github.com/notrab/create-react-app-redux.git
+cd create-react-app-redux
+yarn
+```
 
-MIT
+## Get started
+
+```bash
+yarn start
+```
+
+This boilerplate is built using [create-react-app](https://github.com/facebook/create-react-app) so you will want to read the User Guide for more goodies.

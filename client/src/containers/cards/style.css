@@ -1,0 +1,14 @@
+.card {
+    background-color: rgb(220, 255, 243);
+    border: 1px solid black;
+    display: inline-block;
+    list-style-type: none;
+    margin: 0 10px;
+    max-width: 200px;
+    padding: 10px;
+    text-align: center;
+}
+
+.btn-delete {
+    color: red;
+}
