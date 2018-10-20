@@ -15,8 +15,8 @@ export let getLogin = (req: Request, res: Response) => {
  * Sign in using email and password.
  */
 export let postLogin = (req: Request, res: Response, next: NextFunction) => {
-    res.status(302)
-    res.send({error: "error at login"})
+    res.status(302);
+    res.send({error: "error at login"});
 };
 
 /**

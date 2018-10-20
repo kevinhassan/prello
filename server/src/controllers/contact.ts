@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
  */
 export let getContact = (req: Request, res: Response) => {
     res.status(200);
-    res.send("ok getContact")
+    res.send("ok getContact");
 };
 
 /**
