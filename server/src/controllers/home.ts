@@ -5,5 +5,5 @@ import { Request, Response } from "express";
  * Home page.
  */
 export let index = (req: Request, res: Response) => {
-    res.send("Hello world by Prello!");
+    res.send("Hello world by Prello!s");
 };
