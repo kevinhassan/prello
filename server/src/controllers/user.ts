@@ -5,13 +5,19 @@ import { Request, Response, NextFunction } from "express";
  * GET /login
  * Login page.
  */
-export let getLogin = (req: Request, res: Response) => {};
+export let getLogin = (req: Request, res: Response) => {
+    res.status(200);
+    res.send("ok get login");
+};
 
 /**
  * POST /login
  * Sign in using email and password.
  */
-export let postLogin = (req: Request, res: Response, next: NextFunction) => {};
+export let postLogin = (req: Request, res: Response, next: NextFunction) => {
+    res.status(302)
+    res.send({error: "error at login"})
+};
 
 /**
  * GET /logout
@@ -23,7 +29,10 @@ export let logout = (req: Request, res: Response) => {};
  * GET /signup
  * Signup page.
  */
-export let getSignup = (req: Request, res: Response) => {};
+export let getSignup = (req: Request, res: Response) => {
+    res.status(200);
+    res.send("ok get signup");
+};
 
 /**
  * POST /signup

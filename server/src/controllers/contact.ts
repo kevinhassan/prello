@@ -14,7 +14,8 @@ const transporter = nodemailer.createTransport({
  * Contact form page.
  */
 export let getContact = (req: Request, res: Response) => {
-
+    res.status(200);
+    res.send("ok getContact")
 };
 
 /**
