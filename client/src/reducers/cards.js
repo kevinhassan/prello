@@ -63,6 +63,18 @@ export default function cardsReducer(state = initialState, action) {
                 error: error
             }
 
+        case actions.CREATE_CARD:
+        console.log(state.cards)
+            var newCard = {
+                id: state.cards.length+1,
+                description: "New card",
+                isArchived: false
+            }
+            return {
+                ...state,
+                cards: state.cards.concat([newCard])
+            }
+
         default:
             return state
     }

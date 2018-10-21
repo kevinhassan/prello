@@ -37,6 +37,10 @@
     animation: fadein 1s;
 }
 
+.btn-success {
+    margin-left: 10px
+}
+
 @keyframes fadein {
     from {
         opacity: 0;

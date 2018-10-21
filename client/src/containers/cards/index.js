@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 import Dragula from 'react-dragula';
-import DragulaStyles from 'react-dragula/dist/dragula.min.css';
+//import DragulaStyles from 'react-dragula/dist/dragula.min.css';
 
-import { deleteCard, deleteCardWithDelay } from '../../actions/cards'
+import { deleteCard, deleteCardWithDelay, createCard } from '../../actions/cards'
 import './style.css'
 import spinner from '../../assets/spinner.gif'
 
@@ -27,10 +27,15 @@ class Cards extends React.Component {
         this.props.deleteCard(id)
     }
 
+    
     handleDeleteCardWithDelay(id) {
         this.props.deleteCardWithDelay(id)
     }
 
+    handleCreateCard() {
+        this.props.createCard()
+    }
+    
     render() {
         return (
             <div className="col-sm-12 cardsPanel">
@@ -38,9 +43,14 @@ class Cards extends React.Component {
                 <p>Number of cards: <span style={{ fontSize: "20px", fontWeight: "bold" }}>{this.props.cards.length}</span></p>
 
                 {this.props.error !== "" ? <p className="errorMsg">{this.props.error}</p> : ""}
-                <p><button className="btn btn-danger" onClick={() => this.handleDeleteCard(42)}>
-                    Try to delete card with id = 42.
-                </button></p>
+                <p>
+                    <button className="btn btn-danger" onClick={() => this.handleDeleteCard(42)}>
+                        Try to delete card with id = 42.
+                    </button>
+                    <button className="btn btn-success" onClick={() => this.handleCreateCard()}>
+                        Create new card
+                    </button>
+                </p>
                 <ul className="cardsList" ref={this.dragulaDecorator}>
                     {this.props.cards.map(x =>
                         <li className="card" key={x.id}>
@@ -75,6 +85,7 @@ const mapStateToProps = ({ cards }) => ({
 const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
+            createCard,
             deleteCard,
             deleteCardWithDelay,
             changePage: () => push('/about-us')
