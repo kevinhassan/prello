@@ -13,14 +13,14 @@ describe('cards/DELETE_CARD reducer', () => {
     it('should delete the card with id specified', () => {
         const deleteAction = actions.deleteCardAction(1)
         const finalState = cardsReducer(undefined, deleteAction)
-        expect(finalState.cards.length).toEqual(1)
+        expect(finalState.cards.length).toEqual(4)
         expect(finalState.cards[0]).toBe(initialState.cards[1])
     });
 
     it('should set an appropriate error if id not found', () => {
-        const deleteAction = actions.deleteCardAction(3)
+        const deleteAction = actions.deleteCardAction(42)
         const finalState = cardsReducer(undefined, deleteAction)
-        expect(finalState.cards.length).toEqual(2)
+        expect(finalState.cards.length).toEqual(5)
         expect(finalState.error.toLowerCase()).toEqual(expect.stringContaining("not found"))
     });
 });

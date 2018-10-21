@@ -6,8 +6,7 @@ import store, { history } from './store'
 import App from './containers/app'
 
 import 'sanitize.css/sanitize.css'
-import './index.css'
-//import './reset.css'
+import './assets/generalStyle.css'
 
 const target = document.querySelector('#root')
 

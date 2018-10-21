@@ -11,6 +11,21 @@ export const initialState = {
             id: 2,
             description: "This is a very useful description for card with id 2.",
             isArchived: false
+        },
+        {
+            id: 3,
+            description: "This is a very useful description for card with id 3.",
+            isArchived: false
+        },
+        {
+            id: 4,
+            description: "This is a very useful description for card with id 4.",
+            isArchived: false
+        },
+        {
+            id: 5,
+            description: "This is a very useful description for card with id 5.",
+            isArchived: false
         }
     ],
     isLoading: false,
