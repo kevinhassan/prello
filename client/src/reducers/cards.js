@@ -20,10 +20,22 @@ const initialState = {
 export default (state = initialState, action) => {
     switch (action.type) {
         case actions.DELETE_CARD:
-            let newCards = state.cards.filter(c => c.id !== action.payload.id)
             return {
                 ...state,
-                cards: newCards,
+                cards: state.cards.filter(c => c.id !== action.payload.id),
+                isLoading: false
+            }
+
+        case actions.DELETE_CARD_WITH_DELAY_STARTED:
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case actions.DELETE_CARD_WITH_DELAY_SUCCESS:
+            return {
+                ...state,
+                cards: state.cards.filter(c => c.id !== action.payload.id),
                 isLoading: false
             }
 

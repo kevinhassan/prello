@@ -3,17 +3,23 @@ import { bindActionCreators } from 'redux'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 
-import { deleteCard } from '../../actions/cards'
+import { deleteCard, deleteCardWithDelay } from '../../actions/cards'
 import './style.css'
+import spinner from '../../assets/spinner.gif'
 
 class Cards extends React.Component {
     constructor(props) {
         super(props);
         this.handleDeleteCard = this.handleDeleteCard.bind(this);
+        this.handleDeleteCardWithDelay = this.handleDeleteCardWithDelay.bind(this);
     }
 
     handleDeleteCard(id) {
         this.props.deleteCard(id)
+    }
+
+    handleDeleteCardWithDelay(id) {
+        this.props.deleteCardWithDelay(id)
     }
 
     render() {
@@ -27,12 +33,13 @@ class Cards extends React.Component {
                         <li className="card" key={x.id}>
                             <h3>{x.id}</h3>
                             <p>{x.description}</p>
-                            <button className="btn-delete" onClick={() => this.handleDeleteCard(x.id)}>X</button>
+                            <button className="btn-delete" onClick={() => this.handleDeleteCard(x.id)}>DELETE</button>
+                            <button className="btn-delete" onClick={() => this.handleDeleteCardWithDelay(x.id)}>DELETE with delay</button>
                         </li>
                     )}
                 </ul>
 
-                <p>Are cards loading ? <span style={{fontSize: "20px", color: "blue"}}>{this.props.isLoading ? "Yes" : "Nop"}</span></p>
+                {this.props.isLoading ? <p><img src={spinner} width={100}/>Loading...</p> : ""}
 
                 <button onClick={() => this.props.changePage()}>
                     Go to about page via redux
@@ -54,6 +61,7 @@ const mapDispatchToProps = dispatch =>
     bindActionCreators(
         {
             deleteCard,
+            deleteCardWithDelay,
             changePage: () => push('/about-us')
         },
         dispatch
