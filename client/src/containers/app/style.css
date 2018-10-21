@@ -13,4 +13,5 @@
 .link:hover {
     color: #eed774;
     transition: 0.3s;
+    text-decoration: none;
 }

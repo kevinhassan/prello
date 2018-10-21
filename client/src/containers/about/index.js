@@ -1,10 +1,10 @@
 import React from 'react'
 
 const About = () => (
-  <div>
-    <h1>About Page</h1>
-    <p>Did you get here via Redux?</p>
-  </div>
+    <div className="col-sm-12">
+        <h1>About us</h1>
+        <p>Did you get here via Redux?</p>
+    </div>
 )
 
 export default About

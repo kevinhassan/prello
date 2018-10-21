@@ -24,24 +24,28 @@ class Cards extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="col-sm-12 cardsPanel">
                 <h1>My cards</h1>
                 <p>Number of cards: <span style={{fontSize: "20px", fontWeight: "bold"}}>{this.props.cards.length}</span></p>
 
+                {this.props.error !== "" ? <p className="errorMsg">{this.props.error}</p>: ""}
+                <p><button className="btn btn-danger" onClick={() => this.handleDeleteCard(42)}>
+                    Try to delete card with id = 42.
+                </button></p>
                 <ul style={{display: "flex"}}>
                     {this.props.cards.map(x =>
                         <li className="card" key={x.id}>
                             <h3>{x.id}</h3>
                             <p>{x.description}</p>
-                            <button className="btn-delete" onClick={() => this.handleDeleteCard(x.id)}>DELETE</button>
-                            <button className="btn-delete" onClick={() => this.handleDeleteCardWithDelay(x.id)}>DELETE with delay</button>
+                            <p><button className="btn btn-danger" onClick={() => this.handleDeleteCard(x.id)}>DELETE</button></p>
+                            <p><button className="btn btn-danger" onClick={() => this.handleDeleteCardWithDelay(x.id)}>DELETE with delay</button></p>
                         </li>
                     )}
                 </ul>
 
                 {this.props.isLoading ? <p><img src={spinner} alt="Loading spinner" width={100}/>Loading...</p> : ""}
 
-                <button onClick={() => this.props.changePage()}>
+                <button className="btn" onClick={() => this.props.changePage()}>
                     Go to about page via redux
                 </button>
             </div>

@@ -22,7 +22,7 @@ export default function cardsReducer(state = initialState, action) {
     switch (action.type) {
         case actions.DELETE_CARD:
             if (!state.cards.some((card) => { return card.id === action.payload.id })) {
-                error = "Card with the id " + action.payload.id + "not found, nothing happened."
+                error = "Card with the id " + action.payload.id + " not found, nothing happened."
             }
             return {
                 ...state,
@@ -39,7 +39,7 @@ export default function cardsReducer(state = initialState, action) {
 
         case actions.DELETE_CARD_WITH_DELAY_SUCCESS:
             if (!state.cards.some((card) => { return card.id === action.payload.id })) {
-                error = "Card with the id " + action.payload.id + "not found, nothing happened."
+                error = "Card with the id " + action.payload.id + " not found, nothing happened."
             }
             return {
                 ...state,
