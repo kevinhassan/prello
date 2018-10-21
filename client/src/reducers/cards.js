@@ -1,6 +1,6 @@
 import * as actions from '../actions/cards'
 
-const initialState = {
+export const initialState = {
     cards: [
         {
             id: 1,
@@ -17,13 +17,18 @@ const initialState = {
     error: ""
 }
 
-export default (state = initialState, action) => {
+export default function cardsReducer(state = initialState, action) {
+    let error = "";
     switch (action.type) {
         case actions.DELETE_CARD:
+            if (!state.cards.some((card) => { return card.id === action.payload.id })) {
+                error = "Card with the id " + action.payload.id + "not found, nothing happened."
+            }
             return {
                 ...state,
                 cards: state.cards.filter(c => c.id !== action.payload.id),
-                isLoading: false
+                isLoading: false,
+                error: error
             }
 
         case actions.DELETE_CARD_WITH_DELAY_STARTED:
@@ -33,10 +38,14 @@ export default (state = initialState, action) => {
             }
 
         case actions.DELETE_CARD_WITH_DELAY_SUCCESS:
+            if (!state.cards.some((card) => { return card.id === action.payload.id })) {
+                error = "Card with the id " + action.payload.id + "not found, nothing happened."
+            }
             return {
                 ...state,
                 cards: state.cards.filter(c => c.id !== action.payload.id),
-                isLoading: false
+                isLoading: false,
+                error: error
             }
 
         default:
