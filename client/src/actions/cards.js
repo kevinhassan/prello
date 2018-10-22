@@ -1,11 +1,15 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
 import { fetchPrelloAPI, DELETE } from '../helpers/fetchPrelloAPI'
 
+// ========================
+
 export const DELETE_CARD = 'cards/DELETE_CARD'
 export const DELETE_CARD_WITH_DELAY_STARTED = 'cards/DELETE_CARD_WITH_DELAY_STARTED'
 export const DELETE_CARD_WITH_DELAY_FAILURE = 'cards/DELETE_CARD_WITH_DELAY_FAILURE'
 export const CREATE_CARD = 'cards/CREATE_CARD'
 export const DELETE_CARD_WITH_DELAY_SUCCESS = 'cards/DELETE_CARD_WITH_DELAY_SUCCESS'
+export const DELETE_CARD_WITH_DELAY_FAILURE = 'cards/DELETE_CARD_WITH_DELAY_FAILURE'
+export const CREATE_CARD = 'cards/CREATE_CARD'
 
 export const deleteCard = cardId => (dispatch) => { dispatch(deleteCardAction(cardId)); };
 export const deleteCardAction = cardId => ({
