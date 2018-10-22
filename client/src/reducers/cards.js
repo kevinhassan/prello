@@ -1,101 +1,71 @@
-import * as actions from '../actions/cards';
+import * as actions from '../actions/cards'
+import {Card} from '../models/Card'
+
+
+let card1 = new Card(1,"Description of the card with id equals to 1. Awesome!",true,new Date())
+let card2 = new Card(2,"This is a very useful description for card with id 2.",true,new Date())
+let card3 = new Card(3,"This is a very useful description for card with id 3.",true,new Date())
+let card4 = new Card(4,"This is a very useful description for card with id 4.",true,new Date())
+let card5 = new Card(5,"This is a very useful description for card with id 5.",true,new Date())
+
 
 export const initialState = {
-  cards: [
-    {
-      id: 1,
-      description: 'Description of the card with id equals to 1. Awesome!',
-      isArchived: true,
-    },
-    {
-      id: 2,
-      description: 'This is a very useful description for card with id 2.',
-      isArchived: false,
-    },
-    {
-      id: 3,
-      description: 'This is a very useful description for card with id 3.',
-      isArchived: false,
-    },
-    {
-      id: 4,
-      description: 'This is a very useful description for card with id 4.',
-      isArchived: false,
-    },
-    {
-      id: 5,
-      description: 'This is a very useful description for card with id 5.',
-      isArchived: false,
-    },
-  ],
-  isLoading: false,
-  error: '',
-};
+
+
+    cards: [
+        card1,
+        card2,
+        card3,
+        card4,
+        card5    
+    ],
+    isLoading: false,
+    error: ""
+}
 
 export default function cardsReducer(state = initialState, action) {
-  let error = '';
-  switch (action.type) {
-    case actions.DELETE_CARD:
-      if (!state.cards.some(card => card.id === action.payload.id)) {
-        error = `Card with the id ${action.payload.id} not found, nothing happened.`;
-      }
-      return {
-        ...state,
-        cards: state.cards.filter(c => c.id !== action.payload.id),
-        isLoading: false,
-        error,
-      };
-
-    case actions.DELETE_CARD_WITH_DELAY_STARTED:
-      return {
-        ...state,
-        isLoading: true,
-      };
-
-    case actions.DELETE_CARD_WITH_DELAY_SUCCESS:
-      if (!state.cards.some(card => card.id === action.payload.id)) {
-        error = `Card with the id ${action.payload.id} not found, nothing happened.`;
-      }
-      return {
-        ...state,
-        cards: state.cards.filter(c => c.id !== action.payload.id),
-        isLoading: false,
-        error,
-      };
-
-        case actions.DELETE_CARD_WITH_DELAY_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                error: error
-            }
-
-        case actions.DELETE_CARD_WITH_DELAY_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                error: error
-            }
-
-        case actions.DELETE_CARD_WITH_DELAY_FAILURE:
-            return {
-                ...state,
-                isLoading: false,
-                error: error
-            }
-
-        case actions.CREATE_CARD:
-            var newCard = {
-                id: state.cards.reduce((a, b) => a.id > b.id ? a.id : b.id) + 1,
-                description: "New card",
-                isArchived: false
-            }
-            return {
-                ...state,
-                cards: state.cards.concat([newCard])
-            }
-
-    default:
-      return state;
+    let error = '';
+    switch (action.type) {
+      case actions.DELETE_CARD:
+        if (!state.cards.some(card => card.id === action.payload.id)) {
+          error = `Card with the id ${action.payload.id} not found, nothing happened.`;
+        }
+        return {
+          ...state,
+          cards: state.cards.filter(c => c.id !== action.payload.id),
+          isLoading: false,
+          error,
+        };
+  
+      case actions.DELETE_CARD_WITH_DELAY_STARTED:
+        return {
+          ...state,
+          isLoading: true,
+        };
+  
+      case actions.DELETE_CARD_WITH_DELAY_SUCCESS:
+        if (!state.cards.some(card => card.id === action.payload.id)) {
+          error = `Card with the id ${action.payload.id} not found, nothing happened.`;
+        }
+        return {
+          ...state,
+          cards: state.cards.filter(c => c.id !== action.payload.id),
+          isLoading: false,
+          error,
+        };
+  
+      case actions.CREATE_CARD:
+        var newCard = {
+          id: state.cards.reduce((a, b) => (a.id > b.id ? a.id : b.id)) + 1,
+          description: 'New card',
+          isArchived: false,
+        };
+        return {
+          ...state,
+          cards: state.cards.concat([newCard]),
+        };
+  
+      default:
+        return state;
+    }
   }
-}
