@@ -56,8 +56,14 @@ class Cards extends React.Component {
                             <div className="cardContent">
                                 <h3>{x.id}</h3>
                                 <p>{x.description}</p>
-                                <p><button className="btn btn-danger" onClick={() => this.handleDeleteCard(x.id)}>DELETE</button></p>
-                                <p><button className="btn btn-danger" onClick={() => this.handleDeleteCardWithDelay(x.id)}>DELETE with delay</button></p>
+                                <p>
+                                    <button className="btn btn-danger" onClick={() => this.handleDeleteCard(x.id)}>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    <button style={{ marginLeft: "5px" }} className="btn btn-danger" onClick={() => this.handleDeleteCardWithDelay(x.id)}>
+                                        <i class="fas fa-trash-alt"></i> with delay
+                                    </button>
+                                </p>
                             </div>
                         </li>
                     )}
