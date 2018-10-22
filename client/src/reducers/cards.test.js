@@ -2,14 +2,17 @@ import { initialState } from './cards';
 import cardsReducer from './cards';
 import * as actions from '../actions/cards';
 
-describe('cards/DELETE_CARD reducer', () => {
+
+describe('cards reducer', () => {
     it('should return the initial state', () => {
         // Specify empty state
         expect(cardsReducer({}, {})).toEqual({})
         // Initial state
         expect(cardsReducer(undefined, {})).toEqual(initialState)
     });
+});
 
+describe('cards/DELETE_CARD reducer', () => {
     it('should delete the card with id specified', () => {
         const deleteAction = actions.deleteCardAction(1)
         const finalState = cardsReducer(undefined, deleteAction)
