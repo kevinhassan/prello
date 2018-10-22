@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Link } from 'react-router-dom'
 import About from '../about'
 import Cards from '../cards'
+import Modal from '../../components/modal'
 import './style.css'
 
 const App = () => (
@@ -13,7 +14,10 @@ const App = () => (
             </div>
         </header>
 
+        <Modal />
+
         <main className="row">
+
             <Route exact path="/" component={Cards} />
             <Route exact path="/about-us" component={About} />
         </main>

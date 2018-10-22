@@ -6,7 +6,6 @@ import Dragula from 'react-dragula';
 
 import { deleteCard, deleteCardWithDelay, createCard } from '../../actions/cards'
 import './style.css'
-import spinner from '../../assets/spinner.gif'
 
 class Cards extends React.Component {
     constructor(props) {
@@ -58,18 +57,16 @@ class Cards extends React.Component {
                                 <p>{x.description}</p>
                                 <p>
                                     <button className="btn btn-danger" onClick={() => this.handleDeleteCard(x.id)}>
-                                        <i class="fas fa-trash-alt"></i>
+                                        <i className="fas fa-trash-alt"></i>
                                     </button>
                                     <button style={{ marginLeft: "5px" }} className="btn btn-danger" onClick={() => this.handleDeleteCardWithDelay(x.id)}>
-                                        <i class="fas fa-trash-alt"></i> with delay
+                                        <i className="fas fa-trash-alt"></i> with delay
                                     </button>
                                 </p>
                             </div>
                         </li>
                     )}
                 </ul>
-
-                {this.props.isLoading ? <p><img src={spinner} alt="Loading spinner" width={100} />Loading...</p> : ""}
 
                 <button className="btn btn-link" onClick={() => this.props.changePage()}>
                     Go to about page via redux

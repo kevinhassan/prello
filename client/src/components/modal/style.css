@@ -1,0 +1,18 @@
+.loadingModal {
+    background-color: none;
+    margin: auto;
+    position: fixed;
+    left: 0; right: 0;
+    text-align: center;
+    top: 0; bottom: 0;
+    z-index: 99999999999999;
+}
+
+.modalContent {
+    background-color: #e8e8e8;
+    border-radius: 3px;
+    box-shadow: 0px 2px 1px;
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px;
+}
