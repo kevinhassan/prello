@@ -23,7 +23,7 @@ const About = () => (
         <div className="row">
             <div className="col-sm-4"><h1>H1 title</h1></div>
             <div className="col-sm-4"><h2>H2 title</h2></div>
-            <div className="col-sm-4"><h3>H1 title</h3></div>
+            <div className="col-sm-4"><h3>H3 title</h3></div>
         </div>
         <div className="row">
             <div className="col-sm-4"><a href="#">This is a link</a></div>
