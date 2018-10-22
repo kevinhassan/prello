@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
+import Action, { ActionModel } from "./Action";
+import User, { UserModel } from "./User";
 
 export type NotificationModel = mongoose.Document & {
-   readDate: Date
+   readDate: Date,
+   action: ActionModel,
+   user: UserModel
 };
 
 const notificationSchema = new mongoose.Schema({
-    readDate: Date
+    readDate: Date,
+    action: {type: Action, required: true},
+    user: {type: User, required: true}
 }, { timestamps: true });
 
 
