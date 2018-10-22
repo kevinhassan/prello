@@ -64,9 +64,8 @@ export default function cardsReducer(state = initialState, action) {
             }
 
         case actions.CREATE_CARD:
-        console.log(state.cards)
             var newCard = {
-                id: state.cards.length+1,
+                id: state.cards.reduce((a,b) => a.id > b.id ? a.id : b.id) + 1,
                 description: "New card",
                 isArchived: false
             }

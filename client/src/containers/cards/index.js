@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { push } from 'connected-react-router'
 import { connect } from 'react-redux'
 import Dragula from 'react-dragula';
-//import DragulaStyles from 'react-dragula/dist/dragula.min.css';
 
 import { deleteCard, deleteCardWithDelay, createCard } from '../../actions/cards'
 import './style.css'
@@ -27,7 +26,7 @@ class Cards extends React.Component {
         this.props.deleteCard(id)
     }
 
-    
+
     handleDeleteCardWithDelay(id) {
         this.props.deleteCardWithDelay(id)
     }
@@ -35,7 +34,7 @@ class Cards extends React.Component {
     handleCreateCard() {
         this.props.createCard()
     }
-    
+
     render() {
         return (
             <div className="col-sm-12 cardsPanel">
