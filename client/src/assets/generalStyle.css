@@ -14,3 +14,14 @@ body {
 button:disabled {
   opacity: 0.5;
 }
+
+/* FONT */
+h1, h2, h3 {
+    margin: 0;
+    padding: 0;
+}
+
+/* ELEMENTS */
+.btn-success {
+    margin: 0
+}
