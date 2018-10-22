@@ -6,21 +6,21 @@ import Modal from '../../components/modal';
 import './style.css';
 
 const App = () => (
-  <div>
-    <header>
-      <div>
-        <Link className="link" to="/">Cards </Link>
-        <Link className="link" to="/about-us">About</Link>
-      </div>
-    </header>
+    <div>
+        <header>
+            <div>
+                <Link className="link" to="/">Cards </Link>
+                <Link className="link" to="/about-us">About</Link>
+            </div>
+        </header>
 
-    <Modal />
+        <Modal />
 
-    <main>
-      <Route exact path="/" component={Cards} />
-      <Route exact path="/about-us" component={About} />
-    </main>
-  </div>
+        <main>
+            <Route exact path="/" component={Cards} />
+            <Route exact path="/about-us" component={About} />
+        </main>
+    </div>
 );
 
 export default App;

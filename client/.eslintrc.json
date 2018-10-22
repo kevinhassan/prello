@@ -1,4 +1,5 @@
 {
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "env": {
         "es6": true,
@@ -30,6 +31,8 @@
                     ]
                 }
             }
-        ]
+        ],
+        "react/destructuring-assignment": ["disabled", "always", { "ignoreClassFields": "false" }],
+        "react/forbid-prop-types": ["enabled", { "forbid": ["any"], "checkContextTypes": false, "checkChildContextTypes": false }]
     }
 }
