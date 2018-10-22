@@ -36,7 +36,7 @@ class Cards extends React.Component {
 
     render() {
         return (
-            <div className="col-sm-12 cardsPanel">
+            <div className="cardsPanel">
                 <h1>My cards</h1>
                 <p>Number of cards: <span style={{ fontSize: "20px", fontWeight: "bold" }}>{this.props.cards.length}</span></p>
 

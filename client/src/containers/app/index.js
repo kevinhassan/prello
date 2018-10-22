@@ -7,8 +7,8 @@ import './style.css'
 
 const App = () => (
     <div>
-        <header className="row">
-            <div className="col-sm-12">
+        <header>
+            <div>
                 <Link className="link" to="/">Cards </Link>
                 <Link className="link" to="/about-us">About</Link>
             </div>
@@ -16,8 +16,7 @@ const App = () => (
 
         <Modal />
 
-        <main className="row">
-
+        <main>
             <Route exact path="/" component={Cards} />
             <Route exact path="/about-us" component={About} />
         </main>

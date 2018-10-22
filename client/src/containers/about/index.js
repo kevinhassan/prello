@@ -2,7 +2,7 @@ import React from 'react'
 import spinner from '../../assets/spinner.gif'
 
 const About = () => (
-    <div className="col-sm-12" style={{ padding: "0 30px" }}>
+    <div style={{ padding: "0 30px" }}>
         <h1>All elements used in Prello</h1>
         <hr />
         <div className="row">
