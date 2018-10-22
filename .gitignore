@@ -61,3 +61,6 @@ typings/
 .next
 
 .idea
+
+config_dev.json
+config.json

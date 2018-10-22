@@ -12,6 +12,8 @@ npm install
 npm start
 ```
 
+Create a copy of *config_model.json* as **config_dev.json** (dev) or **config.json** (prod) and fill in the blanks.
+
 ## Run tests
 ```bash
 npm test
