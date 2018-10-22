@@ -1,20 +1,19 @@
-<p align="center"><a href="https://medium.com/@notrab/getting-started-with-create-react-app-redux-react-router-redux-thunk-d6a19259f71f"><img src="https://i.imgur.com/PATsTx2.png" title="View tutorial" alt="React, React Router, Redux and Redux Thunk" width="900"></a></p>
+<h1 align="center">Prello</h1>
+<p align="center">
+  <span><img src="https://miro.medium.com/max/480/1*To2H39eauxaeYxYMtV1afQ.png" alt="React logo" width="100"></span>
+  <span><img src="https://i1.wp.com/www.ux-republic.com/wp-content/uploads/2016/11/logo-redux.png" alt="Redux logo" width="100"></span>
+</p>
 
-* Tutorial: [Getting started with create-react-app, Redux, React Router & Redux Thunk](https://medium.com/@notrab/getting-started-with-create-react-app-redux-react-router-redux-thunk-d6a19259f71f)
-* [Demo](https://create-react-app-redux.now.sh) 🙌
-
-## Installation
-
-```bash
-git clone https://github.com/notrab/create-react-app-redux.git
-cd create-react-app-redux
-yarn
-```
+* Tutorial: [Medium - Getting started](https://medium.com/@notrab/getting-started-with-create-react-app-redux-react-router-redux-thunk-d6a19259f71f)
 
 ## Get started
-
 ```bash
-yarn start
+npm install
+npm start
 ```
 
-This boilerplate is built using [create-react-app](https://github.com/facebook/create-react-app) so you will want to read the User Guide for more goodies.
+## Run tests
+```bash
+npm test
+```
+
