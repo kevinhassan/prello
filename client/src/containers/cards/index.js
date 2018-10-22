@@ -65,7 +65,7 @@ class Cards extends React.Component {
 
                 {this.props.isLoading ? <p><img src={spinner} alt="Loading spinner" width={100} />Loading...</p> : ""}
 
-                <button className="btn" onClick={() => this.props.changePage()}>
+                <button className="btn btn-link" onClick={() => this.props.changePage()}>
                     Go to about page via redux
                 </button>
             </div>

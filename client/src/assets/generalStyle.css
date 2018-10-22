@@ -1,27 +1,124 @@
+/* ===== PRELLO ===== */
+
+/*
+    Blue: #004a75
+    Cyan: #009cdd
+    White: #e8e8e8
+    Gray: #222
+    Red: #ac1212
+
+    Main font: Nunito
+    Alt font: Cabin
+*/
+
+/* ===== BLOCKS ===== */
+
 html {
-  font-size: 100%;
+    font-size: 100%;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-    sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    font-family: Nunito, Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
-button:disabled {
-  opacity: 0.5;
+/* ===== TEXT ===== */
+a, .btn-link {
+    color: #009cdd;
+    position: relative;
+    transition: 0.15s;
 }
 
-/* FONT */
+a:hover, .btn-link:hover {
+    color: #004a75;
+    text-decoration: none;
+    transition: 0.15s;
+}
+
+/* Underline from center effect
+Source: http://tobiasahlin.com/blog/css-trick-animating-link-underlines/
+*/
+a:before, .btn-link:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #004a75;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+a:hover:before, .btn-link:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
 h1, h2, h3 {
+    font-family: Cabin;
     margin: 0;
     padding: 0;
 }
 
-/* ELEMENTS */
+h1 {
+    color: #004a75;
+    font-size: 3rem;
+}
+
+h2 {
+    color: #444;
+    font-size: 2.5rem;
+}
+
+h3 {
+    color: #444;
+    font-size: 2rem;
+}
+
+
+p {
+    color: #222;
+}
+
+/* ===== ELEMENTS ===== */
+
+/* Buttons */
+
+.btn {
+    border: none;
+    border-radius: 0;
+    transition: 0.2s;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover, .btn-warning:hover, .btn-success:hover, .btn-light:hover, .btn-dark:hover, .btn-info:hover {
+    box-shadow: 0 5px 5px -5px #111;
+    opacity: 0.9;
+    transition: 0.2s;
+}
+
+.btn-primary, .btn.btn-primary:hover {
+    background-color: #004a75;
+}
+
+.btn-danger, .btn.btn-danger:hover {
+    background-color: #ac1212;
+}
+
+.btn-info, .btn.btn-info:hover {
+    background-color: #009cdd;
+}
+
+.btn-success, .btn.btn-success:hover {
+    background-color: #43b949;
+}
+
 .btn-success {
     margin: 0
 }
