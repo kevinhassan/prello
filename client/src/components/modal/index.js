@@ -27,8 +27,8 @@ Modal.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ modal }) => ({
-    isModalOpen: modal.isModalOpen,
+const mapStateToProps = ({ modalReducer }) => ({
+    isModalOpen: modalReducer.isModalOpen,
 });
 
 // Put actions in props

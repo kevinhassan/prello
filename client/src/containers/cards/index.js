@@ -93,10 +93,10 @@ Cards.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ cards }) => ({
-    cards: cards.cards,
-    isLoading: cards.isLoading,
-    error: cards.error,
+const mapStateToProps = ({ cardsReducer }) => ({
+    cards: cardsReducer.cards,
+    isLoading: cardsReducer.isLoading,
+    error: cardsReducer.error,
 });
 
 // Put actions in props

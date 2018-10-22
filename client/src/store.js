@@ -3,7 +3,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 import rootReducer from './reducers';
-import { logger } from './middlewares';
+import logger from './middlewares/logger';
 
 export const history = createHistory();
 
@@ -12,20 +12,20 @@ const enhancers = [];
 const middleware = [thunk, routerMiddleware(history), logger];
 
 if (process.env.NODE_ENV === 'development') {
-  const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
+    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
 
-  if (typeof devToolsExtension === 'function') {
-    enhancers.push(devToolsExtension());
-  }
+    if (typeof devToolsExtension === 'function') {
+        enhancers.push(devToolsExtension());
+    }
 }
 
 const composedEnhancers = compose(
-  applyMiddleware(...middleware),
-  ...enhancers,
+    applyMiddleware(...middleware),
+    ...enhancers,
 );
 
 export default createStore(
-  connectRouter(history)(rootReducer),
-  initialState,
-  composedEnhancers,
+    connectRouter(history)(rootReducer),
+    initialState,
+    composedEnhancers,
 );

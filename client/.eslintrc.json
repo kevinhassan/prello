@@ -10,6 +10,7 @@
         "react/jsx-filename-extension": 0,
         "react/jsx-indent": "off",
         "indent": ["error",4],
+        "no-case-declarations": 0,
         "jsx-a11y/label-has-associated-control": [
             "error",
             {

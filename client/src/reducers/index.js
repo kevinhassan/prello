@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import cards from './cards';
-import modal from './modal';
+import cardsReducer from './cardsReducer';
+import modalReducer from './modalReducer';
 
 export default combineReducers({
-  cards,
-  modal,
+    cardsReducer,
+    modalReducer,
 });
