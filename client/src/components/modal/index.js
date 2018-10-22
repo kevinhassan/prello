@@ -11,7 +11,7 @@ class Modal extends React.Component {
         const { isModalOpen } = this.props;
         if (isModalOpen) {
             return (
-                <div className="loadingModal">
+                <div className="modalBlock">
                     <span className="modalContent">
                         <img src={spinner} alt="Loading spinner" width="50" />
                     </span>
