@@ -8,6 +8,28 @@
     "rules": {
         "react/jsx-filename-extension": 0,
         "react/jsx-indent": "off",
-        "indent": ["error", 4]
+        "indent": ["error",4],
+        "jsx-a11y/label-has-associated-control": [
+            "error",
+            {
+                "required": {
+                    "some": [
+                        "nesting",
+                        "id"
+                    ]
+                }
+            }
+        ],
+        "jsx-a11y/label-has-for": [
+            "error",
+            {
+                "required": {
+                    "some": [
+                        "nesting",
+                        "id"
+                    ]
+                }
+            }
+        ]
     }
 }
