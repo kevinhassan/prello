@@ -12,9 +12,6 @@ services:
       - api:api
     depends_on:
       - api
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
   api:
     container_name: prello-api
     restart: always
@@ -25,9 +22,6 @@ services:
       - "9090:9090"
     links:
       - mongo
-    volumes:
-      - ./server:/usr/src/app
-      - /usr/src/app/node_modules
   mongo:
     container_name: prello-mongo
     image: mongo
