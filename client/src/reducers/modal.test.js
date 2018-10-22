@@ -1,5 +1,6 @@
+import { describe, it, expect } from 'jest';
 import modalReducer, { initialState } from './modalReducer';
-import * as actions from '../actions/cards';
+import * as actions from '../actions/modal';
 
 describe('modal reducer', () => {
     it('should return the initial state', () => {
