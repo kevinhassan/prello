@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'jest';
 import modalReducer, { initialState } from './modalReducer';
 import * as actions from '../actions/modal';
 
