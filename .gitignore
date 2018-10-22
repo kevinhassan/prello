@@ -62,5 +62,5 @@ typings/
 
 .idea
 
-config_dev.json
-config.json
+config_dev.js
+config.js
