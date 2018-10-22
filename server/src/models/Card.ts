@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
+import Label, { LabelModel } from "./Label";
 
 export type CardModel = mongoose.Document & {
     name: string,
     description: string,
     isArchived: string,
     dueDate: Date,
-    index: number
+    index: number,
+    label: LabelModel
 };
 
 const cardSchema = new mongoose.Schema({
@@ -13,8 +15,8 @@ const cardSchema = new mongoose.Schema({
     description: String,
     isArchived: { type: Boolean, required: true },
     dueDate: Date,
-    index:  { type: Number, required: true }
-
+    index:  { type: Number, required: true },
+    label: Label
 }, { timestamps: true });
 
 

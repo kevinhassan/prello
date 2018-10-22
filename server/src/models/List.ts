@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Card, { CardModel } from "./Card";
+
 export type ListModel = mongoose.Document & {
     name: string,
     isArchived: boolean,
