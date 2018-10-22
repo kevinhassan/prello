@@ -10,8 +10,7 @@ export type ChecklistItemModel = mongoose.Document & {
 const checklistItemSchema = new mongoose.Schema({
     name: { type: String, required: true },
     isChecked: { type: Boolean, required: true },
-    checklist: Checklist
-
+    checklist: { type: Checklist, required: true}
 }, { timestamps: true });
 
 
