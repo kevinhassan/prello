@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Card, {CardModel} from "./Card";
+import Card, { CardModel } from "./Card";
 
 export type ChecklistModel = mongoose.Document & {
     name: string,
