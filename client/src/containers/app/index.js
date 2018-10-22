@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import About from '../about';
-import Cards from '../cards';
+import Board from '../board';
 import Modal from '../../components/modal';
 import './style.css';
 
@@ -9,7 +9,7 @@ const App = () => (
     <div>
         <header>
             <div>
-                <Link className="link" to="/">Cards </Link>
+                <Link className="link" to="/">Board </Link>
                 <Link className="link" to="/about-us">About</Link>
             </div>
         </header>
@@ -17,7 +17,7 @@ const App = () => (
         <Modal />
 
         <main>
-            <Route exact path="/" component={Cards} />
+            <Route exact path="/" component={Board} />
             <Route exact path="/about-us" component={About} />
         </main>
     </div>

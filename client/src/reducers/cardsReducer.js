@@ -7,6 +7,7 @@ const card3 = new Card(3, 'This is a very useful description for card with id 3.
 const card4 = new Card(4, 'This is a very useful description for card with id 4.', true, new Date());
 const card5 = new Card(5, 'This is a very useful description for card with id 5.', true, new Date());
 
+
 export const initialState = {
     cards: [
         card1,

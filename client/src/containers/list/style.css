@@ -1,0 +1,25 @@
+.btn-success {
+    margin-left: 10px
+}
+
+.cardsList {
+    background-color: #e8e8e8;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    width: 300px;
+}
+
+
+/*
+    DRAGULA Drag n Drop library custom CSS
+*/
+.gu-mirror, .gu-mirror .cardContent {
+    box-shadow: 0 5px 20px;
+    opacity: 1;
+    transform: rotate(-2deg);
+    transition: 0.3s;
+}
+
