@@ -16,4 +16,5 @@
 .listsPanel {
     background-color: #aae;
     padding: 20px;
+    display: flex
 }
