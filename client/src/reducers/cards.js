@@ -77,6 +77,13 @@ export default function cardsReducer(state = initialState, action) {
                 error: error
             }
 
+        case actions.DELETE_CARD_WITH_DELAY_FAILURE:
+            return {
+                ...state,
+                isLoading: false,
+                error: error
+            }
+
         case actions.CREATE_CARD:
             var newCard = {
                 id: state.cards.reduce((a, b) => a.id > b.id ? a.id : b.id) + 1,
