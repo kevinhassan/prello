@@ -1,34 +1,40 @@
 import bcrypt from "bcrypt-nodejs";
 import crypto from "crypto";
 import mongoose, { Schema } from "mongoose";
-import Team, { TeamModel } from "./Team";
-import { NotificationModel } from "./Notication";
+import Team from "./Team";
 
 export type UserModel = mongoose.Document & {
-    pseudo: string,
+    name: string,
+    username: string,
     initials: string,
     bio: string,
     email: string,
     password: string,
     avatarUrl: string,
-    teams: [TeamModel],
-    notifications: [NotificationModel]
+    teams: [typeof mongoose.Schema.Types.ObjectId],
+    notifications: [typeof mongoose.Schema.Types.ObjectId]
     comparePassword: comparePasswordFunction,
     gravatar: (size: number) => string
 };
 
 type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => {}) => void;
 
-
 const userSchema: Schema = new mongoose.Schema({
-    pseudo: { type: String, required: true },
+    name: { type: String, required: true },
+    username: { type: String, required: true },
     initials: String,
     bio: String,
     email: { type: String, unique: true, required: true },
     password: String,
     avatarUrl: String,
-    teams: [Team],
-    notifications: [Notification]
+    teams: {
+      type: [typeof mongoose.Schema.Types.ObjectId],
+      ref: "Team"
+    },
+    notifications: {
+      type: [typeof mongoose.Schema.Types.ObjectId],
+      ref: "Notification"
+    }
 }, { timestamps: true });
 
 /**

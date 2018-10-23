@@ -5,13 +5,13 @@ import User, { UserModel } from "./User";
 export type NotificationModel = mongoose.Document & {
    readDate: Date,
    action: ActionModel,
-   user: UserModel
+   user: typeof mongoose.Schema.Types.ObjectId
 };
 
 const notificationSchema: Schema = new mongoose.Schema({
     readDate: Date,
     action: {type: Action, required: true},
-    user: {type: User, required: true}
+    user: {type: typeof mongoose.Schema.Types.ObjectId, ref: "User", required: true}
 }, { timestamps: true });
 
 

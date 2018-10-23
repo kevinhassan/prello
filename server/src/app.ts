@@ -62,7 +62,6 @@ app.get("/account/unlink/:provider",  userController.getOauthUnlink);
  */
 app.get("/auth/github");
 app.get("/auth/github/callback", (req, res) => {
-  res.redirect(req.session.returnTo || "/");
 });
 
 export default app;

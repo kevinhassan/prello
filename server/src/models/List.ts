@@ -1,18 +1,18 @@
 import mongoose, { Schema } from "mongoose";
-import Card, { CardModel } from "./Card";
+import Card from "./Card";
 
 export type ListModel = mongoose.Document & {
     name: string,
     isArchived: boolean,
     index: number,
-    cards: [ CardModel ]
+    cards: [ typeof mongoose.Schema.Types.ObjectId ]
 };
 
 const listSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
     isArchived: { type: Boolean, required: true, default: false },
     index: { type: Number, required: true },
-    card: [ Card ],
+    cards: [{type: typeof mongoose.Schema.Types.ObjectId, ref: "Card"}],
 }, { timestamps: true });
 
 const List = mongoose.model("List", listSchema, "Lists");

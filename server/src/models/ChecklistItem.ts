@@ -1,16 +1,14 @@
 import mongoose, { Schema } from "mongoose";
-import Checklist, { ChecklistModel } from "./Checklist";
+import Checklist from "./Checklist";
 
 export type ChecklistItemModel = mongoose.Document & {
     name: string,
-    isChecked: boolean,
-    checklist: ChecklistModel
+    isChecked: boolean
 };
 
 const checklistItemSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
-    isChecked: { type: Boolean, required: true },
-    checklist: { type: Checklist, required: true}
+    isChecked: { type: Boolean, required: true }
 }, { timestamps: true });
 
 

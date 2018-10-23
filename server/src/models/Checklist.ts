@@ -1,14 +1,14 @@
 import mongoose, { Schema } from "mongoose";
-import Card, { CardModel } from "./Card";
+import ChecklistItem, { ChecklistItemModel } from "./ChecklistItem";
 
 export type ChecklistModel = mongoose.Document & {
     name: string,
-    card: CardModel
+    checklistItems: [ChecklistItemModel]
 };
 
 const checklistSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
-    card: { type: Card, required: true}
+    checklistItems: [ChecklistItem]
 }, { timestamps: true });
 
 
