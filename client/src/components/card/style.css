@@ -8,24 +8,11 @@
 }
 
 .cardContent {
-    background-color: rgb(220, 255, 243);
+    background-color: white;
     border-radius: 10px;
     box-shadow: 0px 2px 3px;
     display: inline-block;
     padding: 5px;
     text-align: center;
     transition: all 0.3s, visibility 0s;
-}
-
-.addCardButton {
-    width: 100%;
-}
-
-@keyframes fadein {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
 }

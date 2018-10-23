@@ -44,6 +44,7 @@ class List extends React.Component {
         const { cards } = this.props;
         return (
             <div className="cardsListPanel">
+                <h2>My List</h2>
                 <ul className="cardsList" ref={this.dragulaDecorator}>
                     {cards.map(c => (
                         <li className="li-card" key={c.id}>

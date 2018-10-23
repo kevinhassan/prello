@@ -26,21 +26,21 @@ class CardItem extends React.Component {
         return (
             <div className="card" key={card.id}>
                 <div className="cardContent">
-                    <p>
+                    <div>
                         <b>{card.id}</b>
                         &nbsp;-&nbsp;
                         {card.description}
-                    </p>
-                    <p>
-                        <button type="button" className="btn btn-danger" onClick={() => this.handleDeleteCard(card.id)}>
-                            <i className="fas fa-trash-alt" />
-                        </button>
-                        <button type="button" style={{ marginLeft: '5px' }} className="btn btn-danger" onClick={() => this.handleDeleteCardWithDelay(card.id)}>
-                            <i className="fas fa-trash-alt" />
-                            {' '}
-                            with delay
-                        </button>
-                    </p>
+                        <div>
+                            <button type="button" className="btn btn-sm btn-danger" onClick={() => this.handleDeleteCard(card.id)}>
+                                <i className="fas fa-trash-alt" />
+                            </button>
+                            <button type="button" style={{ marginLeft: '5px' }} className="btn btn-sm btn-danger" onClick={() => this.handleDeleteCardWithDelay(card.id)}>
+                                <i className="fas fa-trash-alt" />
+                                {' '}
+                                with delay
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

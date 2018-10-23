@@ -6,24 +6,31 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
+    margin: 0;
     padding: 0;
 }
 
 .cardsListPanel {
-    background-color: #e8e8e8;
+    background-color: #ccc;
+    border-radius: 10px;
     text-align: center;
     width: 300px;
 }
 
 .li-card {
+    border-radius: 10px;
     list-style-type: none;
-    margin: 10px;
+    margin: 7px;
+}
+
+.addCardButton {
+    width: 100%;
 }
 
 /*
     DRAGULA Drag n Drop library custom CSS
 */
-.gu-mirror, .gu-mirror .cardContent {
+.gu-mirror, .gu-mirror {
     box-shadow: 0 5px 20px;
     opacity: 1;
     transform: rotate(-2deg);
