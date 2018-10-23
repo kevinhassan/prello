@@ -6,6 +6,18 @@
     justify-content: space-between;
 }
 
+.header-bar > div {
+    flex: 1;
+}
+
+.centerHeader-div {
+    text-align: center;
+}
+
+.rightHeader-div {
+    text-align: right;
+}
+
 .btn-header {
     background: #009cdd;
     box-shadow: 0 0px 1px #222 inset;

@@ -14,9 +14,13 @@ class Header extends React.Component {
         const { goHome, goAbout } = this.props;
         const element = (
             <div className="header-bar">
-                <button className="btn btn-header" type="button" onClick={goHome}><i className="fas fa-home" /></button>
-                <span className="prello-logo" onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>Prello</span>
-                <div>
+                <div className="leftHeader-div">
+                    <button className="btn btn-header" type="button" onClick={goHome}><i className="fas fa-home" /></button>
+                </div>
+                <div className="centerHeader-div">
+                    <span className="prello-logo" onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>Prello</span>
+                </div>
+                <div className="rightHeader-div">
                     <button className="btn btn-header" type="button"><i className="fas fa-bell" /></button>
                     <button className="btn btn-header" type="button" onClick={goAbout}><i className="fas fa-palette" /></button>
                 </div>
