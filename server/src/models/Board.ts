@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import PrivacyType, { PrivacyTypeModel } from "./PrivacyType";
 import List, { ListModel } from "./List";
 import Label, { LabelModel } from "./Label";
@@ -9,15 +9,17 @@ export type BoardModel = mongoose.Document & {
     name: string,
     isArchived: boolean,
     lists: [ListModel],
-    labels: [LabelModel]
+    labels: [LabelModel],
+    team: TeamModel
 };
 
-const boardSchema = new mongoose.Schema({
+const boardSchema: Schema = new mongoose.Schema({
     privacy: {type: PrivacyType, required: true},
     name: {type: String, required: true},
-    isArchived: {type: Boolean, default: false},
+    isArchived: {type: Boolean, required: true, default: false},
     lists: [List],
-    labels: [Label]
+    labels: [Label],
+    team: Team
 }, { timestamps: true });
 
 

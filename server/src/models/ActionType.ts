@@ -1,10 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export type ActionTypeModel = mongoose.Document & {
     name: string
 };
 
-const actionTypeSchema = new mongoose.Schema({
+const actionTypeSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true }
 }, { timestamps: true });
 

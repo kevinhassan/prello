@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import Card, { CardModel } from "./Card";
 
 export type ListModel = mongoose.Document & {
@@ -8,7 +8,7 @@ export type ListModel = mongoose.Document & {
     cards: [ CardModel ]
 };
 
-const listSchema = new mongoose.Schema({
+const listSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
     isArchived: { type: Boolean, required: true, default: false },
     index: { type: Number, required: true },

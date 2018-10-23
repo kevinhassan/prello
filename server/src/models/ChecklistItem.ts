@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import Checklist, { ChecklistModel } from "./Checklist";
 
 export type ChecklistItemModel = mongoose.Document & {
@@ -7,7 +7,7 @@ export type ChecklistItemModel = mongoose.Document & {
     checklist: ChecklistModel
 };
 
-const checklistItemSchema = new mongoose.Schema({
+const checklistItemSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
     isChecked: { type: Boolean, required: true },
     checklist: { type: Checklist, required: true}

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import Card, { CardModel } from "./Card";
 
 export type AttachmentModel = mongoose.Document & {
@@ -7,7 +7,7 @@ export type AttachmentModel = mongoose.Document & {
     card: CardModel
 };
 
-const attachmentSchema = new mongoose.Schema({
+const attachmentSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
     url:  { type: String, require: true },
     card: { type: Card, required: true }

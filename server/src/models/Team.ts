@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import User, { UserModel } from "./User";
 import Board, { BoardModel } from "./Board";
 
@@ -11,7 +11,7 @@ export type TeamModel = mongoose.Document & {
     boards: [BoardModel]
 };
 
-const teamSchema = new mongoose.Schema({
+const teamSchema: Schema = new mongoose.Schema({
     name: {type: String, required: true},
     description: String,
     isVisible: {type: Boolean, required: true},

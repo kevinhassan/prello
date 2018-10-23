@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import Action, { ActionModel } from "./Action";
 import User, { UserModel } from "./User";
 
@@ -8,7 +8,7 @@ export type NotificationModel = mongoose.Document & {
    user: UserModel
 };
 
-const notificationSchema = new mongoose.Schema({
+const notificationSchema: Schema = new mongoose.Schema({
     readDate: Date,
     action: {type: Action, required: true},
     user: {type: User, required: true}

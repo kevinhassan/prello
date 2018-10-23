@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import Label, { LabelModel } from "./Label";
+import List, { ListModel } from "./List";
 
 export type CardModel = mongoose.Document & {
     name: string,
@@ -7,16 +8,18 @@ export type CardModel = mongoose.Document & {
     isArchived: string,
     dueDate: Date,
     index: number,
-    label: LabelModel
+    label: LabelModel,
+    list: ListModel
 };
 
-const cardSchema = new mongoose.Schema({
+const cardSchema: Schema = new mongoose.Schema({
     name: { type: String, required: true },
     description: String,
-    isArchived: { type: Boolean, required: true },
+    isArchived: { type: Boolean, required: true, default: false },
     dueDate: Date,
     index:  { type: Number, required: true },
-    label: Label
+    label: Label,
+    list: List
 }, { timestamps: true });
 
 

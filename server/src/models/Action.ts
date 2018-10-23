@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import ActionType, { ActionTypeModel } from "./ActionType";
 import User, { UserModel } from "./User";
 
@@ -8,7 +8,7 @@ export type ActionModel = mongoose.Document & {
     user: UserModel
 };
 
-const actionSchema = new mongoose.Schema({
+const actionSchema: Schema = new mongoose.Schema({
     date: {type: Date, required: true},
     type: {type: ActionType, required: true},
     user: {type: User, required: true}
