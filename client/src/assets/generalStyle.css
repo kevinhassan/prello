@@ -97,13 +97,35 @@ p {
     transition: 0.2s;
 }
 
-.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover, .btn-warning:hover, .btn-success:hover, .btn-light:hover, .btn-dark:hover, .btn-info:hover {
+.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover,
+.btn-warning:hover, .btn-success:hover, .btn-light:hover,
+.btn-dark:hover, .btn-info:hover {
     box-shadow: 0 5px 5px -5px #111;
     opacity: 0.9;
     transition: 0.2s;
 }
 
-.btn-primary, .btn.btn-primary:hover {
+.btn-primary:active, .btn-secondary:active, .btn-danger:active,
+.btn-warning:active, .btn-success:active, .btn-light:active,
+.btn-dark:active, .btn-info:active,
+.btn-primary:focus, .btn-secondary:focus, .btn-danger:focus,
+.btn-warning:focus, .btn-success:focus, .btn-light:focus,
+.btn-dark:focus, .btn-info:focus,
+.btn-primary:not(:disabled):not(.disabled):active, .btn-secondary:active:not(:disabled):not(.disabled),
+.btn-danger:active:not(:disabled):not(.disabled),.btn-warning:active:not(:disabled):not(.disabled),
+.btn-success:active:not(:disabled):not(.disabled), .btn-light:active:not(:disabled):not(.disabled),
+.btn-dark:active:not(:disabled):not(.disabled), .btn-info:active:not(:disabled):not(.disabled),
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-secondary:active:not(:disabled):not(.disabled):active:focus,
+.btn-danger:active:not(:disabled):not(.disabled):active:focus,.btn-warning:active:not(:disabled):not(.disabled):active:focus,
+.btn-success:active:not(:disabled):not(.disabled):active:focus, .btn-light:active:not(:disabled):not(.disabled):active:focus,
+.btn-dark:active:not(:disabled):not(.disabled):active:focus, .btn-info:active:not(:disabled):not(.disabled):active:focus  {
+    box-shadow: 0 5px 5px -5px #111;
+    opacity: 0.9;
+    transition: 0.2s;
+}
+
+
+.btn-primary, .btn.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:not(:disabled):not(.disabled):active {
     background-color: #004a75;
 }
 
