@@ -4,7 +4,6 @@
     box-shadow: none !important;
     flex-basis: 33%;
     list-style-type: none;
-    padding: 10px;
     transition: all 0.3s, visibility 0s;
 }
 
@@ -18,6 +17,10 @@
     transition: all 0.3s, visibility 0s;
 }
 
+.addCardButton {
+    width: 100%;
+}
+
 @keyframes fadein {
     from {
         opacity: 0;
@@ -25,21 +28,4 @@
     to {
         opacity: 1;
     }
-}
-
-/*
-    DRAGULA Drag n Drop library custom CSS
-*/
-.gu-unselectable {
-}
-
-.gu-transit {
-
-}
-
-.gu-mirror, .gu-mirror .cardContent {
-    box-shadow: 0 5px 20px;
-    opacity: 1;
-    transform: rotate(-2deg);
-    transition: 0.3s;
 }

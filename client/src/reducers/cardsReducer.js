@@ -53,11 +53,7 @@ export default function cardsReducer(state = initialState, action) {
 
     case actions.CREATE_CARD:
         const newId = state.cards.reduce((a, b) => (a.id > b.id ? a.id : b.id), 0) + 1;
-        const newCard = {
-            id: newId,
-            description: 'New card',
-            isArchived: false,
-        };
+        const newCard = new Card(newId, 'New card', false, new Date());
         return {
             ...state,
             cards: state.cards.concat([newCard]),

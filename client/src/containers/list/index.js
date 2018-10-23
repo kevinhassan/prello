@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Dragula from 'react-dragula';
+import dragula from 'react-dragula';
 import Card from '../../models/Card';
 
 import CardItem from '../../components/card';
@@ -23,8 +23,8 @@ class List extends React.Component {
 
     dragulaDecorator = (componentBackingInstance) => {
         if (componentBackingInstance) {
-            const options = { direction: 'vertical' };
-            Dragula([componentBackingInstance], options);
+            const options = {};
+            dragula([componentBackingInstance], options);
         }
     };
 
@@ -43,10 +43,10 @@ class List extends React.Component {
     render() {
         const { cards } = this.props;
         return (
-            <div>
-                <ul className="cardsList">
+            <div className="cardsListPanel">
+                <ul className="cardsList" ref={this.dragulaDecorator}>
                     {cards.map(c => (
-                        <li key={c.id}>
+                        <li className="li-card" key={c.id}>
                             <CardItem
                                 card={c}
                                 deleteCard={() => this.handleDeleteCard(c.id)}
@@ -54,8 +54,8 @@ class List extends React.Component {
                             />
                         </li>
                     ))}
-                    <button className="btn btn-success" type="submit" onClick={this.handleCreateCard}>Create new Card</button>
                 </ul>
+                <button className="btn btn-success addCardButton" type="submit" onClick={this.handleCreateCard}>Create new Card</button>
             </div>
         );
     }

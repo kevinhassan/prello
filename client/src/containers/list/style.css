@@ -3,16 +3,22 @@
 }
 
 .cardsList {
-    background-color: #e8e8e8;
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    list-style-type: none;
     padding: 0;
-    margin: 10px;
+}
+
+.cardsListPanel {
+    background-color: #e8e8e8;
+    text-align: center;
     width: 300px;
 }
 
+.li-card {
+    list-style-type: none;
+    margin: 10px;
+}
 
 /*
     DRAGULA Drag n Drop library custom CSS
