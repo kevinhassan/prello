@@ -22,7 +22,7 @@ class ListComp extends React.Component {
     handleCreateCard() {
         this.props.createCard();
     }
-d
+
     handleOnDragEnd(result) {
         const { destination, source, draggableId } = result;
         if (!destination) return;
