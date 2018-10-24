@@ -12,7 +12,6 @@ import Board from '../../models/Board';
 import BoardView from '../../components/views/BoardView';
 
 // ===== Others
-import './style.css';
 
 const BoardPage = (props) => {
     const { board } = props;
