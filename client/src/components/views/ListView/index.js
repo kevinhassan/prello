@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // ===== Components / Containers
-import CardItem from '../../card';
+import CardComp from '../../../containers/CardComp';
 
 // ===== Models
 import List from '../../../models/List';
@@ -18,7 +18,7 @@ const ListView = props => (
         <h3>{props.list.name}</h3>
         {props.list.isArchived ? 'Archived' : 'Not archived'}
 
-        <DragDropContext onDragEnd={props.handleOnDragEnd}>
+        <DragDropContext onDragEnd={props.onDragEnd}>
             <Droppable droppableId={String(props.list.id)}>
                 { dropProvided => (
                     <ul
@@ -36,7 +36,7 @@ const ListView = props => (
                                         {...dragProvided.dragHandleProps}
                                         ref={dragProvided.innerRef}
                                     >
-                                        <CardItem
+                                        <CardComp
                                             card={c}
                                         />
                                     </li>
@@ -56,7 +56,7 @@ const ListView = props => (
 ListView.propTypes = {
     list: PropTypes.instanceOf(List).isRequired,
     createCard: PropTypes.func.isRequired,
-    handleOnDragEnd: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func.isRequired,
 };
 
 export default ListView;

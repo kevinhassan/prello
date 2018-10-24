@@ -4,25 +4,25 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { createCard } from '../../actions/cards';
+import { deleteCard } from '../../actions/cards';
 
 // ===== Models
-import List from '../../models/List';
+import Card from '../../models/Card';
 
 // ===== View
-import ListView from '../../components/views/ListView';
+import CardView from '../../components/views/CardView';
 
-class ListComp extends React.Component {
+class CardComp extends React.Component {
     constructor(props) {
         super(props);
-        this.handleCreateCard = this.handleCreateCard.bind(this);
+        this.handleDeleteCard = this.handleDeleteCard.bind(this);
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
     }
 
-    handleCreateCard() {
-        this.props.createCard();
+    handleDeleteCard() {
+        this.props.deleteCard();
     }
-d
+
     handleOnDragEnd(result) {
         const { destination, source, draggableId } = result;
         if (!destination) return;
@@ -35,19 +35,18 @@ d
     }
 
     render() {
-        const { list } = this.props;
+        const { card } = this.props;
         return (
-            <ListView
-                list={list}
-                createCard={this.handleCreateCard}
-                onDragEnd={this.handleOnDragEnd}
+            <CardView
+                card={card}
+                deleteCard={this.handleDeleteCard}
             />
         );
     }
 }
-ListComp.propTypes = {
-    createCard: PropTypes.func.isRequired,
-    list: PropTypes.instanceOf(List).isRequired,
+CardComp.propTypes = {
+    card: PropTypes.instanceOf(Card).isRequired,
+    deleteCard: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
@@ -56,11 +55,11 @@ const mapStateToProps = () => ({});
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        createCard,
+        deleteCard,
     }, dispatch,
 );
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(ListComp);
+)(CardComp);
