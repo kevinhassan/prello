@@ -18,7 +18,7 @@ export const initialState = {
                 new Card(7, '3L', new Date(), 1, false, 'Milk'),
                 new Card(8, 'Peugeot', new Date(), 2, false, 'Car'),
                 new Card(9, 'A good one', new Date(), 3, false, 'Life'),
-            ]), new List(3, 1, false, 'To listen', [
+            ]), new List(3, 1, true, 'To listen', [
                 new Card(10, 'Descriptions. Awesome!', new Date(), 1, false, 'Name'),
                 new Card(11, 'A car', new Date(), 2, false, 'Name'),
                 new Card(12, 'A life.', new Date(), 3, false, 'Name'),
@@ -29,7 +29,7 @@ export const initialState = {
             ]), new List(5, 1, false, 'Awi', [
                 new Card(16, 'Description of the card. Awesome!', new Date(), 1, false, 'Name'),
                 new Card(17, 'A car', new Date(), 2, false, 'Name'),
-            ]), new List(6, 1, false, 'Flood', [
+            ]), new List(6, 1, true, 'Flood', [
                 new Card(18, 'Description of the card. Awesome!', new Date(), 1, false, 'Name'),
                 new Card(19, 'A car', new Date(), 2, false, 'Name'),
             ]),
