@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import About from '../about';
-import BoardPage from '../BoardPage';
+import BoardComp from '../BoardComp';
 import Modal from '../../components/modal';
 import Header from '../header';
 import UserPage from '../user';
@@ -13,7 +13,7 @@ const App = () => (
         <Header />
         <Modal />
         <main>
-            <Route exact path="/" component={BoardPage} />
+            <Route exact path="/" component={BoardComp} />
             <Route exact path="/profile" component={UserPage} />
             <Route exact path="/about-us" component={About} />
         </main>

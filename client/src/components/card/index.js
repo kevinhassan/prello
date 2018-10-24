@@ -14,11 +14,11 @@ class CardItem extends React.Component {
     }
 
     handleDeleteCard(id) {
-        this.props.deleteCard(id);
+        console.log('delete the card with id='.concat(id))
     }
 
     handleDeleteCardWithDelay(id) {
-        this.props.deleteCardWithDelay(id);
+        console.log('delete with delay the card with id='.concat(id))
     }
 
     render() {
@@ -50,8 +50,6 @@ class CardItem extends React.Component {
 }
 CardItem.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
-    deleteCard: PropTypes.func.isRequired,
-    deleteCardWithDelay: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)

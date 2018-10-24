@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Containers
-import List from '../../../containers/list';
+import ListComp from '../../../containers/ListComp';
 
 // ===== Models
 import Board from '../../../models/Board';
@@ -17,8 +17,9 @@ const BoardView = props => (
         <h1>{props.board.name}</h1>
         <div className="listsPanel">
             {props.board.lists.map(l => (
-                <List
-                    cards={l.cards}
+                <ListComp
+                    key={l.id}
+                    list={l}
                 />
             ))}
         </div>

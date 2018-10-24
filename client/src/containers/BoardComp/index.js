@@ -13,11 +13,11 @@ import BoardView from '../../components/views/BoardView';
 
 // ===== Others
 
-const BoardPage = (props) => {
+const BoardComp = (props) => {
     const { board } = props;
     return <BoardView board={board} />;
 };
-BoardPage.propTypes = {
+BoardComp.propTypes = {
     board: PropTypes.instanceOf(Board).isRequired,
 };
 
@@ -35,4 +35,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(BoardPage);
+)(BoardComp);
