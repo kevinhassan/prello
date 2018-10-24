@@ -17,7 +17,7 @@ services:
     restart: always
     build: ./server
     environment:
-      - MONGODB_URI_LOCAL=mongodb://mongo:27017
+      - MONGODB_URI_LOCAL=mongodb://mongo:27017/prello
     ports:
       - "9090:9090"
     links:
