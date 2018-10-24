@@ -1,5 +1,11 @@
 .listsPanel {
     padding: 15px;
-    overflow-x: scroll;
     white-space: nowrap;
+}
+
+.listCompWrapper {
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: top;
+    width: 250px;
 }

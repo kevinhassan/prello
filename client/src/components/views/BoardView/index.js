@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
@@ -13,18 +14,38 @@ import './style.css';
 // ==================================
 
 const BoardView = props => (
-    <div className="cardsPanel">
-        <h1>{props.board.name}</h1>
-        <div className="listsPanel">
-            {props.board.lists.map(l => (
-                <div key={l.id} style={{ display: 'inline-block', marginRight: '5px', verticalAlign: 'top' }}>
-                    <ListComp
-                        list={l}
-                    />
+    <DragDropContext onDragEnd={props.onDragEnd}>
+        <Droppable droppableId={String(props.board.id)} direction="horizontal">
+            {dropProvided => (
+                <div
+                    ref={dropProvided.innerRef}
+                    {...dropProvided.droppableProps}
+                >
+                    <h1>{props.board.name}</h1>
+                    <div className="listsPanel">
+                        {props.board.lists.map(l => (
+                            <Draggable key={l.id} draggableId={String(l.id)} index={l.index}>
+                                {dragProvided => (
+                                    <div
+                                        className="listCompWrapper"
+                                        key={l.id}
+                                        ref={dragProvided.innerRef}
+                                        {...dragProvided.draggableProps}
+                                        {...dragProvided.dragHandleProps}
+                                    >
+                                        <ListComp
+                                            list={l}
+
+                                        />
+                                    </div>
+                                )}
+                            </Draggable>
+                        ))}
+                    </div>
                 </div>
-            ))}
-        </div>
-    </div>
+            )}
+        </Droppable>
+    </DragDropContext>
 );
 BoardView.propTypes = {
     board: PropTypes.instanceOf(Board).isRequired,
