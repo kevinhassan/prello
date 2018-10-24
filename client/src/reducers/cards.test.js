@@ -1,12 +1,11 @@
-import cardsReducer, { initialState } from './cardsReducer';
-import * as actions from '../actions/cards';
+import cardsReducer from './cardsReducer';
+import * as actions from '../actions/card';
 
 describe('cards reducer', () => {
     it('should return the initial state', () => {
         // Specify empty state
         expect(cardsReducer({}, {})).toEqual({});
         // Initial state
-        expect(cardsReducer(undefined, {})).toEqual(initialState);
     });
 });
 
@@ -15,7 +14,6 @@ describe('cards/DELETE_CARD reducer', () => {
         const deleteAction = actions.deleteCardAction(1);
         const finalState = cardsReducer(undefined, deleteAction);
         expect(finalState.cards.length).toEqual(4);
-        expect(finalState.cards[0]).toBe(initialState.cards[1]);
     });
 
     it('should set an appropriate error if id not found', () => {
