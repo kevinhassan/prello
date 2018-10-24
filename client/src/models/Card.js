@@ -1,4 +1,4 @@
-export default function Card(id, description, isArchived, dueDate, index, name, list, users) {
+export default function Card(id, description, dueDate, index, isArchived, name, list, users) {
     this.id = id; // String
     this.description = description; // String
     this.dueDate = dueDate; // Date
