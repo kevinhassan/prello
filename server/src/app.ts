@@ -6,17 +6,20 @@ import mongoose from "mongoose";
 import expressValidator from "express-validator";
 import bluebird from "bluebird";
 import { MONGODB_URI } from "./util/secrets";
+import Router from "./routes";
 
 
 class App {
 
   public app: express.Application;
+  public router: Router;
 
   constructor() {
     this.app = express();
     this.config();
     this.middlewares();
     this.mongoConnection();
+    this.router = new Router(this.app);
   }
   private config() {
     // Load environment variables from .env file, where API keys and passwords are configured
