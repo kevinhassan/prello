@@ -7,61 +7,39 @@ import expressValidator from "express-validator";
 import bluebird from "bluebird";
 import { MONGODB_URI } from "./util/secrets";
 
-// Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: "./env" });
 
-// Controllers (route handlers)
-import * as homeController from "./controllers/home";
-import * as userController from "./controllers/user";
-import * as contactController from "./controllers/contact";
+class App {
 
+  public app: express.Application;
 
-// Create Express server
-const app = express();
-
-// Connect to MongoDB
-const mongoUrl = MONGODB_URI;
-(<any>mongoose).Promise = bluebird;
-mongoose.connect(mongoUrl, {useMongoClient: true}).then(
-  () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
-).catch(err => {
-  console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
-  // process.exit();
-});
-
-// Express configuration
-app.set("port", process.env.PORT || 9090);
-app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressValidator());
-
-/**
- * Primary app routes.
- */
-app.get("/", homeController.index);
-app.get("/login", userController.getLogin);
-app.post("/login", userController.postLogin);
-app.get("/logout", userController.logout);
-app.get("/forgot", userController.getForgot);
-app.post("/forgot", userController.postForgot);
-app.get("/reset/:token", userController.getReset);
-app.post("/reset/:token", userController.postReset);
-app.get("/signup", userController.getSignup);
-app.post("/signup", userController.postSignup);
-app.get("/contact", contactController.getContact);
-app.post("/contact", contactController.postContact);
-app.get("/account",  userController.getAccount);
-app.post("/account/profile",  userController.postUpdateProfile);
-app.post("/account/password",  userController.postUpdatePassword);
-app.post("/account/delete",  userController.postDeleteAccount);
-app.get("/account/unlink/:provider",  userController.getOauthUnlink);
-
-/**
- * OAuth authentication routes. (Sign in)
- */
-app.get("/auth/github");
-app.get("/auth/github/callback", (req, res) => {
-});
-
-export default app;
+  constructor() {
+    this.app = express();
+    this.config();
+    this.middlewares();
+    this.mongoConnection();
+  }
+  private config() {
+    // Load environment variables from .env file, where API keys and passwords are configured
+    dotenv.config({ path: "./env" });
+    // Express configuration
+    this.app.set("port", process.env.PORT || 9090);
+  }
+  private middlewares() {
+    this.app.use(compression());
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ extended: true }));
+    this.app.use(expressValidator());
+  }
+  private mongoConnection() {
+    const mongoUrl = MONGODB_URI;
+    // Connect to MongoDB
+    (<any>mongoose).Promise = bluebird;
+    mongoose.connect(mongoUrl, {useMongoClient: true}).then(
+      () => { /** ready to use. The `mongoose.connect()` promise resolves to undefined. */ },
+    ).catch(err => {
+      console.log("MongoDB connection error. Please make sure MongoDB is running. " + err);
+      // process.exit();
+    });
+  }
+}
+export default new App().app;
