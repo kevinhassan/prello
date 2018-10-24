@@ -2,18 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-<<<<<<< Updated upstream:client/src/containers/ListComp/index.js
-=======
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import Card from '../../models/Card';
-
-<<<<<<< Updated upstream:client/src/containers/list/index.js
-import CardItem from '../../components/card';
-=======
-// ===== Actions
-import { createCard } from '../../actions/card';
->>>>>>> Stashed changes:client/src/containers/ListComp/index.js
->>>>>>> Stashed changes:client/src/containers/list/index.js
 
 // ===== Actions
 import { createCard } from '../../actions/card';
