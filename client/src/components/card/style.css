@@ -5,6 +5,7 @@
     flex-basis: 33%;
     list-style-type: none;
     transition: all 0.3s, visibility 0s;
+    vertical-align: top;
 }
 
 .cardContent {
@@ -15,4 +16,9 @@
     padding: 5px;
     text-align: center;
     transition: all 0.3s, visibility 0s;
+}
+
+.cardDescription {
+    white-space: normal;
+    margin: 0;
 }

@@ -17,10 +17,12 @@ const BoardView = props => (
         <h1>{props.board.name}</h1>
         <div className="listsPanel">
             {props.board.lists.map(l => (
-                <ListComp
-                    key={l.id}
-                    list={l}
-                />
+                <div style={{ display: 'inline-block', marginRight: '5px', verticalAlign: 'top' }}>
+                    <ListComp
+                        key={l.id}
+                        list={l}
+                    />
+                </div>
             ))}
         </div>
     </div>

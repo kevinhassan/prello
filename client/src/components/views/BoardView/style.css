@@ -1,0 +1,5 @@
+.listsPanel {
+    padding: 15px;
+    overflow-x: scroll;
+    white-space: nowrap;
+}

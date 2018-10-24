@@ -10,15 +10,10 @@ class CardItem extends React.Component {
     constructor(props) {
         super(props);
         this.handleDeleteCard = this.handleDeleteCard.bind(this);
-        this.handleDeleteCardWithDelay = this.handleDeleteCardWithDelay.bind(this);
     }
 
     handleDeleteCard(id) {
         console.log('delete the card with id='.concat(id))
-    }
-
-    handleDeleteCardWithDelay(id) {
-        console.log('delete with delay the card with id='.concat(id))
     }
 
     render() {
@@ -27,19 +22,11 @@ class CardItem extends React.Component {
             <div className="card" key={card.id}>
                 <div className="cardContent">
                     <div>
-                        <b>{card.name}</b>
-                        - id
-                        {card.id}
-                        &nbsp;-&nbsp;
-                        {card.description}
+                        <b>#{card.id} - {card.name}</b>
+                        <p className="cardDescription">{card.description}</p>
                         <div>
                             <button type="button" className="btn btn-sm btn-danger" onClick={() => this.handleDeleteCard(card.id)}>
                                 <i className="fas fa-trash-alt" />
-                            </button>
-                            <button type="button" style={{ marginLeft: '5px' }} className="btn btn-sm btn-danger" onClick={() => this.handleDeleteCardWithDelay(card.id)}>
-                                <i className="fas fa-trash-alt" />
-                                {' '}
-                                with delay
                             </button>
                         </div>
                     </div>

@@ -30,7 +30,7 @@ const ListView = props => (
                             <Draggable key={c.id} draggableId={String(c.id)} index={c.index}>
                                 { dragProvided => (
                                     <li
-                                        className="li-card"
+                                        className="card-li"
                                         key={c.id}
                                         {...dragProvided.draggableProps}
                                         {...dragProvided.dragHandleProps}

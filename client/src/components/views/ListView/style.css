@@ -14,13 +14,13 @@
     background-color: #ccc;
     border-radius: 10px;
     text-align: center;
-    width: 300px;
+    width: 230px;
 }
 
-.li-card {
+.card-li{
     border-radius: 10px;
     list-style-type: none;
-    margin: 7px;
+    margin: 5px;
 }
 
 .addCardButton {
