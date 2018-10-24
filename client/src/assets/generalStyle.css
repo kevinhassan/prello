@@ -89,6 +89,11 @@ p {
 
 /* ===== ELEMENTS ===== */
 
+/* List */
+li {
+    list-style-type: none;
+}
+
 /* Buttons */
 
 .btn {
