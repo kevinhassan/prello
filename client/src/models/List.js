@@ -1,7 +1,7 @@
-export default function List(id, name, isArchieved, index, cards) {
+export default function List(id, index, isArchived, name, cards) {
     this.id = id; // String
-    this.name = name; // String
-    this.isArchieved = isArchieved; // Boolean
     this.index = index; // Int
-    // this.cards = cards;              //Array(Card)
+    this.isArchived = isArchived; // Boolean
+    this.name = name; // String
+    this.cards = cards; // Array(Card)
 }

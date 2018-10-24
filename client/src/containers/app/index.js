@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import About from '../about';
-import Board from '../board';
+import BoardPage from '../boardPage';
 import Modal from '../../components/modal';
 import Header from '../header';
 import UserPage from '../user';

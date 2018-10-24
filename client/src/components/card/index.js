@@ -27,7 +27,9 @@ class CardItem extends React.Component {
             <div className="card" key={card.id}>
                 <div className="cardContent">
                     <div>
-                        <b>{card.id}</b>
+                        <b>{card.name}</b>
+                        - id
+                        {card.id}
                         &nbsp;-&nbsp;
                         {card.description}
                         <div>
