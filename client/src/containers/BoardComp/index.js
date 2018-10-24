@@ -13,10 +13,28 @@ import BoardView from '../../components/views/BoardView';
 
 // ===== Others
 
-const BoardComp = (props) => {
-    const { board } = props;
-    return <BoardView board={board} />;
-};
+class BoardComp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
+    }
+
+    handleOnDragEnd(result) {
+        console.log(result);
+
+        const source = result.source;
+        const destination = result.destination;
+
+        if (!destination) {
+            return;
+        }
+    }
+
+    render() {
+        const { board } = this.props;
+        return <BoardView board={board} onDragEnd={this.handleOnDragEnd} />;
+    }
+}
 BoardComp.propTypes = {
     board: PropTypes.instanceOf(Board).isRequired,
 };
