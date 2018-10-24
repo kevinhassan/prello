@@ -15,8 +15,18 @@ export let getLogin = (req: Request, res: Response) => {
  * Sign in using email and password.
  */
 export let postLogin = (req: Request, res: Response, next: NextFunction) => {
-    res.status(302);
-    res.send({error: "error at login"});
+    // console.log("Body");
+     console.log(req.body.username);
+    // console.log("Params");
+    // console.log(req.params);
+
+    if (req.body.username != undefined && req.body.password != undefined && req.body.username != "" && req.body.password != "") {
+        res.status(200);
+        res.send({token: "connected"});
+    } else {
+        res.status(302);
+        res.send({token: "error at login"});
+    }
 };
 
 /**
