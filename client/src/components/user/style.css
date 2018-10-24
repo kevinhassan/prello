@@ -1,0 +1,16 @@
+.infosPanel {
+    padding:20px;
+    background-color: #ccc;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.nickname{
+    text-align: center
+}
+
+
+.readOnly{
+    background-color: #ccc;
+    border: 0;
+}
