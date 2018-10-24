@@ -16,7 +16,7 @@ import { createCard } from '../../actions/card';
 >>>>>>> Stashed changes:client/src/containers/list/index.js
 
 // ===== Actions
-import { createCard } from '../../actions/cards';
+import { createCard } from '../../actions/card';
 
 // ===== Models
 import List from '../../models/List';
