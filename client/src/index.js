@@ -5,9 +5,6 @@ import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from './store';
 import App from './containers/app';
 
-// Keep this import even if it's not used here: it's necessary for Dragula (Drag N Drop library)
-import DragulaStyles from 'react-dragula/dist/dragula.min.css';
-
 import 'sanitize.css/sanitize.css';
 import './assets/generalStyle.css';
 

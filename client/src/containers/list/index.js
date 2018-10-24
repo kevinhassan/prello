@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import dragula from 'react-dragula';
 import Card from '../../models/Card';
 
 import CardItem from '../../components/card';
@@ -21,13 +20,6 @@ class List extends React.Component {
         this.handleDeleteCardWithDelay = this.handleDeleteCardWithDelay.bind(this);
     }
 
-    dragulaDecorator = (componentBackingInstance) => {
-        if (componentBackingInstance) {
-            const options = {};
-            dragula([componentBackingInstance], options);
-        }
-    };
-
     handleDeleteCard(cardId) {
         this.props.deleteCard(cardId);
     }
@@ -45,7 +37,7 @@ class List extends React.Component {
         return (
             <div className="cardsListPanel">
                 <h2>My List</h2>
-                <ul className="cardsList" ref={this.dragulaDecorator}>
+                <ul className="cardsList">
                     {cards.map(c => (
                         <li className="li-card" key={c.id}>
                             <CardItem

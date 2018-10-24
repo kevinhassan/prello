@@ -26,14 +26,3 @@
 .addCardButton {
     width: 100%;
 }
-
-/*
-    DRAGULA Drag n Drop library custom CSS
-*/
-.gu-mirror, .gu-mirror {
-    box-shadow: 0 5px 20px;
-    opacity: 1;
-    transform: rotate(-2deg);
-    transition: 0.3s;
-}
-
