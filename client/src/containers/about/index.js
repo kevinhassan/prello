@@ -3,14 +3,26 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+// ===== Actions
 import { displayLoadingModal, hideLoadingModal } from '../../actions/modal';
+
+// ===== Components
+import CardDetailView from '../../components/views/CardDetailView';
+
+// ===== Models
+import Card from '../../models/Card';
+import List from '../../models/List';
+
+// ===== Others
 import spinner from '../../assets/spinner.gif';
 
 class About extends React.Component {
     constructor(props) {
         super(props);
+        this.state = { isDisplayingCardDetail: false };
         this.handleDisplayLoadingModal = this.handleDisplayLoadingModal.bind(this);
         this.handleHideLoadingModal = this.handleHideLoadingModal.bind(this);
+        this.handleDisplayingCardDetail = this.handleDisplayingCardDetail.bind(this);
     }
 
 
@@ -20,6 +32,10 @@ class About extends React.Component {
 
     handleHideLoadingModal() {
         this.props.hideLoadingModal();
+    }
+
+    handleDisplayingCardDetail() {
+        this.setState({ isDisplayingCardDetail: true });
     }
 
     render() {
@@ -215,7 +231,42 @@ class About extends React.Component {
                         </form>
 
                     </div>
-
+                </div>
+                <hr />
+                <div className="row">
+                    <div className="col-sm-12">
+                        <h2>Card detail</h2>
+                        {this.state.isDisplayingCardDetail
+                            ? (
+                                <CardDetailView
+                                    card={new Card(
+                                        '3',
+                                        `We need to provide a description to this card in order to
+                                        see how it will display on the screen. Please, type something longer.
+                                        Let's finish this awesome project. Polytech IG Montpellier. Yes this
+                                        is a description a bit long, that's normal.`,
+                                        new Date(),
+                                        5,
+                                        false,
+                                        'Test card name',
+                                        new List('qsd59dsr', 1, false, 'To buy'),
+                                        undefined,
+                                    )}
+                                />
+                            )
+                            : (
+                                <button
+                                    type="submit"
+                                    className="btn btn-info"
+                                    onClick={this.handleDisplayingCardDetail}
+                                >
+                                    Display card detail
+                                </button>
+                            )
+                        }
+                        <br />
+                        <br />
+                    </div>
                 </div>
             </div>
         );
