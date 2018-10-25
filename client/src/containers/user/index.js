@@ -5,9 +5,10 @@ import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 
 // ===== Models
+import User from '../../models/User';
 
 // ===== Components / Containers
-import User from '../../components/user';
+import UserView from '../../components/UserView';
 
 // ===== Actions
 
@@ -23,7 +24,7 @@ const UserPage = (props) => {
             {error !== '' ? <p className="errorMsg">{error}</p> : ''}
 
             <div className="infosPanel">
-                <User
+                <UserView
                     user={user}
                 />
             </div>
@@ -39,7 +40,6 @@ const UserPage = (props) => {
 
 UserPage.propTypes = {
     user: PropTypes.instanceOf(User).isRequired,
-    error: PropTypes.string.isRequired,
     changePage: PropTypes.func.isRequired,
 };
 
