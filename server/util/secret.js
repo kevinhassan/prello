@@ -14,7 +14,6 @@ const prod = ENVIRONMENT === 'production'; // Anything else is treated as 'dev'
 
 const MONGODB_URI = prod ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
 
-console.log("tutu : "+ MONGODB_URI);
 if (!MONGODB_URI) {
   logger.error('No mongo connection string. Set MONGODB_URI environment variable.');
   process.exit(1);
