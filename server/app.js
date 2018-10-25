@@ -35,6 +35,20 @@ app.disable('x-powered-by');
 /**
  * API examples routes.
  */
+
+app.all('/*', (req, res, next) => {
+  // CORS headers
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  // Custom headers
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,X-Access-Token,X-Key');
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+  } else {
+    next();
+  }
+});
+
 app.use('/', require('./routes/'));
 
 app.use((req, res, next) => {

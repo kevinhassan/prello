@@ -12,7 +12,7 @@ module.exports = (router) => {
           res.status(e.status).send({ error: e.message });
         }
       } else {
-        res.status(412).send({ error: 'Missing informations' });
+        res.status(400).send({ error: 'Missing informations' });
       }
     })
     .post('/login', async (req, res) => {
@@ -24,7 +24,7 @@ module.exports = (router) => {
           res.status(e.status).send({ error: e.message });
         }
       } else {
-        res.status(412).send({ error: 'Missing informations' });
+        res.status(400).send({ error: 'Missing informations' });
       }
     })
     .post('/logout', (req, res) => {
