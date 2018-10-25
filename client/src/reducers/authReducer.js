@@ -14,7 +14,6 @@ export default function userReducer(state = initialState, action) {
         };
 
     case actions.CLASSIC_SIGN_IN_FAILURE:
-        console.log(action);
         return {
             ...state,
             error: action.payload.error,
