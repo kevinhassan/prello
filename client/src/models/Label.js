@@ -1,4 +1,6 @@
-export default function Label(id, name, color, boardId) {
+export default function Label({
+    id, color, name, boardId,
+} = {}) {
     this.id = id; // String
     this.color = color; // String
     this.name = name; // String

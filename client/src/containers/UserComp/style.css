@@ -1,3 +1,7 @@
+.errorMsg {
+    color: red;
+}
+
 .usersPanel {
     padding: 20px;
 }

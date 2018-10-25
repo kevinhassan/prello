@@ -3,9 +3,10 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import User from '../../models/User';
 import './style.css';
 
-class User extends React.Component {
+class UserView extends React.Component {
     constructor(props) {
         super(props);
         this.handleDeleteUser = this.handleDeleteUser.bind(this);
@@ -14,7 +15,6 @@ class User extends React.Component {
     handleDeleteUser(id) {
         this.props.deleteUser(id);
     }
-
 
     render() {
         const { user } = this.props;
@@ -28,15 +28,15 @@ class User extends React.Component {
                         <br />
                         Initials:
                         {' '}
-                        <input className="readOnly" readOnly="true" type="text" placeholder={user.initials} />
+                        <input className="readOnly" readOnly type="text" placeholder={user.initials} />
                         <br />
                         Email:
                         {' '}
-                        <input className="readOnly" readOnly="true" type="text" placeholder={user.email} />
+                        <input className="readOnly" readOnly type="text" placeholder={user.email} />
                         <br />
                         Biography :
                         {' '}
-                        <input className="readOnly" readOnly="true" type="text" placeholder={user.biography} />
+                        <input className="readOnly" readOnly type="text" placeholder={user.biography} />
 
                     </div>
                 </div>
@@ -44,9 +44,12 @@ class User extends React.Component {
         );
     }
 }
-User.propTypes = {
+UserView.propTypes = {
     user: PropTypes.instanceOf(User).isRequired,
-    deleteUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func,
+};
+UserView.defaultProps = {
+    deleteUser: undefined,
 };
 
 // Put info from the store state in props (None)
@@ -61,4 +64,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(User);
+)(UserView);
