@@ -4,7 +4,7 @@ import About from '../about';
 import BoardComp from '../BoardComp';
 import Modal from '../../components/modal';
 import Header from '../header';
-import UserPage from '../user';
+import UserComp from '../UserComp';
 
 import './style.css';
 
@@ -14,7 +14,7 @@ const App = () => (
         <Modal />
         <main style={{ marginTop: '50px' }}>
             <Route exact path="/" component={BoardComp} />
-            <Route exact path="/profile" component={UserPage} />
+            <Route exact path="/profile" component={UserComp} />
             <Route exact path="/about-us" component={About} />
         </main>
     </div>
