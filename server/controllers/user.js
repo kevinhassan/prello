@@ -1,5 +1,9 @@
 const userController = {};
 const User = require('../models/User');
+
+
+
+
 /**
  * POST /login
  * Sign in using email and password.
@@ -38,7 +42,32 @@ userController.logout = () => {};
  * POST /signup
  * Create a new local account.
  */
-userController.postSignup = () => {};
+userController.postSignup = async(name, username, password, email) => {
+  const error = new Error('Internal Server Error');
+  error.status = 500;
+
+  try {
+    const user = new User();
+    
+    // create user
+    user.name = name;
+    user.username = username;
+    user.email = email;
+    user.password = password;
+
+    user.save(function(err){
+      if(err){
+        console.log(err)
+        error.message = 'invalid credential';
+        error.status = 401;
+        throw error;
+      }
+    })
+    return user;
+  } catch (e) {
+    throw error;
+  }
+};
 
 /**
  * GET /account
