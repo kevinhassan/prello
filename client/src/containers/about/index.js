@@ -239,19 +239,19 @@ class About extends React.Component {
                         {this.state.isDisplayingCardDetail
                             ? (
                                 <CardDetailView
-                                    card={new Card(
-                                        '3',
-                                        `We need to provide a description to this card in order to
+                                    card={new Card({
+                                        id: '3',
+                                        description: `We need to provide a description to this card in order to
                                         see how it will display on the screen. Please, type something longer.
                                         Let's finish this awesome project. Polytech IG Montpellier. Yes this
                                         is a description a bit long, that's normal.`,
-                                        new Date(),
-                                        5,
-                                        false,
-                                        'Test card name',
-                                        new List('qsd59dsr', 1, false, 'To buy'),
-                                        undefined,
-                                    )}
+                                        dueDate: new Date(),
+                                        index: 5,
+                                        isArchived: false,
+                                        name: 'Test card name',
+                                        labels: new List('qsd59dsr', 1, false, 'To buy'),
+                                        users: undefined,
+                                    })}
                                 />
                             )
                             : (
