@@ -9,10 +9,10 @@ module.exports = (router) => {
           const user = await userController.postSignup(req.body);
           res.status(200).send({ message: 'user created', user });
         } catch (e) {
-          res.status(e.status).send({ err: e.message });
+          res.status(e.status).send({ error: e.message });
         }
       } else {
-        res.status(412).send({ err: 'Missing informations' });
+        res.status(412).send({ error: 'Missing informations' });
       }
     })
     .post('/login', async (req, res) => {
@@ -21,10 +21,10 @@ module.exports = (router) => {
           const token = await userController.login(req.body.username, req.body.password);
           res.status(200).send({ message: 'connected', token });
         } catch (e) {
-          res.status(e.status).send({ err: e.message });
+          res.status(e.status).send({ error: e.message });
         }
       } else {
-        res.status(412).send({ err: 'Missing informations' });
+        res.status(412).send({ error: 'Missing informations' });
       }
     })
     .post('/logout', (req, res) => {
