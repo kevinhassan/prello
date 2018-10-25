@@ -1,5 +1,4 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
-import { fetchPrelloAPI, GET, POST } from '../helpers/fetchPrelloAPI';
 
 // ========================
 
@@ -34,6 +33,7 @@ export const fetchBoard = boardId => (dispatch) => {
     dispatch(displayLoadingModal());
     dispatch(fetchBoardStartedAction());
     const resource = '/board/'.concat(boardId);
+    /*
     fetchPrelloAPI(resource, {}, GET)
         .then(() => {
             dispatch(fetchBoardStartedAction(boardId));
@@ -42,6 +42,7 @@ export const fetchBoard = boardId => (dispatch) => {
         .catch((error) => {
             dispatch(fetchBoardFailureAction(boardId, error));
         });
+    */
 };
 
 // =====
@@ -76,6 +77,7 @@ export const updateListsIndexes = newLists => (dispatch) => {
     dispatch(displayLoadingModal());
     dispatch(updateListsIndexesStartedAction());
     const resource = '/board/'.concat(newLists);
+    /*
     fetchPrelloAPI(resource, {}, POST)
         .then(() => {
             dispatch(updateListsIndexesStartedAction(newLists));
@@ -84,4 +86,5 @@ export const updateListsIndexes = newLists => (dispatch) => {
         .catch((error) => {
             dispatch(updateListsIndexesFailureAction(newLists, error));
         });
+    */
 };
