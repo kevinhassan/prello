@@ -5,13 +5,11 @@ const express = require('express');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const chalk = require('chalk');
 const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
-const mongoose = require('mongoose');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-const secret = require('./util/secret');
+require('./config/database');
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: './env' });
@@ -20,26 +18,6 @@ dotenv.config({ path: './env' });
  * Create Express server.
  */
 const app = express();
-
-/**
- * Deprecation warnings
- * https://mongoosejs.com/docs/deprecations.html
- */
-
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useNewUrlParser', true);
-
-/**
- * Connect to MongoDB.
- */
-const mongoUrl = secret.MONGODB_URI;
-mongoose.connect(mongoUrl);
-mongoose.connection.on('error', (err) => {
-  console.error(err);
-  console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
-  process.exit();
-});
 
 /**
  * Express configuration.
