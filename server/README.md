@@ -1,8 +1,8 @@
 # Prello server
 
-Based on [typeScript-Node-Starter](https://github.com/Microsoft/TypeScript-Node-Starter).
+Based on [hackathon-starter](https://github.com/sahat/hackathon-starter).
 
-Node + Typescript + Mongo
+Node + Mongo
 
 ## License
 
