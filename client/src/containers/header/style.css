@@ -37,16 +37,13 @@
 }
 
 .prello-logo {
-    background-color: none;
-    color: white;
-    font-size: 36px;
+    height: 35px;
     text-align: center;
     transition: 0.2s;
 }
 
 .prello-logo:hover {
-    color: #009cdd;
     cursor: pointer;
-    transform: translateY(-5px);
+    transform: scale(1.03);
     transition: 0.2s;
 }

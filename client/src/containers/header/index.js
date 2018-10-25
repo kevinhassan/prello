@@ -2,12 +2,13 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { push } from 'connected-react-router';
 
 // ===== Actions
 
 // ===== Others
+import logoPrello from '../../assets/logo_prello_white.png';
 import './style.css';
-import { push } from 'connected-react-router';
 
 class Header extends React.Component {
     render() {
@@ -18,7 +19,9 @@ class Header extends React.Component {
                     <button className="btn btn-header" type="button" onClick={goHome}><i className="fas fa-home" /></button>
                 </div>
                 <div className="centerHeader-div">
-                    <span className="prello-logo" onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>Prello</span>
+                    <span onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>
+                        <img className="prello-logo" src={logoPrello} alt="Logo Prello" />
+                    </span>
                 </div>
                 <div className="rightHeader-div">
                     <button className="btn btn-header" type="button" onClick={goProfile}><i className="fas fa-user" /></button>
@@ -43,7 +46,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         goHome: () => push('/'),
-        goAbout: () => push('/about-us'),
+        goAbout: () => push('/graphical-charter'),
         goProfile: () => push('/profile'),
     }, dispatch,
 );

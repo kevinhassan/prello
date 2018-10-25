@@ -11,12 +11,15 @@ import CardDetailView from '../../components/views/CardDetailView';
 
 // ===== Models
 import Card from '../../models/Card';
+import Label from '../../models/Label';
 import List from '../../models/List';
 
 // ===== Others
 import spinner from '../../assets/spinner.gif';
+import logo from '../../assets/logo_prello.png';
+import logoP from '../../assets/logo_prello_p.png';
 
-class About extends React.Component {
+class GraphicalCharter extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isDisplayingCardDetail: false };
@@ -42,9 +45,25 @@ class About extends React.Component {
         return (
             <div style={{ padding: '0 30px' }}>
                 <h1>All elements used in Prello</h1>
+
                 <hr />
+
+                <h3>Logos</h3>
+                <p>TODO: clean them or make another one.</p>
+                <br />
                 <div className="row">
-                    <div className="col-sm-12">
+                    <div className="col-sm-8">
+                        <img src={logo} alt="Logo Prello" height={50} />
+                    </div>
+                    <div className="col-sm-4">
+                        <img src={logoP} alt="Logo Prello P" height={100} />
+                    </div>
+                </div>
+
+                <hr />
+
+                <div className="row">
+                    <div className="col-sm-9">
                         <button type="button" className="btn btn-primary">Primary</button>
                         <span />
                         <button type="button" className="btn btn-secondary">Secondary</button>
@@ -61,6 +80,50 @@ class About extends React.Component {
                         <span />
                         <button type="button" className="btn btn-dark">Dark</button>
                         <span />
+                    </div>
+                    <div className="col-sm-3">
+                        <h2>Card detail</h2>
+                        {this.state.isDisplayingCardDetail
+                            ? (
+                                <CardDetailView
+                                    card={new Card({
+                                        id: '3',
+                                        description: `We need to provide a description to this card in order to
+                                        see how it will display on the screen. Please, type something longer.
+                                        Let's finish this awesome project. Polytech IG Montpellier. Yes this
+                                        is a description a bit long, that's normal.`,
+                                        dueDate: new Date(),
+                                        index: 5,
+                                        isArchived: false,
+                                        name: 'Test card name',
+                                        labels: [
+                                            new Label({
+                                                id: '1', color: '#aa5252', name: 'UX', boardId: '942',
+                                            }),
+                                            new Label({
+                                                id: '2', color: '#2252de', name: 'Database', boardId: '942',
+                                            }),
+                                            new Label({
+                                                id: '3', color: '#22ffdd', name: 'Documents', boardId: '942',
+                                            }),
+                                        ],
+                                        list: new List('qsd59dsr', 1, false, 'To buy'),
+                                        users: undefined,
+                                    })}
+                                />
+                            )
+                            : (
+                                <button
+                                    type="submit"
+                                    className="btn btn-info"
+                                    onClick={this.handleDisplayingCardDetail}
+                                >
+                                    Display card detail
+                                </button>
+                            )
+                        }
+                        <br />
+                        <br />
                     </div>
                 </div>
 
@@ -82,7 +145,14 @@ class About extends React.Component {
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="dropdown">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button
+                                className="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
                                 Dropdown button
                             </button>
                             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -99,7 +169,11 @@ class About extends React.Component {
                         </p>
                     </div>
                     <div className="col-sm-4">
-                        <div><button type="button" className="btn btn-primary" onClick={this.handleDisplayLoadingModal}>Display loading modal</button></div>
+                        <div>
+                            <button type="button" className="btn btn-primary" onClick={this.handleDisplayLoadingModal}>
+                                Display loading modal
+                            </button>
+                        </div>
                         <br />
                         <div><button type="button" className="btn btn-danger" onClick={this.handleHideLoadingModal}>Hide loading modal</button></div>
                     </div>
@@ -147,7 +221,13 @@ class About extends React.Component {
                         <form>
                             <div className="form-group">
                                 <label htmlFor="exampleInputEmail1">
-                                    <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        id="exampleInputEmail1"
+                                        aria-describedby="emailHelp"
+                                        older="Enter email"
+                                    />
                                     Email address
                                 </label>
                                 <small id="emailHelp" className="form-text text-muted">
@@ -196,14 +276,22 @@ class About extends React.Component {
                                     <input type="file" className="form-control-file" id="exampleInputFile" aria-describedby="fileHelp" />
                                 </label>
                                 <small id="fileHelp" className="form-text text-muted">
-                                    {"This is some placeholder block-level help text for the above input. It's a bit lighter and easily wraps to a new line."}
+                                    {`This is some placeholder block-level help text for the above input.
+                                    It's a bit lighter and easily wraps to a new line.`}
                                 </small>
                             </div>
                             <fieldset className="form-group">
                                 <legend>Radio buttons</legend>
                                 <div className="form-check">
                                     <label className="form-check-label" htmlFor="something">
-                                        <input type="radio" className="form-check-input" name="optionsRadios" id="optionsRadios1" value="option1" defaultChecked />
+                                        <input
+                                            type="radio"
+                                            className="form-check-input"
+                                            name="optionsRadios"
+                                            id="optionsRadios1"
+                                            value="option1"
+                                            defaultChecked
+                                        />
                                         {"Option one is this and that&mdash;be sure to include why it's great"}
                                     </label>
                                 </div>
@@ -216,7 +304,14 @@ class About extends React.Component {
                                 </div>
                                 <div className="form-check disabled">
                                     <label className="form-check-label" htmlFor="something">
-                                        <input type="radio" className="form-check-input" name="optionsRadios" id="optionsRadios3" value="option3" disabled />
+                                        <input
+                                            type="radio"
+                                            className="form-check-input"
+                                            name="optionsRadios"
+                                            id="optionsRadios3"
+                                            value="option3"
+                                            disabled
+                                        />
                                         Option three is disabled
                                     </label>
                                 </div>
@@ -233,46 +328,11 @@ class About extends React.Component {
                     </div>
                 </div>
                 <hr />
-                <div className="row">
-                    <div className="col-sm-12">
-                        <h2>Card detail</h2>
-                        {this.state.isDisplayingCardDetail
-                            ? (
-                                <CardDetailView
-                                    card={new Card({
-                                        id: '3',
-                                        description: `We need to provide a description to this card in order to
-                                        see how it will display on the screen. Please, type something longer.
-                                        Let's finish this awesome project. Polytech IG Montpellier. Yes this
-                                        is a description a bit long, that's normal.`,
-                                        dueDate: new Date(),
-                                        index: 5,
-                                        isArchived: false,
-                                        name: 'Test card name',
-                                        labels: new List('qsd59dsr', 1, false, 'To buy'),
-                                        users: undefined,
-                                    })}
-                                />
-                            )
-                            : (
-                                <button
-                                    type="submit"
-                                    className="btn btn-info"
-                                    onClick={this.handleDisplayingCardDetail}
-                                >
-                                    Display card detail
-                                </button>
-                            )
-                        }
-                        <br />
-                        <br />
-                    </div>
-                </div>
             </div>
         );
     }
 }
-About.propTypes = {
+GraphicalCharter.propTypes = {
     displayLoadingModal: PropTypes.func.isRequired,
     hideLoadingModal: PropTypes.func.isRequired,
 };
@@ -291,4 +351,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(About);
+)(GraphicalCharter);
