@@ -35,7 +35,7 @@ export const classicSignIn = (email, password) => (dispatch) => {
             dispatch(classicSignInSuccess(res.token));
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
             dispatch(classicSignInFailure(error.message));
         });
 };

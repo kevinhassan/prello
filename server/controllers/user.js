@@ -32,7 +32,7 @@ userController.login = async (username, password) => {
  * GET /logout
  * Log out.
  */
-userController.logout = () => {};
+userController.logout = () => { };
 
 
 /**
@@ -57,70 +57,58 @@ userController.postSignup = async (data) => {
   }
 };
 
-  try {
-    const newUser = await user.save();
-    return newUser;
-  } catch (err) {
-    console.error(err);
-    if (err.name === 'MongoError' && err.code === 11000) {
-      throw new MyError(409, 'User already exists');
-    }
-    throw new MyError(500, 'Internal Server Error');
-  }
-};
-
 /**
  * GET /account
  * Profile page.
  */
-userController.getAccount = () => {};
+userController.getAccount = () => { };
 
 /**
  * POST /account/profile
  * Update profile information.
  */
-userController.postUpdateProfile = () => {};
+userController.postUpdateProfile = () => { };
 
 /**
  * POST /account/password
  * Update current password.
  */
-userController.postUpdatePassword = () => {};
+userController.postUpdatePassword = () => { };
 
 /**
  * POST /account/delete
  * Delete user account.
  */
-userController.postDeleteAccount = () => {};
+userController.postDeleteAccount = () => { };
 
 /**
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
  */
-userController.getOauthUnlink = () => {};
+userController.getOauthUnlink = () => { };
 
 /**
  * GET /reset/:token
  * Reset Password page.
  */
-userController.getReset = () => {};
+userController.getReset = () => { };
 
 /**
  * POST /reset/:token
  * Process the reset password request.
  */
-userController.postReset = () => {};
+userController.postReset = () => { };
 
 /**
  * GET /forgot
  * Forgot Password page.
  */
-userController.getForgot = () => {};
+userController.getForgot = () => { };
 
 /**
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
-userController.postForgot = () => {};
+userController.postForgot = () => { };
 
 module.exports = userController;
