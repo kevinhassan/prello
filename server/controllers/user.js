@@ -1,33 +1,28 @@
 const userController = {};
 const User = require('../models/User');
-
-
-
+const MyError = require('../util/error');
 
 /**
  * POST /login
  * Sign in using email and password.
  */
 userController.login = async (username, password) => {
-  const error = new Error('Internal Server Error');
-  error.status = 500;
   try {
     const user = await User.findOne({ username }).select('password');
     if (!user) {
-      error.message = 'invalid credential';
-      error.status = 401;
-      throw error;
+      throw new MyError(401, 'invalid credentials');
     }
     // check password
-    const isMatch = await User.comparePassword(password, user.password);
+    const isMatch = await user.comparePassword(password, user.password);
     if (!isMatch) {
-      error.message = 'invalid credential';
-      error.status = 401;
-      throw error;
+      throw new MyError(401, 'invalid credentials');
     }
     // return token to the user
-  } catch (e) {
-    throw error;
+  } catch (err) {
+    if (!err.status) {
+      throw new MyError(500, 'Internal Server Error');
+    }
+    throw err;
   }
 };
 
@@ -42,30 +37,22 @@ userController.logout = () => {};
  * POST /signup
  * Create a new local account.
  */
-userController.postSignup = async(name, username, password, email) => {
-  const error = new Error('Internal Server Error');
-  error.status = 500;
-
+userController.postSignup = async (data) => {
+  const user = new User({
+    name: data.name,
+    username: data.username,
+    password: data.password,
+    email: data.email
+  });
   try {
-    const user = new User();
-    
-    // create user
-    user.name = name;
-    user.username = username;
-    user.email = email;
-    user.password = password;
-
-    user.save(function(err){
-      if(err){
-        console.log(err)
-        error.message = 'invalid credential';
-        error.status = 401;
-        throw error;
-      }
-    })
-    return user;
-  } catch (e) {
-    throw error;
+    const newUser = await user.save();
+    return newUser;
+  } catch (err) {
+    console.error(err);
+    if (err.name === 'MongoError' && err.code === 11000) {
+      throw new MyError(409, 'User already exists');
+    }
+    throw new MyError(500, 'Internal Server Error');
   }
 };
 

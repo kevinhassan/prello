@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+const MyError = require('../util/error');
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  username: { type: String, required: true },
+  username: { type: String, unique: true, required: true },
   initials: String,
   bio: String,
   email: { type: String, unique: true, required: true },
@@ -39,10 +40,17 @@ userSchema.pre('save', function save(next) {
 /**
  * Helper method for validating user's password.
  */
-userSchema.methods.comparePassword = function comparePassword(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    cb(err, isMatch);
-  });
+userSchema.methods.comparePassword = async function comparePassword(candidatePassword) {
+  try {
+    return await bcrypt.compare(candidatePassword, this.password, (err, result) => {
+      if (err) {
+        throw err;
+      }
+      return result;
+    });
+  } catch (err) {
+    throw new MyError(500, 'Internal Server Error');
+  }
 };
 
 /**
