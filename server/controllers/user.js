@@ -14,13 +14,11 @@ userController.login = async (username, password) => {
     }
     // check password
     const isMatch = await user.comparePassword(password, user.password);
-    console.log(isMatch);
     if (!isMatch) {
       throw new MyError(401, 'invalid credentials');
     }
     // return token to the user
   } catch (err) {
-    console.log(err);
     if (!err.status) {
       throw new MyError(500, 'Internal Server Error');
     }
@@ -50,7 +48,6 @@ userController.postSignup = async (data) => {
     const newUser = await user.save();
     return newUser;
   } catch (err) {
-    console.error(err);
     if (err.name === 'MongoError' && err.code === 11000) {
       throw new MyError(409, 'User already exists');
     }
@@ -59,25 +56,14 @@ userController.postSignup = async (data) => {
 };
 
   try {
-    const user = new User();
-    
-    // create user
-    user.name = name;
-    user.username = username;
-    user.email = email;
-    user.password = password;
-
-    user.save(function(err){
-      if(err){
-        console.log(err)
-        error.message = 'invalid credential';
-        error.status = 401;
-        throw error;
-      }
-    })
-    return user;
-  } catch (e) {
-    throw error;
+    const newUser = await user.save();
+    return newUser;
+  } catch (err) {
+    console.error(err);
+    if (err.name === 'MongoError' && err.code === 11000) {
+      throw new MyError(409, 'User already exists');
+    }
+    throw new MyError(500, 'Internal Server Error');
   }
 };
 
