@@ -11,25 +11,27 @@ import './style.css';
 // ==================================
 
 const SignInView = () => (
-    <div>
-        <div className="col-sm-3" />
-        <div className="col-sm-6 signin-container">
-            <div className="general-form">
-                <h3 className="form-title">Sign In</h3>
-                <form>
+    <div className="row">
+        <div className="col-sm-12 general-form">
+            <h3 className="form-title">Sign In</h3>
+            <form>
+                <p>
                     <label>
-                        <p>Use name/Email address</p>
+                        <h5>Use name/Email address</h5>
                         <input type="text" name="username" />
                     </label>
+                </p>
+                <p>
                     <label>
-                        <p>Password</p>
+                        <h5>Password</h5>
                         <input type="password" name="password" />
                     </label>
-                    <p>
-                        <input type="submit" value="Submit" />
-                    </p>
-                </form>
-            </div>
+
+                </p>
+                <p>
+                    <input type="submit" value="Submit" />
+                </p>
+            </form>
         </div>
     </div>
 );
