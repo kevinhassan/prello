@@ -58,6 +58,29 @@ userController.postSignup = async (data) => {
   }
 };
 
+  try {
+    const user = new User();
+    
+    // create user
+    user.name = name;
+    user.username = username;
+    user.email = email;
+    user.password = password;
+
+    user.save(function(err){
+      if(err){
+        console.log(err)
+        error.message = 'invalid credential';
+        error.status = 401;
+        throw error;
+      }
+    })
+    return user;
+  } catch (e) {
+    throw error;
+  }
+};
+
 /**
  * GET /account
  * Profile page.
