@@ -1,40 +1,135 @@
 import * as actions from '../actions/board';
 import Board from '../models/Board';
-import List from '../models/List';
 import Card from '../models/Card';
+import List from '../models/List';
 
 export const initialState = {
-    board: new Board(
-        999999, false, 'Prello dev board', [], [
-            new List(1000, 1, false, 'TODO', [
-                new Card(1, 'Description of the card with id equals to 1. Awesome!', new Date(), 1, false, 'Card#1'),
-                new Card(2, 'This is a very useful description for card with id 2.', new Date(), 2, false, 'Card#2'),
-                new Card(3, 'This is a very useful description for card with id 3.', new Date(), 3, false, 'Card#3'),
-                new Card(4, 'This is a very useful description for card with id 4.', new Date(), 4, false, 'Card#4'),
-                new Card(5, 'This is a very useful description for card with id 5.', new Date(), 5, true, 'Card#5'),
-                new Card(6, 'This is a very useful description for card with id 5.', new Date(), 6, true, 'Card#6'),
-            ]),
-            new List(1001, 2, false, 'To buy', [
-                new Card(7, '3L', new Date(), 1, false, 'Milk'),
-                new Card(8, 'Peugeot', new Date(), 2, false, 'Car'),
-                new Card(9, 'A good one', new Date(), 3, false, 'Life'),
-            ]), new List(1002, 3, true, 'To listen', [
-                new Card(10, 'Descriptions. Awesome!', new Date(), 1, false, 'Name'),
-                new Card(11, 'A car', new Date(), 2, false, 'Name'),
-                new Card(12, 'A life.', new Date(), 3, false, 'Name'),
-                new Card(13, 'This is a very useful description.', new Date(), 4, false, 'Name'),
-                new Card(14, 'This is a very useful description.', new Date(), 5, true, 'Name'),
-            ]), new List(1003, 4, false, 'Polytech', [
-                new Card(15, 'Description. Awesome!', new Date(), 1, false, 'Name'),
-            ]), new List(1004, 5, false, 'Awi', [
-                new Card(16, 'Description of the card. Awesome!', new Date(), 1, false, 'Name'),
-                new Card(17, 'A car', new Date(), 2, false, 'Name'),
-            ]), new List(1005, 6, true, 'Flood', [
-                new Card(18, 'Description of the card. Awesome!', new Date(), 1, false, 'Name'),
-                new Card(19, 'A car', new Date(), 2, false, 'Name'),
-            ]),
-        ], Array(2), 'private', Array(4),
-    ),
+    board: new Board({
+        id: '942',
+        isArchived: false,
+        name: 'Prello dev board',
+        labels: [],
+        lists: [
+            new List({
+                id: '1000',
+                index: 1,
+                isArchived: false,
+                name: 'TODO',
+                boardId: '942',
+                cards: [
+                    new Card({
+                        id: '1',
+                        description: 'Description of the card with id equals to 1. Awesome!',
+                        dueDate: new Date(),
+                        index: 1,
+                        isArchived: false,
+                        name: 'Card#1',
+                    }),
+                    new Card({
+                        id: '2',
+                        description: 'This is a description for this card. Description of the card is here.',
+                        dueDate: new Date(),
+                        index: 2,
+                        isArchived: false,
+                        name: 'Card#1',
+                    }),
+                    new Card({
+                        id: '3',
+                        description: 'This is a description for this card. Description of the card is here.',
+                        dueDate: new Date(),
+                        index: 3,
+                        isArchived: false,
+                        name: 'Card#1',
+                    }),
+                    new Card({
+                        id: '4',
+                        description: 'This is a description for this card. Description of the card is here. This card is marked as archived.',
+                        dueDate: new Date(),
+                        index: 4,
+                        isArchived: true,
+                        name: 'Card#1',
+                    }),
+                ],
+            }),
+            new List({
+                id: '1500',
+                index: 2,
+                isArchived: false,
+                name: 'To buy',
+                boardId: '942',
+                cards: [
+                    new Card({
+                        id: '5', description: '3 l', dueDate: new Date(), index: 1, isArchived: false, name: 'Milk',
+                    }),
+                    new Card({
+                        id: '6', description: 'Peugeot', dueDate: new Date(), index: 2, isArchived: false, name: 'Car',
+                    }),
+                    new Card({
+                        id: '9', description: 'A good one', dueDate: new Date(), index: 3, isArchived: false, name: 'Life',
+                    }),
+                ],
+            }),
+            new List({
+                id: '1432',
+                index: 3,
+                isArchived: true,
+                name: 'To listen',
+                boardId: '942',
+                cards: [
+                    new Card({
+                        id: '10', description: 'Descriptions. Awesome!', dueDate: new Date(), index: 1, isArchived: false, name: 'Name',
+                    }),
+                    new Card({
+                        id: '11', description: 'A car', dueDate: new Date(), index: 2, isArchived: false, name: 'Name',
+                    }),
+                    new Card({
+                        id: '12', description: 'A life.', dueDate: new Date(), index: 3, isArchived: false, name: 'Name',
+                    }),
+                ],
+            }), new List({
+                id: '1563',
+                index: 4,
+                isArchived: false,
+                name: 'Polytech',
+                boardId: '942',
+                cards: [
+                    new Card({
+                        id: '15', description: 'Description. Awesome!', dueDate: new Date(), index: 1, isArchived: false, name: 'Name',
+                    }),
+                ],
+            }), new List({
+                id: '1564',
+                index: 5,
+                isArchived: false,
+                name: 'Awi',
+                boardId: '942',
+                cards: [
+                    new Card({
+                        id: '16', description: 'Description of the card. Awesome!', dueDate: new Date(), index: 1, isArchived: false, name: 'Name',
+                    }),
+                    new Card({
+                        id: '17', description: 'A car', dueDate: new Date(), index: 2, isArchived: false, name: 'Name',
+                    }),
+                ],
+            }), new List({
+                id: '1565',
+                index: 6,
+                isArchived: true,
+                name: 'Flood',
+                boardId: '942',
+                cards: [
+                    new Card({
+                        id: '18', description: 'Description of the card. Awesome!', dueDate: new Date(), index: 1, isArchived: false, name: 'Name',
+                    }),
+                    new Card({
+                        id: '19', description: 'A car', dueDate: new Date(), index: 2, isArchived: false, name: 'Name',
+                    }),
+                ],
+            }),
+        ],
+        privacy: 'private',
+        team: Array(4),
+    }),
 };
 
 export default function boardReducer(state = initialState, action) {
