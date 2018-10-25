@@ -12,7 +12,7 @@ module.exports = (router) => {
           res.status(e.status).send({ err: e.message });
         }
       } else {
-        res.status(412).send({ err: 'Invalid informations' });
+        res.status(412).send({ err: 'Missing informations' });
       }
     })
     .post('/login', async (req, res) => {
@@ -24,7 +24,7 @@ module.exports = (router) => {
           res.status(e.status).send({ err: e.message });
         }
       } else {
-        res.status(412).send({ err: 'Invalid informations' });
+        res.status(412).send({ err: 'Missing informations' });
       }
     })
     .post('/logout', (req, res) => {

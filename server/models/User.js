@@ -41,18 +41,14 @@ userSchema.pre('save', function save(next) {
  * Helper method for validating user's password.
  */
 userSchema.methods.comparePassword = async function comparePassword(candidatePassword) {
-  try {
-    return await bcrypt.compare(candidatePassword, this.password, (err, result) => {
-      if (err) {
-        throw err;
-      }
-      return result;
+  const isMatch = await new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, this.password, (err, result) => {
+      if (err) reject(new Error(500, 'Internal Server Error'));
+      resolve(result);
     });
-  } catch (err) {
-    throw new MyError(500, 'Internal Server Error');
-  }
+  });
+  return isMatch;
 };
-
 /**
  * Helper method for getting user's gravatar.
  */

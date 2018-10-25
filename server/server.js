@@ -1,5 +1,5 @@
-const app = require("./app");
 const chalk = require('chalk');
+const app = require('./app');
 
 /**
  * Start Express server.
