@@ -17,7 +17,7 @@ const BoardView = props => (
     <DragDropContext onDragEnd={props.onDragEnd}>
         <h1>{props.board.name}</h1>
 
-        <Droppable droppableId="currentBoard" direction="horizontal">
+        <Droppable droppableId="currentBoard" direction="horizontal" type="LIST">
             {dropProvided => (
                 <div
                     className="listsPanel"
@@ -25,7 +25,7 @@ const BoardView = props => (
                     {...dropProvided.droppableProps}
                 >
                     {props.board.lists.map(l => (
-                        <Draggable draggableId={l.id} index={l.index} key={l.id}>
+                        <Draggable draggableId={l.id} index={l.index} key={l.id} type="LIST">
                             {dragProvided => (
                                 <div
                                     className="listCompWrapper"
