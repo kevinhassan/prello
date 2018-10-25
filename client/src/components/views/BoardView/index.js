@@ -15,33 +15,32 @@ import './style.css';
 
 const BoardView = props => (
     <DragDropContext onDragEnd={props.onDragEnd}>
-        <Droppable droppableId={String(props.board.id)} direction="horizontal">
+        <h1>{props.board.name}</h1>
+
+        <Droppable droppableId="currentBoard" direction="horizontal" type="LIST">
             {dropProvided => (
                 <div
+                    className="listsPanel"
                     ref={dropProvided.innerRef}
                     {...dropProvided.droppableProps}
                 >
-                    <h1>{props.board.name}</h1>
-                    <div className="listsPanel">
-                        {props.board.lists.map(l => (
-                            <Draggable key={l.id} draggableId={String(l.id)} index={l.index}>
-                                {dragProvided => (
-                                    <div
-                                        className="listCompWrapper"
-                                        key={l.id}
-                                        ref={dragProvided.innerRef}
-                                        {...dragProvided.draggableProps}
-                                        {...dragProvided.dragHandleProps}
-                                    >
-                                        <ListComp
-                                            list={l}
-
-                                        />
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                    </div>
+                    {props.board.lists.map(l => (
+                        <Draggable draggableId={l.id} index={l.index} key={l.id} type="LIST">
+                            {dragProvided => (
+                                <div
+                                    className="listCompWrapper"
+                                    key={l.id}
+                                    ref={dragProvided.innerRef}
+                                    {...dragProvided.dragHandleProps}
+                                    {...dragProvided.draggableProps}
+                                >
+                                    <ListComp list={l} />
+                                    {dragProvided.placeholder}
+                                </div>
+                            )}
+                        </Draggable>
+                    ))}
+                    {dropProvided.placeholder}
                 </div>
             )}
         </Droppable>
@@ -49,6 +48,7 @@ const BoardView = props => (
 );
 BoardView.propTypes = {
     board: PropTypes.instanceOf(Board).isRequired,
+    onDragEnd: PropTypes.func.isRequired,
 };
 
 export default BoardView;
