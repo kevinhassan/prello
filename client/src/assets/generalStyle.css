@@ -147,5 +147,13 @@ li {
 }
 
 .btn-success {
-    margin: 0
+    margin: 0;
+}
+
+.general-form {
+    text-align: center;
+}
+
+.signin-container {
+    display: inline;
 }
