@@ -16,22 +16,10 @@ class ListComp extends React.Component {
     constructor(props) {
         super(props);
         this.handleCreateCard = this.handleCreateCard.bind(this);
-        this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
     }
 
     handleCreateCard() {
         this.props.createCard();
-    }
-
-    handleOnDragEnd(result) {
-        const { destination, source, draggableId } = result;
-        if (!destination) return;
-        if (destination.droppableId === source.droppableId
-            && destination.index === source.index) return;
-
-        console.log('TODO : change cards indexes via Redux');
-
-        // Todo : change cards indexes via Redux
     }
 
     render() {
@@ -40,7 +28,6 @@ class ListComp extends React.Component {
             <ListView
                 list={list}
                 createCard={this.handleCreateCard}
-                onDragEnd={this.handleOnDragEnd}
             />
         );
     }
