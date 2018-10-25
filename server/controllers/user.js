@@ -18,6 +18,8 @@ userController.login = async (username, password) => {
       throw new MyError(401, 'invalid credentials');
     }
     // return token to the user
+    return "false token"
+    
   } catch (err) {
     if (!err.status) {
       throw new MyError(500, 'Internal Server Error');

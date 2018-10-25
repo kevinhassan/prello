@@ -7,7 +7,7 @@ module.exports = (router) => {
       if (req.body.name && req.body.email && req.body.username && req.body.password && req.body.name !== '' && req.body.email !== '' && req.body.username !== '' && req.body.password !== '') {
         try {
           const user = await userController.postSignup(req.body);
-          res.status(200).send({ message: 'user created', user });
+          res.status(200).send({ message: 'user created', user:user });
         } catch (e) {
           res.status(e.status).send({ error: e.message });
         }

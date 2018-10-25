@@ -12,7 +12,7 @@ export const classicSignInAction = (email, password) => ({
         password,
     },
 });
-
+ 
 export const classicSignInStarted = () => ({ type: CLASSIC_SIGN_IN_STARTED });
 export const classicSignInFailure = error => ({
     type: CLASSIC_SIGN_IN_FAILURE,
@@ -31,7 +31,8 @@ export const classicSignIn = (email, password) => (dispatch) => {
     dispatch(classicSignInStarted());
     APIFetch.fetchPrelloAPI('login', { username: email, password }, APIFetch.POST)
         .then((res) => {
-            if (res.ok) {
+            console.log(res);
+            if (res.token != undefined) {
                 dispatch(classicSignInSuccess(res.token));
             } else {
                 dispatch(classicSignInFailure(res.error));

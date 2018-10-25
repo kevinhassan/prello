@@ -23,7 +23,7 @@ class UserComp extends React.Component {
     }
 
     handleClassicSignIn() {
-        this.props.classicSignIn('lapin', 'toto');
+        this.props.classicSignIn('laps', 'toto');
     }
 
     render() {
