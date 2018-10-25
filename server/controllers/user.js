@@ -14,13 +14,11 @@ userController.login = async (username, password) => {
     }
     // check password
     const isMatch = await user.comparePassword(password, user.password);
-    console.log(isMatch);
     if (!isMatch) {
       throw new MyError(401, 'invalid credentials');
     }
     // return token to the user
   } catch (err) {
-    console.log(err);
     if (!err.status) {
       throw new MyError(500, 'Internal Server Error');
     }

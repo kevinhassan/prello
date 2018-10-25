@@ -18,8 +18,8 @@ module.exports = (router) => {
     .post('/login', async (req, res) => {
       if (req.body.username && req.body.password && req.body.username !== '' && req.body.password !== '') {
         try {
-          const token = await userController.login(req.body.username, req.body.password);
-          res.status(200).send({ message: 'connected', token });
+          const authToken = await userController.login(req.body.username, req.body.password);
+          res.status(200).send({ message: 'connected', token: authToken });
         } catch (e) {
           res.status(e.status).send({ error: e.message });
         }
