@@ -12,7 +12,7 @@ const App = () => (
     <div>
         <Header />
         <Modal />
-        <main>
+        <main style={{ marginTop: '50px' }}>
             <Route exact path="/" component={BoardComp} />
             <Route exact path="/profile" component={UserPage} />
             <Route exact path="/about-us" component={About} />
