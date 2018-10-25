@@ -12,7 +12,7 @@ module.exports = (router) => {
           const token = await userController.login(req.body.username, req.body.password);
           res.status(200).send({ message: 'connected', token: token });
         } catch (e) {
-          res.status(e.code).send({ err: e.message });
+          res.status(e.status).send({ err: e.message });
         }
       } else {
         res.status(412).send({ err: 'Invalid informations' });
