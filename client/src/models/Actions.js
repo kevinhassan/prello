@@ -1,4 +1,6 @@
-export default function Action(id, data, date, user, type) {
+export default function Action({
+    id, data, date, user, type,
+} = {}) {
     this.id = id; // String
     this.data = data; // String
     this.date = date; // Date

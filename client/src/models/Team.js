@@ -1,4 +1,6 @@
-export default function Team(id, description, isVisible, name, boardsId, users) {
+export default function Team({
+    id, description, isVisible, name, boardsId, users,
+} = {}) {
     this.id = id; // String
     this.description = description; // String
     this.isVisible = isVisible; // Boolean
