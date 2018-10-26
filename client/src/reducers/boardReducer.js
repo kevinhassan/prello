@@ -22,6 +22,7 @@ export const initialState = {
                         dueDate: new Date(),
                         isArchived: false,
                         name: 'Card#1',
+                        list: new List({ name: 'TODO' }),
                     }),
                     new Card({
                         id: '2',
@@ -29,6 +30,7 @@ export const initialState = {
                         dueDate: new Date(),
                         isArchived: false,
                         name: 'Card#1',
+                        list: new List({ name: 'TODO' }),
                     }),
                     new Card({
                         id: '3',
@@ -36,6 +38,7 @@ export const initialState = {
                         dueDate: new Date(),
                         isArchived: false,
                         name: 'Card#1',
+                        list: new List({ name: 'TODO' }),
                     }),
                     new Card({
                         id: '4',
@@ -43,6 +46,7 @@ export const initialState = {
                         dueDate: new Date(),
                         isArchived: true,
                         name: 'Card#1',
+                        list: new List({ name: 'TODO' }),
                     }),
                 ],
             }),
@@ -53,13 +57,13 @@ export const initialState = {
                 boardId: '942',
                 cards: [
                     new Card({
-                        id: '5', description: '3 l', dueDate: new Date(), isArchived: false, name: 'Milk',
+                        id: '5', description: '3 l', dueDate: new Date(), isArchived: false, name: 'Milk', list: new List({ name: 'To buy' }),
                     }),
                     new Card({
-                        id: '6', description: 'Peugeot', dueDate: new Date(), isArchived: false, name: 'Car',
+                        id: '6', description: 'Peugeot', dueDate: new Date(), isArchived: false, name: 'Car', list: new List({ name: 'To buy' }),
                     }),
                     new Card({
-                        id: '9', description: 'A good one', dueDate: new Date(), isArchived: false, name: 'Life',
+                        id: '9', description: 'A good one', dueDate: new Date(), isArchived: false, name: 'Life', list: new List({ name: 'To buy' }),
                     }),
                 ],
             }),
@@ -70,13 +74,28 @@ export const initialState = {
                 boardId: '942',
                 cards: [
                     new Card({
-                        id: '10', description: 'Descriptions. Awesome!', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '10',
+                        description: 'Descriptions. Awesome!',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'To listen' }),
                     }),
                     new Card({
-                        id: '11', description: 'A car', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '11',
+                        description: 'A car',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'To listen' }),
                     }),
                     new Card({
-                        id: '12', description: 'A life.', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '12',
+                        description: 'A life.',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'To listen' }),
                     }),
                 ],
             }), new List({
@@ -86,7 +105,12 @@ export const initialState = {
                 boardId: '942',
                 cards: [
                     new Card({
-                        id: '15', description: 'Description. Awesome!', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '15',
+                        description: 'Description. Awesome!',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'Polytech' }),
                     }),
                 ],
             }), new List({
@@ -96,10 +120,20 @@ export const initialState = {
                 boardId: '942',
                 cards: [
                     new Card({
-                        id: '16', description: 'Description of the card. Awesome!', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '16',
+                        description: 'Description of the card. Awesome!',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'Awi' }),
                     }),
                     new Card({
-                        id: '17', description: 'A car', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '17',
+                        description: 'A car',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'Awi' }),
                     }),
                 ],
             }), new List({
@@ -109,10 +143,20 @@ export const initialState = {
                 boardId: '942',
                 cards: [
                     new Card({
-                        id: '18', description: 'Description of the card. Awesome!', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '18',
+                        description: 'Description of the card. Awesome!',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'Flood' }),
                     }),
                     new Card({
-                        id: '19', description: 'A car', dueDate: new Date(), isArchived: false, name: 'Name',
+                        id: '19',
+                        description: 'A car',
+                        dueDate: new Date(),
+                        isArchived: false,
+                        name: 'Name',
+                        list: new List({ name: 'Flood' }),
                     }),
                 ],
             }),

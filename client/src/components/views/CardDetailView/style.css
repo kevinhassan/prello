@@ -9,6 +9,10 @@
     z-index: 9999;
 }
 
+.cardDetailOverlay:hover {
+    cursor: default;
+}
+
 .cardDetailContent {
     background-color: white;
     border-radius: 5px;
@@ -49,11 +53,11 @@ h2.cardDetailTitle {
     font-weight: bold;
 }
 
-.closeIcon {
+.closeCardDetailIcon {
     float: right;
     margin: 0 3px;
 }
 
-.closeIcon:hover {
+.closeCardDetailIcon:hover {
     cursor: pointer;
 }

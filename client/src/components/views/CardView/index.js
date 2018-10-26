@@ -7,7 +7,7 @@ import Card from '../../../models/Card';
 import './style.css';
 
 const CardView = props => (
-    <a onClick={props.onCardClick}>
+    <a onClick={props.onCardClick} onKeyDown={props.onCardClick}>
         <div className="card" key={props.card.id}>
             <div className="cardContent">
                 <div>

@@ -95,6 +95,11 @@ li {
 }
 
 /* Buttons */
+.btnReseted {
+    background: none;
+    border: inherit;
+    padding: inherit;
+}
 
 .btn {
     border: none;

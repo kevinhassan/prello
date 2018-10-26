@@ -20,6 +20,7 @@ class CardComp extends React.Component {
         this.handleDeleteCard = this.handleDeleteCard.bind(this);
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
+        this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
     }
 
     handleDeleteCard() {
@@ -28,6 +29,13 @@ class CardComp extends React.Component {
 
     handleCardClick() {
         this.setState({ displayCardDetail: true });
+    }
+
+    handleCloseCardDetail(event) {
+        event.stopPropagation();
+        if (event.target.className === 'cardDetailOverlay' || 'closeCardDetailIcon' && event.type === 'click') {
+            this.setState({ displayCardDetail: false });
+        }
     }
 
     handleOnDragEnd(result) {
@@ -50,7 +58,10 @@ class CardComp extends React.Component {
                     deleteCard={this.handleDeleteCard}
                     onCardClick={this.handleCardClick}
                 />
-                {(this.state.displayCardDetail) ? <CardDetailView card={card} /> : ''}
+                {(this.state.displayCardDetail)
+                    ? <CardDetailView closeCardDetail={this.handleCloseCardDetail} card={card} />
+                    : ''
+                }
             </div>
         );
     }

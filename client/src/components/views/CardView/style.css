@@ -18,6 +18,10 @@
     transition: all 0.3s, visibility 0s;
 }
 
+.cardContent:hover {
+    background-color: #d2e5ee;
+}
+
 .cardDescription {
     white-space: normal;
     margin: 0;
