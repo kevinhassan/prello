@@ -124,7 +124,6 @@ class SignUpComp extends React.Component {
 
 
     handleFormSubmit(event) {
-        event.preventDefault();
         if (this.state.newUser.name !== '' && this.state.newUser.username !== '' && this.state.newUser.email !== '' && this.state.newUser.password !== '' && this.state.newUser.name !== undefined && this.state.newUser.username !== undefined && this.state.newUser.email !== undefined && this.state.newUser.password !== undefined) {
             classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
         } else {
@@ -132,6 +131,7 @@ class SignUpComp extends React.Component {
                 errorMessage: 'Missing inputs',
             }));
         }
+        event.preventDefault();
     }
 
     render() {
