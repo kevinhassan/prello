@@ -11,25 +11,16 @@ const CardView = props => (
         <div className="card" key={props.card.id}>
             <div className="cardContent">
                 <div>
-                    <b>
-                    #
-                        {props.card.id}
-                        {' '}
-                    -
-                        {' '}
-                        {props.card.name}
-                    </b>
-                    <p className="cardDescription">{props.card.description}</p>
+                    <b className="cardName">{props.card.name}</b>
                     <div>
                         {(props.deleteCard)
                             ? (
                                 <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card.id)}>
-                                    <i className="fas fa-trash-alt" />
+                                    <i className="fas fa-trash-alt fa-xs" />
                                 </button>
                             )
                             : ''
                         }
-
                     </div>
                 </div>
             </div>

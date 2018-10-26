@@ -8,6 +8,10 @@
     vertical-align: top;
 }
 
+.cardName {
+    white-space: normal;
+}
+
 .cardContent {
     background-color: white;
     border-radius: 0.25rem;
@@ -20,9 +24,4 @@
 
 .cardContent:hover {
     background-color: #d2e5ee;
-}
-
-.cardDescription {
-    white-space: normal;
-    margin: 0;
 }
