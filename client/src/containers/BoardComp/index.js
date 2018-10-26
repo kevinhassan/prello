@@ -25,6 +25,11 @@ class BoardComp extends React.Component {
         this.handleListAdded = this.handleListAdded.bind(this);
     }
 
+    handleAddList() {
+        this.setState({ isInputVisible: true });
+    }
+
+
     componentWillMount() {
         this.props.fetchBoard(this.props.match.params.boardId);
     }
@@ -63,7 +68,7 @@ class BoardComp extends React.Component {
 
         // Drop elsewhere than Drag N Drop context
         if (!destination) {
-            return;
+
         }
 
         // List dropped
