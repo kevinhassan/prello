@@ -23,12 +23,11 @@ class SignUpForm extends React.Component {
     }
 
     handleClassicSignUp() {
-        console.log("ok");
     }
     
     render() {
         const signupFormView = (
-            <form onSubmit={console.log("o")}>
+            <form onSubmit={this.handleClassicSignUp}>
                 <SignUpFormView />
             </form>
         );
