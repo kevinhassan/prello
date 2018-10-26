@@ -9,17 +9,19 @@ const MyError = require('../util/error');
 userController.login = async (username, password) => {
   try {
     const user = await User.findOne({ username }).select('password');
+
     if (!user) {
       throw new MyError(401, 'invalid credentials');
     }
+
     // check password
     const isMatch = await user.comparePassword(password, user.password);
     if (!isMatch) {
       throw new MyError(401, 'invalid credentials');
     }
+
     // return token to the user
-    return "false token"
-    
+    return 'false token';
   } catch (err) {
     if (!err.status) {
       throw new MyError(500, 'Internal Server Error');

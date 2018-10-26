@@ -6,8 +6,8 @@ module.exports = (router) => {
     .post('/register', async (req, res) => {
       if (req.body.name && req.body.email && req.body.username && req.body.password && req.body.name !== '' && req.body.email !== '' && req.body.username !== '' && req.body.password !== '') {
         try {
-          const user = await userController.postSignup(req.body);
-          res.status(200).send({ message: 'user created', user:user });
+          const userData = await userController.postSignup(req.body);
+          res.status(200).send({ message: 'user created', user: userData });
         } catch (e) {
           res.status(e.status).send({ error: e.message });
         }

@@ -24,7 +24,6 @@ export const fetchPrelloAPI = (resource, params = {}, verb = GET) => {
         },
         body: JSON.stringify(params),
     })
-        .then(res => res.json())
         .catch((error) => {
             // TODO : do something with fetch() errors !
             console.log(error);
