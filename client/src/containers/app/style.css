@@ -1,3 +1,9 @@
+.appContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .link {
     background-color: #000057;
     color: #e8e8e8;
@@ -14,8 +20,4 @@
     color: #eed774;
     transition: 0.3s;
     text-decoration: none;
-}
-
-header a:visited {
-    color: #eee;
 }

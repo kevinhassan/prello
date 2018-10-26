@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import About from '../about';
+import GraphicalCharter from '../GraphicalCharter';
 import BoardComp from '../BoardComp';
 import Modal from '../../components/modal';
 import Header from '../header';
@@ -11,7 +11,7 @@ import SignInComp from '../SignInComp';
 import './style.css';
 
 const App = () => (
-    <div>
+    <div className="appContainer">
         <Header />
         <Modal />
         <main style={{ marginTop: '50px' }}>

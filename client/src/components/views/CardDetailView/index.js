@@ -7,10 +7,10 @@ import Card from '../../../models/Card';
 import './style.css';
 
 const CardDetailView = props => (
-    <div className="cardDetailOverlay">
+    <div className="cardDetailOverlay" onMouseDown={props.closeCardDetail}>
         <div className="cardDetailContent" key={props.card.id}>
             <div className="">
-                <i className="fas fa-times closeIcon" />
+                <i className="fas fa-times closeCardDetailIcon" onClick={props.closeCardDetail} onKeyDown={props.closeCardDetail} />
 
                 <h2 className="cardDetail-h2 cardDetailTitle">
                     #
@@ -67,6 +67,7 @@ const CardDetailView = props => (
 
 CardDetailView.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
+    closeCardDetail: PropTypes.func.isRequired,
     deleteCard: PropTypes.func,
 };
 

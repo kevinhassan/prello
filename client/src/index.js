@@ -14,7 +14,7 @@ require('dotenv').config();
 render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <div>
+            <div style={{ height: '100%' }}>
                 <App />
             </div>
         </ConnectedRouter>

@@ -15,14 +15,19 @@
 
 html {
     font-size: 100%;
+    height: 100%;
 }
 
 body {
-    margin: 0;
-    padding: 0;
     font-family: Nunito, Helvetica, Arial, sans-serif;
     font-size: 1rem;
-    line-height: 1.5;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    height: 100%;
 }
 
 /* ===== TEXT ===== */
@@ -95,6 +100,11 @@ li {
 }
 
 /* Buttons */
+.btnReseted {
+    background: none;
+    border: inherit;
+    padding: inherit;
+}
 
 .btn {
     border: none;
@@ -156,4 +166,7 @@ li {
 
 .general-form .form-title{
     margin:15px;
+}
+.signin-container {
+    display: inline;
 }

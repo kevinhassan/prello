@@ -4,20 +4,24 @@
 
 .cardsList {
     display: flex;
-    flex-wrap: wrap;
     flex-direction: column;
+    height: 100%;
     margin: 0;
+    overflow-y: auto;
     padding: 0;
 }
 
 .cardsListPanel {
-    background-color: #ccc;
-    border-radius: 10px;
+    background-color: #dbdbed;
+    border-radius: 0.25rem;
+    display: flex;
+    max-height: 100%;
+    flex-direction: column;
     text-align: center;
 }
 
-.card-li{
-    border-radius: 10px;
+.card-li {
+    border-radius: 0.25rem;
     list-style-type: none;
     margin: 5px;
 }

@@ -39,7 +39,7 @@ export const classicSignIn = (email, password) => (dispatch) => {
             dispatch(classicSignInSuccess(res.response.data.token));
         })
         .catch((error) => {
-            dispatch(classicSignInFailure(error.response.data.error));
+            dispatch(classicSignInFailure(error.message));
         });
 };
 
