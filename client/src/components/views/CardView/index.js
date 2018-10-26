@@ -7,37 +7,40 @@ import Card from '../../../models/Card';
 import './style.css';
 
 const CardView = props => (
-    <div className="card" key={props.card.id}>
-        <div className="cardContent">
-            <div>
-                <b>
-                    #
-                    {props.card.id}
-                    {' '}
-                    -
-                    {' '}
-                    {props.card.name}
-                </b>
-                <p className="cardDescription">{props.card.description}</p>
+    <a onClick={props.onCardClick}>
+        <div className="card" key={props.card.id}>
+            <div className="cardContent">
                 <div>
-                    {(props.deleteCard)
-                        ? (
-                            <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card.id)}>
-                                <i className="fas fa-trash-alt" />
-                            </button>
-                        )
-                        : ''
-                    }
+                    <b>
+                    #
+                        {props.card.id}
+                        {' '}
+                    -
+                        {' '}
+                        {props.card.name}
+                    </b>
+                    <p className="cardDescription">{props.card.description}</p>
+                    <div>
+                        {(props.deleteCard)
+                            ? (
+                                <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card.id)}>
+                                    <i className="fas fa-trash-alt" />
+                                </button>
+                            )
+                            : ''
+                        }
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 );
 
 CardView.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
     deleteCard: PropTypes.func,
+    onCardClick: PropTypes.func.isRequired,
 };
 
 CardView.defaultProps = {
