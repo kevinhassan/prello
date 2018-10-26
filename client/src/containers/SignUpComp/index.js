@@ -115,12 +115,12 @@ class SignUpComp extends React.Component {
 
     handleFormSubmit(event) {
         event.preventDefault();
-        if (this.state.name !== '' && this.state.username !== '' && this.state.name !== '' && this.state.name !== '') {
-            classicSignUp(this.state.name, this.state.username, this.state.email, this.state.password);
+        if (this.state.newUser.name !== '' && this.state.newUser.username !== '' && this.state.newUser.email !== '' && this.state.newUser.password !== '' && this.state.newUser.name !== undefined && this.state.newUser.username !== undefined && this.state.newUser.email !== undefined && this.state.newUser.password !== undefined) {
+            classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
         } else {
-            this.setState({
+            this.setState(() => ({
                 errorMessage: 'Missing inputs',
-            });
+            }));
         }
     }
 
