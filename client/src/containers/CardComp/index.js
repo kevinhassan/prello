@@ -33,7 +33,7 @@ class CardComp extends React.Component {
 
     handleCloseCardDetail(event) {
         event.stopPropagation();
-        if (event.target.className === 'cardDetailOverlay' || 'closeCardDetailIcon' && event.type === 'click') {
+        if (event.target.className === ('cardDetailOverlay' || 'closeCardDetailIcon') && event.type === 'click') {
             this.setState({ displayCardDetail: false });
         }
     }

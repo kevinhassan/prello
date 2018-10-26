@@ -11,13 +11,13 @@
 }
 
 .cardsListPanel {
-    background-color: #ccc;
-    border-radius: 10px;
+    background-color: #dbdbed;
+    border-radius: 0.25rem;
     text-align: center;
 }
 
-.card-li{
-    border-radius: 10px;
+.card-li {
+    border-radius: 0.25rem;
     list-style-type: none;
     margin: 5px;
 }
