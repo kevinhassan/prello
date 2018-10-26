@@ -36,7 +36,17 @@ class SignUpComp extends React.Component {
         };
     }
 
-    handleClearForm = () => {// Logic for resetting the form
+    handleClearForm = () => {
+        this.setState({
+            newUser: {
+                name: '',
+                username: '',
+                email: '',
+                password: '',
+                confirmPassword: '',
+            },
+            errorMessage: '',
+        });
     }
 
 

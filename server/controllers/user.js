@@ -56,8 +56,7 @@ userController.postSignup = async (data) => {
       bio: data.bio,
       avatarUrl: data.avatarUrl
     });
-    const newUser = await user.save();
-    return newUser;
+    await user.save();
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
       throw new MyError(409, 'User already exists');
