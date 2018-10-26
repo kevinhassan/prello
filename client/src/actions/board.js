@@ -2,11 +2,11 @@ import { displayLoadingModal, hideLoadingModal } from './modal';
 
 // ========================
 
-export const FETCH_BOARD = 'board/FETCH_BOARD';
-export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
+export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 
+export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({
     type: FETCH_BOARD_FAILURE,
     payload: {
@@ -14,7 +14,6 @@ export const fetchBoardFailureAction = (boardId, error) => ({
         error,
     },
 });
-export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardSuccessAction = (boardId, res) => ({
     type: FETCH_BOARD_SUCCESS,
     payload: {
@@ -23,12 +22,6 @@ export const fetchBoardSuccessAction = (boardId, res) => ({
     },
 });
 
-export const fetchBoardAction = boardId => ({
-    type: FETCH_BOARD,
-    payload: {
-        id: boardId,
-    },
-});
 export const fetchBoard = boardId => (dispatch) => {
     dispatch(displayLoadingModal());
     dispatch(fetchBoardStartedAction());
