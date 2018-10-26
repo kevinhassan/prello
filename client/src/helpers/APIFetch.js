@@ -1,7 +1,9 @@
-export const GET = 'GET';
-export const POST = 'POST';
-export const PUT = 'PUT';
-export const DELETE = 'DELETE';
+const axios = require('axios');
+
+export const GET = 'get';
+export const POST = 'post';
+export const PUT = 'put';
+export const DELETE = 'delete';
 /*
     resource, String, uri to fetch from Prello API.
     params, Object, default = {}, Object with all the params to put in the body.
@@ -17,15 +19,13 @@ export const fetchPrelloAPI = (resource, params = {}, verb = GET) => {
 
     // const url = process.env.API_HOST + resource;
     const url = `http://localhost:9090/${resource}`;
-    return fetch(url, {
-        method: verb,
+    return axios({
+        data: params,
         headers: {
             'Content-type': 'application/json',
         },
-        body: JSON.stringify(params),
-    })
-        .catch((error) => {
-            // TODO : do something with fetch() errors !
-            console.log(error);
-        });
+        method: verb,
+        responseType: 'json',
+        url,
+    });
 };
