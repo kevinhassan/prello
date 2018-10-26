@@ -1,15 +1,14 @@
 const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
-const MyError = require('../util/error');
 
 const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
+  fullname: { type: String, required: true },
   username: { type: String, unique: true, required: true },
   initials: String,
   bio: String,
   email: { type: String, unique: true, required: true },
-  password: String,
+  password: { type: String, required: true },
   avatarUrl: String,
   teams: [{
     type: mongoose.Schema.Types.ObjectId,
@@ -18,11 +17,16 @@ const userSchema = new mongoose.Schema({
   notifications: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Notification'
-  }]
+  }],
+  boards: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Board'
+  }],
 }, { timestamps: true });
 
 /**
  * Password hash middleware.
+ * Get method for getting the user's intials
  */
 userSchema.pre('save', function save(next) {
   const user = this;
@@ -35,6 +39,9 @@ userSchema.pre('save', function save(next) {
       next();
     });
   });
+  if (user.fullname && user.fullname.split(' ') === 2) {
+    user.initials = user.fullname.split(' ')[1].toUpperCase() + user.fullname.split(' ')[0].toUpperCase();
+  }
 });
 
 /**

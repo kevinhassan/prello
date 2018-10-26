@@ -42,18 +42,27 @@ userController.logout = () => { };
  * Create a new local account.
  */
 userController.postSignup = async (data) => {
-  const user = new User({
-    name: data.name,
-    username: data.username,
-    password: data.password,
-    email: data.email
-  });
   try {
+    const fullnameUser = `${data.nickname} ${data.name}`.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a').replace(/[^\w\s]/gi, '');
+    // count the number of user with same fullname
+    const count = await User.estimatedDocumentCount({ fullname: fullnameUser }) + 1;
+
+    const usernameUser = fullnameUser.toLowerCase().replace(/ /g, '') + count;
+    const user = new User({
+      fullname: fullnameUser,
+      username: usernameUser,
+      password: data.password,
+      email: data.email,
+      bio: data.bio,
+      avatarUrl: data.avatarUrl
+    });
     const newUser = await user.save();
     return newUser;
   } catch (err) {
     if (err.name === 'MongoError' && err.code === 11000) {
       throw new MyError(409, 'User already exists');
+    } else if (err.name === 'ValidationError') {
+      throw new MyError(400, 'Missing Informations');
     }
     throw new MyError(500, 'Internal Server Error');
   }

@@ -5,15 +5,11 @@ const Authorization = require('../middlewares/auth');
 module.exports = (router) => {
   router
     .post('/register', async (req, res) => {
-      if (req.body.name && req.body.email && req.body.username && req.body.password && req.body.name !== '' && req.body.email !== '' && req.body.username !== '' && req.body.password !== '') {
-        try {
-          const user = await userController.postSignup(req.body);
-          res.status(200).send({ message: 'user created', user });
-        } catch (e) {
-          res.status(e.status).send({ error: e.message });
-        }
-      } else {
-        res.status(400).send({ error: 'Missing informations' });
+      try {
+        await userController.postSignup(req.body);
+        res.status(200).send({ message: 'user created' });
+      } catch (e) {
+        res.status(e.status).send({ error: e.message });
       }
     })
     .post('/login', async (req, res) => {
