@@ -32,7 +32,7 @@ export const fetchBoard = boardId => (dispatch) => {
     });
 };
 
-// =====
+// ===== UPDATE LISTS ======
 export const UPDATE_LISTS_INDEXES = 'board/UPDATE_LISTS_INDEXES';
 export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE';
 export const UPDATE_LISTS_INDEXESD_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
@@ -60,18 +60,15 @@ export const updateListsIndexesAction = newLists => ({
         lists: newLists,
     },
 });
-export const updateListsIndexes = newLists => (dispatch) => {
-    dispatch(displayLoadingModal());
+
+export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
     dispatch(updateListsIndexesStartedAction());
-    const resource = '/board/'.concat(newLists);
-    /*
-    fetchPrelloAPI(resource, {}, POST)
-        .then(() => {
-            dispatch(updateListsIndexesStartedAction(newLists));
-            dispatch(hideLoadingModal());
+    const resource = '/board/'.concat(boardId).concat('/lists/');
+    APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
+        .then((res) => {
+            dispatch(updateListsIndexesSuccessAction(res.token));
         })
         .catch((error) => {
-            dispatch(updateListsIndexesFailureAction(newLists, error));
+            dispatch(updateListsIndexesFailureAction(error.message));
         });
-    */
 };
