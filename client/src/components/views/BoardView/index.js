@@ -16,8 +16,10 @@ import './style.css';
 const BoardView = props => (
     <div className="boardPanel">
         <DragDropContext onDragEnd={props.onDragEnd}>
-            <h1>{props.board.name}</h1>
-
+            <div className="col-sm-12 boardSettingsBar">
+                <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
+                <i className="far fa-star boardSettingsBtn starBtn" />
+            </div>
             <Droppable droppableId="currentBoard" direction="horizontal" type="LIST">
                 {dropProvided => (
                     <div
