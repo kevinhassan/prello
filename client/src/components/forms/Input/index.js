@@ -10,7 +10,7 @@ import './style.css';
 
 // ==================================
 
-const InputName = props => (
+const Input = props => (
     <div className="form-group">
         <label htmlFor={props.name} className="form-label">{props.title}</label>
         <input
@@ -24,7 +24,7 @@ const InputName = props => (
         />
     </div>
 );
-InputName.propTypes = {
+Input.propTypes = {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
@@ -32,4 +32,4 @@ InputName.propTypes = {
     onChange: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
 };
-export default InputName;
+export default Input;

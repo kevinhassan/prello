@@ -12,7 +12,7 @@ import {
 // ===== Models
 
 // ===== Components / Containers
-import InputName from '../../components/forms/InputName';
+import Input from '../../components/forms/Input';
 import SubmitForm from '../../components/forms/SubmitForm';
 
 // ===== Others
@@ -30,6 +30,7 @@ class SignUpComp extends React.Component {
                 username: '',
                 email: '',
                 password: '',
+                confirmPassword: '',
             },
         };
     }
@@ -52,19 +53,113 @@ class SignUpComp extends React.Component {
         );
     }
 
+    handleUsername = (e) => {
+        let value = e.target.value;
+        this.setState(
+            prevState => ({
+                newUser: {
+                    ...prevState.newUser,
+                    username: value,
+                },
+            }),
+        );
+    }
+
+    handlePassword = (e) => {
+        let value = e.target.value;
+        this.setState(
+            prevState => ({
+                newUser: {
+                    ...prevState.newUser,
+                    email: value,
+                },
+            }),
+        );
+    }
+
+    handleEmail = (e) => {
+        let value = e.target.value;
+        this.setState(
+            prevState => ({
+                newUser: {
+                    ...prevState.newUser,
+                    email: value,
+                },
+            }),
+        );
+    }
+
+    handlePassword = (e) => {
+        let value = e.target.value;
+        console.log(e.source);
+        this.setState(
+            prevState => ({
+                newUser: {
+                    ...prevState.newUser,
+                    password: value,
+                },
+            }),
+        );
+    }
+
+    handleConfirmPassword = (e) => {
+        let value = e.target.value;
+        console.log(e.source);
+        this.setState(
+            prevState => ({
+                newUser: {
+                    ...prevState.newUser,
+                    password: value,
+                },
+            }),
+        );
+    }
+
     render() {
         console.log(this.state.newUser.name);
         const signupFormView = (
             <form onSubmit={this.handleFormSubmit}>
-                <p>{this.state.newUser.name}</p>
-                <InputName
+                <Input
                     name="name"
                     type="text"
                     value={this.state.newUser.name}
-                    placeholder="Enter your name"
+                    placeholder="Enter your full name"
                     onChange={this.handleName}
                     title="Full Name"
                 />
+                <Input
+                    name="username"
+                    type="text"
+                    value={this.state.newUser.username}
+                    placeholder="Enter your user name"
+                    onChange={this.handleUsername}
+                    title="User name"
+                />
+                <Input
+                    name="email"
+                    type="text"
+                    value={this.state.newUser.email}
+                    placeholder="Enter your email"
+                    onChange={this.handleEmail}
+                    title="Email"
+                />
+                <Input
+                    name="password"
+                    type="password"
+                    value={this.state.newUser.confirmPassword}
+                    placeholder="Enter your password please"
+                    onChange={this.handlePassword}
+                    title="Password"
+                />
+                <Input
+                    name="confirmPassword"
+                    type="password"
+                    value={this.state.newUser.confirmPassword}
+                    placeholder="Confirm your password please"
+                    onChange={this.handleConfirmPassword}
+                    title="Confirm password"
+                />
+                <p>{this.state.newUser.username}</p>
                 <SubmitForm />
             </form>
         );
