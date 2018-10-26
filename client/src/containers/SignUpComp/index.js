@@ -7,7 +7,7 @@ import {
 } from 'react-redux';
 
 // ===== Actions
-// import { classicSignUp } from '../../actions/auth';
+import { classicSignUp } from '../../actions/auth';
 
 // ===== Models
 
@@ -32,12 +32,11 @@ class SignUpComp extends React.Component {
                 password: '',
                 confirmPassword: '',
             },
+            errorMessage: '',
         };
     }
 
-    handleFormSubmit() {
-    }
-    handleClearForm() {// Logic for resetting the form
+    handleClearForm = () => {// Logic for resetting the form
     }
 
 
@@ -91,7 +90,6 @@ class SignUpComp extends React.Component {
 
     handlePassword = (e) => {
         let value = e.target.value;
-        console.log(e.source);
         this.setState(
             prevState => ({
                 newUser: {
@@ -104,19 +102,29 @@ class SignUpComp extends React.Component {
 
     handleConfirmPassword = (e) => {
         let value = e.target.value;
-        console.log(e.source);
         this.setState(
             prevState => ({
                 newUser: {
                     ...prevState.newUser,
-                    password: value,
+                    confirmPassword: value,
                 },
             }),
         );
     }
 
+
+    handleFormSubmit(event) {
+        event.preventDefault();
+        if (this.state.name !== '' && this.state.username !== '' && this.state.name !== '' && this.state.name !== '') {
+            classicSignUp(this.state.name, this.state.username, this.state.email, this.state.password);
+        } else {
+            this.setState({
+                errorMessage: 'Missing inputs',
+            });
+        }
+    }
+
     render() {
-        console.log(this.state.newUser.name);
         const signupFormView = (
             <form onSubmit={this.handleFormSubmit}>
                 <Input
@@ -146,7 +154,7 @@ class SignUpComp extends React.Component {
                 <Input
                     name="password"
                     type="password"
-                    value={this.state.newUser.confirmPassword}
+                    value={this.state.newUser.password}
                     placeholder="Enter your password please"
                     onChange={this.handlePassword}
                     title="Password"
@@ -159,8 +167,8 @@ class SignUpComp extends React.Component {
                     onChange={this.handleConfirmPassword}
                     title="Confirm password"
                 />
-                <p>{this.state.newUser.username}</p>
                 <SubmitForm />
+                <p>{this.state.errorMessage}</p>
             </form>
         );
         return signupFormView;
