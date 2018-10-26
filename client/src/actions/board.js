@@ -46,11 +46,10 @@ export const updateListsIndexesFailureAction = (newLists, error) => ({
     },
 });
 export const updateListsIndexesStartedAction = () => ({ type: UPDATE_LISTS_INDEXESD_STARTED });
-export const updateListsIndexesSuccessAction = (newLists, res) => ({
+export const updateListsIndexesSuccessAction = newLists => ({
     type: UPDATE_LISTS_INDEXES_SUCCESS,
     payload: {
         lists: newLists,
-        res,
     },
 });
 
@@ -64,11 +63,18 @@ export const updateListsIndexesAction = newLists => ({
 export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
     dispatch(updateListsIndexesStartedAction());
     const resource = '/board/'.concat(boardId).concat('/lists/');
+
+    dispatch(updateListsIndexesSuccessAction(newLists));
+    // TODO: uncomment below + the line juste above this comment when the API is ready.
+    /*
+
     APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
-        .then((res) => {
-            dispatch(updateListsIndexesSuccessAction(res.token));
+        .then(() => {
+            // API doesn't need to return the lists (too long): use directly the new order
+            dispatch(updateListsIndexesSuccessAction(newLists));
         })
         .catch((error) => {
             dispatch(updateListsIndexesFailureAction(error.message));
         });
+*/
 };

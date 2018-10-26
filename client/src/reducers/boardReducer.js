@@ -24,6 +24,21 @@ export default function boardReducer(state = initialState, action) {
             board: boardObject,
         };
 
+    case actions.UPDATE_LISTS_INDEXES_SUCCESS:
+        return {
+            ...state,
+            board: {
+                ...state.board,
+                lists: action.payload.lists,
+            },
+        };
+
+    case actions.UPDATE_LISTS_INDEXES_FAILURE:
+        return {
+            ...state,
+            board: action.payload.board,
+        };
+
     default:
         return state;
     }

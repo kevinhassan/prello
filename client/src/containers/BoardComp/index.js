@@ -49,10 +49,9 @@ class BoardComp extends React.Component {
 
         // List dropped
         if (type === 'LIST') {
-            const { lists } = this.props.board;
+            const { lists, id } = this.props.board;
             const listsUpdated = this.reorder(lists, source.index, destination.index);
-            console.log(listsUpdated)
-            this.props.updateListsIndexes(listsUpdated);
+            this.props.updateListsIndexes(id, listsUpdated);
         }
         if (type === 'CARD') {
             // TODO : reorder cards
