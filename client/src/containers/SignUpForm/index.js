@@ -12,21 +12,31 @@ import {
 // ===== Models
 
 // ===== Components / Containers
-import SignUpView from '../../components/views/SignUpView';
+import SignUpFormView from '../../components/forms/SignUpFormView';
 
 // ===== Others
 
-class SignUpComp extends React.Component {
+class SignUpForm extends React.Component {
     constructor(props) {
         super(props);
+        this.handleClassicSignUp = this.handleClassicSignUp.bind(this);
     }
 
+    handleClassicSignUp() {
+        console.log("ok");
+    }
+    
     render() {
-        return <SignUpView />;
+        const signupFormView = (
+            <form onSubmit={console.log("o")}>
+                <SignUpFormView />
+            </form>
+        );
+        return signupFormView;
     }
 }
 
-SignUpComp.propTypes = {};
+SignUpForm.propTypes = {};
 
 // Put info from the store state in props
 const mapStateToProps = () => ({});
@@ -37,4 +47,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(SignUpComp);
+)(SignUpForm);
