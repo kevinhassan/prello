@@ -178,3 +178,12 @@ li {
 .signin-container {
     display: inline;
 }
+
+
+.appened-form{
+    display:inline-flex !important;
+    margin:15px;
+    padding: 15px;
+    border-radius:10px;
+    background-color: #ccc;
+}

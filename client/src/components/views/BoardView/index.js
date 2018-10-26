@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
 
@@ -44,10 +45,24 @@ const BoardView = props => (
                             </Draggable>
                         ))}
                         {dropProvided.placeholder}
-                    </div>
-                )}
-            </Droppable>
-        </DragDropContext>
+                    {props.isInputVisible ? (
+
+                        <div className="appened-form">
+                            <form>
+                                <label htmlFor="listName">List name : </label>
+                                <input type="text" name="listName" />
+                                <button className="btn btn-validate" type="submit">Add list</button>
+                            </form>
+                        </div>
+
+                    ) : (
+                        <button className="btn addListButton" type="submit" onClick={props.onClickAddList}><i className="fas fa-plus-circle" /></button>
+                    )}
+                </div>
+            )}
+
+        </Droppable>
+    </DragDropContext>
     </div>
 );
 BoardView.propTypes = {

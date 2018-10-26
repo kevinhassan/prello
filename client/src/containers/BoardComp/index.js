@@ -19,8 +19,14 @@ class BoardComp extends React.Component {
             pendingLists: [],
         };
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
+        this.handleAddList = this.handleAddList.bind(this);
         this.reorder = this.reorder.bind(this);
     }
+
+    handleAddList() {
+        this.setState({ isInputVisible: true });
+    }
+
 
     componentWillMount() {
         this.props.fetchBoard(this.props.match.params.boardId);
@@ -46,7 +52,7 @@ class BoardComp extends React.Component {
 
         // Drop elsewhere than Drag N Drop context
         if (!destination) {
-            return;
+
         }
 
         // List dropped
