@@ -10,15 +10,11 @@ export const DELETE = 'delete';
     verb, String, default = GET, HTTP verb to use for this request.
 */
 export const fetchPrelloAPI = (resource, params = {}, verb = GET) => {
-    /* TODO: To decomment later, right now .env is not read
-
-    if (process.env.API_HOST === undefined && process.env.ENVIRONMENT !== 'production') {
-        throw Error('API_HOST in .env file not found.');
+    if (process.env.REACT_APP_API_HOST === undefined && process.env.ENVIRONMENT !== 'production') {
+        throw Error('REACT_APP_API_HOST in .env file not found.');
     }
-    */
-
-    // const url = process.env.API_HOST + resource;
-    const url = `http://localhost:9090/${resource}`;
+    const url = process.env.REACT_APP_API_HOST + resource;
+    alert(url);
     return axios({
         data: params,
         headers: {
