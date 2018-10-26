@@ -1,2 +1,3 @@
-require('../config/database');
+require('../config');
+require('../database');
 require('./PrivacyType');

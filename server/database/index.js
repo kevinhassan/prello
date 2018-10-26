@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 const bluebird = require('bluebird');
-const secret = require('../util/secret');
+const config = require('../config');
 
 mongoose.Promise = bluebird;
 /**
@@ -16,7 +16,7 @@ mongoose.set('useNewUrlParser', true);
 /**
  * Connect to MongoDB.
  */
-const mongoUrl = secret.MONGODB_URI;
+const mongoUrl = config.DATABASE_URI;
 mongoose.connect(mongoUrl)
   .then(() => {
     console.log('Succesfully Connected to the Mongodb Database..');

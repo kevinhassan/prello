@@ -7,7 +7,7 @@ module.exports = (router) => {
     .post('/register', async (req, res) => {
       try {
         await userController.postSignup(req.body);
-        res.status(200).send({ message: 'user created' });
+        res.status(201).send({ message: 'user created' });
       } catch (e) {
         res.status(e.status).send({ error: e.message });
       }
