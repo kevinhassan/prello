@@ -93,7 +93,6 @@ class GraphicalCharter extends React.Component {
                                         Let's finish this awesome project. Polytech IG Montpellier. Yes this
                                         is a description a bit long, that's normal.`,
                                         dueDate: new Date(),
-                                        index: 5,
                                         isArchived: false,
                                         name: 'Test card name',
                                         labels: [
@@ -107,7 +106,9 @@ class GraphicalCharter extends React.Component {
                                                 id: '3', color: '#22ffdd', name: 'Documents', boardId: '942',
                                             }),
                                         ],
-                                        list: new List('qsd59dsr', 1, false, 'To buy'),
+                                        list: new List({
+                                            id: 'qsd59dsr', isArchived: false, name: 'To buy', boardId: '942',
+                                        }),
                                         users: undefined,
                                     })}
                                 />
