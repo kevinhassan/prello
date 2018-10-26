@@ -39,7 +39,6 @@ class BoardComp extends React.Component {
     };
 
     handleOnDragEnd(result) {
-        console.log(result);
         const { destination, source, type } = result;
 
         // Drop elsewhere than Drag N Drop context
