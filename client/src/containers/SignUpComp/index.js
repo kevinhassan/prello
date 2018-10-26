@@ -52,7 +52,7 @@ class SignUpComp extends React.Component {
 
 
     handleName = (e) => {
-        let value = e.target.value;
+        const value = e.target.value;
         this.setState(
             prevState => ({
                 newUser: {
@@ -64,7 +64,7 @@ class SignUpComp extends React.Component {
     }
 
     handleUsername = (e) => {
-        let value = e.target.value;
+        const value = e.target.value;
         this.setState(
             prevState => ({
                 newUser: {
@@ -76,7 +76,7 @@ class SignUpComp extends React.Component {
     }
 
     handlePassword = (e) => {
-        let value = e.target.value;
+        const value = e.target.value;
         this.setState(
             prevState => ({
                 newUser: {
@@ -88,7 +88,7 @@ class SignUpComp extends React.Component {
     }
 
     handleEmail = (e) => {
-        let value = e.target.value;
+        const value = e.target.value;
         this.setState(
             prevState => ({
                 newUser: {
@@ -100,7 +100,7 @@ class SignUpComp extends React.Component {
     }
 
     handlePassword = (e) => {
-        let value = e.target.value;
+        const value = e.target.value;
         this.setState(
             prevState => ({
                 newUser: {
@@ -112,7 +112,7 @@ class SignUpComp extends React.Component {
     }
 
     handleConfirmPassword = (e) => {
-        let value = e.target.value;
+        const value = e.target.value;
         this.setState(
             prevState => ({
                 newUser: {

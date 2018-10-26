@@ -19,7 +19,7 @@ const App = () => (
             <Route exact path="/login" component={SignInComp} />
             <Route exact path="/signup" component={SignUpComp} />
             <Route exact path="/profile" component={UserComp} />
-            <Route exact path="/about-us" component={About} />
+            <Route exact path="/graphical-charter" component={GraphicalCharter} />
         </main>
     </div>
 );

@@ -39,7 +39,7 @@ export const classicSignIn = (email, password) => (dispatch) => {
             dispatch(classicSignInSuccess(res.response.data.token));
         })
         .catch((error) => {
-            dispatch(classicSignInFailure(error.message));
+            dispatch(classicSignInFailure(error.response.data.error));
         });
 };
 
@@ -68,13 +68,11 @@ export const classicSignUpSuccess = () => ({ type: CLASSIC_SIGN_UP_SUCCESS });
 
 export const classicSignUp = (name, nickname, email, password) => (dispatch) => {
     dispatch(classicSignUpStarted());
-    console.log('yay');
     APIFetch.fetchPrelloAPI('register', {
         name, nickname, email, password,
     }, APIFetch.POST)
         .then((res) => {
             if (res.ok) {
-                
                 dispatch(classicSignUpSuccess());
             } else {
                 res.json().then((jsonError) => {
