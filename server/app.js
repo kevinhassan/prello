@@ -9,6 +9,7 @@ const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
+
 require('./config/database');
 
 // Load environment variables from .env file, where API keys and passwords are configured
@@ -32,29 +33,21 @@ app.use(expressValidator());
 
 app.disable('x-powered-by');
 
-/**
- * API examples routes.
- */
-
-app.all('/*', (req, res, next) => {
-  // CORS headers
+app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  // Custom headers
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Accept,X-Access-Token,X-Key');
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-  } else {
-    next();
-  }
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  next();
 });
 
+/**
+ * API Routes
+ */
 app.use('/', require('./routes/'));
 
 app.use((req, res, next) => {
   res.status(404).send({
-    status: 404,
-    message: 'Not found !'
+    error: 'Not found !'
   });
 });
 

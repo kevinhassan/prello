@@ -1,13 +1,14 @@
 
 const userController = require('../controllers/user');
+const Authorization = require('../middlewares/auth');
 
 module.exports = (router) => {
   router
     .post('/register', async (req, res) => {
       if (req.body.name && req.body.email && req.body.username && req.body.password && req.body.name !== '' && req.body.email !== '' && req.body.username !== '' && req.body.password !== '') {
         try {
-          const userData = await userController.postSignup(req.body);
-          res.status(200).send({ message: 'user created', user: userData });
+          const user = await userController.postSignup(req.body);
+          res.status(200).send({ message: 'user created', user });
         } catch (e) {
           res.status(e.status).send({ error: e.message });
         }
@@ -16,9 +17,9 @@ module.exports = (router) => {
       }
     })
     .post('/login', async (req, res) => {
-      if (req.body.username && req.body.password && req.body.username !== '' && req.body.password !== '') {
+      if (req.body.email && req.body.password && req.body.email !== '' && req.body.password !== '') {
         try {
-          const authToken = await userController.login(req.body.username, req.body.password);
+          const authToken = await userController.login(req.body.email, req.body.password);
           res.status(200).send({ message: 'connected', token: authToken });
         } catch (e) {
           res.status(e.status).send({ error: e.message });
@@ -27,16 +28,16 @@ module.exports = (router) => {
         res.status(400).send({ error: 'Missing informations' });
       }
     })
-    .post('/logout', (req, res) => {
+    .post('/logout', Authorization, (req, res) => {
       res.sendStatus(200);
     })
     .post('/forgot', (req, res) => {
       res.sendStatus(200);
     })
-    .get('/profile', (req, res) => {
+    .get('/profile', Authorization, (req, res) => {
       res.sendStatus(200);
     })
-    .put('/profile', (req, res) => {
+    .put('/profile', Authorization, (req, res) => {
       res.sendStatus(200);
     });
 };

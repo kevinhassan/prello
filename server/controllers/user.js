@@ -1,15 +1,15 @@
 const userController = {};
 const User = require('../models/User');
 const MyError = require('../util/error');
+const Auth = require('../auth');
 
 /**
  * POST /login
  * Sign in using email and password.
  */
-userController.login = async (username, password) => {
+userController.login = async (email, password) => {
   try {
-    const user = await User.findOne({ username }).select('password');
-
+    const user = await User.findOne({ email }).select('password');
     if (!user) {
       throw new MyError(401, 'invalid credentials');
     }
@@ -21,7 +21,7 @@ userController.login = async (username, password) => {
     }
 
     // return token to the user
-    return 'false token';
+    return Auth.generateToken(user);
   } catch (err) {
     if (!err.status) {
       throw new MyError(500, 'Internal Server Error');
