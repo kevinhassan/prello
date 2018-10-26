@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { push } from 'connected-react-router';
 import {
     bindActionCreators,
 } from 'redux';
@@ -22,7 +24,6 @@ class SignUpComp extends React.Component {
         super(props);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleClearForm = this.handleClearForm.bind(this);
-        this.handleName = this.handleName.bind(this);
 
         this.state = {
             newUser: {
@@ -125,7 +126,7 @@ class SignUpComp extends React.Component {
 
     handleFormSubmit(event) {
         if (this.state.newUser.name !== '' && this.state.newUser.username !== '' && this.state.newUser.email !== '' && this.state.newUser.password !== '' && this.state.newUser.name !== undefined && this.state.newUser.username !== undefined && this.state.newUser.email !== undefined && this.state.newUser.password !== undefined) {
-            classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
+            this.props.classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
         } else {
             this.setState(() => ({
                 errorMessage: 'Missing inputs',
@@ -185,14 +186,19 @@ class SignUpComp extends React.Component {
     }
 }
 
-SignUpComp.propTypes = {};
-
+SignUpComp.propTypes = {
+    classicSignUp: PropTypes.func.isRequired,
+};
 // Put info from the store state in props
 const mapStateToProps = () => ({});
 
 // Put actions in props
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch);
-
+const mapDispatchToProps = dispatch => bindActionCreators(
+    {
+        classicSignUp,
+        changePage: () => push('/'),
+    }, dispatch,
+);
 export default connect(
     mapStateToProps,
     mapDispatchToProps,

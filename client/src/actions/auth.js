@@ -67,12 +67,14 @@ export const classicSignUpSuccess = () => ({ type: CLASSIC_SIGN_UP_SUCCESS });
 
 
 export const classicSignUp = (name, nickname, email, password) => (dispatch) => {
-    dispatch(classicSignInStarted());
+    dispatch(classicSignUpStarted());
+    console.log('yay');
     APIFetch.fetchPrelloAPI('register', {
         name, nickname, email, password,
     }, APIFetch.POST)
         .then((res) => {
             if (res.ok) {
+                
                 dispatch(classicSignUpSuccess());
             } else {
                 res.json().then((jsonError) => {
