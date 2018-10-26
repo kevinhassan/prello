@@ -11,16 +11,14 @@ import SignInComp from '../SignInComp';
 import './style.css';
 
 const App = () => (
-    <div>
+    <div className="appContainer">
         <Header />
         <Modal />
-        <main style={{ marginTop: '50px' }}>
-            <Route exact path="/" component={BoardComp} />
-            <Route exact path="/login" component={SignInComp} />
-            <Route exact path="/signup" component={SignUpComp} />
-            <Route exact path="/profile" component={UserComp} />
-            <Route exact path="/graphical-charter" component={GraphicalCharter} />
-        </main>
+        <Route exact path="/" component={BoardComp} />
+        <Route exact path="/login" component={SignInComp} />
+        <Route exact path="/signup" component={SignUpComp} />
+        <Route exact path="/profile" component={UserComp} />
+        <Route exact path="/graphical-charter" component={GraphicalCharter} />
     </div>
 );
 
