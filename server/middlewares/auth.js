@@ -1,18 +1,22 @@
 const jwt = require('jsonwebtoken');
-const express = require('express');
-
-const app = express();
+const User = require('../models/User');
 
 const authorization = (req, res, next) => {
-  console.log(app.get('SECRET'));
-  const token = req.headers['x-access-token'];
-  const msg = { error: 'No token provided.' };
-  if (!token) { res.status(500).send(msg); }
-
-  jwt.verify(token, app.get('SECRET'), (err, decoded) => {
-    const msg = { error: 'Failed to authenticate token.' };
-    if (err) { res.status(500).send(msg); }
-    req.userId = decoded.id;
+  const bearerHeader = req.headers.authorization;
+  if (!bearerHeader) {
+    return res.status(403).send({ error: 'No token provided.' });
+  }
+  const token = bearerHeader.split(' ')[1];
+  jwt.verify(token, process.env.SECRET, async (err, payload) => {
+    if (err) {
+      return res.status(500).send({ error: 'Failed to authenticate token.' });
+    }
+    try {
+      const user = await User.findOne({ _id: payload.id }).select('_id');
+      req.user = user;
+    } catch (e) {
+      res.status(403).send({ error: 'User unauthorized.' });
+    }
     next();
   });
 };
