@@ -36,12 +36,12 @@ userSchema.pre('save', function save(next) {
     bcrypt.hash(user.password, salt, null, (err, hash) => {
       if (err) { return next(err); }
       user.password = hash;
-      next();
     });
   });
-  if (user.fullname && user.fullname.split(' ') === 2) {
-    user.initials = user.fullname.split(' ')[1].toUpperCase() + user.fullname.split(' ')[0].toUpperCase();
+  if (user.fullname && user.fullname.split(' ').length === 2) {
+    user.initials = user.fullname.split(' ')[0].toUpperCase().charAt(0) + user.fullname.split(' ')[1].toUpperCase().charAt(0);
   }
+  next();
 });
 
 /**
