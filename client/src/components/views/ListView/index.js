@@ -14,7 +14,7 @@ import './style.css';
 // ==================================
 
 const ListView = props => (
-    <div className="cardsListPanel">
+    <div className={'cardsListPanel '.concat(props.isBeingDragged ? 'listDragged' : '')}>
         <h3>{props.list.name}</h3>
         {props.list.isArchived ? 'Archived' : 'Not archived'}
 
@@ -55,6 +55,10 @@ const ListView = props => (
 ListView.propTypes = {
     list: PropTypes.instanceOf(List).isRequired,
     createCard: PropTypes.func.isRequired,
+    isBeingDragged: PropTypes.bool,
+};
+ListView.defaultProps = {
+    isBeingDragged: false,
 };
 
 export default ListView;

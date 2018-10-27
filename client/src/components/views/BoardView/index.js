@@ -37,7 +37,10 @@ const BoardView = props => (
                                         {...dragProvided.dragHandleProps}
                                         {...dragProvided.draggableProps}
                                     >
-                                        <ListComp list={l} />
+                                        <ListComp
+                                            list={l}
+                                            isBeingDragged={dragSnapshot.isDragging}
+                                        />
                                         {dragProvided.placeholder}
                                     </div>
                                 )}
