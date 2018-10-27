@@ -1,5 +1,4 @@
 require('../config/database');
-
 // ====== Get Seeders
 const seeders = [];
 seeders.push(require('./BoardSeeder'));
@@ -9,8 +8,11 @@ seeders.push(require('./PrivacyTypeSeeder'));
 
 // ====== Seed all collections
 async function seedAll() {
-    seeders.map(async (x) => {
-        await x.seed();
-    });
+    try {
+        await Promise.all(seeders.map(async seeder => seeder.seed()));
+        process.exit(0);
+    } catch (e) {
+        process.exit(1);
+    }
 }
 seedAll();
