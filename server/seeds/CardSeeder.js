@@ -1,4 +1,4 @@
-const mocks = require('../mocks/card.json');
+const mocks = require('../mocks/cards.json');
 const Card = require('../models/Card');
 
 const CardSeeder = {};

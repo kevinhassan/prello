@@ -1,4 +1,4 @@
-const mocks = require('../mocks/privacyType.json');
+const mocks = require('../mocks/privacyTypes.json');
 const PrivacyType = require('../models/PrivacyType');
 
 const PrivacyTypeSeeder = {};
