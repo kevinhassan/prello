@@ -1,11 +1,13 @@
 
 const userController = require('../controllers/user');
 const Auth = require('../middlewares/auth');
+const MyError = require('../util/error');
 
 module.exports = (router) => {
     router
         .post('/register', async (req, res) => {
             try {
+                if (!req.body.fullname || !req.body.email || !req.body.password) throw new MyError(400, 'Missing Informations');
                 await userController.postSignup(req.body);
                 res.status(201).send({ message: 'user created' });
             } catch (e) {
