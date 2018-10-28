@@ -47,7 +47,30 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/profile', Auth.isAuthorized, (req, res) => {
-            res.sendStatus(200);
+        .put('/profile', Auth.isAuthorized, async (req, res) => {
+            const {
+                fullname, initials, username
+            } = req.body;
+            try {
+                if (!fullname || !username || !initials) throw new MyError(400, 'Missing informations');
+                await userController.updateProfile(req.user, req.body);
+                res.status(200).send({ message: 'Profile successfully updated' });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/account', Auth.isAuthorized, async (req, res) => {
+            const {
+                email, password
+            } = req.body;
+            try {
+                // TODO use validator on email and password
+                if (!email && !password) throw new MyError(400, 'Missing informations');
+                await userController.updateAccount(req.user, req.body);
+                res.status(200).send({ message: 'Account successfully updated' });
+                // TODO: disconnect user if credentials change
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };

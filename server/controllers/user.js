@@ -72,9 +72,9 @@ userController.postSignup = async (data) => {
  */
 userController.getProfile = async (user) => {
     try {
-    // return plain json object with lean, exclude password
+    // return plain json object with lean
         const userProfile = await User.findById(user.id).select({
-            password: 0, _id: 0, __v: 0, notifications: 0
+            fullname: 1, username: 1, bio: 1, initials: 1, _id: 0
         }).lean();
         return userProfile;
     } catch (err) {
@@ -82,6 +82,67 @@ userController.getProfile = async (user) => {
     }
 };
 
+/**
+ * PUT /profile
+ * Profile page.
+ */
+userController.updateProfile = async (user, data) => {
+    const {
+        fullname, bio, initials, username
+    } = data;
+    try {
+        const userProfile = await User.findById(user.id).select({
+            fullname: 1, username: 1, bio: 1, initials: 1
+        });
+        userProfile.fullname = fullname;
+        userProfile.bio = bio;
+        userProfile.initials = initials;
+        const userFound = await User.findOne({ username, _id: { $ne: user._id } });
+        if (userFound) throw new MyError(400, 'Username is taken ');
+        userProfile.username = username;
+        await userProfile.save();
+        return userProfile;
+    } catch (err) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+            throw new MyError(409, 'Update profile failed');
+        } else if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * PUT /account
+ * Account page (mail, password)
+ */
+userController.updateAccount = async (user, data) => {
+    const {
+        email, password
+    } = data;
+    try {
+        const userProfile = await User.findById(user.id).select({
+            password: 1, email: 1
+        });
+        // TODO: use validator on email
+        if (email && email !== '') {
+            const userFound = await User.findOne({ email, _id: { $ne: user._id } });
+            if (userFound) throw new MyError(400, 'Email already used');
+            userProfile.email = email;
+        }
+        if (password && password !== '') {
+            userProfile.password = password;
+        }
+        await userProfile.save();
+    } catch (err) {
+        // TODO: add more details (ex: if same username then error)
+        if (err.name === 'MongoError' && err.code === 11000) {
+            throw new MyError(409, 'Update account failed');
+        } else if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 
 /**
  * GET /account
@@ -94,12 +155,6 @@ userController.getAccount = () => { };
  * Update profile information.
  */
 userController.postUpdateProfile = () => { };
-
-/**
- * POST /account/password
- * Update current password.
- */
-userController.postUpdatePassword = () => { };
 
 /**
  * POST /account/delete
