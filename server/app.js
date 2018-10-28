@@ -33,28 +33,33 @@ app.use(expressValidator());
 app.disable('x-powered-by');
 
 /**
+ * Load all the models
+ */
+require('./models');
+
+/**
  * API examples routes.
  */
 app.use('/', require('./routes/'));
 
 app.use((req, res, next) => {
-  res.status(404).send({
-    status: 404,
-    message: 'Not found !'
-  });
+    res.status(404).send({
+        status: 404,
+        message: 'Not found !'
+    });
 });
 
 /**
  * Error Handler.
  */
 if (process.env.NODE_ENV === 'development') {
-  // only use in development
-  app.use(errorHandler());
+    // only use in development
+    app.use(errorHandler());
 } else {
-  app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Server Error');
-  });
+    app.use((err, req, res, next) => {
+        console.error(err);
+        res.status(500).send('Server Error');
+    });
 }
 
 module.exports = app;
