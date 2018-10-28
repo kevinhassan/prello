@@ -67,6 +67,23 @@ userController.postSignup = async (data) => {
 };
 
 /**
+ * GET /profile
+ * Profile page.
+ */
+userController.getProfile = async (user) => {
+    try {
+    // return plain json object with lean, exclude password
+        const userProfile = await User.findById(user.id).select({
+            password: 0, _id: 0, __v: 0, notifications: 0
+        }).lean();
+        return userProfile;
+    } catch (err) {
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+
+/**
  * GET /account
  * Profile page.
  */

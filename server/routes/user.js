@@ -39,8 +39,13 @@ module.exports = (router) => {
         .post('/forgot', (req, res) => {
             res.sendStatus(200);
         })
-        .get('/profile', Auth.isAuthorized, (req, res) => {
-            res.sendStatus(200);
+        .get('/profile', Auth.isAuthorized, async (req, res) => {
+            try {
+                const profile = await userController.getProfile(req.user);
+                res.status(200).send({ profile });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         })
         .put('/profile', Auth.isAuthorized, (req, res) => {
             res.sendStatus(200);
