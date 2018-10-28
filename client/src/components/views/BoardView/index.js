@@ -43,7 +43,7 @@ const BoardView = props => (
                                     </div>
                                 )}
                             </Draggable>
-                        ))} 
+                        ))}
                         {dropProvided.placeholder}
                         {props.isInputVisible ? (
 
