@@ -72,5 +72,4 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
         .catch((error) => {
             dispatch(updateListsIndexesFailureAction(error.message));
         });
-*/
 };
