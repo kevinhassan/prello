@@ -30,8 +30,8 @@ class BoardComp extends React.Component {
     }
 
     handleListAdded() {
-        console.log(this.props.board.lists);
-        this.props.createList(this.props.board);
+        const name = document.getElementsByName('listName')[0].value.toString();
+        this.props.createList(this.props.board, name);
     }
 
     componentWillMount() {

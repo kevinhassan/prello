@@ -80,13 +80,14 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
         });
 };
 
-export const createListAction = newBoard => ({
+export const createListAction = ( newBoard, name ) => ({
     type: CREATE_LIST,
     payload: {
         board: newBoard,
+        name,
     },
 });
 
-export const createList = newBoard => (dispatch) => {
-    dispatch(createListAction(newBoard));
+export const createList = ( newBoard, name ) => (dispatch) => {
+    dispatch(createListAction(newBoard, name));
 };
