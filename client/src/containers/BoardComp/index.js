@@ -29,6 +29,10 @@ class BoardComp extends React.Component {
         this.setState({ isInputVisible: true });
     }
 
+    handleListAdded() {
+        console.log(this.props.board.lists);
+        this.props.createList(this.props.board);
+    }
 
     componentWillMount() {
         this.props.fetchBoard(this.props.match.params.boardId);
