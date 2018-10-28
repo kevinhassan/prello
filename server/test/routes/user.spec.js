@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { expect } = require('chai');
+const { expect, assert } = require('chai');
 
 const app = require('../../app.js');
 const User = require('../../models/User');
@@ -72,5 +72,110 @@ describe('POST /login', () => {
             .send({ email: data.email, password: 'wrongpassword' })
             .expect('Content-Type', /json/)
             .expect(401, done);
+    });
+});
+describe('GET /profile', () => {
+    let token = null;
+
+    before((done) => {
+        request(app)
+            .post('/login')
+            .send({ email: data.email, password: data.password })
+            .end((err, res) => {
+                token = res.body.token;
+                done();
+            });
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .get('/profile')
+            .expect(403, done);
+    });
+    it('should return 200 OK', (done) => {
+        request(app)
+            .get('/profile')
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200, (err, res) => {
+                assert(res.body.profile.fullname, data.fullname);
+                assert(res.body.profile.bio, data.bio);
+                expect(res.body.profile.initials).to.not.be.empty;
+                expect(res.body.profile.username).to.not.be.empty;
+                // add processing data
+                data.username = res.body.profile.username;
+                data.initials = res.body.profile.initials;
+                done();
+            });
+    });
+});
+describe('PUT /profile', () => {
+    let token = null;
+
+    before((done) => {
+        request(app)
+            .post('/login')
+            .send({ email: data.email, password: data.password })
+            .end((err, res) => {
+                token = res.body.token;
+                done();
+            });
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put('/profile')
+            .send(data)
+            .expect(403, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongData = data;
+        wrongData.username = '';
+        request(app)
+            .put('/profile')
+            .set('Authorization', `Bearer ${token}`)
+            .send(wrongData)
+            .expect(422, done);
+    });
+    it('should return 200 OK', (done) => {
+        const newData = data;
+        newData.fullname = 'test1';
+        newData.username = 'test2';
+        newData.initials = 'TT';
+
+        request(app)
+            .put('/profile')
+            .send(newData)
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200, done);
+    });
+});
+describe('PUT /account', () => {
+    let token = null;
+
+    before((done) => {
+        request(app)
+            .post('/login')
+            .send({ email: data.email, password: data.password })
+            .end((err, res) => {
+                token = res.body.token;
+                done();
+            });
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put('/account')
+            .expect(403, done);
+    });
+    it('should return 422 OK', (done) => {
+        request(app)
+            .put('/account')
+            .set('Authorization', `Bearer ${token}`)
+            .send({ email: '', password: data.password })
+            .expect(422, done);
+    });
+    it('should return 200 OK', (done) => {
+        request(app)
+            .put('/account')
+            .set('Authorization', `Bearer ${token}`)
+            .send({ email: 'test1@test.fr', password: data.password })
+            .expect(200, done);
     });
 });
