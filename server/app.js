@@ -30,34 +30,40 @@ app.use(expressValidator());
 app.disable('x-powered-by');
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  next();
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Request-Headers', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next();
 });
 
+/**
+ * Middlewares
+ */
+app.use('/', require('./middlewares/auth').authRequest);
 /**
  * API Routes
  */
 app.use('/', require('./routes/'));
 
 app.use((req, res, next) => {
-  res.status(404).send({
-    error: 'Not found !'
-  });
+    const err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 /**
  * Error Handler.
  */
 if (process.env.NODE_ENV === 'development') {
-  // only use in development
-  app.use(errorHandler());
+    // only use in development
+    app.use(errorHandler());
 } else {
-  app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).send('Server Error');
-  });
+    app.use((err, req, res, next) => {
+        console.error(err);
+        res.status(500).send('Server Error');
+    });
 }
 
 module.exports = app;
