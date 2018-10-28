@@ -1,10 +1,9 @@
 const request = require('supertest');
 const { expect } = require('chai');
+
+process.env.NODE_ENV = 'test';
 const app = require('../../app.js');
 const User = require('../../models/User');
-require('../../database');
-
-app.set('NODE_ENV', 'test');
 
 const data = {
     fullname: 'nameTest',

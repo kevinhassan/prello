@@ -8,13 +8,13 @@ const logger = require('morgan');
 const errorHandler = require('errorhandler');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
-require('./config');
-require('./database');
+const config = require('./config');
 
 /**
  * Create Express server.
  */
 const app = express();
+require('./database')(config);
 
 /**
  * Express configuration.
