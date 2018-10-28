@@ -43,9 +43,9 @@ userController.logout = () => { };
  */
 userController.postSignup = async (data) => {
   try {
-    const fullnameUser = `${data.nickname} ${data.name}`.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a').replace(/[^\w\s]/gi, '');
+    const fullnameUser = data.fullname.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
     // count the number of user with same fullname
-    const count = await User.estimatedDocumentCount({ fullname: fullnameUser }) + 1;
+    const count = await User.countDocuments({ fullname: fullnameUser }) + 1;
 
     const usernameUser = fullnameUser.toLowerCase().replace(/ /g, '') + count;
     const user = new User({
