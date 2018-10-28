@@ -5,26 +5,26 @@ const User = require('../models/User');
  * Sign in using email and password.
  */
 userController.login = async (username, password) => {
-  const error = new Error('Internal Server Error');
-  error.status = 500;
-  try {
-    const user = await User.findOne({ username }).select('password');
-    if (!user) {
-      error.message = 'invalid credential';
-      error.status = 401;
-      throw error;
-    }
-    // check password
-    const isMatch = await User.comparePassword(password, user.password);
-    if (!isMatch) {
-      error.message = 'invalid credential';
-      error.status = 401;
-      throw error;
-    }
+    const error = new Error('Internal Server Error');
+    error.status = 500;
+    try {
+        const user = await User.findOne({ username }).select('password');
+        if (!user) {
+            error.message = 'invalid credential';
+            error.status = 401;
+            throw error;
+        }
+        // check password
+        const isMatch = await User.comparePassword(password, user.password);
+        if (!isMatch) {
+            error.message = 'invalid credential';
+            error.status = 401;
+            throw error;
+        }
     // return token to the user
-  } catch (e) {
-    throw error;
-  }
+    } catch (e) {
+        throw error;
+    }
 };
 
 /**

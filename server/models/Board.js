@@ -6,8 +6,8 @@ const boardSchema = new mongoose.Schema({
     labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
     lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    privacy: { type: mongoose.Schema.Types.ObjectId, ref: 'privacyType', required: true },
-    team: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }]
+    privacy: { type: mongoose.Schema.Types.ObjectId, ref: 'PrivacyType', required: true },
+    team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
 }, { timestamps: true });
 
 
