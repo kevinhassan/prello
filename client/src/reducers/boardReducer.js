@@ -36,7 +36,6 @@ export default function boardReducer(state = initialState, action) {
     case actions.UPDATE_LISTS_INDEXES_FAILURE:
         return {
             ...state,
-            board: action.payload.board,
         };
 
     default:

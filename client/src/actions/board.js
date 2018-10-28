@@ -62,11 +62,7 @@ export const updateListsIndexesAction = newLists => ({
 
 export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
     dispatch(updateListsIndexesStartedAction());
-    const resource = '/board/'.concat(boardId).concat('/lists/');
-
-    dispatch(updateListsIndexesSuccessAction(newLists));
-    // TODO: uncomment below + the line juste above this comment when the API is ready.
-    /*
+    const resource = 'board/'.concat(boardId).concat('/lists/');
 
     APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
         .then(() => {
@@ -76,5 +72,4 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
         .catch((error) => {
             dispatch(updateListsIndexesFailureAction(error.message));
         });
-*/
 };
