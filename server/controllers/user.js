@@ -143,7 +143,21 @@ userController.updateAccount = async (user, data) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
-
+/**
+ * DELETE /account
+ * Account page
+ */
+userController.deleteAccount = async (user) => {
+    try {
+        const userDeleted = await User.deleteOne({ _id: user._id });
+        if (!userDeleted.ok) throw new MyError(404, 'User to delete not found');
+    } catch (err) {
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 /**
  * GET /account
  * Profile page.

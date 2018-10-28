@@ -73,5 +73,14 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
+        })
+        .delete('/account', Auth.isAuthorized, async (req, res) => {
+            try {
+                await userController.deleteAccount(req.user);
+                res.status(200).send({ message: 'Account successfully deleted' });
+                // TODO: disconnect user if credentials change
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };

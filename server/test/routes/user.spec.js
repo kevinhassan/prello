@@ -179,3 +179,33 @@ describe('PUT /account', () => {
             .expect(200, done);
     });
 });
+describe('DELETE /account', () => {
+    let token = null;
+
+    before((done) => {
+        request(app)
+            .post('/login')
+            .send({ email: 'test1@test.fr', password: data.password })
+            .end((err, res) => {
+                token = res.body.token;
+                done();
+            });
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .delete('/account')
+            .expect(403, done);
+    });
+    it('should return 200 OK', (done) => {
+        request(app)
+            .delete('/account')
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .delete('/account')
+            .set('Authorization', `Bearer ${token}`)
+            .expect(403, done);
+    });
+});
