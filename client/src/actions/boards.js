@@ -7,6 +7,7 @@ import * as APIFetch from '../helpers/APIFetch';
 export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
 export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
+export const CREATE_LIST = 'board/CREATE_LIST';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({
@@ -77,4 +78,15 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
             dispatch(updateListsIndexesFailureAction(error.message));
             dispatch(hideLoadingModal());
         });
+};
+
+export const createListAction = newBoard => ({
+    type: CREATE_LIST,
+    payload: {
+        board: newBoard,
+    },
+});
+
+export const createList = newBoard => (dispatch) => {
+    dispatch(createListAction(newBoard));
 };

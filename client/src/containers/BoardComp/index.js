@@ -8,6 +8,7 @@ import { fetchBoard, updateListsIndexes } from '../../actions/boards';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
+import List from '../../models/List';
 
 // ===== Others
 
@@ -21,12 +22,17 @@ class BoardComp extends React.Component {
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.handleAddList = this.handleAddList.bind(this);
         this.reorder = this.reorder.bind(this);
+        this.handleListAdded = this.handleListAdded.bind(this);
     }
 
     handleAddList() {
         this.setState({ isInputVisible: true });
     }
 
+    handleListAdded() {
+        console.log(this.props.board.lists);
+        this.props.createList(this.props.board);
+    }
 
     componentWillMount() {
         this.props.fetchBoard(this.props.match.params.boardId);
