@@ -3,7 +3,9 @@ const { validationResult } = require('express-validator/check');
 const userController = require('../controllers/user');
 const Auth = require('../middlewares/auth');
 const MyError = require('../util/error');
-const { registerValidator, loginValidator } = require('../validators');
+const {
+    registerValidator, loginValidator, accountValidator, profileValidator
+} = require('../validators');
 
 
 module.exports = (router) => {
@@ -47,25 +49,24 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/profile', Auth.isAuthorized, async (req, res) => {
-            const {
-                fullname, initials, username
-            } = req.body;
+        .put('/profile', Auth.isAuthorized, [profileValidator], async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: { form: errors.array() } });
+            }
             try {
-                if (!fullname || !username || !initials) throw new MyError(400, 'Missing informations');
                 await userController.updateProfile(req.user, req.body);
                 res.status(200).send({ message: 'Profile successfully updated' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/account', Auth.isAuthorized, async (req, res) => {
-            const {
-                email, password
-            } = req.body;
+        .put('/account', Auth.isAuthorized, [accountValidator], async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: { form: errors.array() } });
+            }
             try {
-                // TODO use validator on email and password
-                if (!email && !password) throw new MyError(400, 'Missing informations');
                 await userController.updateAccount(req.user, req.body);
                 res.status(200).send({ message: 'Account successfully updated' });
                 // TODO: disconnect user if credentials change

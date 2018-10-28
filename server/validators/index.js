@@ -1,9 +1,8 @@
 const loginValidator = require('./login');
 const registerValidator = require('./register');
-const boardValidator = require('./board');
+const profileValidator = require('./profile');
+const accountValidator = require('./account');
 
 module.exports = {
-    loginValidator,
-    registerValidator,
-    boardValidator
+    loginValidator, registerValidator, profileValidator, accountValidator
 };
