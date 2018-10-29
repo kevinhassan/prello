@@ -8,63 +8,61 @@ const Auth = require('../auth');
  * Sign in using email and password.
  */
 userController.login = async (email, password) => {
-  try {
-    const user = await User.findOne({ email }).select('password');
-    if (!user) {
-      throw new MyError(401, 'invalid credentials');
-    }
+    try {
+        const user = await User.findOne({ email }).select('password');
+        if (!user) {
+            throw new MyError(401, 'invalid credentials');
+        }
 
-    // check password
-    const isMatch = await user.comparePassword(password, user.password);
-    if (!isMatch) {
-      throw new MyError(401, 'invalid credentials');
-    }
+        // check password
+        const isMatch = await user.comparePassword(password, user.password);
+        if (!isMatch) {
+            throw new MyError(401, 'invalid credentials');
+        }
 
-    // return token to the user
-    return Auth.generateToken(user);
-  } catch (err) {
-    if (!err.status) {
-      throw new MyError(500, 'Internal Server Error');
+        // return token to the user
+        return Auth.generateToken(user);
+    } catch (err) {
+        if (!err.status) {
+            throw new MyError(500, 'Internal Server Error');
+        }
+        throw err;
     }
-    throw err;
-  }
 };
-
-/**
- * GET /logout
- * Log out.
- */
-userController.logout = () => { };
-
-
 /**
  * POST /signup
  * Create a new local account.
  */
 userController.postSignup = async (data) => {
-  try {
-    const fullnameUser = data.fullname.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
-    // count the number of user with same fullname
-    const count = await User.countDocuments({ fullname: fullnameUser }) + 1;
+    try {
+        const fullnameUser = data.fullname.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
+        // count the number of user with same fullname
+        const count = await User.countDocuments({ fullname: fullnameUser }) + 1;
+        let initialsUser = '';
+        const usernameUser = fullnameUser.toLowerCase().replace(/ /g, '') + count;
+        if (fullnameUser.split(' ').length >= 2) {
+            initialsUser = fullnameUser.split(' ')[0].toUpperCase().charAt(0) + fullnameUser.split(' ')[1].toUpperCase().charAt(0);
+        } else {
+            initialsUser = fullnameUser.toUpperCase().charAt(0);
+        }
 
-    const usernameUser = fullnameUser.toLowerCase().replace(/ /g, '') + count;
-    const user = new User({
-      fullname: fullnameUser,
-      username: usernameUser,
-      password: data.password,
-      email: data.email,
-      bio: data.bio,
-      avatarUrl: data.avatarUrl
-    });
-    await user.save();
-  } catch (err) {
-    if (err.name === 'MongoError' && err.code === 11000) {
-      throw new MyError(409, 'User already exists');
-    } else if (err.name === 'ValidationError') {
-      throw new MyError(400, 'Missing Informations');
+        const user = new User({
+            fullname: fullnameUser,
+            username: usernameUser,
+            password: data.password,
+            email: data.email,
+            bio: data.bio,
+            avatarUrl: data.avatarUrl,
+            initials: initialsUser
+        });
+        await user.save();
+    } catch (err) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+            throw new MyError(409, 'User already exists');
+        } else if (err.name === 'ValidationError') {
+            throw new MyError(400, 'Missing Informations');
+        }
     }
-    throw new MyError(500, 'Internal Server Error');
-  }
 };
 
 /**

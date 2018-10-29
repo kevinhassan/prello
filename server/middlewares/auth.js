@@ -8,7 +8,7 @@ const authRequest = (req, res, next) => {
         return next();
     }
     const token = bearerHeader.replace('Bearer ', '');
-    jwt.verify(token, process.env.SECRET, async (err, payload) => {
+    jwt.verify(token, process.env.SESSION_SECRET, async (err, payload) => {
         if (err) {
             return res.status(500).send({ error: 'Failed to authenticate token.' });
         }

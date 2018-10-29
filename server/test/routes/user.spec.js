@@ -1,14 +1,14 @@
 const request = require('supertest');
 const { expect } = require('chai');
 
-process.env.NODE_ENV = 'test';
 const app = require('../../app.js');
 const User = require('../../models/User');
 
 const data = {
     fullname: 'nameTest',
     email: 'test@test.fr',
-    password: 'passTest'
+    password: 'passTest',
+    bio: 'bio'
 };
 
 describe('POST /register', () => {
@@ -30,21 +30,15 @@ describe('POST /register', () => {
             .expect(409, done);
     });
     it('should return 422 ERROR', (done) => {
-        data.email = '';
+        const wrongData = { email: '', password: data.password, fullname: data.fullname };
         request(app)
             .post('/register')
-            .send(data)
+            .send(wrongData)
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
 });
 describe('POST /login', () => {
-    const data = {
-        name: 'nameTest',
-        nickname: 'nicknameTest',
-        email: 'test@test.fr',
-        password: 'passTest'
-    };
     it('should return 200 OK', (done) => {
         request(app)
             .post('/login')

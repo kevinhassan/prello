@@ -3,8 +3,8 @@ const { validationResult } = require('express-validator/check');
 const userController = require('../controllers/user');
 const Auth = require('../middlewares/auth');
 const MyError = require('../util/error');
-const loginValidator = require('../validators/login');
-const registerValidator = require('../validators/register');
+const { registerValidator, loginValidator } = require('../validators');
+
 
 module.exports = (router) => {
     router
