@@ -38,6 +38,11 @@ app.disable('x-powered-by');
 require('./models');
 
 /**
+ * Set up socket
+ */
+require('./socket');
+
+/**
  * API examples routes.
  */
 app.use('/', require('./routes/'));
