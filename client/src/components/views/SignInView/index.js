@@ -1,40 +1,64 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // ==== Components / Container
+import Input from '../../forms/Input';
 
 // ===== Models
 
 // ===== Others
-
 import './style.css';
 
 // ==================================
 
-const SignInView = () => (
-    <div className="row">
-        <div className="col-sm-12 general-form">
-            <h3 className="form-title">Sign In</h3>
-            <form>
-                <p>
-                    <label>
-                        <h5>Use name/Email address</h5>
-                        <input type="text" name="username" />
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <h5>Password</h5>
-                        <input type="password" name="password" />
-                    </label>
+const SignInView = props => (
+    <div className="signInFormWrapper">
+        <h1 className="text-center">Sign in</h1>
+        <form className="signInForm" onSubmit={props.handleFormSubmit}>
 
-                </p>
-                <p>
-                    <input type="submit" value="Submit" />
-                </p>
-            </form>
-        </div>
+            <div className="form-group row">
+                <label htmlFor="email" className="col-form-label col-sm-4">Email</label>
+                <div className="col-sm-8">
+                    <input
+                        className="form-control"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                        type="email"
+                    />
+                </div>
+            </div>
+
+            <div className="form-group row">
+                <label htmlFor="password" className="col-form-label col-sm-4">Password</label>
+                <div className="col-sm-8">
+                    <input
+                        className="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        required
+                        type="password"
+                    />
+                </div>
+            </div>
+
+            <div className="form-group text-center">
+                <button type="submit" className="btn btn-primary">Sign in</button>
+            </div>
+            <p className="text-danger">{props.errorMessage}</p>
+        </form>
     </div>
 );
+
+SignInView.propTypes = {
+    errorMessage: PropTypes.string,
+    handleFormSubmit: PropTypes.func.isRequired,
+};
+SignInView.defaultProps = {
+    errorMessage: '',
+};
 
 
 export default SignInView;

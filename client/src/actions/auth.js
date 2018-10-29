@@ -1,4 +1,5 @@
 import * as APIFetch from '../helpers/APIFetch';
+import { displayLoadingModal, hideLoadingModal } from './modal';
 
 export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
 export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
@@ -25,13 +26,17 @@ export const classicSignInSuccess = token => ({
 });
 
 export const classicSignIn = (email, password) => (dispatch) => {
+    dispatch(displayLoadingModal())
     dispatch(classicSignInStarted());
     APIFetch.fetchPrelloAPI('login', { email, password }, APIFetch.POST)
         .then((res) => {
-            dispatch(classicSignInSuccess(res.response.data.token));
+            localStorage.setItem('token', res.data.token);
+            dispatch(classicSignInSuccess());
+            dispatch(hideLoadingModal());
         })
         .catch((error) => {
             dispatch(classicSignInFailure(error.response.data.error));
+            dispatch(hideLoadingModal());
         });
 };
 
