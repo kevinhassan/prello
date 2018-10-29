@@ -5,7 +5,7 @@ import List from '../models/List';
 
 export const initialState = {
     board: undefined,
-}
+};
 
 export default function boardReducer(state = initialState, action) {
     switch (action.type) {
@@ -22,6 +22,20 @@ export default function boardReducer(state = initialState, action) {
         return {
             ...state,
             board: boardObject,
+        };
+
+    case actions.UPDATE_LISTS_INDEXES_SUCCESS:
+        return {
+            ...state,
+            board: {
+                ...state.board,
+                lists: action.payload.lists,
+            },
+        };
+
+    case actions.UPDATE_LISTS_INDEXES_FAILURE:
+        return {
+            ...state,
         };
 
     default:

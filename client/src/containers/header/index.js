@@ -12,11 +12,14 @@ import './style.css';
 
 class Header extends React.Component {
     render() {
-        const { goHome, goAbout, goProfile } = this.props;
+        const {
+            goAbout, goBoardExample, goHome, goProfile,
+        } = this.props;
         const element = (
             <div className="header-bar">
                 <div className="leftHeader-div">
                     <button className="btn btn-header" type="button" onClick={goHome}><i className="fas fa-home" /></button>
+                    <button className="btn btn-header" type="button" onClick={goBoardExample}><i className="fas fa-chalkboard" /></button>
                 </div>
                 <div className="centerHeader-div">
                     <span onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>
@@ -34,8 +37,9 @@ class Header extends React.Component {
     }
 }
 Header.propTypes = {
-    goHome: PropTypes.func.isRequired,
     goAbout: PropTypes.func.isRequired,
+    goBoardExample: PropTypes.func.isRequired,
+    goHome: PropTypes.func.isRequired,
     goProfile: PropTypes.func.isRequired,
 };
 
@@ -45,8 +49,9 @@ const mapStateToProps = () => ({});
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        goHome: () => push('/'),
         goAbout: () => push('/graphical-charter'),
+        goBoardExample: () => push('/board/b00000000001'),
+        goHome: () => push('/'),
         goProfile: () => push('/profile'),
     }, dispatch,
 );

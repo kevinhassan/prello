@@ -1,5 +1,6 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
 import APISocket from '../helpers/APISocket';
+import * as APIFetch from '../helpers/APIFetch';
 
 // ========================
 
@@ -24,33 +25,34 @@ export const fetchBoardSuccessAction = board => ({
 
 export const fetchBoard = boardId => (dispatch) => {
     dispatch(fetchBoardStartedAction());
-    APISocket.subscribeToBoard(boardId, (error, res) => {
+    APISocket.subscribeToBoard(boardId, (res) => {
         dispatch(displayLoadingModal());
-        // TODO: handle error
-        dispatch(fetchBoardSuccessAction(res.board));
+        if (res.error) {
+            dispatch(fetchBoardFailureAction(res.error));
+        } else {
+            dispatch(fetchBoardSuccessAction(res.board));
+        }
         dispatch(hideLoadingModal());
     });
 };
 
-// =====
+// ===== UPDATE LISTS ======
 export const UPDATE_LISTS_INDEXES = 'board/UPDATE_LISTS_INDEXES';
 export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE';
 export const UPDATE_LISTS_INDEXESD_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
 export const UPDATE_LISTS_INDEXES_SUCCESS = 'board/UPDATE_LISTS_INDEXES_SUCCESS';
 
-export const updateListsIndexesFailureAction = (newLists, error) => ({
+export const updateListsIndexesFailureAction = error => ({
     type: UPDATE_LISTS_INDEXES_FAILURE,
     payload: {
-        lists: newLists,
         error,
     },
 });
 export const updateListsIndexesStartedAction = () => ({ type: UPDATE_LISTS_INDEXESD_STARTED });
-export const updateListsIndexesSuccessAction = (newLists, res) => ({
+export const updateListsIndexesSuccessAction = newLists => ({
     type: UPDATE_LISTS_INDEXES_SUCCESS,
     payload: {
         lists: newLists,
-        res,
     },
 });
 
@@ -60,18 +62,17 @@ export const updateListsIndexesAction = newLists => ({
         lists: newLists,
     },
 });
-export const updateListsIndexes = newLists => (dispatch) => {
-    dispatch(displayLoadingModal());
+
+export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
     dispatch(updateListsIndexesStartedAction());
-    const resource = '/board/'.concat(newLists);
-    /*
-    fetchPrelloAPI(resource, {}, POST)
+    const resource = 'board/'.concat(boardId).concat('/lists/');
+
+    APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
         .then(() => {
-            dispatch(updateListsIndexesStartedAction(newLists));
-            dispatch(hideLoadingModal());
+            // API doesn't need to return the lists (too long): use directly the new order
+            dispatch(updateListsIndexesSuccessAction(newLists));
         })
         .catch((error) => {
-            dispatch(updateListsIndexesFailureAction(newLists, error));
+            dispatch(updateListsIndexesFailureAction(error.message));
         });
-    */
 };

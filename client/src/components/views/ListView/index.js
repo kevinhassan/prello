@@ -14,15 +14,15 @@ import './style.css';
 // ==================================
 
 const ListView = props => (
-    <div className="cardsListPanel">
+    <div className={'cardsListPanel '.concat(props.isBeingDragged ? 'listDragged' : '')}>
         <h3>{props.list.name}</h3>
         {props.list.isArchived ? 'Archived' : 'Not archived'}
 
         <Droppable droppableId={String(props.list._id)} type="CARD">
             {dropProvided => (
                 <ul ref={dropProvided.innerRef} className="cardsList">
-                    {props.list.cards.map(c => (
-                        <Draggable key={c._id} draggableId={String(c._id)} index={c.index} type="CARD">
+                    {props.list.cards.map((c, index) => (
+                        <Draggable key={c._id} draggableId={String(c._id)} index={index} type="CARD">
                             {dragProvided => (
                                 <div>
                                     <li
@@ -55,6 +55,10 @@ const ListView = props => (
 ListView.propTypes = {
     list: PropTypes.instanceOf(List).isRequired,
     createCard: PropTypes.func.isRequired,
+    isBeingDragged: PropTypes.bool,
+};
+ListView.defaultProps = {
+    isBeingDragged: false,
 };
 
 export default ListView;

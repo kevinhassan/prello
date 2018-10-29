@@ -5,9 +5,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
 
-// ===== Models
-import Board from '../../../models/Board';
-
 // ===== Others
 import './style.css';
 
@@ -16,8 +13,10 @@ import './style.css';
 const BoardView = props => (
     <div className="boardPanel">
         <DragDropContext onDragEnd={props.onDragEnd}>
-            <h1>{props.board.name}</h1>
-
+            <div className="col-sm-12 boardSettingsBar">
+                <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
+                <i className="far fa-star boardSettingsBtn starBtn" />
+            </div>
             <Droppable droppableId="currentBoard" direction="horizontal" type="LIST">
                 {dropProvided => (
                     <div
@@ -25,9 +24,9 @@ const BoardView = props => (
                         ref={dropProvided.innerRef}
                         {...dropProvided.droppableProps}
                     >
-                        {props.board.lists.map(l => (
-                            <Draggable draggableId={l._id} index={l.index} key={l._id} type="LIST">
-                                {dragProvided => (
+                        {props.board.lists.map((l, index) => (
+                            <Draggable draggableId={l._id} index={index} key={l._id} type="LIST">
+                                {(dragProvided, dragSnapshot) => (
                                     <div
                                         className="listCompWrapper"
                                         key={l._id}
@@ -35,7 +34,10 @@ const BoardView = props => (
                                         {...dragProvided.dragHandleProps}
                                         {...dragProvided.draggableProps}
                                     >
-                                        <ListComp list={l} />
+                                        <ListComp
+                                            list={l}
+                                            isBeingDragged={dragSnapshot.isDragging}
+                                        />
                                         {dragProvided.placeholder}
                                     </div>
                                 )}
@@ -49,7 +51,7 @@ const BoardView = props => (
     </div>
 );
 BoardView.propTypes = {
-    board: PropTypes.instanceOf(Board).isRequired,
+    board: PropTypes.object.isRequired,
     onDragEnd: PropTypes.func.isRequired,
 };
 

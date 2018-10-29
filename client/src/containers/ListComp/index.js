@@ -23,18 +23,23 @@ class ListComp extends React.Component {
     }
 
     render() {
-        const { list } = this.props;
+        const { list, isBeingDragged } = this.props;
         return (
             <ListView
                 list={list}
                 createCard={this.handleCreateCard}
+                isBeingDragged={isBeingDragged}
             />
         );
     }
 }
 ListComp.propTypes = {
     createCard: PropTypes.func.isRequired,
+    isBeingDragged: PropTypes.bool,
     list: PropTypes.instanceOf(List).isRequired,
+};
+ListComp.defaultProps = {
+    isBeingDragged: false,
 };
 
 // Put info from the store state in props (None)

@@ -32,4 +32,23 @@ boardController.get = async (boardId) => {
     }
 };
 
+boardController.putLists = async (boardId, lists) => {
+    const error = new Error('Internal Server Error');
+    error.status = 500;
+    try {
+        await Board.findById(boardId, (err, board) => {
+            if (board) {
+                board.lists = lists;
+                board.save((err) => {
+                    if (err) throw error;
+                });
+            } else {
+                throw error;
+            }
+        });
+    } catch (e) {
+        throw error;
+    }
+};
+
 module.exports = boardController;

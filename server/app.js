@@ -8,6 +8,7 @@ const logger = require('morgan');
 const errorHandler = require('errorhandler');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
+const cors = require('cors');
 const config = require('./config');
 
 /**
@@ -26,17 +27,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
+app.use(cors());
 
 app.disable('x-powered-by');
-
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Request-Headers', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    next();
-});
 
 /**
  * Middlewares
