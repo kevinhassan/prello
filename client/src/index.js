@@ -9,6 +9,7 @@ import 'sanitize.css/sanitize.css';
 import './assets/generalStyle.css';
 
 const target = document.querySelector('#root');
+require('dotenv').config();
 
 render(
     <Provider store={store}>

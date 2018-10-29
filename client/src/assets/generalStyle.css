@@ -164,6 +164,9 @@ li {
     text-align: center;
 }
 
+.general-form .form-title{
+    margin:15px;
+}
 .signin-container {
     display: inline;
 }

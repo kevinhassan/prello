@@ -1,4 +1,5 @@
-require('../config/database');
+const config = require('../config');
+require('../database')(config);
 // ====== Get Seeders
 const seeders = [];
 seeders.push(require('./BoardSeeder'));

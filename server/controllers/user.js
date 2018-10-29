@@ -1,97 +1,123 @@
 const userController = {};
 const User = require('../models/User');
+const MyError = require('../util/error');
+const Auth = require('../auth');
+
 /**
  * POST /login
  * Sign in using email and password.
  */
-userController.login = async (username, password) => {
-    const error = new Error('Internal Server Error');
-    error.status = 500;
+userController.login = async (email, password) => {
     try {
-        const user = await User.findOne({ username }).select('password');
+        const user = await User.findOne({ email }).select('password');
         if (!user) {
-            error.message = 'invalid credential';
-            error.status = 401;
-            throw error;
+            throw new MyError(401, 'invalid credentials');
         }
+
         // check password
-        const isMatch = await User.comparePassword(password, user.password);
+        const isMatch = await user.comparePassword(password, user.password);
         if (!isMatch) {
-            error.message = 'invalid credential';
-            error.status = 401;
-            throw error;
+            throw new MyError(401, 'invalid credentials');
         }
-    // return token to the user
-    } catch (e) {
-        throw error;
+
+        // return token to the user
+        return Auth.generateToken(user);
+    } catch (err) {
+        if (!err.status) {
+            throw new MyError(500, 'Internal Server Error');
+        }
+        throw err;
     }
 };
-
-/**
- * GET /logout
- * Log out.
- */
-userController.logout = () => {};
-
 
 /**
  * POST /signup
  * Create a new local account.
  */
-userController.postSignup = () => {};
+userController.postSignup = async (data) => {
+    try {
+        const fullnameUser = data.fullname.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
+        // count the number of user with same fullname
+        const count = await User.countDocuments({ fullname: fullnameUser }) + 1;
+        let initialsUser = '';
+        const usernameUser = fullnameUser.toLowerCase().replace(/ /g, '') + count;
+        if (fullnameUser.split(' ').length >= 2) {
+            initialsUser = fullnameUser.split(' ')[0].toUpperCase().charAt(0) + fullnameUser.split(' ')[1].toUpperCase().charAt(0);
+        } else {
+            initialsUser = fullnameUser.toUpperCase().charAt(0);
+        }
+
+        const user = new User({
+            fullname: fullnameUser,
+            username: usernameUser,
+            password: data.password,
+            email: data.email,
+            bio: data.bio,
+            avatarUrl: data.avatarUrl,
+            initials: initialsUser
+        });
+        await user.save();
+    } catch (err) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+            throw new MyError(409, 'User already exists');
+        } else if (err.name === 'ValidationError') {
+            throw new MyError(400, 'Missing Informations');
+        }
+    }
+};
 
 /**
  * GET /account
  * Profile page.
  */
-userController.getAccount = () => {};
+userController.getAccount = () => { };
 
 /**
  * POST /account/profile
  * Update profile information.
  */
-userController.postUpdateProfile = () => {};
+userController.postUpdateProfile = () => { };
 
 /**
  * POST /account/password
  * Update current password.
  */
-userController.postUpdatePassword = () => {};
+userController.postUpdatePassword = () => { };
 
 /**
  * POST /account/delete
  * Delete user account.
  */
-userController.postDeleteAccount = () => {};
+userController.postDeleteAccount = () => { };
 
 /**
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
  */
-userController.getOauthUnlink = () => {};
+userController.getOauthUnlink = () => { };
 
 /**
  * GET /reset/:token
  * Reset Password page.
  */
-userController.getReset = () => {};
+userController.getReset = () => { };
 
 /**
  * POST /reset/:token
  * Process the reset password request.
  */
-userController.postReset = () => {};
+userController.postReset = () => { };
 
 /**
  * GET /forgot
  * Forgot Password page.
  */
-userController.getForgot = () => {};
+userController.getForgot = () => { };
 
 /**
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
-userController.postForgot = () => {};
+userController.postForgot = () => { };
 
 module.exports = userController;
