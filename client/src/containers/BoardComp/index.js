@@ -30,6 +30,10 @@ class BoardComp extends React.Component {
         this.setState({ isWaitingForAPIConfirmation: false });
     }
 
+    componentWillReceiveProps() {
+        this.setState({ isWaitingForAPIConfirmation: false });
+    }
+
     /*
         Reorder an Array where the item at position startIndex
         was moved to endIndex.
