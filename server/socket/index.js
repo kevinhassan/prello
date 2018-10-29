@@ -10,7 +10,7 @@ socket.on('connection', (client) => {
             const boardFound = await boardController.get(boardId);
             client.emit('currentBoard', { board: boardFound });
         } catch (e) {
-            client.emit('currentBoard', { err: e.message });
+            client.emit('currentBoard', { error: e.message });
         }
     });
 });

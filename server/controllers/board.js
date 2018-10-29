@@ -40,10 +40,10 @@ boardController.putLists = async (boardId, lists) => {
             if (board) {
                 board.lists = lists;
                 board.save((err) => {
-                    if (err) throw err;
+                    if (err) throw error;
                 });
             } else {
-                throw err;
+                throw error;
             }
         });
     } catch (e) {

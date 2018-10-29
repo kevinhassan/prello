@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { fetchBoard, updateListsIndexes } from '../../actions/board';
 
-// ===== Models
-import Board from '../../models/Board';
-
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
 
@@ -17,6 +14,10 @@ import BoardView from '../../components/views/BoardView';
 class BoardComp extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isWaitingForAPIConfirmation: false,
+            pendingLists: [],
+        };
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.reorder = this.reorder.bind(this);
     }
@@ -24,6 +25,10 @@ class BoardComp extends React.Component {
     componentWillMount() {
         // TODO: use boardId in URL
         this.props.fetchBoard('b00000000001');
+    }
+
+    componentWillReceiveProps() {
+        this.setState({ isWaitingForAPIConfirmation: false });
     }
 
     /*
@@ -49,7 +54,12 @@ class BoardComp extends React.Component {
         if (type === 'LIST') {
             const { lists, _id } = this.props.board;
             const listsUpdated = this.reorder(lists, source.index, destination.index);
+
+            this.setState({ pendingLists: listsUpdated });
+            this.setState({ isWaitingForAPIConfirmation: true });
+
             this.props.updateListsIndexes(_id, listsUpdated);
+            return;
         }
         if (type === 'CARD') {
             // TODO : reorder cards
@@ -59,6 +69,16 @@ class BoardComp extends React.Component {
     render() {
         const { board } = this.props;
         if (board) {
+            // If changes were made on lists (moved for example), we give the board modified.
+            // else, we give the board from the store which is the same as in server.
+            if (this.state.isWaitingForAPIConfirmation) {
+                const pendingBoard = board;
+                pendingBoard.lists = this.state.pendingLists;
+                return (
+                    <BoardView board={pendingBoard} onDragEnd={this.handleOnDragEnd} />
+                );
+            }
+
             return (
                 <BoardView board={board} onDragEnd={this.handleOnDragEnd} />
             );
@@ -67,7 +87,7 @@ class BoardComp extends React.Component {
     }
 }
 BoardComp.propTypes = {
-    board: PropTypes.instanceOf(Board),
+    board: PropTypes.object,
     fetchBoard: PropTypes.func.isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
 };

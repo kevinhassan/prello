@@ -5,9 +5,6 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
 
-// ===== Models
-import Board from '../../../models/Board';
-
 // ===== Others
 import './style.css';
 
@@ -27,8 +24,8 @@ const BoardView = props => (
                         ref={dropProvided.innerRef}
                         {...dropProvided.droppableProps}
                     >
-                        {props.board.lists.map(l => (
-                            <Draggable draggableId={l._id} index={l.index} key={l._id} type="LIST">
+                        {props.board.lists.map((l, index) => (
+                            <Draggable draggableId={l._id} index={index} key={l._id} type="LIST">
                                 {(dragProvided, dragSnapshot) => (
                                     <div
                                         className="listCompWrapper"
@@ -54,7 +51,7 @@ const BoardView = props => (
     </div>
 );
 BoardView.propTypes = {
-    board: PropTypes.instanceOf(Board).isRequired,
+    board: PropTypes.object.isRequired,
     onDragEnd: PropTypes.func.isRequired,
 };
 

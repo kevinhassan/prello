@@ -5,7 +5,7 @@ import List from '../models/List';
 
 export const initialState = {
     board: undefined,
-}
+};
 
 export default function boardReducer(state = initialState, action) {
     switch (action.type) {

@@ -21,8 +21,8 @@ const ListView = props => (
         <Droppable droppableId={String(props.list._id)} type="CARD">
             {dropProvided => (
                 <ul ref={dropProvided.innerRef} className="cardsList">
-                    {props.list.cards.map(c => (
-                        <Draggable key={c._id} draggableId={String(c._id)} index={c.index} type="CARD">
+                    {props.list.cards.map((c, index) => (
+                        <Draggable key={c._id} draggableId={String(c._id)} index={index} type="CARD">
                             {dragProvided => (
                                 <div>
                                     <li

@@ -25,10 +25,13 @@ export const fetchBoardSuccessAction = board => ({
 
 export const fetchBoard = boardId => (dispatch) => {
     dispatch(fetchBoardStartedAction());
-    APISocket.subscribeToBoard(boardId, (error, res) => {
+    APISocket.subscribeToBoard(boardId, (res) => {
         dispatch(displayLoadingModal());
-        // TODO: handle error
-        dispatch(fetchBoardSuccessAction(res.board));
+        if (res.error) {
+            dispatch(fetchBoardFailureAction(res.error));
+        } else {
+            dispatch(fetchBoardSuccessAction(res.board));
+        }
         dispatch(hideLoadingModal());
     });
 };
@@ -39,10 +42,9 @@ export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE'
 export const UPDATE_LISTS_INDEXESD_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
 export const UPDATE_LISTS_INDEXES_SUCCESS = 'board/UPDATE_LISTS_INDEXES_SUCCESS';
 
-export const updateListsIndexesFailureAction = (newLists, error) => ({
+export const updateListsIndexesFailureAction = error => ({
     type: UPDATE_LISTS_INDEXES_FAILURE,
     payload: {
-        lists: newLists,
         error,
     },
 });
