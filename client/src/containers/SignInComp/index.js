@@ -86,7 +86,7 @@ class SignInComp extends React.Component {
                     type="text"
                     value={this.state.login.email}
                     placeholder="Enter your email"
-                    onChange={this.handleemail}
+                    onChange={this.handleEmail}
                     title="Email"
                 />
                 <Input
