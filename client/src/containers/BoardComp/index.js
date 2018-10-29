@@ -23,8 +23,7 @@ class BoardComp extends React.Component {
     }
 
     componentWillMount() {
-        // TODO: use boardId in URL
-        this.props.fetchBoard('b00000000001');
+        this.props.fetchBoard(this.props.match.params.boardId);
     }
 
     componentWillReceiveProps() {
@@ -89,6 +88,11 @@ class BoardComp extends React.Component {
 BoardComp.propTypes = {
     board: PropTypes.object,
     fetchBoard: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            boardId: PropTypes.string,
+        }),
+    }).isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
 };
 BoardComp.defaultProps = {
