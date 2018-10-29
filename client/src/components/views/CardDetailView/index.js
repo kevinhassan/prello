@@ -8,13 +8,13 @@ import './style.css';
 
 const CardDetailView = props => (
     <div className="cardDetailOverlay" onMouseDown={props.closeCardDetail}>
-        <div className="cardDetailContent" key={props.card.id}>
+        <div className="cardDetailContent" key={props.card._id}>
             <div className="">
                 <i className="fas fa-times closeCardDetailIcon" onClick={props.closeCardDetail} onKeyDown={props.closeCardDetail} />
 
                 <h2 className="cardDetail-h2 cardDetailTitle">
                     #
-                    {props.card.id}
+                    {props.card._id}
                     {' '}
                     -
                     {' '}
@@ -53,7 +53,7 @@ const CardDetailView = props => (
                 <div>
                     {(props.deleteCard)
                         ? (
-                            <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card.id)}>
+                            <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card._id)}>
                                 <i className="fas fa-trash-alt" />
                             </button>
                         )

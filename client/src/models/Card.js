@@ -1,7 +1,7 @@
 export default function Card({
-    id, description, dueDate, isArchived, name, labels, list, users,
+    _id, description, dueDate, isArchived, name, labels, list, users,
 } = {}) {
-    this.id = id; // String
+    this._id = _id; // String
     this.description = description; // String
     this.dueDate = dueDate; // Date
     this.isArchived = isArchived; // Boolean

@@ -43,7 +43,17 @@ app.use((req, res, next) => {
  */
 app.use('/', require('./middlewares/auth').authRequest);
 /**
- * API Routes
+ * Load all the models
+ */
+require('./models');
+
+/**
+ * Set up socket
+ */
+require('./socket');
+
+/**
+ * API examples routes.
  */
 app.use('/', require('./routes/'));
 

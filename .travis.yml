@@ -10,11 +10,17 @@ cache:
   yarn: true
   directories:
   - ".npm"
+  - node_modules
 services:
 - mongodb
-script:
-- cd server npm test cd ../client npm test
+env:
+- TEST_DIR=./client
+- TEST_DIR=./server
+before_script:
+- cd $TEST_DIR
+- npm install
+- npm test
 notifications:
   email: false
   slack:
-    secure: "kMj+SeaiqhAC+wFI4f2E+pfE6OTAZQO4j6sMU13MninFn/vzVr+fXWrOJhInILMbditheyb4rLdkyhjIYuLdiR6jR9UTsx8AmSgpXzpsosnCDx8S1/fglE+WSlgCn4AEaKeqwm7mvQTwYDXfnEyiGISIkrTq3wX7BfpMZT7GBQBa7rKmfI/nFH1W3ocmbk7g1h9Hq6sQbijFaYQFlNSnUMGb4hFIi1j8V6h/MhK5AbOfHfNJ30BO+0X/YwZzqrXYKu9TjYd/zJNn4Z6fwMMuBT80E/jnPAdOlWFlT11E0rFilCeLlzBkdpQfU39W/g/2nIJJzP1WCGj/hu/xXngy4WUG3Wcc3KIkUCZjKDkW5MA/J0Zf4lpmYUVJZPwszRiRjCB4L/tBwyNF5yX4uYEE6nlCd20J7ntMIG+nskdoVRCpBmErMvoqPzHljaEUK7nOfOBnNuKETIPxtw/kkltVyWZuPE2k+6QoXRqfebRk8Ghs2q9cSoLbxL89ziVsap9ec0RnL+ZjSCPHpCkRjy6FHnlwb0vtR1QMF+OP4gqbMGFnff0cl0V/xJ6/QokSVmjrJE1jwntxOBXivNjsK7cWgGJ4ajfYvYykRQozzs/uBN1ucouX3gQV0rHv47ZT1nU/BUHkQ1jtSIsesZtGMNjaM3bDoRBU605RW16yIc845/k="
+    secure: PnObvvDhdayHXHvS+QkYEnU5pV9hs9Nsb5PNZce9ZlxC7DMSmg6e2d3/vD8Eq4Y7NUARQJWx6t3WV6c1D5tQA/pH0uqNCbfqRa5hVMMWddLY6+jMJRAJKnp9rgf3qugif+TllJ7/+jFXC/2hQEmL4lxIotRxtte7PA/8YhgsQIHgVkh3sBmiK1n1rPBL8jjY+YSW3VyoeqCnv4JPCa4HpmUEmckKF5DNHNsxajD9SRDRFD9EYZFaV4o65yePaedCbC4EAF2YHmB+vJ6k5vT5/6sjPrrgWmD04tVT94VMb0HHSlls2cjrw3PLPnX9bTD5m7eDSIiZj9zMPxKPHtDwhvIzBRv4pHNZmr7aAg+nPK0TnMDYas+Ls6s0M9b4644VTk7Ni2kW7zIJVE8RuS7/l7137Mop+sw3xWMHqBN6YjG5D3tnrSGC7os6ajVYfCAd0D3/1YHiIAn3sky+2Pd5SFs8cIMOuXV2NBx17ZO4E5lPU2U4LVqbmpmJTqonLLgSg+43La8CLvAMeXLfwE8JcaXKufDkpsRlznce7+L6/yqRM62POe0x5Rb8hpDO+wIVv7ZddbAv4qKQBANaYq/yhpfxlwUWU2DkQE6TpUZvsW428+kbSyE1WLPSEtlYzIfRTZ+jc1kyi9X7AP6XW+RQ6QEbQMsW/56vxbSeZJY5I8Q=

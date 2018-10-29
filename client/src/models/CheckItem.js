@@ -1,7 +1,7 @@
 export default function CheckItem({
-    id, isChecked = false, name, checklist,
+    _id, isChecked = false, name, checklist,
 } = {}) {
-    this.id = id; // String
+    this._id = _id; // String
     this.isChecked = isChecked; // Boolean
     this.name = name; // String
     this.checklist = checklist; // Checklist

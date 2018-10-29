@@ -29,6 +29,7 @@ userController.login = async (email, password) => {
         throw err;
     }
 };
+
 /**
  * POST /signup
  * Create a new local account.

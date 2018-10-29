@@ -97,17 +97,17 @@ class GraphicalCharter extends React.Component {
                                         name: 'Test card name',
                                         labels: [
                                             new Label({
-                                                id: '1', color: '#aa5252', name: 'UX', boardId: '942',
+                                                id: '1', color: '#aa5252', name: 'UX', boardId: 'b00000000001',
                                             }),
                                             new Label({
-                                                id: '2', color: '#2252de', name: 'Database', boardId: '942',
+                                                id: '2', color: '#2252de', name: 'Database', boardId: 'b00000000001',
                                             }),
                                             new Label({
-                                                id: '3', color: '#22ffdd', name: 'Documents', boardId: '942',
+                                                id: '3', color: '#22ffdd', name: 'Documents', boardId: 'b00000000001',
                                             }),
                                         ],
                                         list: new List({
-                                            id: 'qsd59dsr', isArchived: false, name: 'To buy', boardId: '942',
+                                            id: 'qsd59dsr', isArchived: false, name: 'To buy', boardId: 'b00000000001',
                                         }),
                                         users: undefined,
                                     })}

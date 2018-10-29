@@ -1,5 +1,5 @@
-export default function Attachment({ id, name, url } = {}) {
-    this.id = id; // String
+export default function Attachment({ _id, name, url } = {}) {
+    this._id = _id; // String
     this.name = name; // String
     this.url = url; // String
 }

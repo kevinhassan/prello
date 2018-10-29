@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const ActionType = require('./ActionType');
 
 const actionSchema = new mongoose.Schema({
     date: { type: Date, required: true },
-    type: { type: ActionType, required: true },
+    type: { type: mongoose.Schema.Types.ObjectId, ref: 'ActionType', required: true },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

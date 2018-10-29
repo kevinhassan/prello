@@ -1,8 +1,8 @@
 export default function User({
-    id, avatarUrl, biography, email, initials,
+    _id, avatarUrl, biography, email, initials,
     nickname, password, notifs, teams,
 } = {}) {
-    this.id = id; // String
+    this._id = _id; // String
     this.avatarUrl = avatarUrl; // String
     this.biography = biography; // String
     this.email = email; // String

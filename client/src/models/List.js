@@ -1,7 +1,7 @@
 export default function List({
-    id, isArchived, name, boardId, cards,
+    _id, isArchived, name, boardId, cards,
 }) {
-    this.id = id; // String
+    this._id = _id; // String
     this.isArchived = isArchived; // Boolean
     this.name = name; // String
     this.boardId = boardId; // String

@@ -3,8 +3,11 @@ const mongoose = require('mongoose');
 const cardSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: String,
-    isArchived: { type: Boolean, required: true, default: false },
     dueDate: Date,
+    isArchived: { type: Boolean, required: true, default: false },
+    attachments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attachment' }],
+    checklists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Checklist' }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     labels: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Label'
@@ -14,10 +17,7 @@ const cardSchema = new mongoose.Schema({
         ref: 'List',
         required: true
     },
-    checklists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Checklist' }],
-    attachments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attachment' }],
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 
