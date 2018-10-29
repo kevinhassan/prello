@@ -9,12 +9,23 @@ branches:
 cache:
   yarn: true
   directories:
-  - ".npm"
+  - '.npm'
+  - 'node_modules'
 services:
 - mongodb
-script:
-- cd server npm test cd ../client npm test
+
+env:
+  - TEST_DIR=./client
+  - TEST_DIR=./server
+before_script:
+  - cd $TEST_DIR
+  - npm install
+  - npm test
+
 notifications:
   email: false
-  slack:
-    secure: "kMj+SeaiqhAC+wFI4f2E+pfE6OTAZQO4j6sMU13MninFn/vzVr+fXWrOJhInILMbditheyb4rLdkyhjIYuLdiR6jR9UTsx8AmSgpXzpsosnCDx8S1/fglE+WSlgCn4AEaKeqwm7mvQTwYDXfnEyiGISIkrTq3wX7BfpMZT7GBQBa7rKmfI/nFH1W3ocmbk7g1h9Hq6sQbijFaYQFlNSnUMGb4hFIi1j8V6h/MhK5AbOfHfNJ30BO+0X/YwZzqrXYKu9TjYd/zJNn4Z6fwMMuBT80E/jnPAdOlWFlT11E0rFilCeLlzBkdpQfU39W/g/2nIJJzP1WCGj/hu/xXngy4WUG3Wcc3KIkUCZjKDkW5MA/J0Zf4lpmYUVJZPwszRiRjCB4L/tBwyNF5yX4uYEE6nlCd20J7ntMIG+nskdoVRCpBmErMvoqPzHljaEUK7nOfOBnNuKETIPxtw/kkltVyWZuPE2k+6QoXRqfebRk8Ghs2q9cSoLbxL89ziVsap9ec0RnL+ZjSCPHpCkRjy6FHnlwb0vtR1QMF+OP4gqbMGFnff0cl0V/xJ6/QokSVmjrJE1jwntxOBXivNjsK7cWgGJ4ajfYvYykRQozzs/uBN1ucouX3gQV0rHv47ZT1nU/BUHkQ1jtSIsesZtGMNjaM3bDoRBU605RW16yIc845/k="
+  slack:  
+    rooms:
+      secure: 'kMj+SeaiqhAC+wFI4f2E+pfE6OTAZQO4j6sMU13MninFn/vzVr+fXWrOJhInILMbditheyb4rLdkyhjIYuLdiR6jR9UTsx8AmSgpXzpsosnCDx8S1/fglE+WSlgCn4AEaKeqwm7mvQTwYDXfnEyiGISIkrTq3wX7BfpMZT7GBQBa7rKmfI/nFH1W3ocmbk7g1h9Hq6sQbijFaYQFlNSnUMGb4hFIi1j8V6h/MhK5AbOfHfNJ30BO+0X/YwZzqrXYKu9TjYd/zJNn4Z6fwMMuBT80E/jnPAdOlWFlT11E0rFilCeLlzBkdpQfU39W/g/2nIJJzP1WCGj/hu/xXngy4WUG3Wcc3KIkUCZjKDkW5MA/J0Zf4lpmYUVJZPwszRiRjCB4L/tBwyNF5yX4uYEE6nlCd20J7ntMIG+nskdoVRCpBmErMvoqPzHljaEUK7nOfOBnNuKETIPxtw/kkltVyWZuPE2k+6QoXRqfebRk8Ghs2q9cSoLbxL89ziVsap9ec0RnL+ZjSCPHpCkRjy6FHnlwb0vtR1QMF+OP4gqbMGFnff0cl0V/xJ6/QokSVmjrJE1jwntxOBXivNjsK7cWgGJ4ajfYvYykRQozzs/uBN1ucouX3gQV0rHv47ZT1nU/BUHkQ1jtSIsesZtGMNjaM3bDoRBU605RW16yIc845/k='
+    on_success: always 
+    on_failure: always 
