@@ -147,6 +147,42 @@ describe('PUT /profile', () => {
             .expect(200, done);
     });
 });
+describe('POST /forgot', () => {
+    it('should return 404 OK', (done) => {
+        request(app)
+            .post('/forgot')
+            .send({ email: 'test1@test.fr' })
+            .expect(404, done);
+    });
+});
+
+describe('GET /account', () => {
+    let token = null;
+
+    before((done) => {
+        request(app)
+            .post('/login')
+            .send({ email: data.email, password: data.password })
+            .end((err, res) => {
+                token = res.body.token;
+                done();
+            });
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .get('/account')
+            .expect(403, done);
+    });
+    it('should return 200 OK', (done) => {
+        request(app)
+            .get('/account')
+            .set('Authorization', `Bearer ${token}`)
+            .expect(200, (err, res) => {
+                assert(res.body.user.email, data.email);
+                done();
+            });
+    });
+});
 describe('PUT /account', () => {
     let token = null;
 

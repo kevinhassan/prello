@@ -1,7 +1,14 @@
+const { promisify } = require('util');
+const crypto = require('crypto');
+
 const userController = {};
+const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const MyError = require('../util/error');
 const Auth = require('../auth');
+const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetPassword');
+
+const randomBytesAsync = promisify(crypto.randomBytes);
 
 /**
  * POST /login
@@ -162,19 +169,17 @@ userController.deleteAccount = async (user) => {
  * GET /account
  * Profile page.
  */
-userController.getAccount = () => { };
-
-/**
- * POST /account/profile
- * Update profile information.
- */
-userController.postUpdateProfile = () => { };
-
-/**
- * POST /account/delete
- * Delete user account.
- */
-userController.postDeleteAccount = () => { };
+userController.getAccount = async (user) => {
+    try {
+        // return plain json object with lean
+        const userAccount = await User.findById(user.id).select({
+            email: 1
+        }).lean();
+        return userAccount;
+    } catch (err) {
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 
 /**
  * GET /account/unlink/:provider
@@ -183,27 +188,54 @@ userController.postDeleteAccount = () => { };
 userController.getOauthUnlink = () => { };
 
 /**
- * GET /reset/:token
- * Reset Password page.
- */
-userController.getReset = () => { };
-
-/**
- * POST /reset/:token
- * Process the reset password request.
- */
-userController.postReset = () => { };
-
-/**
- * GET /forgot
- * Forgot Password page.
- */
-userController.getForgot = () => { };
-
-/**
  * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
-userController.postForgot = () => { };
-
+userController.postForgot = async (email, host) => {
+    try {
+        let user = await User.findOne({ email });
+        if (!user) throw new MyError(404, 'No user found');
+        user.passwordResetToken = await randomBytesAsync(16).then(buf => buf.toString('hex'));
+        user.passwordResetExpires = Date.now() + 3600000; // 1 hour
+        user = await user.save();
+        if (!user) throw new MyError(500, 'Internal Server Error');
+        const token = user.passwordResetToken;
+        const transporter = nodemailer.createTransport({
+            service: 'Mailjet',
+            auth: {
+                user: process.env.MAILJET_USER,
+                pass: process.env.MAILJET_PASSWORD
+            }
+        });
+        await transporter.sendMail(resetPasswordMail(email, host, token));
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * POST /reset/:token
+ * Reset password with the new one.
+ */
+userController.resetPassword = async (token, password) => {
+    try {
+        const user = await User.findOne({ passwordResetToken: token }).where('passwordResetExpires').gt(Date.now());
+        if (!user) throw new MyError(403, 'User can\'t reset his password');
+        user.password = password;
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save();
+        const transporter = nodemailer.createTransport({
+            service: 'Mailjet',
+            auth: {
+                user: process.env.MAILJET_USER,
+                pass: process.env.MAILJET_PASSWORD
+            }
+        });
+        await transporter.sendMail(confirmResetPasswordMail(user.email));
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 module.exports = userController;

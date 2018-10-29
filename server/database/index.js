@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const chalk = require('chalk');
-const bluebird = require('bluebird');
 
 module.exports = (config) => {
-    mongoose.Promise = bluebird;
     /**
  * Deprecation warnings
  * https://mongoosejs.com/docs/deprecations.html
@@ -17,13 +15,15 @@ module.exports = (config) => {
  * Connect to MongoDB.
  */
     const mongoUrl = config.DATABASE_URI;
-    mongoose.connect(mongoUrl)
-        .then(() => {
+    const connect = async () => {
+        try {
+            await mongoose.connect(mongoUrl);
             console.log('Succesfully Connected to the Mongodb Database..');
-        })
-        .catch((err) => {
+        } catch (err) {
             console.error(err);
             console.log('%s MongoDB connection error. Please make sure MongoDB is running.', chalk.red('✗'));
             process.exit();
-        });
+        }
+    };
+    connect();
 };
