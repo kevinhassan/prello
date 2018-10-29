@@ -11,11 +11,11 @@ describe('board reducer', () => {
 
 describe('board/UPDATE_LISTS_INDEXES_SUCCESS reducer', () => {
     it('should update the lists with the provided ones', () => {
-        const lists = [new List({ id: 1 }), new List({ id: 2 }), new List({ id: 3 })];
+        const lists = [new List({ _id: 1 }), new List({ _id: 2 }), new List({ _id: 3 })];
         const updateAction = actions.updateListsIndexesSuccessAction(lists);
         const finalState = boardReducer({}, updateAction);
 
         expect(finalState.board.lists.length).toEqual(3);
-        expect(finalState.board.lists[2].id).toEqual(3);
+        expect(finalState.board.lists[2]._id).toEqual(3);
     });
 });
