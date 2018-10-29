@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import * as actions from '../actions/auth';
 
 export const initialState = {
@@ -13,6 +14,13 @@ export default function userReducer(state = initialState, action) {
         };
 
     case actions.CLASSIC_SIGN_IN_FAILURE:
+        return {
+            ...state,
+            error: action.payload.error,
+        };
+
+    case actions.UNAUTHENTICATED_USER_ERROR:
+        push('/login');
         return {
             ...state,
             error: action.payload.error,
