@@ -1,4 +1,5 @@
 const boardController = {};
+const MyError = require('../util/error');
 const Board = require('../models/Board');
 /**
  * GET /board/{id}
@@ -36,18 +37,20 @@ boardController.putLists = async (boardId, lists) => {
     const error = new Error('Internal Server Error');
     error.status = 500;
     try {
-        await Board.findById(boardId, (err, board) => {
-            if (board) {
-                board.lists = lists;
-                board.save((err) => {
-                    if (err) throw error;
-                });
-            } else {
-                throw error;
-            }
+        const board = await Board.findById(boardId);
+        if (!board) {
+            throw new MyError(404, 'Board not found');
+        }
+        board.lists = lists;
+        board.save((err) => {
+            if (err) throw error;
         });
     } catch (e) {
-        throw error;
+        console.log(e);
+        if (!e.status) {
+            throw new MyError(500, 'Internal Server Error');
+        }
+        throw e;
     }
 };
 
