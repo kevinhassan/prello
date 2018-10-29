@@ -1,12 +1,11 @@
 {
-  "name": "hackathon-starter",
+  "name": "Prello API",
   "version": "5.1.1",
-  "description": "A boilerplate for Node.js web applications",
+  "description": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/kevinhassan/prello"
   },
-  "author": "Sahat Yalkabov",
   "license": "MIT",
   "scripts": {
     "postinstall": "npm rebuild node-sass",
