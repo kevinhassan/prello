@@ -51,7 +51,7 @@ class SignUpComp extends React.Component {
 
 
     handleName = (e) => {
-        const value = e.target.value;
+        const { value } = e.target;
         this.setState(
             prevState => ({
                 newUser: {
@@ -63,7 +63,7 @@ class SignUpComp extends React.Component {
     }
 
     handleUsername = (e) => {
-        const value = e.target.value;
+        const { value } = e.target;
         this.setState(
             prevState => ({
                 newUser: {
@@ -75,7 +75,7 @@ class SignUpComp extends React.Component {
     }
 
     handlePassword = (e) => {
-        const value = e.target.value;
+        const { value } = e.target;
         this.setState(
             prevState => ({
                 newUser: {
@@ -87,7 +87,7 @@ class SignUpComp extends React.Component {
     }
 
     handleEmail = (e) => {
-        const value = e.target.value;
+        const { value } = e.target;
         this.setState(
             prevState => ({
                 newUser: {
@@ -99,7 +99,7 @@ class SignUpComp extends React.Component {
     }
 
     handlePassword = (e) => {
-        const value = e.target.value;
+        const { value } = e.target;
         this.setState(
             prevState => ({
                 newUser: {
@@ -111,7 +111,7 @@ class SignUpComp extends React.Component {
     }
 
     handleConfirmPassword = (e) => {
-        const value = e.target.value;
+        const { value } = e.target;
         this.setState(
             prevState => ({
                 newUser: {
@@ -124,7 +124,10 @@ class SignUpComp extends React.Component {
 
 
     handleFormSubmit(event) {
-        if (this.state.newUser.name !== '' && this.state.newUser.username !== '' && this.state.newUser.email !== '' && this.state.newUser.password !== '' && this.state.newUser.name !== undefined && this.state.newUser.username !== undefined && this.state.newUser.email !== undefined && this.state.newUser.password !== undefined) {
+        if (this.state.newUser.name !== '' && this.state.newUser.username !== ''
+        && this.state.newUser.email !== '' && this.state.newUser.password !== ''
+        && this.state.newUser.name !== undefined && this.state.newUser.username !== undefined
+        && this.state.newUser.email !== undefined && this.state.newUser.password !== undefined) {
             this.props.classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
         } else {
             this.handleClearForm();
