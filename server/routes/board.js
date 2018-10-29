@@ -2,12 +2,12 @@ const boardController = require('../controllers/board');
 
 module.exports = (router) => {
     router
-        .get('/board/:boardId', async (req, res) => {
+        .get('/board/:boardId', async (req) => {
             try {
                 const boardFound = await boardController.get(req.params.boardId);
-                res.status(200).send({ board: boardFound });
+                return boardFound;
             } catch (e) {
-                res.status(e.status).send({ error: e.message });
+                throw e;
             }
         })
 
