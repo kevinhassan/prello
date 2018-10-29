@@ -45,7 +45,7 @@ class SignUpComp extends React.Component {
                 email: '',
                 password: '',
                 confirmPassword: '',
-            }
+            },
         });
     }
 
@@ -125,14 +125,7 @@ class SignUpComp extends React.Component {
 
     handleFormSubmit(event) {
         if (this.state.newUser.name !== '' && this.state.newUser.username !== '' && this.state.newUser.email !== '' && this.state.newUser.password !== '' && this.state.newUser.name !== undefined && this.state.newUser.username !== undefined && this.state.newUser.email !== undefined && this.state.newUser.password !== undefined) {
-            if (this.state.newUser.password.equals(this.state.newUser.confirmPassword)) {
-                this.props.classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
-            } else {
-                this.handleClearForm();
-                this.setState(() => ({
-                    errorMessage: 'Password and confirmation non equal',
-                }));
-            }
+            this.props.classicSignUp(this.state.newUser.name, this.state.newUser.username, this.state.newUser.email, this.state.newUser.password);
         } else {
             this.handleClearForm();
             this.setState(() => ({
