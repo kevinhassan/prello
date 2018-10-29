@@ -29,7 +29,7 @@ const BoardView = props => (
                     >
                         {props.board.lists.map(l => (
                             <Draggable draggableId={l._id} index={l.index} key={l._id} type="LIST">
-                                {dragProvided => (
+                                {(dragProvided, dragSnapshot) => (
                                     <div
                                         className="listCompWrapper"
                                         key={l._id}

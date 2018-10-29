@@ -1,5 +1,6 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
 import APISocket from '../helpers/APISocket';
+import * as APIFetch from '../helpers/APIFetch';
 
 // ========================
 

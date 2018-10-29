@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { fetchBoard } from '../../actions/board';
-import { updateListsIndexes } from '../../actions/board';
+import { fetchBoard, updateListsIndexes } from '../../actions/board';
 
 // ===== Models
 import Board from '../../models/Board';
@@ -43,14 +42,14 @@ class BoardComp extends React.Component {
 
         // Drop elsewhere than Drag N Drop context
         if (!destination) {
-
+            return;
         }
 
         // List dropped
         if (type === 'LIST') {
-            const { lists, id } = this.props.board;
+            const { lists, _id } = this.props.board;
             const listsUpdated = this.reorder(lists, source.index, destination.index);
-            this.props.updateListsIndexes(id, listsUpdated);
+            this.props.updateListsIndexes(_id, listsUpdated);
         }
         if (type === 'CARD') {
             // TODO : reorder cards
