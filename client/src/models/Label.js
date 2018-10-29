@@ -1,8 +1,8 @@
 export default function Label({
-    id, color, name, boardId,
+    _id, color, name, board_id,
 } = {}) {
-    this.id = id; // String
+    this._id = _id; // String
     this.color = color; // String
     this.name = name; // String
-    this.boardId = boardId; // String
+    this.board_id = board_id; // String
 }

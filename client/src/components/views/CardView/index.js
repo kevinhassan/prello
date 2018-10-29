@@ -8,14 +8,14 @@ import './style.css';
 
 const CardView = props => (
     <a onClick={props.onCardClick} onKeyDown={props.onCardClick}>
-        <div className="card" key={props.card.id}>
+        <div className="card" key={props.card._id}>
             <div className="cardContent">
                 <div>
                     <b className="cardName">{props.card.name}</b>
                     <div>
                         {(props.deleteCard)
                             ? (
-                                <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card.id)}>
+                                <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card._id)}>
                                     <i className="fas fa-trash-alt fa-xs" />
                                 </button>
                             )

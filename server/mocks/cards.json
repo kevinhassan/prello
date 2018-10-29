@@ -28,5 +28,15 @@
         "list": {
             "_id": "l00000000001"
         }
+    },
+    {
+        "_id": "c00000000004",
+        "description": "3 kg",
+        "dueDate": "2018-10-26T09:27:08.116Z",
+        "isArchived": false,
+        "name": "Lava",
+        "list": {
+            "_id": "l00000000002"
+        }
     }
 ]

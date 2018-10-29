@@ -18,16 +18,16 @@ const ListView = props => (
         <h3>{props.list.name}</h3>
         {props.list.isArchived ? 'Archived' : 'Not archived'}
 
-        <Droppable droppableId={String(props.list.id)} type="CARD">
+        <Droppable droppableId={String(props.list._id)} type="CARD">
             {dropProvided => (
                 <ul ref={dropProvided.innerRef} className="cardsList">
                     {props.list.cards.map(c => (
-                        <Draggable key={c.id} draggableId={String(c.id)} index={c.index} type="CARD">
+                        <Draggable key={c._id} draggableId={String(c._id)} index={c.index} type="CARD">
                             {dragProvided => (
                                 <div>
                                     <li
                                         className="card-li"
-                                        key={c.id}
+                                        key={c._id}
                                         {...dragProvided.draggableProps}
                                         {...dragProvided.dragHandleProps}
                                         ref={dragProvided.innerRef}

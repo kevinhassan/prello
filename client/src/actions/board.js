@@ -1,4 +1,5 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
+import APISocket from '../helpers/APISocket';
 
 // ========================
 
@@ -14,28 +15,21 @@ export const fetchBoardFailureAction = (boardId, error) => ({
         error,
     },
 });
-export const fetchBoardSuccessAction = (boardId, res) => ({
+export const fetchBoardSuccessAction = board => ({
     type: FETCH_BOARD_SUCCESS,
     payload: {
-        id: boardId,
-        res,
+        board,
     },
 });
 
 export const fetchBoard = boardId => (dispatch) => {
-    dispatch(displayLoadingModal());
     dispatch(fetchBoardStartedAction());
-    const resource = '/board/'.concat(boardId);
-    /*
-    fetchPrelloAPI(resource, {}, GET)
-        .then(() => {
-            dispatch(fetchBoardStartedAction(boardId));
-            dispatch(hideLoadingModal());
-        })
-        .catch((error) => {
-            dispatch(fetchBoardFailureAction(boardId, error));
-        });
-    */
+    APISocket.subscribeToBoard(boardId, (error, res) => {
+        dispatch(displayLoadingModal());
+        // TODO: handle error
+        dispatch(fetchBoardSuccessAction(res.board));
+        dispatch(hideLoadingModal());
+    });
 };
 
 // =====

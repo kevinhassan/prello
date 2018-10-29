@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
+import { fetchBoard } from '../../actions/board';
 
 // ===== Models
 import Board from '../../models/Board';
@@ -19,6 +20,11 @@ class BoardComp extends React.Component {
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
     }
 
+    componentWillMount() {
+        // TODO: use boardId in URL
+        this.props.fetchBoard('b00000000001');
+    }
+
     handleOnDragEnd(result) {
         console.log(result);
 
@@ -26,17 +32,26 @@ class BoardComp extends React.Component {
         const destination = result.destination;
 
         if (!destination) {
-            return;
+
         }
     }
 
     render() {
         const { board } = this.props;
-        return <BoardView board={board} onDragEnd={this.handleOnDragEnd} />;
+        if (board) {
+            return (
+                <BoardView board={board} onDragEnd={this.handleOnDragEnd} />
+            );
+        }
+        return '';
     }
 }
 BoardComp.propTypes = {
-    board: PropTypes.instanceOf(Board).isRequired,
+    board: PropTypes.instanceOf(Board),
+    fetchBoard: PropTypes.func.isRequired,
+};
+BoardComp.defaultProps = {
+    board: undefined,
 };
 
 // Put info from the store state in props
@@ -47,6 +62,7 @@ const mapStateToProps = ({ boardReducer }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        fetchBoard,
     }, dispatch,
 );
 
