@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { fetchBoard, updateListsIndexes } from '../../actions/boards';
+import { fetchBoard, updateListsIndexes, createList } from '../../actions/board';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
-import List from '../../models/List';
 
 // ===== Others
 
@@ -58,7 +57,6 @@ class BoardComp extends React.Component {
 
         // Drop elsewhere than Drag N Drop context
         if (!destination) {
-
         }
 
         // List dropped
@@ -86,7 +84,7 @@ class BoardComp extends React.Component {
                 const pendingBoard = board;
                 pendingBoard.lists = this.state.pendingLists;
                 return (
-                    <BoardView board={pendingBoard} onDragEnd={this.handleOnDragEnd} />
+                    <BoardView board={pendingBoard} isInputVisible={this.state.isInputVisible} onDragEnd={this.handleOnDragEnd} onListAdded={this.handleListAdded} />
                 );
             }
 
@@ -106,6 +104,7 @@ BoardComp.propTypes = {
         }),
     }).isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
+    createList: PropTypes.func.isRequired,
 };
 BoardComp.defaultProps = {
     board: undefined,
