@@ -43,6 +43,10 @@ a:hover, .btn-link:hover {
     transition: 0.15s;
 }
 
+.text-warning {
+    color: #ddb107;
+}
+
 /* Underline from center effect
 Source: http://tobiasahlin.com/blog/css-trick-animating-link-underlines/
 */
@@ -154,6 +158,10 @@ li {
 
 .btn-success, .btn.btn-success:hover {
     background-color: #43b949;
+}
+
+.btn-warning, btn.btn-warning:hover {
+    background-color: #ddb107;
 }
 
 .btn-success {

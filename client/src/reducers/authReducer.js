@@ -19,12 +19,12 @@ export default function usersReducer(state = initialState, action) {
             errorMessage: action.payload.error,
         };
 
-    case actions.CLASSIC_SIGN_UP_SUCCESS:
+    case actions.CLASSIC_REGISTER_SUCCESS:
         return {
             ...state,
         };
 
-    case actions.CLASSIC_SIGN_UP_FAILURE:
+    case actions.CLASSIC_REGISTER_FAILURE:
         return {
             ...state,
             errorMessage: action.payload.error,

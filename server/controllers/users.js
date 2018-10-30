@@ -18,20 +18,20 @@ userController.login = async (email, password) => {
     try {
         const user = await User.findOne({ email }).select('password');
         if (!user) {
-            throw new MyError(401, 'Invalid credentials');
+            throw new MyError(401, 'Invalid credentials.');
         }
 
         // check password
         const isMatch = await user.comparePassword(password, user.password);
         if (!isMatch) {
-            throw new MyError(401, 'Invalid credentials');
+            throw new MyError(401, 'Invalid credentials.');
         }
 
         // return token to the user
         return Auth.generateToken(user);
     } catch (err) {
         if (!err.status) {
-            throw new MyError(500, 'Internal Server Error');
+            throw new MyError(500, 'Internal server error.');
         }
         throw err;
     }
@@ -41,7 +41,7 @@ userController.login = async (email, password) => {
  * POST /signup
  * Create a new local account.
  */
-userController.postSignup = async (data) => {
+userController.postRegister = async (data) => {
     try {
         const fullNameUser = data.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
         // count the number of user with same fullName
@@ -66,9 +66,9 @@ userController.postSignup = async (data) => {
         await user.save();
     } catch (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
-            throw new MyError(409, 'User already exists');
+            throw new MyError(409, 'An account already exists for this email.');
         } else if (err.name === 'ValidationError') {
-            throw new MyError(400, 'Missing Informations');
+            throw new MyError(400, 'Missing informations');
         }
     }
 };
@@ -104,9 +104,9 @@ userController.updateProfile = async (user, data) => {
         userProfile.fullName = fullName;
         userProfile.bio = bio;
         userProfile.initials = initials;
-        const userFound = await User.findOne({ username, _id: { $ne: user._id } });
+        const userFound = await User.findOne({ userName, _id: { $ne: user._id } });
         if (userFound) throw new MyError(400, 'Username is taken ');
-        userProfile.username = username;
+        userProfile.userName = userName;
         await userProfile.save();
         return userProfile;
     } catch (err) {
@@ -141,7 +141,7 @@ userController.updateAccount = async (user, data) => {
         }
         await userProfile.save();
     } catch (err) {
-        // TODO: add more details (ex: if same username then error)
+        // TODO: add more details (ex: if same userName then error)
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'Update account failed');
         } else if (err.status) {

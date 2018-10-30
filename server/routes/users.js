@@ -16,9 +16,9 @@ module.exports = (router) => {
                 return res.status(422).json({ error: { form: errors.array() } });
             }
             try {
-                if (!req.body.fullName || !req.body.email || !req.body.password) throw new MyError(400, 'Missing Informations');
-                await userController.postSignup(req.body);
-                res.status(201).send({ message: 'user created' });
+                if (!req.body.fullName || !req.body.email || !req.body.password) throw new MyError(400, 'Missing information.');
+                await userController.postRegister(req.body);
+                res.status(201).send({ message: 'User successfully created.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -30,7 +30,7 @@ module.exports = (router) => {
             }
             try {
                 const authToken = await userController.login(req.body.email, req.body.password);
-                res.status(200).send({ message: 'connected', token: authToken });
+                res.status(200).send({ message: 'Connected.', token: authToken });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -71,7 +71,7 @@ module.exports = (router) => {
         .delete('/account', Auth.isAuthorized, async (req, res) => {
             try {
                 await userController.deleteAccount(req.user);
-                res.status(200).send({ message: 'Account successfully deleted' });
+                res.status(200).send({ message: 'Account successfully deleted.' });
                 // TODO: disconnect user if credentials change
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -92,7 +92,7 @@ module.exports = (router) => {
             }
             try {
                 await userController.postForgot(req.body.email, req.headers.host);
-                res.status(200).json({ message: 'Reset mail sent' });
+                res.status(200).json({ message: 'Reset mail sent.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -104,7 +104,7 @@ module.exports = (router) => {
             }
             try {
                 await userController.resetPassword(req.params.token, req.body.password);
-                res.status(200).send({ message: 'Password successfully reseted' });
+                res.status(200).send({ message: 'Password successfully reseted.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
