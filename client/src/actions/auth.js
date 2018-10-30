@@ -1,5 +1,5 @@
-
-import { displayLoadingModal, hideLoadingModal } from './modal';
+import * as APIFetch from '../helpers/APIFetch';
+import { displayLoadingModal, hideLoadingModal, displaySuccessMessage } from './modal';
 
 export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
 export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
@@ -63,6 +63,7 @@ export const classicSignUp = (name, fullName, email, password) => (dispatch) => 
     }, APIFetch.POST)
         .then((res) => {
             dispatch(classicRegisterSuccess());
+            dispatch(displaySuccessMessage('You have been successfully registered!'));
         })
         .catch((error) => {
             dispatch(classicRegisterFailure(error.response.data.error));

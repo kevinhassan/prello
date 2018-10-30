@@ -10,6 +10,7 @@ import {
 
 // ===== Actions
 import { classicRegister } from '../../actions/auth';
+import { displayErrorMessage, displaySuccessMessage } from '../../actions/modal';
 
 // ===== Models
 
@@ -33,6 +34,8 @@ class RegisterComp extends React.Component {
         const confirmPassword = target.confirmPassword.value;
         if (email && password && fullName && confirmPassword && confirmPassword === password) {
             this.props.classicRegister(fullName, email, password);
+        } else {
+            this.props.displayErrorMessage('Both passwords have to be equal.');
         }
     }
 
@@ -49,6 +52,7 @@ class RegisterComp extends React.Component {
 
 RegisterComp.propTypes = {
     classicRegister: PropTypes.func.isRequired,
+    displayErrorMessage: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
 };
 // Put info from the store state in props
@@ -60,8 +64,10 @@ const mapStateToProps = ({ authReducer }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        classicRegister,
         changePage: () => push('/'),
+        classicRegister,
+        displaySuccessMessage,
+        displayErrorMessage,
     }, dispatch,
 );
 export default connect(

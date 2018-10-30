@@ -43,11 +43,17 @@ class GraphicalCharter extends React.Component {
 
     handleHideLoadingModal() { this.props.hideLoadingModal(); }
 
-    handleDisplayErrorMessage() { this.props.displayErrorMessage('An example error occured. I want to test a long error message.'); }
+    handleDisplayErrorMessage() {
+        this.props.displayErrorMessage(`An example error occured. 
+        I want to test a long error message.`);
+    }
 
     handleHideErrorMessage() { this.props.hideErrorMessage(); }
 
-    handleDisplaySuccessMessage() { this.props.displaySuccessMessage('Example of a successful message! This one is a little bit long to test the modal.'); }
+    handleDisplaySuccessMessage() {
+        this.props.displaySuccessMessage(`Example of a successful message! 
+        This one is a little bit long to test the modal.`);
+    }
 
     handleHideSuccessMessage() { this.props.hideSuccessMessage(); }
 
@@ -190,19 +196,12 @@ class GraphicalCharter extends React.Component {
                             </button>
                         </div>
                         <br />
-                        <div><button type="button" className="btn btn-secondary" onClick={this.handleHideLoadingModal}>Hide loading modal</button></div>
                     </div>
 
                     <div className="col-sm-3">
                         <div>
                             <button type="button" className="btn btn-danger" onClick={this.handleDisplayErrorMessage}>
                             Display error message
-                            </button>
-                        </div>
-                        <br />
-                        <div>
-                            <button type="button" className="btn btn-secondary" onClick={this.handleHideErrorMessage}>
-                            Hide error message
                             </button>
                         </div>
                     </div>
@@ -213,15 +212,9 @@ class GraphicalCharter extends React.Component {
                                 Display success message
                             </button>
                         </div>
-                        <br />
-                        <div>
-                            <button type="button" className="btn btn-secondary" onClick={this.handleHideSuccessMessage}>
-                                Hide success message
-                            </button>
-                        </div>
                     </div>
                     <b>
-                        N.B.: an error is always displayed over a success message which is displayed over a loading modal.
+                        N.B.: A message is displayed during 5s. An error is always displayed over a success message which is displayed over a loading modal.
                     </b>
                 </div>
 
