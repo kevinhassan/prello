@@ -20,7 +20,7 @@ module.exports = (router) => {
             }
             try {
                 await boardController.putLists(req.params.boardId, req.body.lists);
-                res.status(200).send({ message: 'Board successfully updated' });
+                res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

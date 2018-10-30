@@ -66,7 +66,6 @@ describe('PUT /board/:id/lists', () => {
         request(app)
             .put(`/board/${data.id}/lists`)
             .send({ lists: [] })
-            .expect('Content-Type', /json/)
-            .expect(200, done);
+            .expect(204, done);
     });
 });
