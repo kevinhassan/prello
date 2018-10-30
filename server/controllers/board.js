@@ -1,13 +1,12 @@
 const boardController = {};
 const MyError = require('../util/error');
 const Board = require('../models/Board');
+
 /**
- * GET /board/{id}
+ * GET /board/:boardId
  *
  */
 boardController.get = async (boardId) => {
-    const error = new Error('Internal Server Error');
-    error.status = 500;
     try {
         const board = await Board.findById(boardId).populate([{
             path: 'lists',
@@ -16,42 +15,64 @@ boardController.get = async (boardId) => {
                 model: 'Card'
             }
         }, {
-            path: 'privacy',
-            select: 'name'
-        }, {
             path: 'labels'
         }]);
         if (!board) {
-            error.message = 'Board not found';
-            error.status = 404;
-            throw error;
+            throw new MyError(404, 'Board not found');
         }
         return board;
-    } catch (e) {
-        console.log(e);
-        throw error;
+    } catch (err) {
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        throw new MyError(500, 'Internal Server Error');
     }
 };
-
+/**
+ * PUT /board/:boardId
+ */
 boardController.putLists = async (boardId, lists) => {
-    const error = new Error('Internal Server Error');
-    error.status = 500;
     try {
         const board = await Board.findById(boardId);
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
         board.lists = lists;
-        board.save((err) => {
-            if (err) throw error;
-        });
-    } catch (e) {
-        console.log(e);
-        if (!e.status) {
-            throw new MyError(500, 'Internal Server Error');
+        await board.save();
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect Query');
         }
-        throw e;
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
     }
 };
-
+/**
+ * POST /board
+ */
+boardController.createBoard = async (data) => {
+    try {
+        const board = new Board();
+        if (!board) {
+            throw new MyError(404, 'Board not found');
+        }
+        board.name = data.name;
+        board.visibility = data.visibility;
+        await board.save();
+        return board._id;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect Query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 module.exports = boardController;

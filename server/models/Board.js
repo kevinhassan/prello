@@ -6,7 +6,9 @@ const boardSchema = new mongoose.Schema({
     labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
     lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    privacy: { type: mongoose.Schema.Types.ObjectId, ref: 'PrivacyType', required: true },
+    visibility: {
+        type: String, enum: ['public', 'private'], required: true, default: 'public'
+    },
     team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
 }, { timestamps: true });
 

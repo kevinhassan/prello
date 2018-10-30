@@ -9,6 +9,5 @@ require('./Comment');
 require('./Label');
 require('./List');
 require('./Notication');
-require('./PrivacyType');
 require('./Team');
 require('./User');
