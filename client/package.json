@@ -1,4 +1,5 @@
 {
+    "name": "prello-client",
     "private": true,
     "homepage": "https://create-react-app-redux.now.sh",
     "scripts": {

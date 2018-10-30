@@ -42,14 +42,7 @@ class CardComp extends React.Component {
     }
 
     handleOnDragEnd(result) {
-        const { destination, source, draggableId } = result;
-        if (!destination) return;
-        if (destination.droppableId === source.droppableId
-            && destination.index === source.index) return;
-
-        console.log('TODO : change cards indexes via Redux');
-
-        // Todo : change cards indexes via Redux
+        
     }
 
     render() {
