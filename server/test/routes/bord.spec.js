@@ -62,7 +62,7 @@ describe('PUT /board/:id/lists', () => {
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
-    it('should return 200 OK', (done) => {
+    it('should return 204 OK', (done) => {
         request(app)
             .put(`/board/${data.id}/lists`)
             .send({ lists: [] })
