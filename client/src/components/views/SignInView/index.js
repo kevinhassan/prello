@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // ==== Components / Container
-import Input from '../../forms/Input';
 
 // ===== Models
 

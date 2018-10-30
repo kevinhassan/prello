@@ -14,8 +14,8 @@ import { classicSignUp } from '../../actions/auth';
 // ===== Models
 
 // ===== Components / Containers
-import Input from '../../components/forms/Input';
-import SubmitForm from '../../components/forms/SubmitForm';
+// import Input from '../../components/forms/Input';
+// import SubmitForm from '../../components/forms/SubmitForm';
 
 // ===== Others
 
@@ -139,6 +139,7 @@ class SignUpComp extends React.Component {
     }
 
     render() {
+        /*
         const signupFormView = (
             <form onSubmit={this.handleFormSubmit}>
                 <Input
@@ -186,6 +187,8 @@ class SignUpComp extends React.Component {
             </form>
         );
         return signupFormView;
+        */
+        return <div />;
     }
 }
 
