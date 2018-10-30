@@ -134,7 +134,7 @@ describe('PUT /profile', () => {
             .send(wrongData)
             .expect(422, done);
     });
-    it('should return 200 OK', (done) => {
+    it('should return 204 OK', (done) => {
         const newData = data;
         newData.fullname = 'test1';
         newData.username = 'test2';
@@ -144,7 +144,7 @@ describe('PUT /profile', () => {
             .put('/profile')
             .send(newData)
             .set('Authorization', `Bearer ${token}`)
-            .expect(200, done);
+            .expect(204, done);
     });
 });
 describe('POST /forgot', () => {
@@ -207,12 +207,12 @@ describe('PUT /account', () => {
             .send({ email: '', password: data.password })
             .expect(422, done);
     });
-    it('should return 200 OK', (done) => {
+    it('should return 204 OK', (done) => {
         request(app)
             .put('/account')
             .set('Authorization', `Bearer ${token}`)
             .send({ email: 'test1@test.fr', password: data.password })
-            .expect(200, done);
+            .expect(204, done);
     });
 });
 describe('DELETE /account', () => {

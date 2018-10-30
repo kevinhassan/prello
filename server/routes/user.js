@@ -50,7 +50,7 @@ module.exports = (router) => {
             }
             try {
                 await userController.updateProfile(req.user, req.body);
-                res.status(200).send({ message: 'Profile successfully updated' });
+                res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -62,7 +62,7 @@ module.exports = (router) => {
             }
             try {
                 await userController.updateAccount(req.user, req.body);
-                res.status(200).send({ message: 'Account successfully updated' });
+                res.sendStatus(204);
                 // TODO: disconnect user if credentials change
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
