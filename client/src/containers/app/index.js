@@ -16,7 +16,7 @@ const App = () => (
         <Modal />
         <main>
             <Route exact path="/board/:boardId" component={BoardComp} />
-            <Route exact path="/login" component={SignInComp} />
+            <Route exact path="/signin" component={SignInComp} />
             <Route exact path="/signup" component={SignUpComp} />
             <Route exact path="/profile" component={UserComp} />
             <Route exact path="/graphical-charter" component={GraphicalCharter} />

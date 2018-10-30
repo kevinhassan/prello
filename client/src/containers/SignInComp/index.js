@@ -1,39 +1,71 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { push } from 'connected-react-router';
+import {
+    bindActionCreators,
+} from 'redux';
+import {
+    connect,
+} from 'react-redux';
 
 // ===== Actions
+import { classicSignIn } from '../../actions/auth';
 
 // ===== Models
 
 // ===== Components / Containers
 import SignInView from '../../components/views/SignInView';
 
-// ===== Others
 
 class SignInComp extends React.Component {
     constructor(props) {
         super(props);
-        this.test = this.test.bind(this);
+        this.handleFormSubmit = this.handleFormSubmit.bind(this);
     }
 
-    test() {
-        return this.props;
+    componentDidUpdate() {
+        if (this.props.isLoggedIn) {
+            this.props.goHome();
+        }
+    }
+
+    handleFormSubmit(event) {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+        if (email && password) {
+            this.props.classicSignIn(email, password);
+        }
     }
 
     render() {
-        return <SignInView />;
+        return (
+            <SignInView
+                errorMessage={this.props.errorMessage}
+                handleFormSubmit={this.handleFormSubmit}
+            />
+        );
     }
 }
+
 SignInComp.propTypes = {
+    classicSignIn: PropTypes.func.isRequired,
+    errorMessage: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    goHome: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ authReducer }) => ({
+    errorMessage: authReducer.errorMessage,
+    isLoggedIn: authReducer.isLoggedIn,
+});
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        classicSignIn,
+        goHome: () => push('/'),
     }, dispatch,
 );
 

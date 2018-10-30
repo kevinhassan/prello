@@ -36,5 +36,14 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
+        })
+
+        .put('/board/:boardId/lists', async (req, res) => {
+            try {
+                await boardController.putLists(req.params.boardId, req.body.lists);
+                res.status(204).send();
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
+            }
         });
 };

@@ -1,13 +1,17 @@
 import * as APIFetch from '../helpers/APIFetch';
+import { displayLoadingModal, hideLoadingModal } from './modal';
 
 export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
 export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
 export const CLASSIC_SIGN_IN_SUCCESS = 'auth/CLASSIC_SIGN_IN_SUCCESS';
 
-export const CLASSIC_SIGN_UP = 'auth/CLASSIC_SIGN_UP';
 export const CLASSIC_SIGN_UP_STARTED = 'auth/CLASSIC_SIGN_UP_STARTED';
-export const CLASSIC_SIGN_UP_SUCCESS = 'auth/CLASSIC_SIGN_UP_SUCCESS';
 export const CLASSIC_SIGN_UP_FAILURE = 'auth/CLASSIC_SIGN_UP_FAILURE';
+export const CLASSIC_SIGN_UP_SUCCESS = 'auth/CLASSIC_SIGN_UP_SUCCESS';
+
+export const UNAUTHENTICATED_USER_ERROR = 'auth/UNAUTHENTICATED_USER_ERROR';
+
+// ==========
 
 export const classicSignInStarted = () => ({ type: CLASSIC_SIGN_IN_STARTED });
 export const classicSignInFailure = error => ({
@@ -24,27 +28,19 @@ export const classicSignInSuccess = token => ({
 });
 
 export const classicSignIn = (email, password) => (dispatch) => {
+    dispatch(displayLoadingModal())
     dispatch(classicSignInStarted());
     APIFetch.fetchPrelloAPI('login', { email, password }, APIFetch.POST)
         .then((res) => {
-            dispatch(classicSignInSuccess(res.response.data.token));
+            localStorage.setItem('token', res.data.token);
+            dispatch(classicSignInSuccess());
+            dispatch(hideLoadingModal());
         })
         .catch((error) => {
             dispatch(classicSignInFailure(error.response.data.error));
+            dispatch(hideLoadingModal());
         });
 };
-
-
-export const classicSignUpAction = (name, username, email, password) => ({
-    type: CLASSIC_SIGN_UP,
-    payload: {
-        name,
-        username,
-        email,
-        password,
-    },
-});
-
 
 export const classicSignUpStarted = () => ({ type: CLASSIC_SIGN_UP_STARTED });
 
@@ -57,10 +53,10 @@ export const classicSignUpFailure = error => ({
 export const classicSignUpSuccess = () => ({ type: CLASSIC_SIGN_UP_SUCCESS });
 
 
-export const classicSignUp = (name, nickname, email, password) => (dispatch) => {
+export const classicSignUp = (name, fullname, email, password) => (dispatch) => {
     dispatch(classicSignUpStarted());
     APIFetch.fetchPrelloAPI('register', {
-        name, nickname, email, password,
+        name, fullname, email, password,
     }, APIFetch.POST)
         .then((res) => {
             if (res.ok) {
@@ -72,3 +68,10 @@ export const classicSignUp = (name, nickname, email, password) => (dispatch) => 
             }
         });
 };
+
+export const UnauthenticatedUserError = error => ({
+    type: UNAUTHENTICATED_USER_ERROR,
+    payload: {
+        error,
+    },
+});
