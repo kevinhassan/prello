@@ -13,7 +13,7 @@ import './style.css';
 class Header extends React.Component {
     render() {
         const {
-            goAbout, goBoardExample, goHome, goProfile,
+            goAbout, goBoardExample, goHome, goProfile, goRegister, goSignIn,
         } = this.props;
         const element = (
             <div className="header-bar">
@@ -27,6 +27,8 @@ class Header extends React.Component {
                     </span>
                 </div>
                 <div className="rightHeader-div">
+                    <button className="btn btn-light" type="button" onClick={goRegister}>Register</button>
+                    <button className="btn btn-dark" type="button" onClick={goSignIn}>Sign In</button>
                     <button className="btn btn-header" type="button" onClick={goProfile}><i className="fas fa-user" /></button>
                     <button className="btn btn-header" type="button"><i className="fas fa-bell" /></button>
                     <button className="btn btn-header" type="button" onClick={goAbout}><i className="fas fa-palette" /></button>
@@ -41,6 +43,8 @@ Header.propTypes = {
     goBoardExample: PropTypes.func.isRequired,
     goHome: PropTypes.func.isRequired,
     goProfile: PropTypes.func.isRequired,
+    goRegister: PropTypes.func.isRequired,
+    goSignIn: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
@@ -53,6 +57,8 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         goBoardExample: () => push('/board/b00000000001'),
         goHome: () => push('/'),
         goProfile: () => push('/profile'),
+        goRegister: () => push('/register'),
+        goSignIn: () => push('/signin'),
     }, dispatch,
 );
 
