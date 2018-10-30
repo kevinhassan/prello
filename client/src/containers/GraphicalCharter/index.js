@@ -196,6 +196,12 @@ class GraphicalCharter extends React.Component {
                             </button>
                         </div>
                         <br />
+                        <div>
+                            <button type="button" className="btn btn-primary" onClick={this.handleHideLoadingModal}>
+                                Hide loading modal
+                            </button>
+                        </div>
+                        <br />
                     </div>
 
                     <div className="col-sm-3">
