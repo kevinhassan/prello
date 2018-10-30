@@ -8,7 +8,6 @@ import { fetchBoard, updateListsIndexes, createList } from '../../actions/boards
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
-import List from '../../models/List';
 
 // ===== Others
 
@@ -72,7 +71,6 @@ class BoardComp extends React.Component {
 
         // Drop elsewhere than Drag N Drop context
         if (!destination) {
-
         }
 
         // List dropped
