@@ -12,7 +12,7 @@ import './style.css';
 
 const SignInView = props => (
     <div className="signInFormWrapper">
-        <h1 className="text-center">Sign in</h1>
+        <h1 className="signInTitle">Sign in</h1>
         <form className="signInForm" onSubmit={props.handleFormSubmit}>
 
             <div className="form-group row">
@@ -46,7 +46,7 @@ const SignInView = props => (
             <div className="form-group text-center">
                 <button type="submit" className="btn btn-primary">Sign in</button>
             </div>
-            <p className="text-danger">{props.errorMessage}</p>
+            <p className="text-danger signInErrorMsg">{props.errorMessage}</p>
         </form>
     </div>
 );
