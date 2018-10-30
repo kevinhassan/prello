@@ -30,9 +30,18 @@ const changeVisibility = [
         .withMessage('Visibility value need to be private or public')
 
 ];
-
+const addMember = [
+    check('email')
+        .not().isEmpty()
+        .withMessage('Email is required')
+        .trim()
+        .escape()
+        .isEmail()
+        .withMessage('Email doesn\t seem right !'),
+];
 module.exports = {
     addBoard,
     updateBoardList,
-    changeVisibility
+    changeVisibility,
+    addMember
 };

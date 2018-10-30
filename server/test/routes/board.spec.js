@@ -172,11 +172,40 @@ describe('PUT /boards/:id/visibility', () => {
             .set('Authorization', `Bearer ${tokenOwner}`)
             .expect(204, done);
     });
-    it('should return 403 OK', (done) => {
+    it('should return 403 ERROR', (done) => {
         request(app)
             .put(`/boards/${data.id}/visibility`)
             .send({ visibility: 'public' })
             .set('Authorization', `Bearer ${tokenNotOwner}`)
             .expect(403, done);
+    });
+});
+describe('POST /board/:id/members', () => {
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .post(`/board/${data.id}/members`)
+            .send({ email: 'test2@test.fr' })
+            .expect(403, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .post(`/board/${data.id}/members`)
+            .send({ email: '' })
+            .set('Authorization', `Bearer ${tokenNotOwner}`)
+            .expect(422, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .post(`/board/${data.id}/members`)
+            .send({ email: 'unknown@test.fr' })
+            .set('Authorization', `Bearer ${tokenNotOwner}`)
+            .expect(404, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .post(`/board/${data.id}/members`)
+            .send({ email: 'test2@test.fr' })
+            .set('Authorization', `Bearer ${tokenNotOwner}`)
+            .expect(201, done);
     });
 });
