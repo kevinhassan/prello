@@ -14,7 +14,7 @@ describe('modal/DISPLAY_LOADING_MODAL', () => {
     it('should set isModalOpen to true', () => {
         const action = actions.displayLoadingModalAction();
         const finalState = modalReducer(undefined, action);
-        expect(finalState.isModalOpen).toEqual(true);
+        expect(finalState.isLoadingModalOpen).toEqual(true);
     });
 });
 
@@ -22,6 +22,6 @@ describe('modal/HIDE_LOADING_MODAL', () => {
     it('should set isModalOpen to false', () => {
         const action = actions.hideLoadingModalAction();
         const finalState = modalReducer(undefined, action);
-        expect(finalState.isModalOpen).toEqual(false);
+        expect(finalState.isLoadingModalOpen).toEqual(false);
     });
 });

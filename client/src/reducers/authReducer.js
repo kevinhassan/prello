@@ -11,6 +11,7 @@ export default function usersReducer(state = initialState, action) {
         return {
             ...state,
             isLoggedIn: true,
+            errorMessage: '',
         };
 
     case actions.CLASSIC_SIGN_IN_FAILURE:
@@ -22,6 +23,7 @@ export default function usersReducer(state = initialState, action) {
     case actions.CLASSIC_REGISTER_SUCCESS:
         return {
             ...state,
+            errorMessage: '',
         };
 
     case actions.CLASSIC_REGISTER_FAILURE:
