@@ -9,7 +9,7 @@ module.exports = [
         .withMessage('Initials is required')
         .isLength({ min: 1, max: 2 })
         .withMessage('Initials need to have between 1 and 2 characters'),
-    check('userName')
+    check('username')
         .not().isEmpty()
         .withMessage('Username is required')
 

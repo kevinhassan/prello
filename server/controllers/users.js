@@ -104,9 +104,9 @@ userController.updateProfile = async (user, data) => {
         userProfile.fullName = fullName;
         userProfile.bio = bio;
         userProfile.initials = initials;
-        const userFound = await User.findOne({ userName, _id: { $ne: user._id } });
+        const userFound = await User.findOne({ username, _id: { $ne: user._id } });
         if (userFound) throw new MyError(400, 'Username is taken ');
-        userProfile.userName = userName;
+        userProfile.username = username;
         await userProfile.save();
         return userProfile;
     } catch (err) {
@@ -141,7 +141,7 @@ userController.updateAccount = async (user, data) => {
         }
         await userProfile.save();
     } catch (err) {
-        // TODO: add more details (ex: if same userName then error)
+        // TODO: add more details (ex: if same username then error)
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'Update account failed');
         } else if (err.status) {
