@@ -5,7 +5,7 @@ const boardSchema = new mongoose.Schema({
     name: { type: String, required: true },
     labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
     lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     visibility: {
         type: String, enum: ['public', 'private'], required: true, default: 'public'
     },
