@@ -5,10 +5,12 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     fullname: { type: String, required: true },
     username: { type: String, unique: true, required: true },
-    initials: String,
+    initials: { type: String, required: true },
     bio: String,
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
     avatarUrl: String,
     teams: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -38,11 +40,6 @@ userSchema.pre('save', function save(next) {
             user.password = hash;
         });
     });
-    if (user.fullname && user.fullname.split(' ').length >= 2) {
-        user.initials = user.fullname.split(' ')[0].toUpperCase().charAt(0) + user.fullname.split(' ')[1].toUpperCase().charAt(0);
-    } else {
-        user.initials = user.fullname.toUpperCase().charAt(0);
-    }
     next();
 });
 
