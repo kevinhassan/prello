@@ -6,10 +6,12 @@ export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
 export const CLASSIC_SIGN_IN_SUCCESS = 'auth/CLASSIC_SIGN_IN_SUCCESS';
 
 export const CLASSIC_SIGN_UP_STARTED = 'auth/CLASSIC_SIGN_UP_STARTED';
-export const CLASSIC_SIGN_UP_SUCCESS = 'auth/CLASSIC_SIGN_UP_SUCCESS';
 export const CLASSIC_SIGN_UP_FAILURE = 'auth/CLASSIC_SIGN_UP_FAILURE';
+export const CLASSIC_SIGN_UP_SUCCESS = 'auth/CLASSIC_SIGN_UP_SUCCESS';
 
 export const UNAUTHENTICATED_USER_ERROR = 'auth/UNAUTHENTICATED_USER_ERROR';
+
+// ==========
 
 export const classicSignInStarted = () => ({ type: CLASSIC_SIGN_IN_STARTED });
 export const classicSignInFailure = error => ({
