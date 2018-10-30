@@ -69,3 +69,22 @@ describe('PUT /boards/:id/lists', () => {
             .expect(204, done);
     });
 });
+describe('PUT /board/:id/visibility', () => {
+    it('should return 422 ERROR', (done) => {
+        const wrongLists = {
+            visibility: 'unknown'
+        };
+        request(app)
+            .put(`/board/${data.id}/visibility`)
+            .send(wrongLists)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 200 OK', (done) => {
+        request(app)
+            .put(`/board/${data.id}/visibility`)
+            .send({ visibility: 'public' })
+            .expect('Content-Type', /json/)
+            .expect(200, done);
+    });
+});

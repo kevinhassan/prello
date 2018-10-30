@@ -18,7 +18,21 @@ const updateBoardList = [
         .isArray(),
 ];
 
+const changeVisibility = [
+    check('visibility')
+        .not().isEmpty()
+        .withMessage('Visibility is required')
+        .isString()
+        .withMessage('Visibility must be a string')
+        .trim()
+        .escape()
+        .isIn(['public', 'private'])
+        .withMessage('Visibility value need to be private or public')
+
+];
+
 module.exports = {
     addBoard,
-    updateBoardList
+    updateBoardList,
+    changeVisibility
 };

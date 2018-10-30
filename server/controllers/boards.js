@@ -75,4 +75,26 @@ boardController.createBoard = async (data) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+/**
+ * PUT /board/:boardId/visibility
+ * Change the visibility of the board
+ */
+boardController.changeVisibility = async (boardId, visibility) => {
+    try {
+        const board = await Board.findById(boardId);
+        if (!board) {
+            throw new MyError(404, 'Board not found');
+        }
+        board.visibility = visibility;
+        await board.save();
+    } catch (err) {
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect Query');
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 module.exports = boardController;
