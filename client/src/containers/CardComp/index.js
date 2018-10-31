@@ -18,7 +18,6 @@ class CardComp extends React.Component {
         super(props);
         this.state = { displayCardDetail: false };
         this.handleDeleteCard = this.handleDeleteCard.bind(this);
-        this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
         this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
     }
@@ -39,10 +38,6 @@ class CardComp extends React.Component {
         ) {
             this.setState({ displayCardDetail: false });
         }
-    }
-
-    handleOnDragEnd(result) {
-        
     }
 
     render() {
