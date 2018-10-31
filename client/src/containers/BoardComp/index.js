@@ -8,6 +8,7 @@ import { fetchBoard, updateListsIndexes, createList } from '../../actions/boards
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
+import List from '../../models/List';
 
 // ===== Others
 
