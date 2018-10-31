@@ -8,6 +8,7 @@ import { fetchBoard, updateListsIndexes, createList } from '../../actions/board'
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
+import List from '../../models/List';
 
 // ===== Others
 
@@ -52,6 +53,19 @@ class BoardComp extends React.Component {
         return result;
     };
 
+    handleAddList() {
+        this.setState({ isInputVisible: true });
+    }
+
+    handleListAdded() {
+        const name = document.getElementsByName('listName')[0].value.toString();
+        const lists = this.props.board.lists.concat(new List({
+            _id: '6c3030303030303030303034', isArchived: false, name, boardId: this.props.board._id, cards: [],
+        }));
+        this.props.createList(this.props.board._id, lists);
+    }
+
+
     handleOnDragEnd(result) {
         const { destination, source, type } = result;
 
@@ -84,12 +98,12 @@ class BoardComp extends React.Component {
                 const pendingBoard = board;
                 pendingBoard.lists = this.state.pendingLists;
                 return (
-                    <BoardView board={pendingBoard} isInputVisible={this.state.isInputVisible} onDragEnd={this.handleOnDragEnd} onListAdded={this.handleListAdded} />
+                    <BoardView board={pendingBoard} isInputVisible={this.state.isInputVisible} onDragEnd={this.handleOnDragEnd} onClickAddList={this.handleAddList} onListAdded={this.handleListAdded} />
                 );
             }
 
             return (
-                <BoardView board={board} onDragEnd={this.handleOnDragEnd} />
+                <BoardView board={board} onDragEnd={this.handleOnDragEnd} isInputVisible={this.state.isInputVisible} onClickAddList={this.handleAddList} onListAdded={this.handleListAdded} />
             );
         }
         return '';

@@ -8,6 +8,8 @@ export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
 export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 export const CREATE_LIST = 'board/CREATE_LIST';
+export const CREATE_LIST_SUCCESS = 'board/CREATE_LIST_SUCCESS';
+export const CREATE_LIST_FAILURE = 'board/CREATE_LIST_FAILURE';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({
@@ -80,14 +82,34 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
         });
 };
 
-export const createListAction = ( newBoard, name ) => ({
+export const createListAction = (boardId, lists) => ({
     type: CREATE_LIST,
     payload: {
-        board: newBoard,
-        name,
+        boardId,
+        lists,
     },
 });
 
-export const createList = ( newBoard, name ) => (dispatch) => {
-    dispatch(createListAction(newBoard, name));
+export const createListFailure = error => ({
+    type: CREATE_LIST_FAILURE,
+    payload: {
+        error,
+    },
+});
+
+export const createListSuccess = () => ({ type: CREATE_LIST_SUCCESS });
+
+export const createList = (boardId, lists) => (dispatch) => {
+    dispatch(createListAction(boardId, lists));
+    const ressource = 'board/'.concat(boardId).concat('/lists/');
+    APIFetch.fetchPrelloAPI(ressource, { lists }, APIFetch.PUT)
+        .then((res) => {
+            if (res.ok) {
+                dispatch(createListSuccess());
+            } else {
+                res.json().then((jsonError) => {
+                    dispatch(createListFailure(jsonError.error));
+                });
+            }
+        });
 };
