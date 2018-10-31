@@ -1,5 +1,7 @@
 import APISocket from '../helpers/APISocket';
-import { displayLoadingModal, hideLoadingModal } from './modal';
+import {
+    displayErrorMessage, displaySuccessMessage, displayLoadingModal, hideLoadingModal,
+} from './modal';
 
 // ========================
 export const CREATE_CARD = 'cards/CREATE_CARD';
@@ -47,9 +49,12 @@ export const editCardDescription = (cardId, description) => (dispatch) => {
     APISocket.editCardDescription(cardId, description, (res) => {
         if (res.error) {
             dispatch(editCardDescriptionFailureAction(res.error));
+            dispatch(hideLoadingModal());
+            dispatch(displayErrorMessage(res.error));
         } else {
             dispatch(editCardDescriptionSuccessAction(res.message));
+            dispatch(hideLoadingModal());
+            dispatch(displaySuccessMessage(res.message));
         }
-        dispatch(hideLoadingModal());
     });
 };
