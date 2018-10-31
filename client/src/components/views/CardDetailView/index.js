@@ -50,6 +50,23 @@ const CardDetailView = props => (
                     Description
                 </h2>
                 <p className="cardDetailDescription">{props.card.description}</p>
+
+                <form onSubmit={props.editDescription}>
+                    <div className="form-group row">
+                        <label htmlFor="description" className="col-form-label col-sm-3">New description</label>
+                        <div className="col-sm-9">
+                            <input
+                                className="form-control"
+                                id="description"
+                                name="description"
+                                placeholder=""
+                                type="text"
+                            />
+                        </div>
+                    </div>
+                    <button className="btn btn-secondary" type="submit">EDIT Description</button>
+                </form>
+
                 <div>
                     {(props.deleteCard)
                         ? (
@@ -69,6 +86,7 @@ CardDetailView.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
     closeCardDetail: PropTypes.func.isRequired,
     deleteCard: PropTypes.func,
+    editDescription: PropTypes.func.isRequired,
 };
 
 CardDetailView.defaultProps = {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { deleteCard } from '../../actions/card';
+import { deleteCard, editCardDescription } from '../../actions/card';
 
 // ===== Models
 import Card from '../../models/Card';
@@ -20,6 +20,7 @@ class CardComp extends React.Component {
         this.handleDeleteCard = this.handleDeleteCard.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
         this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
+        this.handleEditDescription = this.handleEditDescription.bind(this);
     }
 
     handleDeleteCard() {
@@ -40,6 +41,12 @@ class CardComp extends React.Component {
         }
     }
 
+    handleEditDescription(event) {
+        event.preventDefault();
+        const description = event.target.description.value;
+        this.props.editCardDescription(this.props.card._id, description);
+    }
+
     render() {
         const { card } = this.props;
         return (
@@ -49,7 +56,7 @@ class CardComp extends React.Component {
                     onCardClick={this.handleCardClick}
                 />
                 {(this.state.displayCardDetail)
-                    ? <CardDetailView closeCardDetail={this.handleCloseCardDetail} card={card} />
+                    ? <CardDetailView closeCardDetail={this.handleCloseCardDetail} card={card} editDescription={this.handleEditDescription} />
                     : ''
                 }
             </div>
@@ -59,6 +66,7 @@ class CardComp extends React.Component {
 CardComp.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
     deleteCard: PropTypes.func.isRequired,
+    editCardDescription: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
@@ -68,6 +76,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         deleteCard,
+        editCardDescription,
     }, dispatch,
 );
 

@@ -12,4 +12,10 @@ APISocket.subscribeToBoard = (boardId, callback) => {
     APISocket.socket.emit('subscribeToCurrentBoard', boardId);
 };
 
+APISocket.editCardDescription = (cardId, description, callback) => {
+    APISocket.socket.emit('editCardDescription', { cardId, description }, (res) => {
+        callback(res);
+    });
+};
+
 export default APISocket;
