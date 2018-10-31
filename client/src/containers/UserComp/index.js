@@ -7,19 +7,14 @@ import { connect } from 'react-redux';
 import UserView from '../../components/UserView';
 
 // ===== Actions
-import { classicSignIn } from '../../actions/auth';
+import { getUserInformations } from '../../actions/user';
 
 // ===== Others
 import './style.css';
 
 class UserComp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.handleClassicSignIn = this.handleClassicSignIn.bind(this);
-    }
-
-    handleClassicSignIn() {
-        this.props.classicSignIn('kevin.hassan@etu.umontpellier.fr', 'pass');
+    componentWillMount() {
+        this.props.getUserInformations();
     }
 
     render() {
@@ -35,7 +30,11 @@ class UserComp extends React.Component {
                 </div>
             </div>
         );
-        return element;
+        if (user) {
+            return element;
+        }
+        return <p>Ok</p>;
+        
     }
 }
 
