@@ -3,7 +3,7 @@ const MyError = require('../util/error');
 const Board = require('../models/Board');
 
 /**
- * GET /board/:boardId
+ * GET /boards/:boardId
  *
  */
 boardController.get = async (boardId) => {
@@ -29,7 +29,7 @@ boardController.get = async (boardId) => {
     }
 };
 /**
- * PUT /board/:boardId
+ * PUT /boards/:boardId
  */
 boardController.putLists = async (boardId, lists) => {
     try {
@@ -53,7 +53,7 @@ boardController.putLists = async (boardId, lists) => {
     }
 };
 /**
- * POST /board
+ * POST /boards
  */
 boardController.createBoard = async (data) => {
     try {

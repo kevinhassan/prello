@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { fetchBoard, updateListsIndexes } from '../../actions/board';
+import { fetchBoard, updateListsIndexes } from '../../actions/boards';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
@@ -100,8 +100,8 @@ BoardComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ boardReducer }) => ({
-    board: boardReducer.board,
+const mapStateToProps = ({ boardsReducer }) => ({
+    board: boardsReducer.board,
 });
 
 // Put actions in props

@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator/check');
-const userController = require('../controllers/user');
+const userController = require('../controllers/users');
 const Auth = require('../middlewares/auth');
 const MyError = require('../util/error');
 const {

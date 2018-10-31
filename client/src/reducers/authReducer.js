@@ -5,7 +5,7 @@ export const initialState = {
     isLoggedIn: false,
 };
 
-export default function userReducer(state = initialState, action) {
+export default function usersReducer(state = initialState, action) {
     switch (action.type) {
     case actions.CLASSIC_SIGN_IN_SUCCESS:
         return {

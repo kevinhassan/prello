@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import authReducer from './authReducer';
-import boardReducer from './boardReducer';
+import boardsReducer from './boardsReducer';
 import modalReducer from './modalReducer';
-import userReducer from './userReducer';
+import usersReducer from './usersReducer';
 
 export default combineReducers({
     authReducer,
-    boardReducer,
+    boardsReducer,
     modalReducer,
-    userReducer,
+    usersReducer,
 });

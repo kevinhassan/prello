@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 
 const app = require('../../app.js');
 const Board = require('../../models/Board');
@@ -8,7 +8,7 @@ const data = {
     name: 'test Card',
     visibility: 'private'
 };
-describe('POST /board', () => {
+describe('POST /boards', () => {
     before(async () => {
         await Board.deleteMany({});
     });
@@ -18,14 +18,14 @@ describe('POST /board', () => {
             visibility: 'private'
         };
         request(app)
-            .post('/board')
+            .post('/boards')
             .send(wrongBoard)
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
     it('should return 200 OK', (done) => {
         request(app)
-            .post('/board')
+            .post('/boards')
             .send(data)
             .expect('Content-Type', /json/)
             .expect(200, (err, res) => {
@@ -36,35 +36,35 @@ describe('POST /board', () => {
     });
 });
 
-describe('GET /board/:id', () => {
+describe('GET /boards/:id', () => {
     it('should return 404 OK', (done) => {
         request(app)
-            .get('/board/test1234')
+            .get('/boards/test1234')
             .expect('Content-Type', /json/)
             .expect(404, done);
     });
     it('should return 200 OK', (done) => {
         request(app)
-            .get(`/board/${data.id}`)
+            .get(`/boards/${data.id}`)
             .send(data)
             .expect('Content-Type', /json/)
             .expect(200, done);
     });
 });
-describe('PUT /board/:id/lists', () => {
+describe('PUT /boards/:id/lists', () => {
     it('should return 422 ERROR', (done) => {
         const wrongLists = {
             lists: ''
         };
         request(app)
-            .put(`/board/${data.id}/lists`)
+            .put(`/boards/${data.id}/lists`)
             .send(wrongLists)
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
-            .put(`/board/${data.id}/lists`)
+            .put(`/boards/${data.id}/lists`)
             .send({ lists: [] })
             .expect(204, done);
     });

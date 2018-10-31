@@ -1,7 +1,7 @@
 const socket = require('socket.io')();
 
 // ===== Controllers
-const boardController = require('../controllers/board');
+const boardController = require('../controllers/boards');
 
 // ===== Define behaviours
 socket.on('connection', (client) => {

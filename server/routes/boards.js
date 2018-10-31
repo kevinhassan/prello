@@ -1,10 +1,10 @@
 const { validationResult } = require('express-validator/check');
-const boardController = require('../controllers/board');
+const boardController = require('../controllers/boards');
 const { boardValidator } = require('../validators');
 
 module.exports = (router) => {
     router
-        .get('/board/:boardId', async (req, res) => {
+        .get('/boards/:boardId', async (req, res) => {
             try {
                 const boardFound = await boardController.get(req.params.boardId);
                 res.status(200).send({ board: boardFound });
@@ -13,7 +13,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/board/:boardId/lists', boardValidator.updateBoardList, async (req, res) => {
+        .put('/boards/:boardId/lists', boardValidator.updateBoardList, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: { form: errors.array() } });
@@ -25,7 +25,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/board', boardValidator.addBoard, async (req, res) => {
+        .post('/boards', boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: { form: errors.array() } });
@@ -38,7 +38,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/board/:boardId/lists', async (req, res) => {
+        .put('/boards/:boardId/lists', async (req, res) => {
             try {
                 await boardController.putLists(req.params.boardId, req.body.lists);
                 res.status(204).send();

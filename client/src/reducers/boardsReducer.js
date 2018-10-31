@@ -1,4 +1,4 @@
-import * as actions from '../actions/board';
+import * as actions from '../actions/boards';
 import Board from '../models/Board';
 import Card from '../models/Card';
 import List from '../models/List';
@@ -7,7 +7,7 @@ export const initialState = {
     board: undefined,
 };
 
-export default function boardReducer(state = initialState, action) {
+export default function boardsReducer(state = initialState, action) {
     switch (action.type) {
     case actions.FETCH_BOARD_SUCCESS:
         // Convert JSON to Object (Board, List, Card)

@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 
 // ===== Models
@@ -27,7 +26,7 @@ class UserComp extends React.Component {
     }
 
     render() {
-        const { user, authError } = this.props;
+        const { user } = this.props;
         const element = (
             <div className="usersPanel">
                 <h1>My profile</h1>
@@ -37,17 +36,6 @@ class UserComp extends React.Component {
                         user={user}
                     />
                 </div>
-
-                <button type="button" className="btn btn-link" onClick={() => this.props.changePage()}>
-                    Go to about page via redux
-                </button>
-
-                <hr />
-                <button type="button" className="btn btn-info" onClick={this.handleClassicSignIn}>
-                    Test classic sign in
-                </button>
-                {authError !== '' ? <p className="errorMsg">{authError}</p> : ''}
-
             </div>
         );
         return element;
@@ -55,24 +43,19 @@ class UserComp extends React.Component {
 }
 
 UserComp.propTypes = {
-    authError: PropTypes.string.isRequired,
     classicSignIn: PropTypes.func.isRequired,
     user: PropTypes.instanceOf(User).isRequired,
-    changePage: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ authReducer, userReducer }) => ({
-    authError: authReducer.error,
-    token: authReducer.token,
-    user: userReducer.user,
+const mapStateToProps = ({ usersReducer }) => ({
+    user: usersReducer.user,
 });
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         classicSignIn,
-        changePage: () => push('/about-us'),
     }, dispatch,
 );
 

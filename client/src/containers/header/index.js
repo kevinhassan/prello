@@ -54,7 +54,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         goAbout: () => push('/graphical-charter'),
-        goBoardExample: () => push('/board/b00000000001'),
+        goBoardExample: () => push('/boards/b00000000001'),
         goHome: () => push('/'),
         goProfile: () => push('/profile'),
         goRegister: () => push('/register'),
