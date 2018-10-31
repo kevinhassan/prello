@@ -16,7 +16,7 @@ TeamSeeder.dropDatabase = async () => {
 TeamSeeder.fillDatabase = async () => {
     console.log('Seeding Teams...');
     try {
-        await Team.insertMany(mocks);
+        await Promise.all(mocks.map(user => new Team(user).save()));
         console.log('Team collection filled');
     } catch (error) {
         console.log(`Error:${error}`);

@@ -9,7 +9,7 @@ const addBoard = [
         .isString()
         .trim()
         .escape()
-        .isIn(['public', 'private'])
+        .isIn(['public', 'private', 'team'])
 ];
 const updateBoardList = [
     check('lists')
@@ -39,9 +39,21 @@ const addMember = [
         .isEmail()
         .withMessage('Email doesn\t seem right !'),
 ];
+const addTeam = [
+    check('team')
+        .not().isEmpty()
+        .withMessage('Team is required')
+        .trim()
+        .escape()
+        .isString()
+        .withMessage('Team need to be a string'),
+
+
+];
 module.exports = {
     addBoard,
     updateBoardList,
     changeVisibility,
-    addMember
+    addMember,
+    addTeam
 };
