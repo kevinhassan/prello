@@ -22,7 +22,7 @@ class UserView extends React.Component {
                 <div className="userContent">
                     <div>
                         <div className="nickname">
-                            <b>{user.nickname}</b>
+                            <b>{user.username}</b>
                         </div>
                         <br />
                         Initials:
