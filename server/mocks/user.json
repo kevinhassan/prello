@@ -1,0 +1,16 @@
+[
+  {
+      "_id": "b00000000001",
+      "fullname": "Test Test",
+      "username": "test",
+      "email": "test@test.fr",
+      "password": "password"
+  },
+  {
+      "_id": "b00000000002",
+      "fullname": "Test Test",
+      "username": "test2",
+      "email": "test2@test.fr",
+      "password": "password"
+  }
+]

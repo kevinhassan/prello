@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const teamSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: String,
-    isVisible: { type: Boolean, required: false },
+    isVisible: { type: Boolean, default: false },
     avatarUrl: String,
     admin: {
         type: mongoose.Schema.Types.ObjectId,

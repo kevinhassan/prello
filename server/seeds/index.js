@@ -5,6 +5,8 @@ const seeders = [];
 seeders.push(require('./BoardSeeder'));
 seeders.push(require('./CardSeeder'));
 seeders.push(require('./ListSeeder'));
+seeders.push(require('./UserSeeder'));
+seeders.push(require('./TeamSeeder'));
 
 // ====== Seed all collections
 async function seedAll() {

@@ -9,7 +9,8 @@ const boardSchema = new mongoose.Schema({
     visibility: {
         type: String, enum: ['public', 'private'], required: true, default: 'public'
     },
-    team: { type: mongoose.Schema.Types.ObjectId, ref: 'Team' }
+    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Member' }]
 }, { timestamps: true });
 
 
