@@ -51,7 +51,6 @@ class CardComp extends React.Component {
             <div>
                 <CardView
                     card={card}
-                    deleteCard={this.handleDeleteCard}
                     onCardClick={this.handleCardClick}
                 />
                 {(this.state.displayCardDetail)

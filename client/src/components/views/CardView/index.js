@@ -12,16 +12,6 @@ const CardView = props => (
             <button className="btn-noCss" type="button" onClick={props.onCardClick} onKeyDown={props.onCardClick}>
                 <div>
                     <b className="cardName">{props.card.name}</b>
-                    <div>
-                        {(props.deleteCard)
-                            ? (
-                                <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card._id)}>
-                                    <i className="fas fa-trash-alt fa-xs" />
-                                </button>
-                            )
-                            : ''
-                        }
-                    </div>
                 </div>
             </button>
         </div>
@@ -30,12 +20,10 @@ const CardView = props => (
 
 CardView.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
-    deleteCard: PropTypes.func,
     onCardClick: PropTypes.func.isRequired,
 };
 
 CardView.defaultProps = {
-    deleteCard: undefined,
 };
 
 // Put info from the store state in props (None)
