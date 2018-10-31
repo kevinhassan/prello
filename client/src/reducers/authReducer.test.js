@@ -22,6 +22,6 @@ describe('auth/CLASSIC_SIGN_IN_FAILURE reducer', () => {
         const signInAction = actions.classicSignInFailure('error when signing up');
         const finalState = authReducer({}, signInAction);
 
-        expect(finalState.errorMessage).toEqual('error when signing up');
+        expect(finalState.errorSignInMessage).toEqual('error when signing up');
     });
 });

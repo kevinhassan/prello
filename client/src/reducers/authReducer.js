@@ -1,7 +1,8 @@
 import * as actions from '../actions/auth';
 
 export const initialState = {
-    errorMessage: '',
+    errorSignInMessage: '',
+    errorRegisterMessage: '',
     isLoggedIn: false,
 };
 
@@ -11,25 +12,25 @@ export default function usersReducer(state = initialState, action) {
         return {
             ...state,
             isLoggedIn: true,
-            errorMessage: '',
+            errorSignInMessage: '',
         };
 
     case actions.CLASSIC_SIGN_IN_FAILURE:
         return {
             ...state,
-            errorMessage: action.payload.error,
+            errorSignInMessage: action.payload.error,
         };
 
     case actions.CLASSIC_REGISTER_SUCCESS:
         return {
             ...state,
-            errorMessage: '',
+            errorRegisterMessage: '',
         };
 
     case actions.CLASSIC_REGISTER_FAILURE:
         return {
             ...state,
-            errorMessage: action.payload.error,
+            errorRegisterMessage: action.payload.error,
         };
 
 

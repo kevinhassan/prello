@@ -57,7 +57,7 @@ RegisterComp.propTypes = {
 };
 // Put info from the store state in props
 const mapStateToProps = ({ authReducer }) => ({
-    errorMessage: authReducer.errorMessage,
+    errorMessage: authReducer.errorRegisterMessage,
 });
 
 
