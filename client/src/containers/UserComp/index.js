@@ -33,8 +33,7 @@ class UserComp extends React.Component {
         if (user) {
             return element;
         }
-        return <p>Ok</p>;
-        
+        return <p>User not authorized  TODO : Redirect to login </p>;
     }
 }
 

@@ -5,10 +5,10 @@ export const USER_INFORMATIONS_SUCCESS = 'user/USER_INFORMATIONS_SUCCESS';
 
 // ==========
 
-export const userInformationsSuccess = user => ({
+export const userInformationsSuccess = profile => ({
     type: USER_INFORMATIONS_SUCCESS,
     payload: {
-        user,
+        profile,
     },
 });
 
@@ -16,8 +16,7 @@ export const getUserInformations = () => (dispatch) => {
     APIFetch.fetchPrelloAPI('profile', {
     }, APIFetch.GET)
         .then((res) => {
-            if (res.ok) {
-                console.log(res.data.profile);
+            if (res) {
                 dispatch(userInformationsSuccess(res.data.profile));
             }
         })
