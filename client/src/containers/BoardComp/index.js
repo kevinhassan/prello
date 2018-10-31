@@ -51,7 +51,7 @@ class BoardComp extends React.Component {
     handleListAdded() {
         const name = document.getElementsByName('listName')[0].value.toString();
         const newList = new List({
-            _id: 'l00000000004', name, boardId: this.props.board._id,
+            name, boardId: this.props.board._id,
         });
         const lists = this.props.board.lists.concat(newList);
         this.props.createList(this.props.board._id, lists, newList);

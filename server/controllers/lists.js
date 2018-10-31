@@ -26,4 +26,4 @@ listController.createList = async (name, boardId) => {
     }
 };
 
-module.export = listController;
+module.exports = listController;
