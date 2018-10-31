@@ -52,14 +52,13 @@ export const classicRegisterFailure = error => ({
 });
 export const classicRegisterSuccess = () => ({ type: CLASSIC_REGISTER_SUCCESS });
 
-
-export const classicSignUp = (name, fullname, email, password) => (dispatch) => {
-    dispatch(classicSignUpStarted());
-export const classicSignUp = (name, fullName, email, password) => (dispatch) => {
-    dispatch(classicSignUpStarted());
+export const classicRegister = (name, fullName, email, password) => (dispatch) => {
+    dispatch(classicRegisterStarted());
     APIFetch.fetchPrelloAPI('register', {
-        name, fullname, email, password,
-        name, fullName, email, password,
+        name,
+        fullName,
+        email,
+        password,
     }, APIFetch.POST)
         .then((res) => {
             dispatch(classicRegisterSuccess());
