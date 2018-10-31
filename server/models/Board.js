@@ -10,15 +10,20 @@ const boardSchema = new mongoose.Schema({
         type: String, enum: ['public', 'private', 'team'], required: true, default: 'public'
     },
     teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
-    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Member' }]
+    members: [{
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        isAdmin: { type: Boolean, default: false }
+    }]
 }, { timestamps: true });
 
 /**
- * Add owner to the members
+ * Add owner to the members and has admin rights
  */
 boardSchema.pre('save', function save(next) {
     const board = this;
-    if (!board.members.includes(board.owner)) board.members.push(board.owner);
+    if (board.members.length === 0) {
+        board.members.push({ _id: board.owner, isAdmin: true });
+    }
     next();
 });
 

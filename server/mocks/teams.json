@@ -1,6 +1,6 @@
 [
   {
       "name": "Team 1",
-      "admin": ["b00000000002"]
+      "members": [{"_id": "t00000000002", "isAdmin": true}]
   }
 ]

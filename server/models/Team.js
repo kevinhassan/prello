@@ -5,15 +5,9 @@ const teamSchema = new mongoose.Schema({
     description: String,
     isVisible: { type: Boolean, default: false },
     avatarUrl: String,
-    admins: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    }],
     members: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        isAdmin: { type: Boolean, default: false }
     }],
     boards: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -21,16 +15,6 @@ const teamSchema = new mongoose.Schema({
     }]
 }, { timestamps: true });
 
-
-/**
- * Add admin to the members
- */
-
-teamSchema.pre('save', function save(next) {
-    const team = this;
-    if (!team.members.includes(team.admins[team.admins.length - 1])) team.members.push(team.admins[team.admins.length - 1]);
-    next();
-});
 
 const Team = mongoose.model('Team', teamSchema, 'Teams');
 module.exports = Team;

@@ -16,7 +16,7 @@ BoardSeeder.dropDatabase = async () => {
 BoardSeeder.fillDatabase = async () => {
     console.log('Seeding Boards...');
     try {
-        await Board.insertMany(mocks);
+        await Promise.all(mocks.map(async data => new Board(data).save()));
         console.log('Board collection filled');
     } catch (error) {
         console.log(`Error:${error}`);
