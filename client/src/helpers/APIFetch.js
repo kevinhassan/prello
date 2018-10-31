@@ -14,6 +14,7 @@ export const fetchPrelloAPI = (resource, params = {}, verb = GET) => {
         throw Error('REACT_APP_API_HOST in .env file not found.');
     }
     const url = process.env.REACT_APP_API_HOST + resource;
+    const token = localStorage.getItem('token');
     return axios({
         data: params,
         headers: {
