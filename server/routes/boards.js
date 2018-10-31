@@ -1,6 +1,5 @@
 
 const boardController = require('../controllers/boards');
-const listController = require('../controllers/lists');
 const { boardValidator } = require('../validators');
 const listController = require('../controllers/lists');
 
