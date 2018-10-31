@@ -25,8 +25,8 @@ export const fetchBoardSuccessAction = board => ({
 
 export const fetchBoard = boardId => (dispatch) => {
     dispatch(fetchBoardStartedAction());
+    dispatch(displayLoadingModal());
     APISocket.subscribeToBoard(boardId, (res) => {
-        dispatch(displayLoadingModal());
         if (res.error) {
             dispatch(fetchBoardFailureAction(res.error));
         } else {
@@ -65,14 +65,16 @@ export const updateListsIndexesAction = newLists => ({
 
 export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
     dispatch(updateListsIndexesStartedAction());
+    dispatch(displayLoadingModal());
     const resource = 'board/'.concat(boardId).concat('/lists/');
-
     APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
         .then(() => {
             // API doesn't need to return the lists (too long): use directly the new order
             dispatch(updateListsIndexesSuccessAction(newLists));
+            dispatch(hideLoadingModal());
         })
         .catch((error) => {
             dispatch(updateListsIndexesFailureAction(error.message));
+            dispatch(hideLoadingModal());
         });
 };

@@ -5,44 +5,47 @@ import PropTypes from 'prop-types';
 import './style.css';
 import spinner from '../../assets/spinner.gif';
 
-class Modal extends React.Component {
-    render() {
-        const { errorMessage, isLoadingModalOpen, successMessage } = this.props;
-        const element = <div />;
-        if (errorMessage !== '') {
-            return (
-                <div className="modalBlock">
-                    <span className="errorMessageModalContent">
-                        <i className="fas fa-times" />
-                        {' '}
-                        {errorMessage}
-                    </span>
-                </div>
-            );
-        }
-        if (successMessage !== '') {
-            return (
-                <div className="modalBlock">
-                    <span className="successMessageModalContent">
-                        <i className="fas fa-check" />
-                        {' '}
-                        {successMessage}
-                    </span>
-                </div>
-            );
-        }
-        if (isLoadingModalOpen) {
-            return (
-                <div className="modalBlock">
-                    <span className="loadingModalContent">
-                        <img src={spinner} alt="Loading spinner" width="50" />
-                    </span>
-                </div>
-            );
-        }
-        return element;
-    }
-}
+const Modal = (props) => {
+    const { errorMessage, isLoadingModalOpen, successMessage } = props;
+
+    const error = (
+        <span className={errorMessage !== '' ? 'modalContent' : 'hideModal'}>
+            <span className="errorMessageModalContent">
+                <p className="modalText errorModalText">
+                    <i className="fas fa-times" style={{ marginRight: '10px' }} />
+                    {' '}
+                    {errorMessage}
+                </p>
+            </span>
+        </span>
+    );
+    const success = (
+        <span className={successMessage !== '' ? 'modalContent' : 'hideModal'}>
+            <span className="successMessageModalContent">
+                <p className="modalText successModalText">
+                    <i className="fas fa-check" style={{ marginRight: '10px' }} />
+                    {' '}
+                    {successMessage}
+                </p>
+            </span>
+        </span>
+    );
+    const loading = (
+        <span className={isLoadingModalOpen ? 'modalContent' : 'hideModal'}>
+            <span className="loadingModalContent">
+                <img src={spinner} alt="Loading spinner" className="spinnerImg" />
+            </span>
+        </span>
+    );
+
+    return (
+        <div>
+            {error}
+            {loading}
+            {success}
+        </div>
+    );
+};
 
 Modal.propTypes = {
     errorMessage: PropTypes.string.isRequired,

@@ -1,4 +1,4 @@
-.modalBlock {
+.modalContent, .hideModal {
     background-color: none;
     left: 50%;
     margin: auto;
@@ -15,28 +15,54 @@
     display: inline-block;
     margin-top: 5px;
     padding: 5px;
+    transition: 0.5s;
+}
+
+.spinnerImg {
+    height: 5vh;
+}
+
+.hideModal > *, .hideModal {
+    opacity: 0;
+    transition: 0.2s opacity, 3s transform;
+    transform: translateY(-500vh);
+}
+
+.errorMessageModalContent, .successMessageModalContent {
+    border-radius: 3px;
+    box-shadow: 0px 5px 4px black;
+    display: inline-block;
+    font-size: 0.8rem;
+    height: 10vh;
+    line-height: 1rem;
+    margin-top: 5px;
+    width: 20vw;
+    padding: 10px;
+    transition: 0.5s;
 }
 
 .errorMessageModalContent {
     background-color: #ac1212;
-    border-radius: 3px;
-    box-shadow: 0px 5px 4px black;
+    transform: translateX(-15vw);
+}
+
+.errorModalText {
     color: white;
-    display: inline-block;
-    line-height: 1rem;
-    margin-top: 5px;
-    max-width: 20rem;
-    padding: 10px;
 }
 
 .successMessageModalContent {
     background-color: #43b949;
-    border-radius: 3px;
-    box-shadow: 0px 5px 4px black;
+    transform: translateX(15vw);
+}
+
+.successModalText {
     color: #111;
-    display: inline-block;
-    line-height: 1rem;
-    margin-top: 5px;
-    max-width: 20rem;
-    padding: 10px;
+}
+
+.modalText {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    margin: 0;
+    text-align: left;
 }
