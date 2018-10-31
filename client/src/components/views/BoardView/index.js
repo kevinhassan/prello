@@ -45,24 +45,31 @@ const BoardView = props => (
                             </Draggable>
                         ))}
                         {dropProvided.placeholder}
-                    {props.isInputVisible ? (
+                        {props.isInputVisible ? (
 
-                        <div className="appened-form">
-                            <form>
-                                <label htmlFor="listName">List name : </label>
-                                <input type="text" name="listName" />
-                                <button className="btn btn-validate" type="submit">Add list</button>
-                            </form>
-                        </div>
+                            <div className="appened-form">
+                                <form>
+                                    <label htmlFor="listName">List name : </label>
+                                    <input type="text" name="listName" />
+                                    <button className="btn btn-validate" type="submit">Add list</button>
+                                </form>
+                            </div>
 
-                    ) : (
-                        <button className="btn addListButton" type="submit" onClick={props.onClickAddList}><i className="fas fa-plus-circle" /></button>
-                    )}
-                </div>
-            )}
+                        ) : (
+                            <button
+                                className="btn addListButton"
+                                type="submit"
+                                onClick={props.onClickAddList}
+                            >
+                                <i className="fas fa-plus-circle" />
 
-        </Droppable>
-    </DragDropContext>
+                            </button>
+                        )}
+                    </div>
+                )}
+
+            </Droppable>
+        </DragDropContext>
     </div>
 );
 BoardView.propTypes = {

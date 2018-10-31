@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { fetchBoard, updateListsIndexes, createList } from '../../actions/board';
+import { fetchBoard, updateListsIndexes, createList } from '../../actions/boards';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
@@ -23,15 +23,6 @@ class BoardComp extends React.Component {
         this.handleAddList = this.handleAddList.bind(this);
         this.reorder = this.reorder.bind(this);
         this.handleListAdded = this.handleListAdded.bind(this);
-    }
-
-    handleAddList() {
-        this.setState({ isInputVisible: true });
-    }
-
-    handleListAdded() {
-        const name = document.getElementsByName('listName')[0].value.toString();
-        this.props.createList(this.props.board, name);
     }
 
     componentWillMount() {
@@ -71,6 +62,7 @@ class BoardComp extends React.Component {
 
         // Drop elsewhere than Drag N Drop context
         if (!destination) {
+            return;
         }
 
         // List dropped
@@ -98,12 +90,24 @@ class BoardComp extends React.Component {
                 const pendingBoard = board;
                 pendingBoard.lists = this.state.pendingLists;
                 return (
-                    <BoardView board={pendingBoard} isInputVisible={this.state.isInputVisible} onDragEnd={this.handleOnDragEnd} onClickAddList={this.handleAddList} onListAdded={this.handleListAdded} />
+                    <BoardView
+                        board={pendingBoard}
+                        isInputVisible={this.state.isInputVisible}
+                        onDragEnd={this.handleOnDragEnd}
+                        onClickAddList={this.handleAddList}
+                        onListAdded={this.handleListAdded}
+                    />
                 );
             }
 
             return (
-                <BoardView board={board} onDragEnd={this.handleOnDragEnd} isInputVisible={this.state.isInputVisible} onClickAddList={this.handleAddList} onListAdded={this.handleListAdded} />
+                <BoardView
+                    board={board}
+                    onDragEnd={this.handleOnDragEnd}
+                    isInputVisible={this.state.isInputVisible}
+                    onClickAddList={this.handleAddList}
+                    onListAdded={this.handleListAdded}
+                />
             );
         }
         return '';
@@ -134,6 +138,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         updateListsIndexes,
         fetchBoard,
+        createList,
     }, dispatch,
 );
 
