@@ -16,11 +16,20 @@ import CardDetailView from '../../components/views/CardDetailView';
 class CardComp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { displayCardDetail: false };
+        this.state = {
+            displayCardDetail: false,
+            isEditingDescription: false,
+        };
+
+        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleDeleteCard = this.handleDeleteCard.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
         this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
         this.handleEditDescription = this.handleEditDescription.bind(this);
+    }
+
+    changeIsEditingDescription(value) {
+        this.setState({ isEditingDescription: value });
     }
 
     handleDeleteCard() {
@@ -45,6 +54,7 @@ class CardComp extends React.Component {
         event.preventDefault();
         const description = event.target.description.value;
         this.props.editCardDescription(this.props.card._id, description);
+        this.setState({ isEditingDescription: false });
     }
 
     render() {
@@ -56,7 +66,16 @@ class CardComp extends React.Component {
                     onCardClick={this.handleCardClick}
                 />
                 {(this.state.displayCardDetail)
-                    ? <CardDetailView closeCardDetail={this.handleCloseCardDetail} card={card} editDescription={this.handleEditDescription} />
+                    ? (
+                        <CardDetailView
+                            card={card}
+                            closeCardDetail={this.handleCloseCardDetail}
+
+                            changeIsEditingDescription={this.changeIsEditingDescription}
+                            editDescription={this.handleEditDescription}
+                            isEditingDescription={this.state.isEditingDescription}
+                        />
+                    )
                     : ''
                 }
             </div>

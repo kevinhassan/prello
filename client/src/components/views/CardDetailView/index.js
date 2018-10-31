@@ -2,7 +2,10 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Textarea from 'react-textarea-autosize';
+
 import Card from '../../../models/Card';
+
 
 import './style.css';
 
@@ -23,7 +26,7 @@ const CardDetailView = props => (
                 <p>
                     in
                     {' '}
-                    <span className="CardDetailInList">{props.card.list.name}</span>
+                    <span className="cardDetailInList">{props.card.list.name}</span>
                 </p>
 
                 <div className="row">
@@ -44,28 +47,65 @@ const CardDetailView = props => (
                     </div>
                 </div>
 
+                {/* ===== DESCRIPTION ===== */}
                 <h2 className="cardDetail-h2">
                     <i className="fas fa-align-left" />
                     {' '}
                     Description
                 </h2>
-                <p className="cardDetailDescription">{props.card.description}</p>
 
-                <form onSubmit={props.editDescription}>
-                    <div className="form-group row">
-                        <label htmlFor="description" className="col-form-label col-sm-3">New description</label>
-                        <div className="col-sm-9">
-                            <input
-                                className="form-control"
-                                id="description"
-                                name="description"
-                                placeholder=""
-                                type="text"
-                            />
-                        </div>
-                    </div>
-                    <button className="btn btn-secondary" type="submit">EDIT Description</button>
-                </form>
+                <div>
+                    {props.isEditingDescription
+                        ? (
+                            <form onSubmit={props.editDescription} className="descriptionForm">
+                                <div className="form-group descriptionFormGroup">
+                                    <Textarea
+                                        className="form-control descriptionTextArea"
+                                        id="description"
+                                        name="description"
+                                        placeholder=""
+                                        type="text"
+                                        defaultValue={props.card.description}
+                                    />
+                                </div>
+                                <button className="btn btn-success" type="submit">Save</button>
+                                <button
+                                    className="btn btn-secondary"
+                                    type="reset"
+                                    onClick={() => props.changeIsEditingDescription(false)}
+                                >
+                                    <i className="fas fa-times" />
+                                </button>
+                            </form>
+                        )
+                        : (
+                            <div className="descriptionContent">
+                                {props.card.description
+                                    ? (
+                                        <button
+                                            className="text-left btnDescription"
+                                            type="button"
+                                            onClick={() => props.changeIsEditingDescription(true)}
+                                        >
+                                            {props.card.description}
+                                        </button>
+                                    )
+                                    : (
+                                        <button
+                                            className="btn btn-link"
+                                            type="button"
+                                            onClick={() => props.changeIsEditingDescription(true)}
+                                        >
+                                    Add a description
+                                        </button>
+                                    )
+                                }
+                            </div>
+                        )
+                    }
+                </div>
+
+                {/* ==================== */}
 
                 <div>
                     {(props.deleteCard)
@@ -86,11 +126,15 @@ CardDetailView.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
     closeCardDetail: PropTypes.func.isRequired,
     deleteCard: PropTypes.func,
+
     editDescription: PropTypes.func.isRequired,
+    changeIsEditingDescription: PropTypes.func.isRequired,
+    isEditingDescription: PropTypes.bool,
 };
 
 CardDetailView.defaultProps = {
     deleteCard: undefined,
+    isEditingDescription: false,
 };
 
 // Put info from the store state in props (None)
