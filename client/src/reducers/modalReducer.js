@@ -1,7 +1,9 @@
 import * as actions from '../actions/modal';
 
 export const initialState = {
-    isModalOpen: false,
+    errorMessage: '',
+    isLoadingModalOpen: false,
+    successMessage: '',
 };
 
 export default function modalReducer(state = initialState, action) {
@@ -9,13 +11,37 @@ export default function modalReducer(state = initialState, action) {
     case actions.DISPLAY_LOADING_MODAL:
         return {
             ...state,
-            isModalOpen: true,
+            isLoadingModalOpen: true,
         };
 
     case actions.HIDE_LOADING_MODAL:
         return {
             ...state,
-            isModalOpen: false,
+            isLoadingModalOpen: false,
+        };
+
+    case actions.DISPLAY_ERROR_MESSAGE_MODAL:
+        return {
+            ...state,
+            errorMessage: action.payload.errorMessage,
+        };
+
+    case actions.HIDE_ERROR_MESSAGE_MODAL:
+        return {
+            ...state,
+            errorMessage: '',
+        };
+
+    case actions.DISPLAY_SUCCESS_MESSAGE_MODAL:
+        return {
+            ...state,
+            successMessage: action.payload.successMessage,
+        };
+
+    case actions.HIDE_SUCCESS_MESSAGE_MODAL:
+        return {
+            ...state,
+            successMessage: '',
         };
 
     default:

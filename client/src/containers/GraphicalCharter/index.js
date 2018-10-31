@@ -4,7 +4,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // ===== Actions
-import { displayLoadingModal, hideLoadingModal } from '../../actions/modal';
+import {
+    displayLoadingModal, hideLoadingModal,
+    displayErrorMessage, hideErrorMessage,
+    displaySuccessMessage, hideSuccessMessage,
+} from '../../actions/modal';
 
 // ===== Components
 import CardDetailView from '../../components/views/CardDetailView';
@@ -23,22 +27,40 @@ class GraphicalCharter extends React.Component {
     constructor(props) {
         super(props);
         this.state = { isDisplayingCardDetail: false };
+
         this.handleDisplayLoadingModal = this.handleDisplayLoadingModal.bind(this);
         this.handleHideLoadingModal = this.handleHideLoadingModal.bind(this);
+        this.handleDisplayErrorMessage = this.handleDisplayErrorMessage.bind(this);
+        this.handleHideErrorMessage = this.handleHideErrorMessage.bind(this);
+        this.handleDisplaySuccessMessage = this.handleDisplaySuccessMessage.bind(this);
+        this.handleHideSuccessMessage = this.handleHideSuccessMessage.bind(this);
+
         this.handleDisplayingCardDetail = this.handleDisplayingCardDetail.bind(this);
     }
 
 
-    handleDisplayLoadingModal() {
-        this.props.displayLoadingModal();
+    handleDisplayLoadingModal() { this.props.displayLoadingModal(); }
+
+    handleHideLoadingModal() { this.props.hideLoadingModal(); }
+
+    handleDisplayErrorMessage() {
+        this.props.displayErrorMessage(`An example error occured. 
+        I want to test a long error message.`);
     }
 
-    handleHideLoadingModal() {
-        this.props.hideLoadingModal();
+    handleHideErrorMessage() { this.props.hideErrorMessage(); }
+
+    handleDisplaySuccessMessage() {
+        this.props.displaySuccessMessage(`Example of a successful message! 
+        This one is a little bit long to test the modal.`);
     }
+
+    handleHideSuccessMessage() { this.props.hideSuccessMessage(); }
+
 
     handleDisplayingCardDetail() {
-        this.setState({ isDisplayingCardDetail: true });
+        const current = this.state.isDisplayingCardDetail;
+        this.setState({ isDisplayingCardDetail: !current });
     }
 
     render() {
@@ -81,8 +103,52 @@ class GraphicalCharter extends React.Component {
                         <button type="button" className="btn btn-dark">Dark</button>
                         <span />
                     </div>
+
                     <div className="col-sm-3">
-                        <h2>Card detail</h2>
+                        <div className="dropdown">
+                            <button
+                                className="btn btn-secondary dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                Dropdown button
+                            </button>
+                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a className="dropdown-item" href="#a">Action</a>
+                                <a className="dropdown-item" href="#a">Another action</a>
+                                <a className="dropdown-item" href="#a">Something else here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <div className="row">
+                    <div className="col-sm-4"><h1>H1 title</h1></div>
+                    <div className="col-sm-4"><h2>H2 title</h2></div>
+                    <div className="col-sm-4"><h3>H3 title</h3></div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-4"><a href="#a">This is a link</a></div>
+                    <div className="col-sm-4"><a href="#a">This is a link</a></div>
+                    <div className="col-sm-4"><a href="#a">This is a link</a></div>
+                </div>
+
+                <hr />
+
+                <div className="row">
+                    <div className="col-sm-3">
+                        <button
+                            type="submit"
+                            className="btn btn-info"
+                            onClick={this.handleDisplayingCardDetail}
+                        >
+                            Display card detail
+                        </button>
                         {this.state.isDisplayingCardDetail
                             ? (
                                 <CardDetailView
@@ -111,73 +177,51 @@ class GraphicalCharter extends React.Component {
                                         }),
                                         users: undefined,
                                     })}
+                                    closeCardDetail={this.handleDisplayingCardDetail}
                                 />
                             )
-                            : (
-                                <button
-                                    type="submit"
-                                    className="btn btn-info"
-                                    onClick={this.handleDisplayingCardDetail}
-                                >
-                                    Display card detail
-                                </button>
-                            )
+                            : ''
                         }
-                        <br />
-                        <br />
-                    </div>
-                </div>
 
-                <hr />
-
-                <div className="row">
-                    <div className="col-sm-4"><h1>H1 title</h1></div>
-                    <div className="col-sm-4"><h2>H2 title</h2></div>
-                    <div className="col-sm-4"><h3>H3 title</h3></div>
-                </div>
-                <div className="row">
-                    <div className="col-sm-4"><a href="#a">This is a link</a></div>
-                    <div className="col-sm-4"><a href="#a">This is a link</a></div>
-                    <div className="col-sm-4"><a href="#a">This is a link</a></div>
-                </div>
-
-                <hr />
-
-                <div className="row">
-                    <div className="col-sm-4">
-                        <div className="dropdown">
-                            <button
-                                className="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                            >
-                                Dropdown button
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a className="dropdown-item" href="#a">Action</a>
-                                <a className="dropdown-item" href="#a">Another action</a>
-                                <a className="dropdown-item" href="#a">Something else here</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-4">
                         <p>
                             Loading spinner:
                             <img src={spinner} alt="Loading spinner" width="100" />
                         </p>
                     </div>
-                    <div className="col-sm-4">
+
+                    <div className="col-sm-3">
                         <div>
                             <button type="button" className="btn btn-primary" onClick={this.handleDisplayLoadingModal}>
                                 Display loading modal
                             </button>
                         </div>
                         <br />
-                        <div><button type="button" className="btn btn-danger" onClick={this.handleHideLoadingModal}>Hide loading modal</button></div>
+                        <div>
+                            <button type="button" className="btn btn-primary" onClick={this.handleHideLoadingModal}>
+                                Hide loading modal
+                            </button>
+                        </div>
+                        <br />
                     </div>
+
+                    <div className="col-sm-3">
+                        <div>
+                            <button type="button" className="btn btn-danger" onClick={this.handleDisplayErrorMessage}>
+                            Display error message
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="col-sm-3">
+                        <div>
+                            <button type="button" className="btn btn-success" onClick={this.handleDisplaySuccessMessage}>
+                                Display success message
+                            </button>
+                        </div>
+                    </div>
+                    <b>
+                        N.B.: A message is displayed during 5s. An error is always displayed over a success message which is displayed over a loading modal.
+                    </b>
                 </div>
 
                 <hr />
@@ -336,6 +380,10 @@ class GraphicalCharter extends React.Component {
 GraphicalCharter.propTypes = {
     displayLoadingModal: PropTypes.func.isRequired,
     hideLoadingModal: PropTypes.func.isRequired,
+    displayErrorMessage: PropTypes.func.isRequired,
+    hideErrorMessage: PropTypes.func.isRequired,
+    displaySuccessMessage: PropTypes.func.isRequired,
+    hideSuccessMessage: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
@@ -346,6 +394,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         displayLoadingModal,
         hideLoadingModal,
+        displayErrorMessage,
+        hideErrorMessage,
+        displaySuccessMessage,
+        hideSuccessMessage,
     }, dispatch,
 );
 

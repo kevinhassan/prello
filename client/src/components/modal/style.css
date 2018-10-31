@@ -8,11 +8,35 @@
     z-index: 99999999999999;
 }
 
-.modalContent {
+.loadingModalContent {
     background-color: #004a75;
     border-radius: 3px;
     box-shadow: 0px 5px 4px;
     display: inline-block;
     margin-top: 5px;
     padding: 5px;
+}
+
+.errorMessageModalContent {
+    background-color: #ac1212;
+    border-radius: 3px;
+    box-shadow: 0px 5px 4px black;
+    color: white;
+    display: inline-block;
+    line-height: 1rem;
+    margin-top: 5px;
+    max-width: 20rem;
+    padding: 10px;
+}
+
+.successMessageModalContent {
+    background-color: #43b949;
+    border-radius: 3px;
+    box-shadow: 0px 5px 4px black;
+    color: #111;
+    display: inline-block;
+    line-height: 1rem;
+    margin-top: 5px;
+    max-width: 20rem;
+    padding: 10px;
 }

@@ -57,7 +57,7 @@ SignInComp.propTypes = {
 
 // Put info from the store state in props
 const mapStateToProps = ({ authReducer }) => ({
-    errorMessage: authReducer.errorMessage,
+    errorMessage: authReducer.errorSignInMessage,
     isLoggedIn: authReducer.isLoggedIn,
 });
 
