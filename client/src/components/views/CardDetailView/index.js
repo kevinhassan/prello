@@ -16,11 +16,6 @@ const CardDetailView = props => (
                 <i className="fas fa-times closeCardDetailIcon" onClick={props.closeCardDetail} onKeyDown={props.closeCardDetail} />
 
                 <h2 className="cardDetail-h2 cardDetailTitle">
-                    #
-                    {props.card._id}
-                    {' '}
-                    -
-                    {' '}
                     {props.card.name}
                 </h2>
                 <p>
