@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
+const listController = require('../controllers/lists');
 const { boardValidator } = require('../validators');
 
 /**
@@ -124,6 +125,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+
         .post('/boards', boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -136,4 +138,17 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+
+        .post('/boards/:boardId/lists', async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: { form: errors.array() } });
+            }
+            try {
+                await listController.createList(req.body.list.name, req.params.boardId);
+                res.status(204).send();
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
+            }
+        });
 };
