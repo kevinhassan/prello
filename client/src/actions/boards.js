@@ -1,4 +1,4 @@
-import { displayLoadingModal, hideLoadingModal } from './modal';
+
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
 
@@ -7,6 +7,9 @@ import * as APIFetch from '../helpers/APIFetch';
 export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
 export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
+export const CREATE_LIST = 'board/CREATE_LIST';
+export const CREATE_LIST_SUCCESS = 'board/CREATE_LIST_SUCCESS';
+export const CREATE_LIST_FAILURE = 'board/CREATE_LIST_FAILURE';
 export const CREATE_LIST = 'boards/CREATE_LIST';
 export const CREATE_LIST_SUCCESS = 'boards/CREATE_LIST_SUCCESS';
 export const CREATE_LIST_FAILURE = 'boards/CREATE_LIST_FAILURE';
@@ -100,6 +103,7 @@ export const createListFailure = error => ({
     },
 });
 
+export const createListSuccess = () => ({ type: CREATE_LIST_SUCCESS });
 export const createListSuccess = list => ({
     type: CREATE_LIST_SUCCESS,
     payload: {
@@ -107,6 +111,10 @@ export const createListSuccess = list => ({
     },
 });
 
+export const createList = (boardId, lists) => (dispatch) => {
+    dispatch(createListAction(boardId, lists));
+    const ressource = 'board/'.concat(boardId).concat('/lists/');
+    APIFetch.fetchPrelloAPI(ressource, { lists }, APIFetch.PUT)
 export const addListToBoardSuccess = lists => ({
     type: ADD_LIST_TO_BOARD_SUCCESS,
     payload: {
@@ -128,6 +136,11 @@ export const createList = (boardId, lists, list) => (dispatch) => {
 
     APIFetch.fetchPrelloAPI(ressource, { list }, APIFetch.POST)
         .then((res) => {
+            if (res.ok) {
+                dispatch(createListSuccess());
+            } else {
+                res.json().then((jsonError) => {
+                    dispatch(createListFailure(jsonError.error));
             const listCreated = res.data.list;
             dispatch(createListSuccess(listCreated));
             const newLists = lists.concat(listCreated);
