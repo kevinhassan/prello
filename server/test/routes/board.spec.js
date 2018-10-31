@@ -83,12 +83,12 @@ describe('POST /boards', () => {
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .post('/boards')
             .send(data)
             .expect('Content-Type', /json/)
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 201 OK', (done) => {
         request(app)
@@ -152,12 +152,12 @@ describe('PUT /boards/:id/visibility', () => {
             .expect(404, done);
     });
 
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .put(`/boards/${data.id}/visibility`)
             .send({ visibility: 'public' })
             .expect('Content-Type', /json/)
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
@@ -195,11 +195,11 @@ describe('PUT /boards/:id/visibility', () => {
 });
 
 describe('POST /board/:id/members', () => {
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .post(`/board/${data.id}/members`)
             .send({ email: 'test2@test.fr' })
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
@@ -232,10 +232,10 @@ describe('POST /board/:id/members', () => {
 });
 
 describe('DELETE /board/:id/members/:id', () => {
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .delete(`/board/${data.id}/members/${userNotOwner._id}`)
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
@@ -257,11 +257,11 @@ describe('DELETE /board/:id/members/:id', () => {
     });
 });
 describe('POST /board/:id/teams', () => {
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .post(`/board/${data.id}/teams`)
             .send({ team: team._id })
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
@@ -293,10 +293,10 @@ describe('POST /board/:id/teams', () => {
     });
 });
 describe('DELETE /board/:id/teams/:id', () => {
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .delete(`/board/${data.id}/teams/${team._id}`)
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
