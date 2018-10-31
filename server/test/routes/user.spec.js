@@ -5,7 +5,7 @@ const app = require('../../app.js');
 const User = require('../../models/User');
 
 const data = {
-    fullname: 'nameTest',
+    fullName: 'nameTest',
     email: 'test@test.fr',
     password: 'passTest',
     bio: 'bio'
@@ -30,7 +30,7 @@ describe('POST /register', () => {
             .expect(409, done);
     });
     it('should return 422 ERROR', (done) => {
-        const wrongData = { email: '', password: data.password, fullname: data.fullname };
+        const wrongData = { email: '', password: data.password, fullName: data.fullName };
         request(app)
             .post('/register')
             .send(wrongData)
@@ -96,7 +96,7 @@ describe('GET /profile', () => {
             .get('/profile')
             .set('Authorization', `Bearer ${token}`)
             .expect(200, (err, res) => {
-                assert(res.body.profile.fullname, data.fullname);
+                assert(res.body.profile.fullName, data.fullName);
                 assert(res.body.profile.bio, data.bio);
                 expect(res.body.profile.initials).to.not.be.empty;
                 expect(res.body.profile.username).to.not.be.empty;
@@ -136,7 +136,7 @@ describe('PUT /profile', () => {
     });
     it('should return 204 OK', (done) => {
         const newData = data;
-        newData.fullname = 'test1';
+        newData.fullName = 'test1';
         newData.username = 'test2';
         newData.initials = 'TT';
 

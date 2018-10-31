@@ -16,7 +16,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: { form: errors.array() } });
             }
             try {
-                if (!req.body.fullname || !req.body.email || !req.body.password) throw new MyError(400, 'Missing Informations');
+                if (!req.body.fullName || !req.body.email || !req.body.password) throw new MyError(400, 'Missing Informations');
                 await userController.postSignup(req.body);
                 res.status(201).send({ message: 'user created' });
             } catch (e) {

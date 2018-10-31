@@ -53,10 +53,10 @@ export const classicSignUpFailure = error => ({
 export const classicSignUpSuccess = () => ({ type: CLASSIC_SIGN_UP_SUCCESS });
 
 
-export const classicSignUp = (name, fullname, email, password) => (dispatch) => {
+export const classicSignUp = (name, fullName, email, password) => (dispatch) => {
     dispatch(classicSignUpStarted());
     APIFetch.fetchPrelloAPI('register', {
-        name, fullname, email, password,
+        name, fullName, email, password,
     }, APIFetch.POST)
         .then((res) => {
             if (res.ok) {

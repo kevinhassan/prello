@@ -43,19 +43,19 @@ userController.login = async (email, password) => {
  */
 userController.postSignup = async (data) => {
     try {
-        const fullnameUser = data.fullname.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
-        // count the number of user with same fullname
-        const count = await User.countDocuments({ fullname: fullnameUser }) + 1;
+        const fullNameUser = data.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
+        // count the number of user with same fullName
+        const count = await User.countDocuments({ fullName: fullNameUser }) + 1;
         let initialsUser = '';
-        const usernameUser = fullnameUser.toLowerCase().replace(/ /g, '') + count;
-        if (fullnameUser.split(' ').length >= 2) {
-            initialsUser = fullnameUser.split(' ')[0].toUpperCase().charAt(0) + fullnameUser.split(' ')[1].toUpperCase().charAt(0);
+        const usernameUser = fullNameUser.toLowerCase().replace(/ /g, '') + count;
+        if (fullNameUser.split(' ').length >= 2) {
+            initialsUser = fullNameUser.split(' ')[0].toUpperCase().charAt(0) + fullNameUser.split(' ')[1].toUpperCase().charAt(0);
         } else {
-            initialsUser = fullnameUser.toUpperCase().charAt(0);
+            initialsUser = fullNameUser.toUpperCase().charAt(0);
         }
 
         const user = new User({
-            fullname: fullnameUser,
+            fullName: fullNameUser,
             username: usernameUser,
             password: data.password,
             email: data.email,
@@ -81,7 +81,7 @@ userController.getProfile = async (user) => {
     try {
     // return plain json object with lean
         const userProfile = await User.findById(user.id).select({
-            fullname: 1, username: 1, bio: 1, initials: 1, _id: 0
+            fullName: 1, username: 1, bio: 1, initials: 1, _id: 0
         }).lean();
         return userProfile;
     } catch (err) {
@@ -95,13 +95,13 @@ userController.getProfile = async (user) => {
  */
 userController.updateProfile = async (user, data) => {
     const {
-        fullname, bio, initials, username
+        fullName, bio, initials, username
     } = data;
     try {
         const userProfile = await User.findById(user.id).select({
-            fullname: 1, username: 1, bio: 1, initials: 1
+            fullName: 1, username: 1, bio: 1, initials: 1
         });
-        userProfile.fullname = fullname;
+        userProfile.fullName = fullName;
         userProfile.bio = bio;
         userProfile.initials = initials;
         const userFound = await User.findOne({ username, _id: { $ne: user._id } });
