@@ -201,11 +201,44 @@ describe('POST /board/:id/members', () => {
             .set('Authorization', `Bearer ${tokenNotOwner}`)
             .expect(404, done);
     });
-    it('should return 201 OK', (done) => {
+    it('should return 403 ERROR', (done) => {
         request(app)
             .post(`/board/${data.id}/members`)
             .send({ email: 'test2@test.fr' })
             .set('Authorization', `Bearer ${tokenNotOwner}`)
+            .expect(403, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .post(`/board/${data.id}/members`)
+            .send({ email: userData.userNotOwner.email })
+            .set('Authorization', `Bearer ${tokenOwner}`)
             .expect(201, done);
+    });
+});
+
+describe('DELETE /board/:id/members/:id', () => {
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .delete(`/board/${data.id}/members/${userNotOwner._id}`)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .delete(`/board/${data.id}/members/unknown`)
+            .set('Authorization', `Bearer ${tokenOwner}`)
+            .expect(404, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .delete(`/board/${data.id}/members/${userOwner._id}`)
+            .set('Authorization', `Bearer ${tokenNotOwner}`)
+            .expect(403, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .delete(`/board/${data.id}/members/${userNotOwner._id}`)
+            .set('Authorization', `Bearer ${tokenOwner}`)
+            .expect(204, done);
     });
 });

@@ -107,25 +107,48 @@ boardController.changeVisibility = async (boardId, owner, visibility) => {
 
 /**
  * POST /board/:boardId/members
- * Add member to the board
+ * Add member to the board (only for owner)
  */
-boardController.addMemberWithMail = async (boardId, email) => {
+boardController.addMemberWithMail = async (boardId, userId, email) => {
     try {
-        const user = await User.findOne({ email }).select({ _id: 1 });
-        console.log('user found : ', user);
-        if (!user) throw new MyError(404, 'Member to add unknown');
-        await boardController.addMember(boardId, user._id);
+        const member = await User.findOne({ email }).select({ _id: 1 });
+        if (!member) throw new MyError(404, 'Member to add unknown');
+        await boardController.addMember(boardId, userId, member._id);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
 
-boardController.addMember = async (boardId, userId) => {
+boardController.addMember = async (boardId, owner, userId) => {
     try {
-        const newBoard = await Board.findOneAndUpdate({ _id: boardId }, { $push: { members: userId } }, { new: true });
-        console.log('newBoard : ', newBoard);
-        if (!newBoard) throw new MyError(404);
+        const board = await Board.findById(boardId).select({ owner: 1 });
+        if (!board) throw new MyError(404, 'Board not found');
+        // if the user is not the owner return error unauthorized
+        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
+
+        const newBoard = await Board.updateOne({ _id: boardId }, { $push: { members: userId } }, { new: true });
+        return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * DELETE /board/:id/members/:id
+ * Remove a member from the board (only for owner)
+ * Remove him from :
+ * - the members collection
+ * - all cards froms board's lists where is assignee
+ *
+ */
+boardController.removeMember = async (boardId, memberId, owner) => {
+    try {
+        const board = await Board.findById(boardId).select({ owner: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
+        // if the user is not the owner return error unauthorized
+        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
+
+        const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { members: memberId } }, { new: true }).catch((async () => { throw new MyError(404, 'Member not found'); }));
         return newBoard;
     } catch (err) {
         if (err.status) throw err;

@@ -16,7 +16,7 @@ UserSeeder.dropDatabase = async () => {
 UserSeeder.fillDatabase = async () => {
     console.log('Seeding Users...');
     try {
-        await User.insertMany(mocks);
+        await Promise.all(mocks.map(user => new User(user).save()));
         console.log('User collection filled');
     } catch (error) {
         console.log(`Error:${error}`);
