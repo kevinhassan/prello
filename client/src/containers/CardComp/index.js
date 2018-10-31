@@ -89,7 +89,10 @@ CardComp.propTypes = {
 };
 
 // Put info from the store state in props (None)
-const mapStateToProps = () => ({});
+const mapStateToProps = cardsReducer => ({
+    errorMessage: cardsReducer.errorMessage,
+    successMessage: cardsReducer.successMessage,
+});
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(

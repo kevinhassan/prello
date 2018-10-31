@@ -20,6 +20,7 @@ socket.on('connection', (client) => {
             const card = await cardController.putDescription(data.cardId, data.description);
             const boardFound = await boardController.get(card.list.boardId);
             client.emit('currentBoard', { board: boardFound });
+            callback({ message: 'Description updated!' });
         } catch (e) {
             callback({ error: e.message });
         }

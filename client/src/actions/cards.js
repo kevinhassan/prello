@@ -34,8 +34,11 @@ export const editCardDescriptionFailureAction = error => ({
         error,
     },
 });
-export const editCardDescriptionSuccessAction = () => ({
+export const editCardDescriptionSuccessAction = message => ({
     type: EDIT_CARD_DESCRIPTION_SUCCESS,
+    payload: {
+        message,
+    },
 });
 
 export const editCardDescription = (cardId, description) => (dispatch) => {
@@ -45,7 +48,7 @@ export const editCardDescription = (cardId, description) => (dispatch) => {
         if (res.error) {
             dispatch(editCardDescriptionFailureAction(res.error));
         } else {
-            dispatch(editCardDescriptionSuccessAction(res.board));
+            dispatch(editCardDescriptionSuccessAction(res.message));
         }
         dispatch(hideLoadingModal());
     });
