@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { deleteCard, editCardDescription } from '../../actions/card';
+import { deleteCard, editCardDescription } from '../../actions/cards';
 
 // ===== Models
 import Card from '../../models/Card';

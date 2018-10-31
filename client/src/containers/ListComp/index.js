@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { createCard } from '../../actions/card';
+import { createCard } from '../../actions/cards';
 
 // ===== Models
 
