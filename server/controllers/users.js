@@ -68,7 +68,7 @@ userController.postRegister = async (data) => {
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'An account already exists for this email.');
         } else if (err.name === 'ValidationError') {
-            throw new MyError(400, 'Missing informations');
+            throw new MyError(400, 'Missing information');
         }
     }
 };
