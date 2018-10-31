@@ -31,10 +31,10 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
-    text-decoration: underline;
-    display: inline;
+    text-decoration: none;
     margin: 0;
     padding: 0;
+    width: 100%;
 }
   
 .btn-noCss:hover,

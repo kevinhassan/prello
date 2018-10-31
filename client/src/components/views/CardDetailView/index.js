@@ -33,7 +33,7 @@ const CardDetailView = props => (
                             {' '}
                             Due date
                         </h2>
-                        <p className="cardDetailDate">{props.card.dueDate.toDateString()}</p>
+                        <p className="cardDetailDate">{new Date(props.card.dueDate).toDateString()}</p>
                     </div>
                     <div className="col-sm-6">
                         <h2 className="cardDetail-h2">

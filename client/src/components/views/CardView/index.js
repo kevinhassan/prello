@@ -7,9 +7,9 @@ import Card from '../../../models/Card';
 import './style.css';
 
 const CardView = props => (
-    <button className="btn-noCss" type="button" onClick={props.onCardClick} onKeyDown={props.onCardClick}>
-        <div className="card" key={props.card._id}>
-            <div className="cardContent">
+    <div className="card" key={props.card._id}>
+        <div className="cardContent">
+            <button className="btn-noCss" type="button" onClick={props.onCardClick} onKeyDown={props.onCardClick}>
                 <div>
                     <b className="cardName">{props.card.name}</b>
                     <div>
@@ -23,9 +23,9 @@ const CardView = props => (
                         }
                     </div>
                 </div>
-            </div>
+            </button>
         </div>
-    </button>
+    </div>
 );
 
 CardView.propTypes = {
