@@ -35,7 +35,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/profile', Auth.isAuthorized, async (req, res) => {
+        .get('/profile', Auth.isAuthentificated, async (req, res) => {
             try {
                 const profile = await userController.getProfile(req.user);
                 res.status(200).send({ profile });
@@ -43,7 +43,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/profile', Auth.isAuthorized, [profileValidator], async (req, res) => {
+        .put('/profile', Auth.isAuthentificated, [profileValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: { form: errors.array() } });
@@ -55,7 +55,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/account', Auth.isAuthorized, [accountValidator], async (req, res) => {
+        .put('/account', Auth.isAuthentificated, [accountValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: { form: errors.array() } });
@@ -68,7 +68,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/account', Auth.isAuthorized, async (req, res) => {
+        .delete('/account', Auth.isAuthentificated, async (req, res) => {
             try {
                 await userController.deleteAccount(req.user);
                 res.status(200).send({ message: 'Account successfully deleted.' });
@@ -77,7 +77,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/account', Auth.isAuthorized, async (req, res) => {
+        .get('/account', Auth.isAuthentificated, async (req, res) => {
             try {
                 const user = await userController.getAccount(req.user);
                 res.status(200).send({ user });

@@ -86,10 +86,10 @@ describe('GET /profile', () => {
                 done();
             });
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .get('/profile')
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 200 OK', (done) => {
         request(app)
@@ -119,11 +119,11 @@ describe('PUT /profile', () => {
                 done();
             });
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .put('/profile')
             .send(data)
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 422 ERROR', (done) => {
         const wrongData = data;
@@ -168,10 +168,10 @@ describe('GET /account', () => {
                 done();
             });
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .get('/account')
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 200 OK', (done) => {
         request(app)
@@ -195,10 +195,10 @@ describe('PUT /account', () => {
                 done();
             });
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .put('/account')
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 422 OK', (done) => {
         request(app)
@@ -227,10 +227,10 @@ describe('DELETE /account', () => {
                 done();
             });
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .delete('/account')
-            .expect(403, done);
+            .expect(401, done);
     });
     it('should return 200 OK', (done) => {
         request(app)
@@ -238,10 +238,10 @@ describe('DELETE /account', () => {
             .set('Authorization', `Bearer ${token}`)
             .expect(200, done);
     });
-    it('should return 403 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .delete('/account')
             .set('Authorization', `Bearer ${token}`)
-            .expect(403, done);
+            .expect(401, done);
     });
 });

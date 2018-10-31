@@ -17,18 +17,18 @@ const authRequest = (req, res, next) => {
             req.user = user;
             next();
         } catch (e) {
-            res.status(403).send({ error: 'User unauthorized.' });
+            res.status(500).send({ error: 'Internal server error.' });
         }
     });
 };
-const isAuthorized = async (req, res, next) => {
+const isAuthentificated = async (req, res, next) => {
     try {
         if (!req.user) {
-            throw new MyError(403, 'Unauthorize user');
+            throw new MyError(401, 'Unauthorize user');
         }
         next();
     } catch (e) {
         res.status(e.status).send({ error: e.message });
     }
 };
-module.exports = { authRequest, isAuthorized };
+module.exports = { authRequest, isAuthentificated };
