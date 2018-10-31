@@ -2,6 +2,7 @@ const boardController = {};
 const MyError = require('../util/error');
 const Board = require('../models/Board');
 const User = require('../models/User');
+const Helpers = require('../helpers');
 
 /**
  * GET /boards/:boardId
@@ -71,7 +72,6 @@ boardController.createBoard = async (owner, data) => {
         await board.save();
         return board._id;
     } catch (err) {
-        console.log(err);
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect Query');
         }
@@ -85,14 +85,15 @@ boardController.createBoard = async (owner, data) => {
  * PUT /board/:boardId/visibility
  * Change the visibility of the board
  */
-boardController.changeVisibility = async (boardId, owner, visibility) => {
+boardController.changeVisibility = async (boardId, actualUser, visibility) => {
     try {
-        const board = await Board.findById(boardId);
+        const board = await Board.findById(boardId).select({ members: 1 });
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
-        // if the user is not the owner return error unauthorized
-        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
+
+        const isAdmin = await Helpers.isAdmin(actualUser, board.members);
+        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
         board.visibility = visibility;
         await board.save();
     } catch (err) {
@@ -109,48 +110,44 @@ boardController.changeVisibility = async (boardId, owner, visibility) => {
 
 /**
  * POST /board/:boardId/members
- * Add member to the board (only for owner)
+ * Add member to the board (only for admins)
  */
 boardController.addMemberWithMail = async (boardId, userId, email) => {
     try {
+        const board = await Board.findById(boardId).select({ members: 1 });
+        if (!board) throw new MyError(404, 'Board not found');
+
+        const isAdmin = await Helpers.isAdmin(userId, board.members);
+        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+
         const member = await User.findOne({ email }).select({ _id: 1 });
         if (!member) throw new MyError(404, 'Member to add unknown');
-        await boardController.addMember(boardId, userId, member._id);
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
 
-boardController.addMember = async (boardId, owner, userId) => {
-    try {
-        const board = await Board.findById(boardId).select({ owner: 1 });
-        if (!board) throw new MyError(404, 'Board not found');
-        // if the user is not the owner return error unauthorized
-        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
-
-        const newBoard = await Board.updateOne({ _id: boardId }, { $push: { members: userId } }, { new: true });
+        const newBoard = await Board.updateOne({ _id: boardId }, { $push: { members: { _id: member._id } } });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
 /**
  * DELETE /board/:id/members/:id
- * Remove a member from the board (only for owner)
+ * Remove a member from the board (only for admins)
  * Remove him from :
  * - the members collection
- * - all cards froms board's lists where is assignee (?)
+ * - all cards froms board's lists where is assignee (TODO)
+ * check if at least one member is admin before delete him (TODO)
  *
  */
-boardController.removeMember = async (boardId, memberId, owner) => {
+boardController.removeMember = async (boardId, memberId, actualUser) => {
     try {
-        const board = await Board.findById(boardId).select({ owner: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
-        // if the user is not the owner return error unauthorized
-        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
+        const board = await Board.findById(boardId).select({ members: 1 });
+        if (!board) throw new MyError(404, 'Board not found');
+        const isAdmin = await Helpers.isAdmin(actualUser, board.members);
+        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
 
-        const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { members: memberId } }, { new: true }).catch((async () => { throw new MyError(404, 'Member not found'); }));
+        const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { members: { _id: memberId } } }, { new: true }).catch((async () => { throw new MyError(404, 'Member not found'); }));
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
@@ -159,13 +156,16 @@ boardController.removeMember = async (boardId, memberId, owner) => {
 };
 /**
  * POST /board/:id/teams
- * Add team to the board (only for owner)
+ * Add team to the board (only for admins)
+ * Add board id to team (TODO)
  */
-boardController.addTeam = async (boardId, teamId, owner) => {
+boardController.addTeam = async (boardId, teamId, actualUser) => {
     try {
-        const board = await Board.findById(boardId).select({ owner: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
-        // if the user is not the owner return error unauthorized
-        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
+        const board = await Board.findById(boardId).select({ members: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
+
+
+        const isAdmin = await Helpers.isAdmin(actualUser, board.members);
+        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
 
         const newBoard = await Board.updateOne({ _id: boardId }, { $push: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
@@ -177,13 +177,15 @@ boardController.addTeam = async (boardId, teamId, owner) => {
 
 /**
  * DELETE /board/:id/teams
- * Remove the board's team (only for owner)
+ * Remove the board's team (only for admins)
  */
-boardController.removeTeam = async (boardId, teamId, owner) => {
+boardController.removeTeam = async (boardId, teamId, actualUser) => {
     try {
-        const board = await Board.findById(boardId).select({ owner: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
-        // if the user is not the owner return error unauthorized
-        if (owner.toString() !== board.owner.toString()) throw new MyError(403, 'UnAuthorized user');
+        const board = await Board.findById(boardId).select({ members: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
+
+        const isAdmin = await Helpers.isAdmin(actualUser, board.members);
+        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+
         const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
     } catch (err) {
