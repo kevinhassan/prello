@@ -116,7 +116,8 @@ export const createList = (boardId, lists, list) => (dispatch) => {
             dispatch(createListSuccess(listCreated));
             const newLists = lists.concat(listCreated);
 
-            APIFetch.fetchPrelloAPI(ressource, { newLists }, APIFetch.PUT)
+            
+            APIFetch.fetchPrelloAPI(ressource, { lists: newLists }, APIFetch.PUT)
                 .then((response) => {
                     if (response.ok) {
                         dispatch(createListSuccess(newLists));
