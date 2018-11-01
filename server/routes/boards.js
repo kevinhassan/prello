@@ -100,7 +100,7 @@ const Auth = require('../middlewares/auth');
 *           500:
 *               description: Internal server error
 *
-* /boards/:boardId/visibility:
+* /boards/{boardId}/visibility:
 *   put:
 *       tags:
 *           - Board
@@ -110,7 +110,7 @@ const Auth = require('../middlewares/auth');
 *           - application/json
 *       parameters:
 *           - in: path
-*             name: Board ID
+*             name: boardId
 *             schema:
 *               type: string
 *             required: true
@@ -134,7 +134,7 @@ const Auth = require('../middlewares/auth');
 *               description: Invalid form data or Incorrect Query
 *           500:
 *
-* /boards/:boardId/members:
+* /boards/{boardId}/members:
 *   put:
 *       tags:
 *           - Board
@@ -144,7 +144,7 @@ const Auth = require('../middlewares/auth');
 *           - application/json
 *       parameters:
 *           - in: path
-*             name: Board ID
+*             name: boardId
 *             schema:
 *               type: string
 *             required: true
@@ -169,7 +169,7 @@ const Auth = require('../middlewares/auth');
 *           500:
 *               description: Internal server error
 *
-* /boards/:boardId/members/:memberId:
+* /boards/{boardId}/members/:memberId:
 *   delete:
 *       tags:
 *           - Board
@@ -179,7 +179,7 @@ const Auth = require('../middlewares/auth');
 *           - application/json
 *       parameters:
 *           - in: path
-*             name: Board ID
+*             name: boardId
 *             schema:
 *               type: string
 *             required: true
@@ -204,7 +204,7 @@ const Auth = require('../middlewares/auth');
 *           500:
 *               description: Internal server error
 *
-* /boards/:boardId/teams:
+* /boards/{boardId}/teams:
 *   post:
 *       tags:
 *           - Board
@@ -214,7 +214,7 @@ const Auth = require('../middlewares/auth');
 *           - application/json
 *       parameters:
 *           - in: path
-*             name: Board ID
+*             name: boardId
 *             schema:
 *               type: string
 *             required: true
@@ -237,7 +237,7 @@ const Auth = require('../middlewares/auth');
 *           500:
 *               description: Internal server error
 *
-* /boards/:boardId/teams/:teamId:
+* /boards/{boardId}/teams/:teamId:
 *   delete:
 *       tags:
 *           - Board
@@ -247,7 +247,7 @@ const Auth = require('../middlewares/auth');
 *           - application/json
 *       parameters:
 *           - in: path
-*             name: Board ID
+*             name: boardId
 *             schema:
 *               type: string
 *             required: true
