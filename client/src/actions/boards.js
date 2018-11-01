@@ -1,6 +1,7 @@
 
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
+import List from '../models/List';
 
 // ========================
 
