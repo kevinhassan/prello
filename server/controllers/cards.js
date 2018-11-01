@@ -45,6 +45,11 @@ cardController.putDescription = async (data) => {
 
         card.description = data.description;
         await card.save();
+
+        // update board via socket
+        const list = await List.findById(card.list);
+        socket.updateClientsOnBoard(list.boardId);
+
         return card;
     } catch (err) {
         if (err.status === 404) {
