@@ -66,7 +66,7 @@ export const updateListsIndexesAction = newLists => ({
 export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
     dispatch(updateListsIndexesStartedAction());
     dispatch(displayLoadingModal());
-    const resource = 'board/'.concat(boardId).concat('/lists/');
+    const resource = 'boards/'.concat(boardId).concat('/lists/');
     APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
         .then(() => {
             // API doesn't need to return the lists (too long): use directly the new order
