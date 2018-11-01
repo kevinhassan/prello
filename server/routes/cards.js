@@ -5,11 +5,11 @@ const { cardValidator } = require('../validators');
 /**
 * @swagger
 * definitions:
-*   NewBoard:
+*   NewCard:
 *       properties:
 *           name:
 *               type: string
-*           privacy:
+*           listId:
 *               type: string
 *
 * /cards/:cardId/description:
@@ -20,6 +20,19 @@ const { cardValidator } = require('../validators');
 *       summary: Update description
 *       produces:
 *           - application/json
+*       parameters:
+*           - in: path
+*             name: cardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Card ID
+*           - in: body
+*             name: description
+*             schema:
+*               type: string
+*             required: false
+*             description: new description, can be empty.
 *       responses:
 *           204:
 *               description: Card description updated
