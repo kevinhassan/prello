@@ -8,6 +8,13 @@ const data = {
     name: 'test Card',
     visibility: 'private'
 };
+const list = {
+    id: 'l00000000009',
+    name: 'test List',
+    isArchieved: false,
+    board: data.id,
+};
+
 describe('POST /boards', () => {
     before(async () => {
         await Board.deleteMany({});
@@ -67,5 +74,23 @@ describe('PUT /boards/:id/lists', () => {
             .put(`/boards/${data.id}/lists`)
             .send({ lists: [] })
             .expect(204, done);
+    });
+});
+describe('POST /boards/:id/lists', () => {
+    it('should return 422 ERROR', (done) => {
+        const wrongList = {
+            list: ''
+        };
+        request(app)
+            .post(`/boards/${data.id}/lists`)
+            .send(wrongList)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .put(`/boards/${data.id}/lists`)
+            .send({ list })
+            .expect(201, done);
     });
 });

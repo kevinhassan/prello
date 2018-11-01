@@ -141,6 +141,10 @@ module.exports = (router) => {
         })
 
         .post('/boards/:boardId/lists', async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: { form: errors.array() } });
+            }
             try {
                 const listCreated = await listController.createList(req.body.list.name, req.params.boardId);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
