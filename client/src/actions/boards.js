@@ -146,7 +146,7 @@ export const createList = (boardId, lists, list) => (dispatch) => {
             dispatch(createListSuccess(listCreated));
             const newLists = lists.concat(listCreated);
 
-            APIFetch.fetchPrelloAPI(ressource, { lists: newLists }, APIFetch.PUT)
+            APIFetch.fetchPrelloAPI(ressource, { newLists }, APIFetch.PUT)
                 .then((response) => {
                     if (response.status === 204) {
                         dispatch(addListToBoardSuccess(newLists));
@@ -161,3 +161,5 @@ export const createList = (boardId, lists, list) => (dispatch) => {
             dispatch(createListFailure(error.response.data.error));
         });
 };
+
+            APIFetch.fetchPrelloAPI(ressource, { lists: newLists }, APIFetch.PUT)
