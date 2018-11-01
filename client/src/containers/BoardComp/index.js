@@ -51,10 +51,9 @@ class BoardComp extends React.Component {
     handleListAdded() {
         const name = document.getElementsByName('listName')[0].value.toString();
         const newList = new List({
-            name, isArchieved: false, boardId: this.props.board._id, cards: [],
+            name, isArchived: false, boardId: this.props.board._id, cards: [],
         });
-        const lists = this.props.board.lists.concat(newList);
-        this.props.createList(this.props.board._id, lists, newList);
+        this.props.createList(this.props.board._id, this.props.board.lists, newList);
     }
 
 
@@ -147,9 +146,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps,
 )(BoardComp);
-
-            name, isArchived: false, boardId: this.props.board._id, cards: [],
-            _id: 'l00000000004', name, boardId: this.props.board._id,
-        this.props.createList(this.props.board._id, this.props.board.lists, newList);
-        this.setState({ isInputVisible: false });
-            name, boardId: this.props.board._id,

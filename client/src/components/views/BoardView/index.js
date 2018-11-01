@@ -51,7 +51,7 @@ const BoardView = props => (
                                 <form>
                                     <label htmlFor="listName">List name : </label>
                                     <input type="text" name="listName" />
-                                    <button className="btn btn-validate" type="submit">Add list</button>
+                                    <button className="btn btn-validate" type="button" onClick={props.onListAdded}>Add list</button>
                                 </form>
                             </div>
 
@@ -78,18 +78,3 @@ BoardView.propTypes = {
 };
 
 export default BoardView;
-
-                            <div className="appened-form">
-                                <form>
-                                    <label htmlFor="listName">List name : </label>
-                                    <input type="text" name="listName" />
-                                    <button className="btn btn-validate" type="button" onClick={props.onListAdded}>Add list</button>
-                                </form>
-                            </div>
-                        <div className="appened-form">
-                            <form>
-                                <label htmlFor="listName">List name : </label>
-                                <input type="text" name="listName" />
-                                <button className="btn btn-validate" type="submit">Add list</button>
-                            </form>
-                        </div>
