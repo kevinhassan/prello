@@ -62,9 +62,6 @@ boardController.putLists = async (boardId, lists) => {
 boardController.createBoard = async (owner, data) => {
     try {
         const board = new Board();
-        if (!board) {
-            throw new MyError(404, 'Board not found');
-        }
         board.name = data.name;
         board.visibility = data.visibility;
         board.owner = owner;
@@ -93,7 +90,7 @@ boardController.changeVisibility = async (boardId, actualUser, visibility) => {
         }
 
         const isAdmin = await Helpers.isAdmin(actualUser, board.members);
-        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+        if (!isAdmin) throw new MyError(403, 'Forbidden access');
         board.visibility = visibility;
         await board.save();
     } catch (err) {
@@ -118,7 +115,7 @@ boardController.addMemberWithMail = async (boardId, userId, email) => {
         if (!board) throw new MyError(404, 'Board not found');
 
         const isAdmin = await Helpers.isAdmin(userId, board.members);
-        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+        if (!isAdmin) throw new MyError(403, 'Forbidden access');
 
         const member = await User.findOne({ email }).select({ _id: 1 });
         if (!member) throw new MyError(404, 'Member to add unknown');
@@ -145,7 +142,7 @@ boardController.removeMember = async (boardId, memberId, actualUser) => {
         const board = await Board.findById(boardId).select({ members: 1 });
         if (!board) throw new MyError(404, 'Board not found');
         const isAdmin = await Helpers.isAdmin(actualUser, board.members);
-        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+        if (!isAdmin) throw new MyError(403, 'Forbidden access');
 
         const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { members: { _id: memberId } } }, { new: true }).catch((async () => { throw new MyError(404, 'Member not found'); }));
         return newBoard;
@@ -165,7 +162,7 @@ boardController.addTeam = async (boardId, teamId, actualUser) => {
 
 
         const isAdmin = await Helpers.isAdmin(actualUser, board.members);
-        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+        if (!isAdmin) throw new MyError(403, 'Forbidden access');
 
         const newBoard = await Board.updateOne({ _id: boardId }, { $push: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
@@ -184,7 +181,7 @@ boardController.removeTeam = async (boardId, teamId, actualUser) => {
         const board = await Board.findById(boardId).select({ members: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
 
         const isAdmin = await Helpers.isAdmin(actualUser, board.members);
-        if (!isAdmin) throw new MyError(403, 'Unauthorized user');
+        if (!isAdmin) throw new MyError(403, 'Forbidden access');
 
         const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;

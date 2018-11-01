@@ -17,14 +17,14 @@ const dataTeam = {
 };
 const userData = {
     userAdmin: {
-        fullname: 'nameTest',
+        fullName: 'nameTest',
         email: 'test@test.fr',
         password: 'passTest',
         username: 'username',
         bio: 'bio'
     },
     userNotAdmin: {
-        fullname: 'nameTest',
+        fullName: 'nameTest',
         email: 'test2@test.fr',
         password: 'passTest',
         username: 'username2',
@@ -201,41 +201,41 @@ describe('PUT /boards/:id/visibility', () => {
 describe('POST /board/:id/members', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/members`)
+            .post(`/boards/${data.id}/members`)
             .send({ email: 'test2@test.fr' })
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/members`)
+            .post(`/boards/${data.id}/members`)
             .send({ email: 'test2@test.fr' })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect(403, done);
     });
     it('should return 422 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/members`)
+            .post(`/boards/${data.id}/members`)
             .send({ email: '' })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect(422, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/members`)
+            .post(`/boards/${data.id}/members`)
             .send({ email: 'unknown@test.fr' })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect(403, done);
     });
     it('should return 201 OK', (done) => {
         request(app)
-            .post(`/board/${data.id}/members`)
+            .post(`/boards/${data.id}/members`)
             .send({ email: userData.userNotAdmin.email })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(201, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/members`)
+            .post(`/boards/${data.id}/members`)
             .send({ email: 'unknown@test.fr' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
@@ -245,24 +245,24 @@ describe('POST /board/:id/members', () => {
 describe('DELETE /board/:id/members/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
-            .delete(`/board/${data.id}/members/${userNotAdmin._id}`)
+            .delete(`/boards/${data.id}/members/${userNotAdmin._id}`)
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .delete(`/board/${data.id}/members/${userAdmin._id}`)
+            .delete(`/boards/${data.id}/members/${userAdmin._id}`)
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect(403, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .delete(`/board/${data.id}/members/unknown`)
+            .delete(`/boards/${data.id}/members/unknown`)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
-            .delete(`/board/${data.id}/members/${userNotAdmin._id}`)
+            .delete(`/boards/${data.id}/members/${userNotAdmin._id}`)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });
@@ -270,34 +270,34 @@ describe('DELETE /board/:id/members/:id', () => {
 describe('POST /board/:id/teams', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/teams`)
+            .post(`/boards/${data.id}/teams`)
             .send({ team: team._id })
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/teams/`)
+            .post(`/boards/${data.id}/teams/`)
             .send({ team: team._id })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect(403, done);
     });
     it('should return 422 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/teams`)
+            .post(`/boards/${data.id}/teams`)
             .send({ team: '' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(422, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .post(`/board/${data.id}/teams`)
+            .post(`/boards/${data.id}/teams`)
             .send({ team: 'unkwown' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
-            .post(`/board/${data.id}/teams`)
+            .post(`/boards/${data.id}/teams`)
             .send({ team: team._id })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
@@ -306,24 +306,24 @@ describe('POST /board/:id/teams', () => {
 describe('DELETE /board/:id/teams/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
-            .delete(`/board/${data.id}/teams/${team._id}`)
+            .delete(`/boards/${data.id}/teams/${team._id}`)
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .delete(`/board/${data.id}/teams/${team._id}`)
+            .delete(`/boards/${data.id}/teams/${team._id}`)
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect(403, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .delete(`/board/${data.id}/teams/unknown`)
+            .delete(`/boards/${data.id}/teams/unknown`)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
-            .delete(`/board/${data.id}/teams/${team._id}`)
+            .delete(`/boards/${data.id}/teams/${team._id}`)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });

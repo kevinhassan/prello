@@ -18,13 +18,13 @@ userController.login = async (email, password) => {
     try {
         const user = await User.findOne({ email }).select('password');
         if (!user) {
-            throw new MyError(401, 'Invalid credentials.');
+            throw new MyError(403, 'Invalid credentials.');
         }
 
         // check password
         const isMatch = await user.comparePassword(password, user.password);
         if (!isMatch) {
-            throw new MyError(401, 'Invalid credentials.');
+            throw new MyError(403, 'Invalid credentials.');
         }
 
         // return token to the user

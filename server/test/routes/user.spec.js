@@ -58,20 +58,20 @@ describe('POST /login', () => {
             .expect(422, done);
     });
 
-    it('should return 401 ERROR', (done) => {
+    it('should return 403 ERROR', (done) => {
         request(app)
             .post('/login')
             .send({ email: 'unknown@test.fr', password: data.password })
             .expect('Content-Type', /json/)
-            .expect(401, done);
+            .expect(403, done);
     });
 
-    it('should return 401 ERROR', (done) => {
+    it('should return 403 ERROR', (done) => {
         request(app)
             .post('/login')
             .send({ email: data.email, password: 'wrongpassword' })
             .expect('Content-Type', /json/)
-            .expect(401, done);
+            .expect(403, done);
     });
 });
 describe('GET /profile', () => {
