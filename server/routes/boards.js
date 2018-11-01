@@ -1,6 +1,8 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
 const { boardValidator } = require('../validators');
+const listController = require('../controllers/lists');
+
 
 /**
 * @swagger
@@ -135,6 +137,15 @@ module.exports = (router) => {
                 res.status(201).send({ message: 'Board successfully created', board: boardCreated._id });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
+            }
+        })
+
+        .post('/boards/:boardId/lists', async (req, res) => {
+            try {
+                const listCreated = await listController.createList(req.body.list.name, req.params.boardId);
+                res.status(201).send({ message: 'List successfully created', list: listCreated });
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
             }
         });
 };

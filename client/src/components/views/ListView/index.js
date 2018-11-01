@@ -6,7 +6,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import CardComp from '../../../containers/CardComp';
 
 // ===== Models
-import List from '../../../models/List';
 
 // ===== Others
 import './style.css';

@@ -54,6 +54,7 @@ class BoardComp extends React.Component {
             name, isArchieved: false, boardId: this.props.board._id, cards: [],
         });
         this.props.createList(this.props.board._id, this.props.board.lists, newList);
+        this.setState({ isInputVisible: false });
     }
 
 
