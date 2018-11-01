@@ -67,9 +67,8 @@ userController.postRegister = async (data) => {
     } catch (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'An account already exists for this email.');
-        } else if (err.name === 'ValidationError') {
-            throw new MyError(400, 'Missing information');
-        }
+        } 
+        return new MyError(500, 'Internal server error');
     }
 };
 
@@ -105,13 +104,13 @@ userController.updateProfile = async (user, data) => {
         userProfile.bio = bio;
         userProfile.initials = initials;
         const userFound = await User.findOne({ username, _id: { $ne: user._id } });
-        if (userFound) throw new MyError(400, 'Username is taken ');
+        if (userFound) throw new MyError(409, 'Username is taken ');
         userProfile.username = username;
         await userProfile.save();
         return userProfile;
     } catch (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
-            throw new MyError(409, 'Update profile failed');
+            throw new MyError(400, 'Update profile failed');
         } else if (err.status) {
             throw err;
         }

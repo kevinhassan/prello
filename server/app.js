@@ -9,8 +9,9 @@ const errorHandler = require('errorhandler');
 const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const cors = require('cors');
+const swaggerUi = require('swagger-ui-express');
 const config = require('./config');
-
+const swaggerSpec = require('./config/swagger');
 /**
  * Create Express server.
  */
@@ -46,14 +47,16 @@ require('./models');
 require('./socket');
 
 /**
+ * Swagger API documentation
+ */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+/**
  * API examples routes.
  */
 app.use('/', require('./routes/'));
 
 app.use((req, res, next) => {
-    const err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+    res.status(404).send({ error: 'Not Found' });
 });
 
 /**
@@ -62,11 +65,6 @@ app.use((req, res, next) => {
 if (process.env.NODE_ENV === 'development') {
     // only use in development
     app.use(errorHandler());
-} else {
-    app.use((err, req, res, next) => {
-        console.error(err);
-        res.status(500).send('Server Error');
-    });
 }
 
 module.exports = app;
