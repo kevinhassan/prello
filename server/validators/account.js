@@ -2,9 +2,7 @@ const { check } = require('express-validator/check');
 
 module.exports = [
     check('password')
-        .isLength({ min: 5 })
-        .withMessage('Password need to have at least 5 characters'),
+        .isLength({ min: 5 }),
     check('email')
         .isEmail()
-        .withMessage('That email doesn‘t look right')
 ];

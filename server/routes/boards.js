@@ -16,7 +16,7 @@ module.exports = (router) => {
         .put('/boards/:boardId/lists', boardValidator.updateBoardList, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 await boardController.putLists(req.params.boardId, req.body.lists);
@@ -28,7 +28,7 @@ module.exports = (router) => {
         .post('/boards', boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 const boardCreated = await boardController.createBoard(req.body);
