@@ -1,7 +1,6 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
-import List from '../models/List';
 
 // ========================
 
@@ -11,6 +10,8 @@ export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 export const CREATE_LIST = 'boards/CREATE_LIST';
 export const CREATE_LIST_SUCCESS = 'boards/CREATE_LIST_SUCCESS';
 export const CREATE_LIST_FAILURE = 'boards/CREATE_LIST_FAILURE';
+export const ADD_LIST_TO_BOARD_FAILURE = 'boards/ADD_LIST_TO_BOARD_FAILURE';
+export const ADD_LIST_TO_BOARD_SUCCESS = 'boards/ADD_LIST_TO_BOARD_SUCCESS';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({
@@ -106,6 +107,21 @@ export const createListSuccess = list => ({
     },
 });
 
+export const addListToBoardSuccess = lists => ({
+    type: ADD_LIST_TO_BOARD_SUCCESS,
+    payload: {
+        lists,
+    },
+});
+
+export const addListToBoardFailure = error => ({
+    type: ADD_LIST_TO_BOARD_FAILURE,
+    payload: {
+        error,
+    },
+});
+
+
 export const createList = (boardId, lists, list) => (dispatch) => {
     dispatch(createListAction(boardId, lists, list));
     const ressource = 'boards/'.concat(boardId).concat('/lists/');
@@ -116,14 +132,13 @@ export const createList = (boardId, lists, list) => (dispatch) => {
             dispatch(createListSuccess(listCreated));
             const newLists = lists.concat(listCreated);
 
-            
             APIFetch.fetchPrelloAPI(ressource, { lists: newLists }, APIFetch.PUT)
                 .then((response) => {
-                    if (response.ok) {
-                        dispatch(createListSuccess(newLists));
+                    if (response.status === 204) {
+                        dispatch(addListToBoardSuccess(newLists));
                     } else {
                         response.json().then((jsonError) => {
-                            dispatch(createListFailure(jsonError.error));
+                            dispatch(addListToBoardFailure(jsonError.error));
                         });
                     }
                 });
@@ -131,16 +146,4 @@ export const createList = (boardId, lists, list) => (dispatch) => {
         .catch((error) => {
             dispatch(createListFailure(error.response.data.error));
         });
-
-
-    /* APIFetch.fetchPrelloAPI(ressource, { newLists }, APIFetch.PUT)
-            .then((res) => {
-                if (res.ok) {
-                    dispatch(createListSuccess(lists));
-                } else {
-                    res.json().then((jsonError) => {
-                        dispatch(createListFailure(jsonError.error));
-                    });
-                }
-            }); */
 };

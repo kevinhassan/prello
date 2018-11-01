@@ -53,7 +53,7 @@ const ListView = props => (
 );
 
 ListView.propTypes = {
-    list: PropTypes.instanceOf(List).isRequired,
+    list: PropTypes.object.isRequired,
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
 };
