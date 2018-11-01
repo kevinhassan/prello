@@ -1,6 +1,8 @@
 const cardController = {};
+const socket = require('../socket');
 const MyError = require('../util/error');
 const Card = require('../models/Card');
+const List = require('../models/List');
 
 /**
  * POST card
@@ -8,9 +10,19 @@ const Card = require('../models/Card');
 cardController.createCard = async (data) => {
     try {
         const card = new Card();
+
+        const list = await List.findById(data.list);
+        if (!list) {
+            throw new MyError(422, 'Incorrect query, the specified list doesn\'t exist');
+        }
         card.name = data.name;
         card.list = data.list;
+        list.cards.push(card._id);
+
+        await list.save();
         await card.save();
+        socket.updateClientsOnBoard(list.boardId);
+
         return card;
     } catch (err) {
         if (err.name === 'ValidationError') {
@@ -38,7 +50,7 @@ cardController.putDescription = async (data) => {
         if (err.status === 404) {
             throw err;
         }
-        if (err.name === 'ValidationError') {          
+        if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query.');
         }
         if (err.name === 'CastError') {

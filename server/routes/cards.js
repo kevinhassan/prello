@@ -33,6 +33,8 @@ const { cardValidator } = require('../validators');
 *               description: Unauthorized user
 *           422:
 *               description: Incorrect query, data provided invalid
+*           422:
+*               description: Incorrect query, the specified list doesn\'t exist
 *           500:
 *               description: Internal server error
 *
