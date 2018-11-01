@@ -6,7 +6,7 @@ export const initialState = {
 
 export default function listsReducer(state = initialState, action) {
     switch (action.type) {
-    case actions.CREATE_LIST_SUCCESs:
+    case actions.CREATE_LIST_SUCCESS:
         return {
             ...state,
         };

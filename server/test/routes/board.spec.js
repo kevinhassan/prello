@@ -8,11 +8,11 @@ const data = {
     name: 'test Card',
     visibility: 'private'
 };
-const list = {
-    id: 'l00000000009',
+const testList = {
     name: 'test List',
-    isArchieved: false,
-    board: data.id,
+    isArchived: false,
+    boardId: data.id,
+    cards: [],
 };
 
 describe('POST /boards', () => {
@@ -89,8 +89,8 @@ describe('POST /boards/:id/lists', () => {
     });
     it('should return 201 OK', (done) => {
         request(app)
-            .put(`/boards/${data.id}/lists`)
-            .send({ list })
+            .post(`/boards/${data.id}/lists`)
+            .send({ list: testList })
             .expect(201, done);
     });
 });

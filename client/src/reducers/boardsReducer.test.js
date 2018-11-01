@@ -19,3 +19,14 @@ describe('board/UPDATE_LISTS_INDEXES_SUCCESS reducer', () => {
         expect(finalState.board.lists[2]._id).toEqual(3);
     });
 });
+
+describe('board/ADD_LIST_TO_BOARD_SUCCES reducer', () => {
+    it('should update the lists with the new one', () => {
+        const list = [new List({ _id: 1 })];
+        const addListAction = actions.addListToBoardSuccess(list);
+        const finalState = boardsReducer({}, addListAction);
+
+        expect(finalState.board.lists.length).toEqual(1);
+        expect(finalState.board.lists[0]._id).toEqual(1);
+    });
+});

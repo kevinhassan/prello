@@ -51,7 +51,7 @@ class BoardComp extends React.Component {
     handleListAdded() {
         const name = document.getElementsByName('listName')[0].value.toString();
         const newList = new List({
-            name, isArchieved: false, boardId: this.props.board._id, cards: [],
+            name, isArchived: false, boardId: this.props.board._id, cards: [],
         });
         this.props.createList(this.props.board._id, this.props.board.lists, newList);
         this.setState({ isInputVisible: false });
