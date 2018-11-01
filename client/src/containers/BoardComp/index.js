@@ -51,7 +51,7 @@ class BoardComp extends React.Component {
     handleListAdded() {
         const name = document.getElementsByName('listName')[0].value.toString();
         const newList = new List({
-            name, boardId: this.props.board._id,
+            name, isArchieved: false, boardId: this.props.board._id, cards: [],
         });
         const lists = this.props.board.lists.concat(newList);
         this.props.createList(this.props.board._id, lists, newList);
@@ -152,3 +152,4 @@ export default connect(
             _id: 'l00000000004', name, boardId: this.props.board._id,
         this.props.createList(this.props.board._id, this.props.board.lists, newList);
         this.setState({ isInputVisible: false });
+            name, boardId: this.props.board._id,
