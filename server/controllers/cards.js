@@ -3,16 +3,37 @@ const MyError = require('../util/error');
 const Card = require('../models/Card');
 
 /**
- * PUT card description via socket
+ * POST card
  */
-cardController.putDescription = async (cardId, description) => {
+cardController.createCard = async (data) => {
     try {
-        const card = await Card.findById(cardId).populate([{
+        const card = new Card();
+        card.name = data.name;
+        card.list = data.list;
+        await card.save();
+        return card._id;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+/**
+ * PUT card description
+ */
+cardController.putDescription = async (data) => {
+    try {
+        const card = await Card.findById(data.cardId).populate([{
             path: 'list'
         }]);
         if (!card) throw new MyError(404, 'Card not found.');
 
-        card.description = description;
+        card.description = data.description;
         await card.save();
         return card;
     } catch (err) {
