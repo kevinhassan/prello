@@ -1,9 +1,10 @@
 const boardController = {};
+const teamController = require('./teams');
+
 const MyError = require('../util/error');
 const Board = require('../models/Board');
 const User = require('../models/User');
 const Helpers = require('../helpers');
-
 /**
  * GET /boards/:boardId
  *
@@ -18,7 +19,7 @@ boardController.get = async (boardId) => {
             }
         }, {
             path: 'labels'
-        }]);
+        }, { path: 'teams' }]);
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
@@ -120,7 +121,7 @@ boardController.addMemberWithMail = async (boardId, userId, email) => {
         const member = await User.findOne({ email }).select({ _id: 1 });
         if (!member) throw new MyError(404, 'Member to add unknown');
 
-        const newBoard = await Board.updateOne({ _id: boardId }, { $push: { members: { _id: member._id } } });
+        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } }, { upsert: true });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
@@ -154,19 +155,20 @@ boardController.removeMember = async (boardId, memberId, actualUser) => {
 /**
  * POST /board/:id/teams
  * Add team to the board (only for admins)
- * Add board id to team (TODO)
  */
 boardController.addTeam = async (boardId, teamId, actualUser) => {
     try {
-        const board = await Board.findById(boardId).select({ members: 1 }).catch((async () => { throw new MyError(404, 'Board not found'); }));
-
+        const board = await Board.findById(boardId).select({ members: 1 }).catch(async () => { throw new MyError(404, 'Board not found'); });
+        if (!board) throw new MyError(404, 'Board not found');
 
         const isAdmin = await Helpers.isAdmin(actualUser, board.members);
         if (!isAdmin) throw new MyError(403, 'Forbidden access');
 
-        const newBoard = await Board.updateOne({ _id: boardId }, { $push: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
+        await teamController.addBoard(board._id, teamId);
+        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
     } catch (err) {
+        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
@@ -182,7 +184,8 @@ boardController.removeTeam = async (boardId, teamId, actualUser) => {
 
         const isAdmin = await Helpers.isAdmin(actualUser, board.members);
         if (!isAdmin) throw new MyError(403, 'Forbidden access');
-
+        
+        await teamController.removeBoard(board._id, teamId);
         const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
     } catch (err) {

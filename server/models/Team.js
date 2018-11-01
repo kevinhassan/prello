@@ -6,7 +6,7 @@ const teamSchema = new mongoose.Schema({
     isVisible: { type: Boolean, default: false },
     avatarUrl: String,
     members: [{
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
         isAdmin: { type: Boolean, default: false }
     }],
     boards: [{

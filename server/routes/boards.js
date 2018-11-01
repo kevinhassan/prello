@@ -169,7 +169,7 @@ const Auth = require('../middlewares/auth');
 *           500:
 *               description: Internal server error
 *
-* /boards/{boardId}/members/:memberId:
+* /boards/{boardId}/members/{memberId}:
 *   delete:
 *       tags:
 *           - Board
@@ -185,7 +185,7 @@ const Auth = require('../middlewares/auth');
 *             required: true
 *             description: Board ID
 *           - in: path
-*             name: Member ID
+*             name: memberId
 *             schema:
 *               type: string
 *             required: true
@@ -232,12 +232,14 @@ const Auth = require('../middlewares/auth');
 *               description: Unauthorized user
 *           403:
 *               description: Forbidden access
+*           404:
+*               description: Board or Team not found
 *           422:
 *               description: Invalid form data
 *           500:
 *               description: Internal server error
 *
-* /boards/{boardId}/teams/:teamId:
+* /boards/{boardId}/teams/{teamId}:
 *   delete:
 *       tags:
 *           - Board
@@ -253,7 +255,7 @@ const Auth = require('../middlewares/auth');
 *             required: true
 *             description: Board ID
 *           - in: path
-*             name: Team ID
+*             name: teamId
 *             schema:
 *               type: string
 *             required: true
