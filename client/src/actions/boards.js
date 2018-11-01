@@ -1,6 +1,7 @@
 import { displayLoadingModal, hideLoadingModal } from './modal';
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
+import List from '../models/List';
 
 // ========================
 
@@ -98,10 +99,10 @@ export const createListFailure = error => ({
     },
 });
 
-export const createListSuccess = lists => ({
+export const createListSuccess = list => ({
     type: CREATE_LIST_SUCCESS,
     payload: {
-        lists,
+        list,
     },
 });
 
@@ -111,23 +112,34 @@ export const createList = (boardId, lists, list) => (dispatch) => {
 
     APIFetch.fetchPrelloAPI(ressource, { list }, APIFetch.POST)
         .then((res) => {
-            if (res.ok) {
-                dispatch(createListSuccess(list));
-            } else {
-                res.json().then((jsonError) => {
-                    dispatch(createListFailure(jsonError.error));
+            const listCreated = res.data.list;
+            dispatch(createListSuccess(listCreated));
+            const newLists = lists.concat(listCreated);
+
+            APIFetch.fetchPrelloAPI(ressource, { newLists }, APIFetch.PUT)
+                .then((response) => {
+                    if (response.ok) {
+                        dispatch(createListSuccess(newLists));
+                    } else {
+                        response.json().then((jsonError) => {
+                            dispatch(createListFailure(jsonError.error));
+                        });
+                    }
                 });
-            }
+        })
+        .catch((error) => {
+            dispatch(createListFailure(error.response.data.error));
         });
 
-    APIFetch.fetchPrelloAPI(ressource, { lists }, APIFetch.PUT)
-        .then((res) => {
-            if (res.ok) {
-                dispatch(createListSuccess(lists));
-            } else {
-                res.json().then((jsonError) => {
-                    dispatch(createListFailure(jsonError.error));
-                });
-            }
-        });
+
+    /* APIFetch.fetchPrelloAPI(ressource, { newLists }, APIFetch.PUT)
+            .then((res) => {
+                if (res.ok) {
+                    dispatch(createListSuccess(lists));
+                } else {
+                    res.json().then((jsonError) => {
+                        dispatch(createListFailure(jsonError.error));
+                    });
+                }
+            }); */
 };
