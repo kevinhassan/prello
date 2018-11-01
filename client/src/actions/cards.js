@@ -1,4 +1,4 @@
-import APISocket from '../helpers/APISocket';
+import * as APIFetch from '../helpers/APIFetch';
 import {
     displayErrorMessage, displaySuccessMessage, displayLoadingModal, hideLoadingModal,
 } from './modal';
@@ -46,15 +46,17 @@ export const editCardDescriptionSuccessAction = message => ({
 export const editCardDescription = (cardId, description) => (dispatch) => {
     dispatch(editCardDescriptionStartedAction());
     dispatch(displayLoadingModal());
-    APISocket.editCardDescription(cardId, description, (res) => {
-        if (res.error) {
-            dispatch(editCardDescriptionFailureAction(res.error));
+    const resource = 'cards/'.concat(cardId).concat('/description/');
+    APIFetch.fetchPrelloAPI(resource, { description }, APIFetch.PUT)
+        .then(() => {
+            // API doesn't need to return the card: use directly the new description
+            dispatch(editCardDescriptionSuccessAction(description));
             dispatch(hideLoadingModal());
-            dispatch(displayErrorMessage(res.error));
-        } else {
-            dispatch(editCardDescriptionSuccessAction(res.message));
+            dispatch(displaySuccessMessage('Description updated'));
+        })
+        .catch((error) => {
+            dispatch(editCardDescriptionFailureAction(error.message));
             dispatch(hideLoadingModal());
-            dispatch(displaySuccessMessage(res.message));
-        }
-    });
+            dispatch(displayErrorMessage(error.message));
+        });
 };
