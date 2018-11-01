@@ -1,5 +1,6 @@
 .h1MD, .h2MD, .h3MD, .h4MD, .h5MD {
-    color: inherit;
+    color: #222;
+    font-weight: bold;
     margin: 0;
 }
 

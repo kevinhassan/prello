@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
 import ReactMarkdown from 'react-markdown';
 
-import Card from '../../../models/Card';
-
+// ===== Markdown Components
 import MdHeader from '../markdown/MdHeader';
+import MdLink from '../markdown/MdLink';
 
+// ===== Models
+import Card from '../../../models/Card';
 
 import './style.css';
 
@@ -80,10 +82,10 @@ const CardDetailView = props => (
                             <div className="descriptionContent">
                                 {props.card.description
                                     ? (
-                                        <button
+                                        <a
                                             className="btn clickableDescription"
-                                            type="button"
                                             onClick={() => props.changeIsEditingDescription(true)}
+                                            onKeyDown={() => props.changeIsEditingDescription(true)}
                                         >
                                             <ReactMarkdown
                                                 source={props.card.description}
@@ -92,18 +94,21 @@ const CardDetailView = props => (
                                                     heading: mdProps => (
                                                         <MdHeader {...mdProps} />
                                                     ),
+                                                    link: mdProps => (
+                                                        <MdLink {...mdProps} />
+                                                    ),
                                                 }}
                                             />
-                                        </button>
+                                        </a>
                                     )
                                     : (
-                                        <button
+                                        <a
                                             className="btn btn-link"
-                                            type="button"
                                             onClick={() => props.changeIsEditingDescription(true)}
+                                            onKeyDown={() => props.changeIsEditingDescription(true)}
                                         >
                                     Add a description
-                                        </button>
+                                        </a>
                                     )
                                 }
                             </div>
