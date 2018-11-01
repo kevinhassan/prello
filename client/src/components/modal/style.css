@@ -19,7 +19,7 @@
 }
 
 .spinnerImg {
-    height: 5vh;
+    width: 3.5vw;
 }
 
 .hideModal > *, .hideModal {
@@ -32,11 +32,13 @@
     border-radius: 3px;
     box-shadow: 0px 5px 4px black;
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     height: 10vh;
+    min-height: 80px;
     line-height: 1rem;
     margin-top: 5px;
     width: 20vw;
+    min-width: 100px;
     padding: 10px;
     transition: 0.5s;
 }
@@ -51,7 +53,7 @@
 }
 
 .successMessageModalContent {
-    background-color: #43b949;
+    background-color: #53c959;
     transform: translateX(15vw);
 }
 
