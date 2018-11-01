@@ -9,20 +9,39 @@ const { boardValidator } = require('../validators');
 *       properties:
 *           name:
 *               type: string
-*           privacy:
+*           visibility:
+*               type: string
+*   VisibilityForm:
+*       properties:
+*           visibility:
+*               type: string
+*   AddMemberForm:
+*       properties:
+*           email:
+*               type: string
+*   AddTeamForm:
+*       properties:
+*           team:
 *               type: string
 *
-* /boards/:boardId:
+* /boards/{boardId}:
 *   get:
 *       tags:
 *           - Board
 *       description: Get all information of the board
-*       summary: Specific board information
+*       summary: Get specific board information
 *       produces:
 *           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
 *       responses:
 *           200:
-*               description: Board found sent 
+*               description: Board found sent
 *           404:
 *               description: Board not found
 *           500:
@@ -34,9 +53,18 @@ const { boardValidator } = require('../validators');
 *       summary: Update lists
 *       produces:
 *           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
 *       responses:
 *           204:
-*               description: Board's lists updated 
+*               description: Board's lists updated
+*           401:
+*               description: Unauthorized user
 *           404:
 *               description: Board not found
 *           422:
@@ -47,7 +75,7 @@ const { boardValidator } = require('../validators');
 * /boards:
 *   post:
 *       tags:
-*           - User
+*           - Board
 *       description: Create a new empty Board
 *       summary: Create new Board
 *       produces:
@@ -62,13 +90,13 @@ const { boardValidator } = require('../validators');
 *       responses:
 *           201:
 *               description: Board successfully created
-*           404:
-*               description: Board not found
+*           401:
+*               description: Unauthorized user
 *           422:
 *               description: Invalid form data or Incorrect Query
 *           500:
 *               description: Internal server error
-
+*
 */
 
 module.exports = (router) => {

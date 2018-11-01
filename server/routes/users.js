@@ -56,7 +56,7 @@ const {
 *       tags:
 *           - User
 *       description: User object that needs to be added to the application
-*       summary: CREATE the new user
+*       summary: Create the new user
 *       produces:
 *           - application/json
 *       parameters:
@@ -93,7 +93,7 @@ const {
 *       responses:
 *           200:
 *               description: User successfully connected
-*           401:
+*           403:
 *               description: Invalid credentials (email and/or password)
 *           422:
 *               description: Invalid form data
@@ -228,7 +228,7 @@ const {
 *           500:
 *               description: Internal server error
 *
-* /reset/:token:
+* /reset/{token}:
 *   post:
 *       tags:
 *           - User
@@ -237,6 +237,12 @@ const {
 *       produces:
 *           - application/json
 *       parameters:
+*           - in: path
+*             name: token
+*             schema:
+*               type: string
+*             required: true
+*             description: Reset Token
 *           - name: body
 *             description: The new password of the user
 *             in: body
