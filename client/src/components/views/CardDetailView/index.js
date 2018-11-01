@@ -3,8 +3,11 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Textarea from 'react-textarea-autosize';
+import ReactMarkdown from 'react-markdown';
 
 import Card from '../../../models/Card';
+
+import MdHeader from '../markdown/MdHeader';
 
 
 import './style.css';
@@ -78,11 +81,19 @@ const CardDetailView = props => (
                                 {props.card.description
                                     ? (
                                         <button
-                                            className="text-left btnDescription"
+                                            className="btn clickableDescription"
                                             type="button"
                                             onClick={() => props.changeIsEditingDescription(true)}
                                         >
-                                            {props.card.description}
+                                            <ReactMarkdown
+                                                source={props.card.description}
+                                                className="text-left btnDescription"
+                                                renderers={{
+                                                    heading: mdProps => (
+                                                        <MdHeader {...mdProps} />
+                                                    ),
+                                                }}
+                                            />
                                         </button>
                                     )
                                     : (

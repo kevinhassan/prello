@@ -65,6 +65,13 @@ h2.cardDetailTitle {
     width: 100%;
 }
 
+.clickableDescription {
+    width: 100%;
+}
+.clickableDescription:hover {
+    background-color: #dddddd;
+}
+
 .btnDescription:hover {
     cursor: pointer;
 }
