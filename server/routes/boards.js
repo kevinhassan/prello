@@ -46,6 +46,8 @@ const { boardValidator } = require('../validators');
 *               description: Board not found
 *           500:
 *               description: Internal server error
+*
+* /boards/{boardId}/lists:
 *   put:
 *       tags:
 *           - Board
