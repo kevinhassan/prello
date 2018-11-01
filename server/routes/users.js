@@ -34,10 +34,27 @@ const {
 *               type: string
 *           bio:
 *               type: string
+*   AccountForm:
+*       properties:
+*           email:
+*               type: string
+*           password:
+*               type: string
+*
+*   ForgotPasswordForm:
+*       properties:
+*           email:
+*               type: string
+*
+*   ResetPasswordForm:
+*       properties:
+*           password:
+*               type: string
+*
 * /register:
 *   post:
 *       tags:
-*           - Authentication
+*           - User
 *       description: User object that needs to be added to the application
 *       summary: CREATE the new user
 *       produces:
@@ -55,13 +72,13 @@ const {
 *           409:
 *               description: An account already exists for this email
 *           422:
-*               description: Incorrect form
+*               description: Invalid form data
 *           500:
 *               description: Internal server error
 * /login:
 *   post:
 *       tags:
-*           - Authentication
+*           - User
 *       description: User object that needs to be log to the application
 *       summary: Connect the user
 *       produces:
@@ -79,13 +96,13 @@ const {
 *           401:
 *               description: Invalid credentials (email and/or password)
 *           422:
-*               description: Incorrect form
+*               description: Invalid form data
 *           500:
 *               description: Internal server error
 * /profile:
 *   get:
 *       tags:
-*           - Authentication
+*           - User
 *       description: User profile
 *       summary: Get the user profile
 *       produces:
@@ -95,7 +112,7 @@ const {
 *             in: header
 *             required: true
 *             schema:
-*               $ref: '#/definitions/LoginForm'
+*               $ref: '#/definitions/ProfileForm'
 *       responses:
 *           200:
 *               description: User successfully get his profile
@@ -106,7 +123,7 @@ const {
 *
 *   put:
 *       tags:
-*           - Authentication
+*           - User
 *       description: User object that needs to update his profile
 *       summary: Update the user profile
 *       produces:
@@ -123,13 +140,118 @@ const {
 *               description: User profile successfully updated
 *           400:
 *               description: Update profile failed
+*           401:
+*               description: Unauthorized user
 *           409:
 *               description: Username is taken
 *           422:
-*               description: Incorrect form
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+* /account:
+*   put:
+*       tags:
+*           - User
+*       description: User object that needs to update his credentials
+*       summary: Update the user credentials
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The user credentials to update
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/AccountForm'
+*       responses:
+*           204:
+*               description: User credentials updated
+*           401:
+*               description: Unauthorized user
+*           409:
+*               description: Email already used
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*   delete:
+*       tags:
+*           - User
+*       description: User account to delete
+*       summary: Delete the user account
+*       produces:
+*           - application/json
+*       responses:
+*           204:
+*               description: User successfuly deleted
+*           401:
+*               description: Unauthorized user
 *           500:
 *               description: Internal server error
 *
+*   get:
+*       tags:
+*           - User
+*       description: User account
+*       summary: Get the user account
+*       produces:
+*           - application/json
+*       responses:
+*           200:
+*               description: User email
+*           401:
+*               description: Unauthorized user
+*           500:
+*               description: Internal server error
+* /forgot:
+*   post:
+*       tags:
+*           - User
+*       description: User forgot his password
+*       summary: Send email to the user to reset his password during 1 hours
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The email of the user which forgot the password
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/ForgotPasswordForm'
+*       responses:
+*           200:
+*               description: Reset mail sent
+*           404:
+*               description: No user found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*
+* /reset/:token:
+*   post:
+*       tags:
+*           - User
+*       description: User reset his password
+*       summary: Replace the password forgotten with the new one
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The new password of the user
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/ResetPasswordForm'
+*       responses:
+*           204:
+*               description: Password successfully reseted
+*           403:
+*               description: User can't reset his password
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -137,7 +259,7 @@ module.exports = (router) => {
         .post('/register', registerValidator, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 if (!req.body.fullName || !req.body.email || !req.body.password) throw new MyError(400, 'Missing information.');
@@ -150,7 +272,7 @@ module.exports = (router) => {
         .post('/login', loginValidator, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 const authToken = await userController.login(req.body.email, req.body.password);
@@ -170,7 +292,7 @@ module.exports = (router) => {
         .put('/profile', Auth.isAuthentificated, [profileValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 await userController.updateProfile(req.user, req.body);
@@ -182,7 +304,7 @@ module.exports = (router) => {
         .put('/account', Auth.isAuthentificated, [accountValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 await userController.updateAccount(req.user, req.body);
@@ -192,11 +314,11 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+        // TODO: remove him from all boards(check if not the last admin) & teams
         .delete('/account', Auth.isAuthentificated, async (req, res) => {
             try {
                 await userController.deleteAccount(req.user);
-                res.status(200).send({ message: 'Account successfully deleted.' });
-                // TODO: disconnect user if credentials change
+                res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -212,7 +334,7 @@ module.exports = (router) => {
         .post('/forgot', [forgotValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 await userController.postForgot(req.body.email, req.headers.host);
@@ -224,11 +346,11 @@ module.exports = (router) => {
         .post('/reset/:token', [resetValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 await userController.resetPassword(req.params.token, req.body.password);
-                res.status(200).send({ message: 'Password successfully reseted.' });
+                res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

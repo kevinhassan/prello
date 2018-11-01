@@ -232,11 +232,11 @@ describe('DELETE /account', () => {
             .delete('/account')
             .expect(401, done);
     });
-    it('should return 200 OK', (done) => {
+    it('should return 204 OK', (done) => {
         request(app)
             .delete('/account')
             .set('Authorization', `Bearer ${token}`)
-            .expect(200, done);
+            .expect(204, done);
     });
     it('should return 401 ERROR', (done) => {
         request(app)

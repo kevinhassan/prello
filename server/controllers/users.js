@@ -129,10 +129,9 @@ userController.updateAccount = async (user, data) => {
         const userProfile = await User.findById(user.id).select({
             password: 1, email: 1
         });
-        // TODO: use validator on email
         if (email && email !== '') {
             const userFound = await User.findOne({ email, _id: { $ne: user._id } });
-            if (userFound) throw new MyError(400, 'Email already used');
+            if (userFound) throw new MyError(409, 'Email already used');
             userProfile.email = email;
         }
         if (password && password !== '') {
@@ -141,9 +140,7 @@ userController.updateAccount = async (user, data) => {
         await userProfile.save();
     } catch (err) {
         // TODO: add more details (ex: if same username then error)
-        if (err.name === 'MongoError' && err.code === 11000) {
-            throw new MyError(409, 'Update account failed');
-        } else if (err.status) {
+        if (err.status) {
             throw err;
         }
         throw new MyError(500, 'Internal Server Error');
@@ -155,8 +152,7 @@ userController.updateAccount = async (user, data) => {
  */
 userController.deleteAccount = async (user) => {
     try {
-        const userDeleted = await User.deleteOne({ _id: user._id });
-        if (!userDeleted.ok) throw new MyError(404, 'User to delete not found');
+        await User.deleteOne({ _id: user._id });
     } catch (err) {
         if (err.status) {
             throw err;
