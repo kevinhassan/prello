@@ -77,8 +77,11 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                const cardId = await cardController.createCard({ name: req.body.name, list: req.body.list, });
-                res.status(201).send({ message: 'Card successfully created', card: cardId });
+                const cardCreated = await cardController.createCard({
+                    name: req.body.name, list: req.body.list,
+                });
+
+                res.status(201).send({ message: 'Card successfully created', card: cardCreated._id });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -90,7 +93,9 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.putDescription({ cardId: req.params.cardId, description: req.body.description, });
+                await cardController.putDescription({
+                    cardId: req.params.cardId, description: req.body.description,
+                });
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

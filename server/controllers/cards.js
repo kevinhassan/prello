@@ -11,7 +11,7 @@ cardController.createCard = async (data) => {
         card.name = data.name;
         card.list = data.list;
         await card.save();
-        return card._id;
+        return card;
     } catch (err) {
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
@@ -28,9 +28,7 @@ cardController.createCard = async (data) => {
  */
 cardController.putDescription = async (data) => {
     try {
-        const card = await Card.findById(data.cardId).populate([{
-            path: 'list'
-        }]);
+        const card = await Card.findById(data.cardId);
         if (!card) throw new MyError(404, 'Card not found.');
 
         card.description = data.description;
@@ -40,7 +38,7 @@ cardController.putDescription = async (data) => {
         if (err.status === 404) {
             throw err;
         }
-        if (err.name === 'ValidationError') {
+        if (err.name === 'ValidationError') {          
             throw new MyError(422, 'Incorrect query.');
         }
         if (err.name === 'CastError') {
