@@ -47,10 +47,24 @@
     overflow-y: hidden;
 }
 
+/* Add list section */
+.appened-form {
+    display: inline-block;
+    padding: 10px;
+}
+
+.submitAddListForm-btn {
+    margin-top: 5px;
+}
+
 .addListButton {
-    background-color: #ccc;
+    background-color: #dbdbed;
     width: 20%;
     border-radius: 10px !important;
     border: 0;
     height: 50px;
+}
+
+.addListButton:hover {
+    background-color: #ccc;
 }

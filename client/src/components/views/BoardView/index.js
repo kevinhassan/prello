@@ -49,9 +49,17 @@ const BoardView = props => (
 
                             <div className="appened-form">
                                 <form>
-                                    <label htmlFor="listName">List name : </label>
-                                    <input type="text" name="listName" />
-                                    <button className="btn btn-validate" type="button" onClick={props.onListAdded}>Add list</button>
+                                    <input
+                                        className="form-control"
+                                        id="listName"
+                                        name="listName"
+                                        placeholder="Enter list title"
+                                        required
+                                        type="text"
+                                    />
+                                    <button className="btn btn-success submitAddListForm-btn" type="button" onClick={props.onListAdded}>
+                                        Add list
+                                    </button>
                                 </form>
                             </div>
 
