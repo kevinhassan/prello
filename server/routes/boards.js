@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
 const { boardValidator } = require('../validators');
 
+
 /**
 * @swagger
 * definitions:
@@ -124,6 +125,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+
         .post('/boards', boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -135,5 +137,5 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
-        })
+        });
 };

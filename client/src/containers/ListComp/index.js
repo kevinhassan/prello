@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { createCard } from '../../actions/card';
 
 // ===== Models
-import List from '../../models/List';
 
 // ===== View
 import ListView from '../../components/views/ListView';
@@ -36,7 +35,7 @@ class ListComp extends React.Component {
 ListComp.propTypes = {
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
-    list: PropTypes.instanceOf(List).isRequired,
+    list: PropTypes.object.isRequired,
 };
 ListComp.defaultProps = {
     isBeingDragged: false,

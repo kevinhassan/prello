@@ -5,6 +5,7 @@ const accountValidator = require('./account');
 const forgotValidator = require('./forgot');
 const resetValidator = require('./reset');
 const boardValidator = require('./board');
+const listValidator = require('./list');
 
 module.exports = {
     loginValidator,
@@ -13,5 +14,6 @@ module.exports = {
     accountValidator,
     forgotValidator,
     resetValidator,
-    boardValidator
+    boardValidator,
+    listValidator,
 };

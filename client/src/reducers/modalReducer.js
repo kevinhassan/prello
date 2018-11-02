@@ -46,5 +46,17 @@ export default function modalReducer(state = initialState, action) {
 
     default:
         return state;
+
+    case actions.DISPLAY_MODAL:
+        return {
+            ...state,
+            isModalOpen: true,
+        };
+
+    case actions.HIDE_MODAL:
+        return {
+            ...state,
+            isModalOpen: false,
+        };
     }
 }

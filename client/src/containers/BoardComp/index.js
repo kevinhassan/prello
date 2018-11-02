@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { fetchBoard, updateListsIndexes } from '../../actions/boards';
+import { createList } from '../../actions/lists';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
+import List from '../../models/List';
 
 // ===== Others
 
@@ -15,11 +17,14 @@ class BoardComp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isInputVisible: false,
             isWaitingForAPIConfirmation: false,
             pendingLists: [],
         };
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
+        this.handleAddList = this.handleAddList.bind(this);
         this.reorder = this.reorder.bind(this);
+        this.handleListAdded = this.handleListAdded.bind(this);
     }
 
     componentWillMount() {
@@ -40,6 +45,21 @@ class BoardComp extends React.Component {
         result.splice(endIndex, 0, removed);
         return result;
     };
+
+    handleAddList(value) {
+        this.setState({ isInputVisible: value });
+    }
+
+    handleListAdded(event) {
+        event.preventDefault();
+        const name = event.target.listName.value;
+        const newList = new List({
+            name, boardId: this.props.board._id,
+        });
+        this.props.createList(newList);
+        this.setState({ isInputVisible: false });
+    }
+
 
     handleOnDragEnd(result) {
         const { destination, source, type } = result;
@@ -74,12 +94,24 @@ class BoardComp extends React.Component {
                 const pendingBoard = board;
                 pendingBoard.lists = this.state.pendingLists;
                 return (
-                    <BoardView board={pendingBoard} onDragEnd={this.handleOnDragEnd} />
+                    <BoardView
+                        board={pendingBoard}
+                        isInputVisible={this.state.isInputVisible}
+                        onDragEnd={this.handleOnDragEnd}
+                        displayAddListForm={this.handleAddList}
+                        onListAdded={this.handleListAdded}
+                    />
                 );
             }
 
             return (
-                <BoardView board={board} onDragEnd={this.handleOnDragEnd} />
+                <BoardView
+                    board={board}
+                    onDragEnd={this.handleOnDragEnd}
+                    isInputVisible={this.state.isInputVisible}
+                    displayAddListForm={this.handleAddList}
+                    onListAdded={this.handleListAdded}
+                />
             );
         }
         return '';
@@ -94,6 +126,7 @@ BoardComp.propTypes = {
         }),
     }).isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
+    createList: PropTypes.func.isRequired,
 };
 BoardComp.defaultProps = {
     board: undefined,
@@ -109,6 +142,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         updateListsIndexes,
         fetchBoard,
+        createList,
     }, dispatch,
 );
 

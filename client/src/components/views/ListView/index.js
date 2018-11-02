@@ -6,7 +6,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import CardComp from '../../../containers/CardComp';
 
 // ===== Models
-import List from '../../../models/List';
 
 // ===== Others
 import './style.css';
@@ -53,7 +52,7 @@ const ListView = props => (
 );
 
 ListView.propTypes = {
-    list: PropTypes.instanceOf(List).isRequired,
+    list: PropTypes.object.isRequired,
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
 };

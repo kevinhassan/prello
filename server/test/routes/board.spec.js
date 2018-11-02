@@ -8,6 +8,7 @@ const data = {
     name: 'test Card',
     visibility: 'private'
 };
+
 describe('POST /boards', () => {
     before(async () => {
         await Board.deleteMany({});
@@ -51,6 +52,7 @@ describe('GET /boards/:id', () => {
             .expect(200, done);
     });
 });
+
 describe('PUT /boards/:id/lists', () => {
     it('should return 422 ERROR', (done) => {
         const wrongLists = {

@@ -178,3 +178,8 @@ li {
 .signin-container {
     display: inline;
 }
+
+.appened-form{
+    border-radius: 0.25rem;
+    background-color: #dbdbed;
+}
