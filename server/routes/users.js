@@ -287,7 +287,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/profile', Auth.isAuthentificated, async (req, res) => {
+        .get('/profile', Auth.isAuthenticated, async (req, res) => {
             try {
                 const profile = await userController.getProfile(req.user);
                 res.status(200).send({ profile });
@@ -295,7 +295,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/profile', Auth.isAuthentificated, [profileValidator], async (req, res) => {
+        .put('/profile', Auth.isAuthenticated, [profileValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -307,7 +307,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/account', Auth.isAuthentificated, [accountValidator], async (req, res) => {
+        .put('/account', Auth.isAuthenticated, [accountValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -321,7 +321,7 @@ module.exports = (router) => {
             }
         })
         // TODO: remove him from all boards(check if not the last admin) & teams
-        .delete('/account', Auth.isAuthentificated, async (req, res) => {
+        .delete('/account', Auth.isAuthenticated, async (req, res) => {
             try {
                 await userController.deleteAccount(req.user);
                 res.sendStatus(204);
@@ -329,7 +329,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/account', Auth.isAuthentificated, async (req, res) => {
+        .get('/account', Auth.isAuthenticated, async (req, res) => {
             try {
                 const user = await userController.getAccount(req.user);
                 res.status(200).send({ user });

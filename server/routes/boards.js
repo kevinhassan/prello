@@ -24,6 +24,10 @@ const Auth = require('../middlewares/auth');
 *       properties:
 *           team:
 *               type: string
+*   changeAccessForm:
+*       properties:
+*           isAdmin:
+*               type: boolean
 *
 * /boards/{boardId}:
 *   get:
@@ -298,7 +302,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards', Auth.isAuthentificated, boardValidator.addBoard, async (req, res) => {
+        .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: { form: errors.array() } });
@@ -310,7 +314,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/visibility', Auth.isAuthentificated, boardValidator.changeVisibility, async (req, res) => {
+        .put('/boards/:boardId/visibility', Auth.isAuthenticated, boardValidator.changeVisibility, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -322,7 +326,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/members', Auth.isAuthentificated, boardValidator.addMember, async (req, res) => {
+        .post('/boards/:boardId/members', Auth.isAuthenticated, boardValidator.addMember, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -334,7 +338,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/members/:memberId', Auth.isAuthentificated, async (req, res) => {
+        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, async (req, res) => {
             try {
                 await boardController.removeMember(req.params.boardId, req.params.memberId, req.user._id);
                 res.sendStatus(204);
@@ -354,7 +358,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/teams/:teamId', Auth.isAuthentificated, async (req, res) => {
+        .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, async (req, res) => {
             try {
                 await boardController.removeTeam(req.params.boardId, req.params.teamId, req.user._id);
                 res.sendStatus(204);
