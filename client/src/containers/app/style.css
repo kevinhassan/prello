@@ -4,6 +4,10 @@
     height: 100%;
 }
 
+main {
+    height: calc(100% - 50px);
+}
+
 .link {
     background-color: #000057;
     color: #e8e8e8;
