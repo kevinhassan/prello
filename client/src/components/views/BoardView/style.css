@@ -60,7 +60,7 @@
 .addListButton {
     background-color: #dbdbed;
     width: 20%;
-    border-radius: 10px !important;
+    border-radius: 0.25rem;
     border: 0;
     height: 50px;
 }
