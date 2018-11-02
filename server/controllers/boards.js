@@ -142,7 +142,7 @@ boardController.addMemberWithMail = async (boardId, userId, email) => {
  * Remove him from :
  * - the members collection
  * - all cards from board's lists where is assignee
- * check if at least one member is admin before delete him (TODO)
+ * TODO: check if at least one member is admin before delete him
  *
  */
 boardController.removeMember = async (boardId, memberId, actualUser) => {
@@ -176,6 +176,36 @@ boardController.removeMember = async (boardId, memberId, actualUser) => {
         await userController.leaveBoard(memberId, boardId);
         return newBoard;
     } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * PUT /board/:id/members/:id
+ * Change admin access of the member
+ * TODO: check if at least 1 admin before remove access right
+ */
+boardController.changeAccess = async (boardId, memberId, accessRight, actualUser) => {
+    try {
+        const board = await Board.findById(boardId).select(['members']).catch(() => { throw new MyError(404, 'Board not found') ;});
+
+        if (!board) throw new MyError(404, 'Board not found');
+        const isAdmin = await Helpers.isAdmin(actualUser, board.members);
+        if (!isAdmin) throw new MyError(403, 'Forbidden access');
+
+        // change the member access right
+        let memberFound = false;
+        await board.members.map((member) => {
+            if (member._id.toString() === memberId.toString()) {
+                member.isAdmin = accessRight;
+                memberFound = true;
+            }
+            return member;
+        });
+        if (!memberFound) throw new MyError(404, 'Member not found');
+        await board.save();
+    } catch (err) {
+        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }

@@ -104,7 +104,6 @@ describe('POST /boards', () => {
     });
 });
 // TODO: integrate visibility on the GET
-
 describe('GET /boards/:id', () => {
     it('should return 404 OK', (done) => {
         request(app)
@@ -148,13 +147,6 @@ describe('PUT /boards/:id/lists', () => {
 });
 
 describe('PUT /boards/:id/visibility', () => {
-    it('should return 404 OK', (done) => {
-        request(app)
-            .get('/boards/test1234')
-            .expect('Content-Type', /json/)
-            .expect(404, done);
-    });
-
     it('should return 401 ERROR', (done) => {
         request(app)
             .put(`/boards/${data.id}/visibility`)
@@ -171,15 +163,23 @@ describe('PUT /boards/:id/visibility', () => {
             .expect(403, done);
     });
     it('should return 422 ERROR', (done) => {
-        const wrongLists = {
+        const wrongVisibility = {
             visibility: 'unknown'
         };
         request(app)
             .put(`/boards/${data.id}/visibility`)
-            .send(wrongLists)
+            .send(wrongVisibility)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(422, done);
+    });
+    it('should return 404 OK', (done) => {
+        request(app)
+            .put('/boards/test1234/visibility')
+            .send({ visibility: 'public' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
@@ -187,14 +187,6 @@ describe('PUT /boards/:id/visibility', () => {
             .send({ visibility: 'public' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
-    });
-
-    it('should return 403 ERROR', (done) => {
-        request(app)
-            .put(`/boards/${data.id}/visibility`)
-            .send({ visibility: 'public' })
-            .set('Authorization', `Bearer ${tokenNotAdmin}`)
-            .expect(403, done);
     });
 });
 
@@ -239,6 +231,49 @@ describe('POST /board/:id/members', () => {
             .send({ email: 'unknown@test.fr' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
+    });
+});
+describe('PUT /boards/:id/members/:id', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${data.id}/members/test`)
+            .send({ isAdmin: false })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${data.id}/members/${userAdmin._id}`)
+            .send({ isAdmin: false })
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongAccessRight = {
+            isAdmin: 'unknown'
+        };
+        request(app)
+            .put(`/boards/${data.id}/members/${userNotAdmin._id}`)
+            .send(wrongAccessRight)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 404 OK', (done) => {
+        request(app)
+            .put('/boards/test1234/members/test')
+            .send({ isAdmin: false })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/boards/${data.id}/members/${userNotAdmin._id}`)
+            .send({ isAdmin: false })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
     });
 });
 

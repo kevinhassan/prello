@@ -206,6 +206,46 @@ const Auth = require('../middlewares/auth');
 *           500:
 *               description: Internal server error
 *
+*   put:
+*       tags:
+*           - Board
+*       description: The admin add admin access to a member of the board
+*       summary: Add admin access to the board
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - in: path
+*             name: memberId
+*             schema:
+*               type: string
+*             required: true
+*             description: Member ID
+*           - name: body
+*             description: New access right for the member
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/changeAccessForm'
+*       responses:
+*           204:
+*               description: The member's access is updated
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Board not found or member unknown
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*
 * /boards/{boardId}/teams:
 *   post:
 *       tags:
@@ -346,7 +386,19 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/teams', Auth.isAuthentificated, boardValidator.addTeam, async (req, res) => {
+        .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, boardValidator.changeAccess, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await boardController.changeAccess(req.params.boardId, req.params.memberId, req.body.isAdmin , req.user._id);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/teams', Auth.isAuthenticated, boardValidator.addTeam, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
