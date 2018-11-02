@@ -40,7 +40,7 @@ const AddListForm = props => (
                 type="submit"
                 onClick={() => props.displayAddListForm(true)}
             >
-                <i className="fas fa-plus-circle" />
+                <i className="fas fa-plus-circle addListIcon" />
 
             </button>
         )}

@@ -19,3 +19,12 @@
 .addListButton:hover {
     background-color: #ccc;
 }
+
+.addListButton:hover > .addListIcon {
+    transform: rotateZ(90deg) scale(1.5);
+    transition: 0.2s;
+}
+
+.addListIcon {
+    transition: 0.2s;
+}
