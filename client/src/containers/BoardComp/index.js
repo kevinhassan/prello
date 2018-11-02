@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { fetchBoard, updateListsIndexes, createList } from '../../actions/boards';
+import { fetchBoard, updateListsIndexes } from '../../actions/boards';
+import { createList } from '../../actions/lists';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
@@ -48,12 +49,13 @@ class BoardComp extends React.Component {
         this.setState({ isInputVisible: true });
     }
 
-    handleListAdded() {
-        const name = document.getElementsByName('listName')[0].value.toString();
+    handleListAdded(event) {
+        event.preventDefault();
+        const name = event.target.listName.value;
         const newList = new List({
-            name, isArchived: false, boardId: this.props.board._id, cards: [],
+            name, boardId: this.props.board._id,
         });
-        this.props.createList(this.props.board._id, this.props.board.lists, newList);
+        this.props.createList(newList);
         this.setState({ isInputVisible: false });
     }
 

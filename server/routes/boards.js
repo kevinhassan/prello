@@ -1,8 +1,6 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
-const listController = require('../controllers/lists');
 const { boardValidator } = require('../validators');
-const { listValidator } = require('../validators');
 
 
 /**
@@ -127,6 +125,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+
         .post('/boards', boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -137,19 +136,6 @@ module.exports = (router) => {
                 res.status(201).send({ message: 'Board successfully created', board: boardCreated._id });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
-            }
-        })
-
-        .post('/boards/:boardId/lists', listValidator.addList, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).send({ error: 'Invalid form data' });
-            }
-            try {
-                const listCreated = await listController.createList(req.body.list.name, req.params.boardId);
-                res.status(201).send({ message: 'List successfully created', list: listCreated });
-            } catch (e) {
-                res.status(e.status).send({ err: e.message });
             }
         });
 };

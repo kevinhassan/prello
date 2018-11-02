@@ -8,12 +8,6 @@ const data = {
     name: 'test Card',
     visibility: 'private'
 };
-const testList = {
-    name: 'test List',
-    isArchived: false,
-    boardId: data.id,
-    cards: [],
-};
 
 describe('POST /boards', () => {
     before(async () => {
@@ -58,6 +52,7 @@ describe('GET /boards/:id', () => {
             .expect(200, done);
     });
 });
+
 describe('PUT /boards/:id/lists', () => {
     it('should return 422 ERROR', (done) => {
         const wrongLists = {
@@ -74,23 +69,5 @@ describe('PUT /boards/:id/lists', () => {
             .put(`/boards/${data.id}/lists`)
             .send({ lists: [] })
             .expect(204, done);
-    });
-});
-describe('POST /boards/:id/lists', () => {
-    it('should return 422 ERROR', (done) => {
-        const wrongList = {
-            list: ''
-        };
-        request(app)
-            .post(`/boards/${data.id}/lists`)
-            .send(wrongList)
-            .expect('Content-Type', /json/)
-            .expect(422, done);
-    });
-    it('should return 201 OK', (done) => {
-        request(app)
-            .post(`/boards/${data.id}/lists`)
-            .send({ list: testList })
-            .expect(201, done);
     });
 });

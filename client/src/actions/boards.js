@@ -7,9 +7,6 @@ import * as APIFetch from '../helpers/APIFetch';
 export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
 export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
-export const CREATE_LIST = 'board/CREATE_LIST';
-export const CREATE_LIST_SUCCESS = 'board/CREATE_LIST_SUCCESS';
-export const CREATE_LIST_FAILURE = 'board/CREATE_LIST_FAILURE';
 export const ADD_LIST_TO_BOARD_FAILURE = 'boards/ADD_LIST_TO_BOARD_FAILURE';
 export const ADD_LIST_TO_BOARD_SUCCESS = 'boards/ADD_LIST_TO_BOARD_SUCCESS';
 
@@ -84,30 +81,6 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
         });
 };
 
-export const createListAction = (boardId, lists, list) => ({
-    type: CREATE_LIST,
-    payload: {
-        boardId,
-        lists,
-        list,
-    },
-});
-
-export const createListFailure = error => ({
-    type: CREATE_LIST_FAILURE,
-    payload: {
-        error,
-    },
-});
-
-export const createListSuccess = list => ({
-    type: CREATE_LIST_SUCCESS,
-    payload: {
-        list,
-    },
-});
-
-
 export const addListToBoardSuccess = lists => ({
     type: ADD_LIST_TO_BOARD_SUCCESS,
     payload: {
@@ -122,30 +95,3 @@ export const addListToBoardFailure = error => ({
         error,
     },
 });
-
-export const createList = (boardId, lists, list) => (dispatch) => {
-    dispatch(createListAction(boardId, lists, list));
-    const ressource = 'boards/'.concat(boardId).concat('/lists/');
-
-    APIFetch.fetchPrelloAPI(ressource, { list }, APIFetch.POST)
-        .then((res) => {
-            const listCreated = res.data.list;
-            dispatch(createListSuccess(listCreated));
-            const newLists = lists.concat(listCreated);
-
-
-            APIFetch.fetchPrelloAPI(ressource, { lists: newLists }, APIFetch.PUT)
-                .then((response) => {
-                    if (response.status === 204) {
-                        dispatch(addListToBoardSuccess(newLists));
-                    } else {
-                        response.json().then((jsonError) => {
-                            dispatch(addListToBoardFailure(jsonError.error));
-                        });
-                    }
-                });
-        })
-        .catch((error) => {
-            dispatch(createListFailure(error.response.data.error));
-        });
-};

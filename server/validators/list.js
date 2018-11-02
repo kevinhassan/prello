@@ -1,7 +1,7 @@
 const { check } = require('express-validator/check');
 
 const addList = [
-    check('list.name')
+    check('name')
         .not().isEmpty()
         .isString(),
     check('boardId')

@@ -1,51 +1,31 @@
 const listController = {};
 const MyError = require('../util/error');
 const List = require('../models/List');
+const Board = require('../models/Board');
 
 /**
- * POST /board/:boardId/list
+ * POST /lists
  */
-listController.createList = async (name, boardId) => {
+listController.createList = async (data) => {
     try {
         const list = new List();
-        list.name = name;
-        list.boardId = boardId;
+        list.name = data.name;
+        list.boardId = data.boardId;
         await list.save();
+
+        const board = await Board.findById(data.boardId);
+        board.lists.push(list);
+        await board.save();
+
         return list;
     } catch (err) {
         if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect Query');
+            throw new MyError(422, 'Incorrect query');
         }
         if (err.status) {
             throw err;
         }
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-/**
- * GET /boards/:boardId/:listId
- *
- */
-listController.get = async (listId) => {
-    try {
-        const list = await List.findById(listId).populate([{
-            path: 'lists',
-            populate: {
-                path: 'cards',
-                model: 'Card'
-            }
-        }, {
-            path: 'labels'
-        }]);
-        if (!list) {
-            throw new MyError(404, 'List not found');
-        }
-        return list;
-    } catch (err) {
-        if (err.name === 'CastError') {
-            throw new MyError(404, 'List not found');
-        }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
