@@ -57,8 +57,15 @@ const BoardView = props => (
                                         required
                                         type="text"
                                     />
-                                    <button className="btn btn-success submitAddListForm-btn" type="submit">
+                                    <button className="btn btn-success addListForm-btn" type="submit">
                                         Add list
+                                    </button>
+                                    <button
+                                        className="btn btn-secondary addListForm-btn"
+                                        type="reset"
+                                        onClick={() => props.displayAddListForm(false)}
+                                    >
+                                        <i className="fas fa-times" />
                                     </button>
                                 </form>
                             </div>
@@ -67,7 +74,7 @@ const BoardView = props => (
                             <button
                                 className="btn addListButton"
                                 type="submit"
-                                onClick={props.onClickAddList}
+                                onClick={() => props.displayAddListForm(true)}
                             >
                                 <i className="fas fa-plus-circle" />
 
@@ -82,7 +89,9 @@ const BoardView = props => (
 );
 BoardView.propTypes = {
     board: PropTypes.object.isRequired,
+    isInputVisible: PropTypes.bool.isRequired,
     onDragEnd: PropTypes.func.isRequired,
+    displayAddListForm: PropTypes.func.isRequired,
 };
 
 export default BoardView;

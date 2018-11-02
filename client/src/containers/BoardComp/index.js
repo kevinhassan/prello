@@ -17,6 +17,7 @@ class BoardComp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            isInputVisible: false,
             isWaitingForAPIConfirmation: false,
             pendingLists: [],
         };
@@ -45,8 +46,8 @@ class BoardComp extends React.Component {
         return result;
     };
 
-    handleAddList() {
-        this.setState({ isInputVisible: true });
+    handleAddList(value) {
+        this.setState({ isInputVisible: value });
     }
 
     handleListAdded(event) {
@@ -97,7 +98,7 @@ class BoardComp extends React.Component {
                         board={pendingBoard}
                         isInputVisible={this.state.isInputVisible}
                         onDragEnd={this.handleOnDragEnd}
-                        onClickAddList={this.handleAddList}
+                        displayAddListForm={this.handleAddList}
                         onListAdded={this.handleListAdded}
                     />
                 );
@@ -108,7 +109,7 @@ class BoardComp extends React.Component {
                     board={board}
                     onDragEnd={this.handleOnDragEnd}
                     isInputVisible={this.state.isInputVisible}
-                    onClickAddList={this.handleAddList}
+                    displayAddListForm={this.handleAddList}
                     onListAdded={this.handleListAdded}
                 />
             );
