@@ -82,10 +82,10 @@ const CardDetailView = props => (
                             <div className="descriptionContent">
                                 {props.card.description
                                     ? (
-                                        <a
+                                        <button
+                                            type="button"
                                             className="btn clickableDescription"
                                             onClick={() => props.changeIsEditingDescription(true)}
-                                            onKeyDown={() => props.changeIsEditingDescription(true)}
                                         >
                                             <ReactMarkdown
                                                 source={props.card.description}
@@ -99,16 +99,16 @@ const CardDetailView = props => (
                                                     ),
                                                 }}
                                             />
-                                        </a>
+                                        </button>
                                     )
                                     : (
-                                        <a
-                                            className="btn btn-link"
+                                        <button
+                                            className="btn btn-link btn-addDescription"
+                                            type="button"
                                             onClick={() => props.changeIsEditingDescription(true)}
-                                            onKeyDown={() => props.changeIsEditingDescription(true)}
                                         >
-                                    Add a description
-                                        </a>
+                                        Add a description...
+                                        </button>
                                     )
                                 }
                             </div>

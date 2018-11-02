@@ -2,11 +2,13 @@ const request = require('supertest');
 const { expect } = require('chai');
 
 const app = require('../../app.js');
+
+const BoardController = require('../../controllers/boards');
+const ListController = require('../../controllers/lists');
 const Card = require('../../models/Card');
 
 const newCard = {
-    name: 'this is a valid description',
-    list: 'l00000000001'
+    name: 'This is a valid description',
 };
 
 const newDescription = {
@@ -16,6 +18,9 @@ const newDescription = {
 describe('POST /cards', () => {
     before(async () => {
         await Card.deleteMany({});
+        const boardId = await BoardController.createBoard({ name: 'Test board', visibility: 'public' });
+        const list = await ListController.createList({ name: 'Test List', boardId });
+        newCard.list = list._id;
     });
     it('should return 422 ERROR', (done) => {
         const wrongCard = {

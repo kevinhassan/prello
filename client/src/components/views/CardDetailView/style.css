@@ -39,10 +39,6 @@ h2.cardDetailTitle {
     text-align: left;
 }
 
-.cardDetailDate {
-
-}
-
 .descriptionContent {
     line-height: 20px;
     margin: 10px;
@@ -60,9 +56,12 @@ h2.cardDetailTitle {
 .btnDescription {
     background: none;
     border: none;
-    padding: 10px;
     height: 100%;
     width: 100%;
+}
+
+.btn-addDescription {
+    color: #888;
 }
 
 .clickableDescription {
