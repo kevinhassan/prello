@@ -1,3 +1,7 @@
+.addListForm {
+    flex: 1;
+}
+
 .appened-form {
     display: inline-block;
     padding: 10px;

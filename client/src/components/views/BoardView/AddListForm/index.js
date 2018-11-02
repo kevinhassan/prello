@@ -8,7 +8,7 @@ import './style.css';
 
 const AddListForm = props => (
 
-    <span>
+    <span className="addListForm">
         {props.isInputVisible ? (
 
             <div className="appened-form">
