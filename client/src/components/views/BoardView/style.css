@@ -26,7 +26,8 @@
 .listsAndAddPanel {
     display: flex;
     height: 100%;
-    margin: 15px;
+    margin: 0 15px;
+    padding-bottom: 15px;
     overflow-x: auto;
 }
 
