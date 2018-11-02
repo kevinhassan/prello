@@ -10,7 +10,8 @@ const authRequest = (req, res, next) => {
     const token = bearerHeader.replace('Bearer ', '');
     jwt.verify(token, process.env.SESSION_SECRET, async (err, payload) => {
         if (err) {
-            return res.status(500).send({ error: 'Failed to authenticate token.' });
+            req.user = null;
+            next();
         }
         try {
             const user = await User.findOne({ _id: payload.id }).select('_id');
