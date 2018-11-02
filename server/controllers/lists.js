@@ -8,9 +8,10 @@ const Board = require('../models/Board');
  */
 listController.createList = async (data) => {
     try {
-        const list = new List();
-        list.name = data.name;
-        list.boardId = data.boardId;
+        const list = new List({
+            name: data.name,
+            boardId: data.boardId,
+        });
         await list.save();
 
         const board = await Board.findById(data.boardId);
