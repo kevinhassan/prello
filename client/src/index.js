@@ -6,7 +6,6 @@ import store, { history } from './store';
 import App from './containers/app';
 
 import 'sanitize.css/sanitize.css';
-import './assets/generalStyle.css';
 
 const target = document.querySelector('#root');
 require('dotenv').config();

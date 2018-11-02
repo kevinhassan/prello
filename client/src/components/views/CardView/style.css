@@ -1,7 +1,7 @@
 .card {
     background: none;
     border: none;
-    box-shadow: none !important;
+    box-shadow: none;
     flex-basis: 33%;
     list-style-type: none;
     transition: all 0.3s, visibility 0s;
