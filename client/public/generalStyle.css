@@ -165,7 +165,7 @@ li {
 }
 
 .btn-success {
-    margin: 0;
+    margin-left: 0 !important;
 }
 
 .general-form {
