@@ -1,16 +1,12 @@
 const { check } = require('express-validator/check');
 
 const addList = [
-    check('name')
+    check('list.name')
         .not().isEmpty()
-        .withMessage('Name is required')
-        .isString()
-        .withMessage('Name must be a string'),
+        .isString(),
     check('boardId')
         .not().isEmpty()
-        .withMessage('BoardId is required')
-        .isString()
-        .withMessage('BoardId must be a string')
+        .isString(),
 ];
 
 module.exports = {

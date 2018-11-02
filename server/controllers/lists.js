@@ -8,9 +8,6 @@ const List = require('../models/List');
 listController.createList = async (name, boardId) => {
     try {
         const list = new List();
-        if (!list) {
-            throw new MyError(404, 'List not found');
-        }
         list.name = name;
         list.boardId = boardId;
         await list.save();

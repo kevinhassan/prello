@@ -22,7 +22,7 @@ const authRequest = (req, res, next) => {
         }
     });
 };
-const isAuthentificated = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
     try {
         if (!req.user) {
             throw new MyError(401, 'Unauthorize user');
@@ -32,4 +32,4 @@ const isAuthentificated = async (req, res, next) => {
         res.status(e.status).send({ error: e.message });
     }
 };
-module.exports = { authRequest, isAuthentificated };
+module.exports = { authRequest, isAuthenticated };
