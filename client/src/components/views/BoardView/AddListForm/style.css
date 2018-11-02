@@ -1,0 +1,20 @@
+.appened-form {
+    display: inline-block;
+    padding: 10px;
+}
+
+.addListForm-btn {
+    margin-top: 5px;
+}
+
+.addListButton {
+    background-color: #dbdbed;
+    width: 250px;
+    border-radius: 0.25rem;
+    border: 0;
+    height: 50px;
+}
+
+.addListButton:hover {
+    background-color: #ccc;
+}

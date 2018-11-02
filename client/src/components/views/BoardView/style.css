@@ -23,11 +23,17 @@
     color: rgb(227, 227, 79)
 }
 
+.listsAndAddPanel {
+    display: flex;
+    height: 100%;
+    margin: 15px;
+    overflow-x: auto;
+}
+
 .listsPanel {
     flex: 1;
     height: 100%;
     min-height: 0;
-    margin: 15px;
     white-space: nowrap;
 }
 
@@ -45,26 +51,4 @@
     flex: 1;
     height: 100%;
     overflow-y: hidden;
-}
-
-/* Add list section */
-.appened-form {
-    display: inline-block;
-    padding: 10px;
-}
-
-.addListForm-btn {
-    margin-top: 5px;
-}
-
-.addListButton {
-    background-color: #dbdbed;
-    width: 20%;
-    border-radius: 0.25rem;
-    border: 0;
-    height: 50px;
-}
-
-.addListButton:hover {
-    background-color: #ccc;
 }
