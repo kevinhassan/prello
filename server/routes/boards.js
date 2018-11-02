@@ -47,8 +47,6 @@ const Auth = require('../middlewares/auth');
 *               description: Board not found
 *           500:
 *               description: Internal server error
-*
-* /boards/{boardId}/lists:
 *   put:
 *       tags:
 *           - Board
@@ -98,9 +96,44 @@ const Auth = require('../middlewares/auth');
 *           422:
 *               description: Invalid form data or Incorrect Query
 *           500:
+*               description: Internal server error
+*
+* /boards/{boardId}/visibility:
+*   put:
+*       tags:
+*           - Board
+*       description: The admin change the visibility of the board (public, private, team)
+*       summary: Change board visibility
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - name: body
+*             description: The new visibility of the boar
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/VisibilityForm'
+*       responses:
+*           204:
+*               description: The visility of the board is updated
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Board not found
+*           422:
+*               description: Invalid form data or Incorrect Query
+*           500:
 *
 * /boards/{boardId}/members:
-*   put:
+*   post:
 *       tags:
 *           - Board
 *       description: The admin add member to the board
@@ -133,6 +166,112 @@ const Auth = require('../middlewares/auth');
 *               description: Invalid form data or Incorrect Query
 *           500:
 *               description: Internal server error
+*
+* /boards/{boardId}/members/{memberId}:
+*   delete:
+*       tags:
+*           - Board
+*       description: The admin remove a member from the board
+*       summary: Remove board member
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - in: path
+*             name: memberId
+*             schema:
+*               type: string
+*             required: true
+*             description: Member ID
+*       responses:
+*           204:
+*               description: The visility of the board is updated
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Board not found or member to remove unknown
+*           422:
+*               description: Invalid form data or Incorrect Query
+*           500:
+*               description: Internal server error
+*
+* /boards/{boardId}/teams:
+*   post:
+*       tags:
+*           - Board
+*       description: Add a team to the board
+*       summary: Add team
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - name: body
+*             description: The team ID to add
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/AddTeamForm'
+*       responses:
+*           204:
+*               description: Team successfully added
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Board or Team not found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*
+* /boards/{boardId}/teams/{teamId}:
+*   delete:
+*       tags:
+*           - Board
+*       description: Remove a team to the board
+*       summary: Remove team
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*       responses:
+*           204:
+*               description: Team successfully removed
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Team not found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*
 *
 */
 
