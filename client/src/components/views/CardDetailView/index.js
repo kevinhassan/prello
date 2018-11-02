@@ -8,6 +8,9 @@ import ReactMarkdown from 'react-markdown';
 // ===== Markdown Components
 import MdHeader from '../markdown/MdHeader';
 import MdLink from '../markdown/MdLink';
+import MdList from '../markdown/MdList';
+import MdListItem from '../markdown/MdListItem';
+import MdParagraph from '../markdown/MdParagraph';
 
 // ===== Models
 import Card from '../../../models/Card';
@@ -96,6 +99,15 @@ const CardDetailView = props => (
                                                     ),
                                                     link: mdProps => (
                                                         <MdLink {...mdProps} />
+                                                    ),
+                                                    list: mdProps => (
+                                                        <MdList {...mdProps} />
+                                                    ),
+                                                    listItem: mdProps => (
+                                                        <MdListItem {...mdProps} />
+                                                    ),
+                                                    paragraph: mdProps => (
+                                                        <MdParagraph {...mdProps} />
                                                     ),
                                                 }}
                                             />

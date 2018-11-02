@@ -1,7 +1,7 @@
 .h1MD, .h2MD, .h3MD, .h4MD, .h5MD {
     color: #222;
     font-weight: bold;
-    margin: 0;
+    margin: 10px 0;
 }
 
 .h1MD {
