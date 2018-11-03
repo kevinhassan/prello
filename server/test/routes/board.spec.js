@@ -190,7 +190,7 @@ describe('PUT /boards/:id/visibility', () => {
     });
 });
 
-describe('POST /board/:id/members', () => {
+describe('POST /boards/:id/members', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .post(`/boards/${data.id}/members`)
@@ -277,7 +277,7 @@ describe('PUT /boards/:id/members/:id', () => {
     });
 });
 
-describe('DELETE /board/:id/members/:id', () => {
+describe('DELETE /boards/:id/members/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .delete(`/boards/${data.id}/members/${userNotAdmin._id}`)
@@ -302,7 +302,7 @@ describe('DELETE /board/:id/members/:id', () => {
             .expect(204, done);
     });
 });
-describe('POST /board/:id/teams', () => {
+describe('POST /boards/:id/teams', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .post(`/boards/${data.id}/teams`)
@@ -338,7 +338,7 @@ describe('POST /board/:id/teams', () => {
             .expect(204, done);
     });
 });
-describe('DELETE /board/:id/teams/:id', () => {
+describe('DELETE /boards/:id/teams/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .delete(`/boards/${data.id}/teams/${team._id}`)
