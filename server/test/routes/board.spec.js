@@ -208,7 +208,7 @@ describe('POST /board/:id/members', () => {
         request(app)
             .post(`/boards/${data.id}/members`)
             .send({ email: '' })
-            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(422, done);
     });
     it('should return 403 ERROR', (done) => {

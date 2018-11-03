@@ -1,8 +1,7 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
 const { boardValidator } = require('../validators');
-const Auth = require('../middlewares/auth');
-
+const { Auth, Board } = require('../middlewares');
 /**
 * @swagger
 * definitions:
@@ -354,65 +353,65 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/visibility', Auth.isAuthenticated, boardValidator.changeVisibility, async (req, res) => {
+        .put('/boards/:boardId/visibility', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeVisibility, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.changeVisibility(req.params.boardId, req.user._id, req.body.visibility);
+                await boardController.changeVisibility(req.params.boardId, req.body.visibility);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/members', Auth.isAuthenticated, boardValidator.addMember, async (req, res) => {
+        .post('/boards/:boardId/members', Auth.isAuthenticated, Board.isAdmin, boardValidator.addMember, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.addMemberWithMail(req.params.boardId, req.user._id, req.body.email);
+                await boardController.addMemberWithMail(req.params.boardId, req.body.email);
                 res.status(201).send({ message: 'Member successfully added' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, async (req, res) => {
+        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
             try {
-                await boardController.removeMember(req.params.boardId, req.params.memberId, req.user._id);
+                await boardController.removeMember(req.params.boardId, req.params.memberId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, boardValidator.changeAccess, async (req, res) => {
+        .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeAccess, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.changeAccess(req.params.boardId, req.params.memberId, req.body.isAdmin , req.user._id);
+                await boardController.changeAccess(req.params.boardId, req.params.memberId, req.body.isAdmin);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/teams', Auth.isAuthenticated, boardValidator.addTeam, async (req, res) => {
+        .post('/boards/:boardId/teams', Auth.isAuthenticated, Board.isAdmin, boardValidator.addTeam, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.addTeam(req.params.boardId, req.body.team, req.user._id);
+                await boardController.addTeam(req.params.boardId, req.body.team);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, async (req, res) => {
+        .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
             try {
-                await boardController.removeTeam(req.params.boardId, req.params.teamId, req.user._id);
+                await boardController.removeTeam(req.params.boardId, req.params.teamId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
