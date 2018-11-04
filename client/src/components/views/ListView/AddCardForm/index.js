@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// ===== Others
-import './style.css';
 
 // ==================================
 
@@ -35,7 +33,11 @@ const AddCardForm = props => (
             </div>
 
         ) : (
-            <button className="btn btn-success addCardButton" type="submit" onClick={props.displayAddCardForm}>
+            <button
+                className="btn btn-success addCardButton"
+                type="submit"
+                onClick={() => props.displayAddCardForm(true)}
+            >
             Create new Card
             </button>
         )}
