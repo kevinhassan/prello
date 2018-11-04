@@ -85,10 +85,10 @@ const CardDetailView = props => (
                             <div className="descriptionContent">
                                 {props.card.description
                                     ? (
-                                        <button
-                                            type="button"
+                                        <div
                                             className="btn clickableDescription"
                                             onClick={() => props.changeIsEditingDescription(true)}
+                                            onKeyPress={() => props.changeIsEditingDescription(true)}
                                         >
                                             <ReactMarkdown
                                                 source={props.card.description}
@@ -111,7 +111,7 @@ const CardDetailView = props => (
                                                     ),
                                                 }}
                                             />
-                                        </button>
+                                        </div>
                                     )
                                     : (
                                         <button
