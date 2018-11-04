@@ -43,6 +43,10 @@
     transition: 0.5s;
 }
 
+.errorMessageModalContent:hover, .successMessageModalContent:hover {
+    cursor: pointer;
+}
+
 .errorMessageModalContent {
     background-color: #ac1212;
     transform: translateX(-15vw);
