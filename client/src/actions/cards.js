@@ -10,14 +10,9 @@ export const DELETE_CARD = 'cards/DELETE_CARD';
 export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
 export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
 export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
-// ========================
-export const CREATE_CARD_STARTED = 'card/CREATE_CARD_STARTED';
+// ======================== CREATE CARD
 export const CREATE_CARD_FAILURE = 'card/CREATE_CARD_FAILURE';
 export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
-
-export const createCardStartedAction = () => ({
-    type: CREATE_CARD_STARTED,
-});
 
 export const createCardFailureAction = error => ({
     type: CREATE_CARD_FAILURE,
