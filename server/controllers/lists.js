@@ -23,7 +23,6 @@ listController.removeCard = async (data) => {
 
         await list.save();
 
-        socket.updateClientsOnBoard(list.boardId);
         return list;
     } catch (err) {
         if (err.name === 'ValidationError') {
@@ -47,8 +46,6 @@ listController.addCard = async (data) => {
         if (list.cards !== null) list.cards.splice(data.index, 0, data.cardId);
         else list.cards = [data.cardId];
         await list.save();
-
-        socket.updateClientsOnBoard(list.boardId);
 
         return list;
     } catch (err) {

@@ -2,6 +2,9 @@ const { validationResult } = require('express-validator/check');
 const cardController = require('../controllers/cards');
 const listController = require('../controllers/lists');
 const { listValidator } = require('../validators');
+
+const socket = require('../socket');
+
 const { Auth, List } = require('../middlewares');
 /**
 * @swagger
@@ -128,6 +131,7 @@ module.exports = (router) => {
                 });
 
                 res.status(201).send({ message: 'Card successfully moved', list: listUpdated });
+                socket.updateClientsOnBoard(listUpdated.boardId);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
