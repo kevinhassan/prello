@@ -5,7 +5,6 @@ const cardController = require('./cards');
 
 const MyError = require('../util/error');
 const Board = require('../models/Board');
-const User = require('../models/User');
 /**
  * GET /boards/:boardId
  *

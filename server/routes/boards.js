@@ -23,7 +23,7 @@ const { Auth, Board } = require('../middlewares');
 *       properties:
 *           team:
 *               type: string
-*   changeAccessForm:
+*   ChangeAccessForm:
 *       properties:
 *           isAdmin:
 *               type: boolean
@@ -230,7 +230,7 @@ const { Auth, Board } = require('../middlewares');
 *             in: body
 *             required: true
 *             schema:
-*               $ref: '#/definitions/changeAccessForm'
+*               $ref: '#/definitions/ChangeAccessForm'
 *       responses:
 *           204:
 *               description: The member's access is updated

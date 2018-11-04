@@ -1,10 +1,11 @@
 const request = require('supertest');
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
 
 const app = require('../../app.js');
 const Team = require('../../models/Team');
 const User = require('../../models/User');
 const UserController = require('../../controllers/users');
+const TeamController = require('../../controllers/teams');
 
 const newTeam = {
     name: 'team name',
@@ -75,10 +76,10 @@ describe('POST /team', () => {
             });
     });
 });
-describe('POST /team', () => {
+describe('POST /team/:id/members', () => {
     it('should return 401 OK', (done) => {
         request(app)
-            .post(`/teams/${newTeam.id}`)
+            .post(`/teams/${newTeam.id}/members`)
             .send({ email: userNotAdmin.email })
             .expect('Content-Type', /json/)
             .expect(401, done);
@@ -86,7 +87,7 @@ describe('POST /team', () => {
     it('should return 422 ERROR', (done) => {
         const wrongData = { email: '' };
         request(app)
-            .post(`/teams/${newTeam.id}`)
+            .post(`/teams/${newTeam.id}/members`)
             .send(wrongData)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
@@ -94,7 +95,7 @@ describe('POST /team', () => {
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .post(`/teams/${newTeam.id}`)
+            .post(`/teams/${newTeam.id}/members`)
             .send({ email: userNotAdmin.email })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
@@ -102,7 +103,7 @@ describe('POST /team', () => {
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .post('/teams/unknown')
+            .post('/teams/unknown/members')
             .send({ email: userNotAdmin.email })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
@@ -110,14 +111,61 @@ describe('POST /team', () => {
     });
     it('should return 201 OK', (done) => {
         request(app)
-            .post(`/teams/${newTeam.id}`)
+            .post(`/teams/${newTeam.id}/members`)
             .send({ email: userNotAdmin.email })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(201, done);
     });
 });
+describe('PUT /teams/:id/members/:id', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/members/test`)
+            .send({ isAdmin: true })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/members/${userAdmin._id}`)
+            .send({ isAdmin: true })
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongAccessRight = {
+            isAdmin: 'unknown'
+        };
+        request(app)
+            .put(`/teams/${newTeam.id}/members/${userNotAdmin._id}`)
+            .send(wrongAccessRight)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 404 OK', (done) => {
+        request(app)
+            .put('/teams/test1234/members/test')
+            .send({ isAdmin: true })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/members/${userNotAdmin._id}`)
+            .send({ isAdmin: true })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
 describe('DELETE /team/:id', () => {
+    before((done) => {
+        TeamController.changeAccess(newTeam.id, userNotAdmin._id, false).then(done());
+    });
+
     it('should return 401 OK', (done) => {
         request(app)
             .delete(`/teams/${newTeam.id}`)
@@ -129,7 +177,7 @@ describe('DELETE /team/:id', () => {
             .delete(`/teams/${newTeam.id}`)
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
-            .expect(403, done);
+            .expect(403, (done));
     });
     it('should return 404 ERROR', (done) => {
         request(app)

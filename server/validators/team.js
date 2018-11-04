@@ -15,20 +15,17 @@ const removeMember = [
         .not().isEmpty()
         .isString(),
 ];
-const addAdmin = [
-    check('member')
+const changeAccess = [
+    check('isAdmin')
         .not().isEmpty()
-        .isString(),
+        .trim()
+        .escape()
+        .isBoolean()
 ];
-const removeAdmin = [
-    check('member')
-        .not().isEmpty()
-        .isString(),
-];
+
 module.exports = {
     addTeam,
     addMember,
     removeMember,
-    addAdmin,
-    removeAdmin
+    changeAccess
 };

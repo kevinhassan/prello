@@ -106,4 +106,29 @@ teamController.addMemberWithMail = async (teamId, email) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+/**
+ * PUT /teams/:id/members/:id
+ * Change admin access of the team member
+ * TODO: check if at least 1 admin before remove access right
+ */
+teamController.changeAccess = async (teamId, memberId, accessRight) => {
+    try {
+        const team = await Team.findById(teamId).select(['members']);
+
+        // change the member access right
+        let memberFound = false;
+        await team.members.map((member) => {
+            if (member._id.toString() === memberId.toString()) {
+                member.isAdmin = accessRight;
+                memberFound = true;
+            }
+            return member;
+        });
+        if (!memberFound) throw new MyError(404, 'Member not found');
+        await team.save();
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 module.exports = teamController;
