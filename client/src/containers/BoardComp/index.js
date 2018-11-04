@@ -91,7 +91,9 @@ class BoardComp extends React.Component {
             // If changes were made on lists (moved for example), we give the board modified.
             // else, we give the board from the store which is the same as in server.
             if (this.state.isWaitingForAPIConfirmation) {
-                const pendingBoard = board;
+                // shallow copy of board
+                const pendingBoard = JSON.parse(JSON.stringify(board));
+
                 pendingBoard.lists = this.state.pendingLists;
                 return (
                     <BoardView
@@ -135,6 +137,7 @@ BoardComp.defaultProps = {
 // Put info from the store state in props
 const mapStateToProps = ({ boardsReducer }) => ({
     board: boardsReducer.board,
+    didAnErrorOccured: boardsReducer.didAnErrorOccured,
 });
 
 // Put actions in props

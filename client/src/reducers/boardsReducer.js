@@ -5,6 +5,7 @@ import List from '../models/List';
 
 export const initialState = {
     board: undefined,
+    didAnErrorOccured: false,
 };
 
 export default function boardsReducer(state = initialState, action) {
@@ -27,6 +28,7 @@ export default function boardsReducer(state = initialState, action) {
     case actions.UPDATE_LISTS_INDEXES_SUCCESS:
         return {
             ...state,
+            didAnErrorOccured: false,
             board: {
                 ...state.board,
                 lists: action.payload.lists,
@@ -36,6 +38,7 @@ export default function boardsReducer(state = initialState, action) {
     case actions.UPDATE_LISTS_INDEXES_FAILURE:
         return {
             ...state,
+            didAnErrorOccured: true,
         };
 
     case actions.ADD_LIST_TO_BOARD_SUCCESS:

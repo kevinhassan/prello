@@ -1,4 +1,4 @@
-import { displayLoadingModal, hideLoadingModal } from './modal';
+import { displayLoadingModal, hideLoadingModal, displayErrorMessage } from './modal';
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
 
@@ -76,7 +76,8 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
             dispatch(hideLoadingModal());
         })
         .catch((error) => {
-            dispatch(updateListsIndexesFailureAction(error.message));
+            dispatch(updateListsIndexesFailureAction(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
             dispatch(hideLoadingModal());
         });
 };
