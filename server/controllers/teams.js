@@ -23,6 +23,12 @@ teamController.removeBoard = async (boardId, teamId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+/**
+ * POST /teams
+ * Create new team
+ * The creator is member with admin right access
+ * TODO: add Team to the creator collection
+ */
 teamController.createTeam = async (userId, data) => {
     try {
         const newTeam = new Team();
@@ -31,6 +37,26 @@ teamController.createTeam = async (userId, data) => {
         // the creator is the first member of the team
         newTeam.members.push(userId);
         await newTeam.save();
+        return newTeam;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+/**
+ * DELETE /teams/:teamId
+ * Remove team
+ * TODO: remove Team from the creator collection
+ * TODO: remove Team from boards
+ */
+teamController.removeTeam = async (teamId) => {
+    try {
+        await Team.deleteOne({ _id: teamId });
     } catch (err) {
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
