@@ -1,4 +1,4 @@
-const cardController = {};
+const cardController = module.exports;
 const Card = require('../models/Card');
 const MyError = require('../util/error');
 const socket = require('../socket');
@@ -8,7 +8,9 @@ const List = require('../models/List');
 // TODO: use REST parameter to remove multiple members id
 cardController.removeMember = async (cardId, memberId) => {
     try {
-        return await Card.findByIdAndUpdate(cardId, { $pull: { members: memberId } }, { new: true }).catch(async () => { throw new MyError(404, 'Card not found'); });
+        return await Card.findByIdAndUpdate(cardId,
+            { $pull: { members: memberId } }, { new: true })
+            .catch(async () => { throw new MyError(404, 'Card not found'); });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');

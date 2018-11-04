@@ -1,25 +1,37 @@
-const teamController = {};
+const teamController = module.exports;
 const MyError = require('../util/error');
 const Team = require('../models/Team');
 const userController = require('../controllers/users');
+const boardController = require('../controllers/boards');
 
 
 teamController.addBoard = async (boardId, teamId) => {
     try {
+        const team = await Team.findById(teamId);
+        if (!team) throw new MyError(404, 'Team not found');
+
         await Team.updateOne({ _id: teamId },
             { $addToSet: { boards: boardId } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Board not found'); });
     } catch (err) {
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Team not found');
+        }
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
 teamController.removeBoard = async (boardId, teamId) => {
     try {
+        const team = await Team.findById(teamId);
+        if (!team) throw new MyError(404, 'Team not found');
         await Team.updateOne({ _id: teamId },
             { $pull: { boards: boardId } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Board not found'); });
     } catch (err) {
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Team not found');
+        }
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
@@ -55,13 +67,18 @@ teamController.createTeam = async (userId, data) => {
 /**
  * DELETE /teams/:teamId
  * Remove team
- * TODO: remove Team from boards
  */
 teamController.removeTeam = async (userId, teamId) => {
     try {
-        await Team.deleteOne({ _id: teamId });
-        // add team to the team's creator
-        await userController.leaveTeam(userId, teamId);
+        const team = await Team.findById(teamId).select(['boards', 'members']);
+        if (!team) throw new MyError(404, 'Team not found');
+        // remove members of the team
+        await Promise.all(team.members.map(member => userController.leaveTeam(member._id, team._id)));
+        // remove the team from all boards
+        if (team.boards) {
+            await Promise.all(team.boards.map(board => boardController.removeTeam(board._id, team._id)));
+        }
+        await team.delete();
     } catch (err) {
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');

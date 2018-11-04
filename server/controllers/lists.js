@@ -1,4 +1,4 @@
-const listController = {};
+const listController = module.exports;
 const socket = require('../socket');
 const MyError = require('../util/error');
 const List = require('../models/List');

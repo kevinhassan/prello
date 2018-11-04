@@ -344,7 +344,7 @@ module.exports = (router) => {
         .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 const boardCreated = await boardController.createBoard(req.user._id, req.body);
@@ -405,7 +405,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.addTeam(req.params.boardId, req.body.team);
+                await boardController.addTeam(req.params.boardId, req.user._id, req.body.team);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

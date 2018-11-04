@@ -1,7 +1,8 @@
+const userController = module.exports;
+
 const { promisify } = require('util');
 const crypto = require('crypto');
 
-const userController = {};
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const MyError = require('../util/error');
