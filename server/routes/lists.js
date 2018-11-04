@@ -108,17 +108,17 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
+                // Remove card from source list
+                await listController.removeCard({
+                    cardId: req.params.cardId,
+                    listId: req.body.sourceListId,
+                });
+
                 // Add card to destination list
                 const listUpdated = await listController.addCard({
                     index: req.body.index,
                     cardId: req.params.cardId,
                     listId: req.params.listId,
-                });
-
-                // Remove card from source list
-                await listController.removeCard({
-                    cardId: req.params.cardId,
-                    listId: req.body.sourceListId,
                 });
 
                 // Update listId in card

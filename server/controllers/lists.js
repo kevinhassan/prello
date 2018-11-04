@@ -18,7 +18,9 @@ const cardController = require('../controllers/cards');
 listController.removeCard = async (data) => {
     try {
         const list = await List.findById(data.listId);
-        list.cards.splice(list.cards.findIndex(card => card._id === data.cardId), 1);
+        const cardsUpdated = list.cards.filter(card => card._id.toString() !== data.cardId.toString());
+        list.cards = cardsUpdated;
+
         await list.save();
 
         socket.updateClientsOnBoard(list.boardId);
