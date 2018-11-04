@@ -99,3 +99,53 @@ describe('POST /lists/:id/cards', () => {
             .expect(201, done);
     });
 });
+
+
+let list1 = {
+    name: 'List 1',
+};
+let list2 = {
+    name: 'List 2',
+};
+let card1 = {
+    name: 'card1'
+};
+
+describe('PUT /lists/:listId/cards/:cardId', () => {
+    before(async () => {
+        await Board.deleteMany({});
+        const boardId = await BoardController.createBoard({ name: 'testBoard', visibility: 'public' });
+        list1.boardId = boardId;
+        list2.boardId = boardId;
+        list1 = await ListController.createList(list1);
+        list2 = await ListController.createList(list2);
+        card1.list = list1._id;
+        card1 = await CardController.createCard(card1);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/invalidCardId`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 422 ERROR if no body provided', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/${card1._id}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 404 ERROR if card not found', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/123456789abc`)
+            .send({ sourceListId: list2._id, index: 0 })
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/${card1._id}`)
+            .send({ sourceListId: list2._id, index: 0 })
+            .expect('Content-Type', /json/)
+            .expect(201, done);
+    });
+});

@@ -1,5 +1,14 @@
 const { check } = require('express-validator/check');
 
+const moveCard = [
+    check('index')
+        .not().isEmpty()
+        .isNumeric(),
+    check('sourceListId')
+        .not().isEmpty()
+        .isString(),
+];
+
 const addList = [
     check('name')
         .not().isEmpty()
@@ -11,6 +20,7 @@ const addCard = [
         .isString()
 ];
 module.exports = {
+    moveCard,
     addList,
     addCard
 };

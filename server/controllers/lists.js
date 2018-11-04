@@ -12,6 +12,60 @@ const cardController = require('../controllers/cards');
 // ======================== //
 
 
+/**
+ * DELETE
+ */
+listController.removeCard = async (data) => {
+    try {
+        const list = await List.findById(data.listId);
+        list.cards.splice(list.cards.findIndex(card => card._id === data.cardId), 1);
+        await list.save();
+
+        socket.updateClientsOnBoard(list.boardId);
+        return list;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+/**
+ * PUT
+ */
+listController.addCard = async (data) => {
+    try {
+        const list = await List.findById(data.listId);
+        if (!list) throw new MyError(404, 'List not found');
+
+        if (list.cards !== null) list.cards.splice(data.index, 0, data.cardId);
+        else list.cards = [data.cardId];
+        await list.save();
+
+        socket.updateClientsOnBoard(list.boardId);
+
+        return list;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'List not found');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+/**
+ * POST /lists
+ */
 // ======================== //
 // ==== Post functions ==== //
 // ======================== //

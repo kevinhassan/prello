@@ -167,3 +167,33 @@ exports.deleteLabel = async (data) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
+/**
+ * PUT card list
+ */
+exports.putList = async (data) => {
+    try {
+        const card = await Card.findById(data.cardId);
+        if (!card) throw new MyError(404, 'Card not found.');
+
+        card.list = data.listId;
+        await card.save();
+
+        // update board via socket
+        const list = await List.findById(card.list);
+        socket.updateClientsOnBoard(list.boardId);
+
+        return card;
+    } catch (err) {
+        if (err.status === 404) {
+            throw err;
+        }
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query.');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Card not found.');
+        }
+        throw new MyError(500, 'Internal server error.');
+    }
+};
