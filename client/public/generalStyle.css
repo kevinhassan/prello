@@ -107,6 +107,7 @@ li {
 .btnReseted {
     background: none;
     border: inherit;
+    color: #222;
     padding: inherit;
 }
 

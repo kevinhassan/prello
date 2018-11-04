@@ -12,7 +12,11 @@ boardController.get = async (boardId) => {
             path: 'lists',
             populate: {
                 path: 'cards',
-                model: 'Card'
+                model: 'Card',
+                populate: {
+                    path: 'list',
+                    select: 'name'
+                }
             }
         }, {
             path: 'labels'
