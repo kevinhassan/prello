@@ -1,6 +1,7 @@
 const teamController = module.exports;
 const MyError = require('../util/error');
 const Team = require('../models/Team');
+const User = require('../models/User');
 const userController = require('../controllers/users');
 const boardController = require('../controllers/boards');
 
@@ -87,6 +88,22 @@ teamController.removeTeam = async (userId, teamId) => {
             throw err;
         }
         throw new MyError(500, 'Internal server error');
+    }
+};
+/**
+ * POST /teams/:teamId/member
+ * Add Member to the team
+ */
+teamController.addMemberWithMail = async (teamId, email) => {
+    try {
+        const user = await userController.findUserWithEmail(email);
+        // add the board to the member
+        await userController.joinTeam(user._id, teamId);
+        const newTeam = await Team.findByIdAndUpdate(teamId, { $addToSet: { members: { _id: user._id } } });
+        return newTeam;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
     }
 };
 module.exports = teamController;

@@ -75,6 +75,48 @@ describe('POST /team', () => {
             });
     });
 });
+describe('POST /team', () => {
+    it('should return 401 OK', (done) => {
+        request(app)
+            .post(`/teams/${newTeam.id}`)
+            .send({ email: userNotAdmin.email })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongData = { email: '' };
+        request(app)
+            .post(`/teams/${newTeam.id}`)
+            .send(wrongData)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .post(`/teams/${newTeam.id}`)
+            .send({ email: userNotAdmin.email })
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .post('/teams/unknown')
+            .send({ email: userNotAdmin.email })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .post(`/teams/${newTeam.id}`)
+            .send({ email: userNotAdmin.email })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(201, done);
+    });
+});
 describe('DELETE /team/:id', () => {
     it('should return 401 OK', (done) => {
         request(app)

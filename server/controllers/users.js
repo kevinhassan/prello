@@ -279,4 +279,15 @@ userController.leaveTeam = async (userId, teamId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+userController.findUserWithEmail = async (email) => {
+    try {
+        const user = await User.findOne({ email }).select('_id');
+        if (!user) throw new MyError(404, 'Member unknown');
+
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 module.exports = userController;

@@ -11,6 +11,10 @@ const teamController = require('../controllers/teams');
 *               type: string
 *           isVisible:
 *               type: boolean
+*   AddMemberForm:
+*       properties:
+*           email:
+*               type: string
 *
 * /teams:
 *   post:
@@ -63,6 +67,37 @@ const teamController = require('../controllers/teams');
 *           500:
 *               description: Internal server error
 *
+* /teams/{teamId}/members:
+*   post:
+*       tags:
+*           - Team
+*       description: Remove a team
+*       summary: Remove team
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*           - name: body
+*             description: The information of the new member
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/AddMemberForm'
+*       responses:
+*           201:
+*               description: User successfully added
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
+*
 */
 
 module.exports = (router) => {
@@ -87,6 +122,18 @@ module.exports = (router) => {
             try {
                 await teamController.removeTeam(req.user._id, req.params.teamId);
                 res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
+            }
+        })
+        .post('/teams/:teamId', Auth.isAuthenticated, Team.isAdmin, [teamValidator.addMember], async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                const newTeam = await teamController.addMemberWithMail(req.params.teamId, req.body.email);
+                res.status(201).send({ message: 'User successfully created', team: newTeam });
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }

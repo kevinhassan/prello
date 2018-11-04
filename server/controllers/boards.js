@@ -106,12 +106,11 @@ boardController.changeVisibility = async (boardId, visibility) => {
  */
 boardController.addMemberWithMail = async (boardId, email) => {
     try {
-        const member = await User.findOne({ email }).select('_id');
-        if (!member) throw new MyError(404, 'Member to add unknown');
+        const user = await userController.findUserWithEmail(email);
 
         // add the board to the member
-        await userController.joinBoard(member._id, boardId);
-        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
+        await userController.joinBoard(user._id, boardId);
+        const newBoard = await Board.findByIdAndUpdate(boardId, { $addToSet: { members: { _id: user._id } } });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
