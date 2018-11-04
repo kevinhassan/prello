@@ -4,6 +4,7 @@ const { expect } = require('chai');
 const app = require('../../app.js');
 const Board = require('../../models/Board');
 const User = require('../../models/User');
+const userController = require('../../controllers/users');
 const Team = require('../../models/Team');
 
 const data = {
@@ -40,35 +41,27 @@ describe('POST /boards', () => {
     before((done) => {
         Promise.all([Board.deleteMany({}), User.deleteMany({}), Team.deleteMany({})])
             .then(async () => {
-                userAdmin = new User(userData.userAdmin);
-                userNotAdmin = new User(userData.userNotAdmin);
+                try {
+                    userAdmin = await userController.postRegister(userData.userAdmin);
+                    userNotAdmin = await userController.postRegister(userData.userNotAdmin);
 
-                // the owner of the team won't be the owner of the board (for tests)
-                dataTeam.members.push({ _id: userNotAdmin._id });
-                userAdmin.save().then(() => {
-                    request(app)
-                        .post('/login')
-                        .send({ email: userData.userAdmin.email, password: userData.userAdmin.password })
-                        .expect('Content-Type', /json/)
-                        .expect(200, (err, res) => {
-                            tokenAdmin = res.body.token;
-                            userNotAdmin.save().then(() => {
-                                request(app)
-                                    .post('/login')
-                                    .send({ email: userData.userNotAdmin.email, password: userData.userNotAdmin.password })
-                                    .expect('Content-Type', /json/)
-                                    .expect(200, (err, res) => {
-                                        tokenNotAdmin = res.body.token;
-                                        done();
-                                    });
-                            });
-                        });
-                });
-                // create the team and add the admin
-                team = new Team();
-                team.name = dataTeam.name;
-                team.members = dataTeam.members;
-                team.save();
+                    // the owner of the team won't be the owner of the board (for tests)
+                    dataTeam.members.push({ _id: userNotAdmin._id });
+                    tokenAdmin = await userController.login(userData.userAdmin.email,
+                        userData.userAdmin.password);
+                    tokenNotAdmin = await userController.login(userData.userNotAdmin.email,
+                        userData.userNotAdmin.password);
+
+                    // create the team and add the admin
+                    team = new Team();
+                    team.name = dataTeam.name;
+                    team.members = dataTeam.members;
+                    team.save();
+                    done();
+                } catch (e) {
+                    console.log('error happened: ', e);
+                    process.exit(-1);
+                }
             });
     });
     it('should return 422 ERROR', (done) => {

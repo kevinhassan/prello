@@ -391,7 +391,9 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.changeAccess(req.params.boardId, req.params.memberId, req.body.isAdmin);
+                await boardController.changeAccess(req.params.boardId,
+                    req.params.memberId,
+                    req.body.isAdmin);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

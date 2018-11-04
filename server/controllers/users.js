@@ -63,7 +63,8 @@ userController.postRegister = async (data) => {
             avatarUrl: data.avatarUrl,
             initials: initialsUser
         });
-        await user.save();
+        const newUser = await user.save();
+        return newUser;
     } catch (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'An account already exists for this email.');

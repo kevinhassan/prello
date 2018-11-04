@@ -12,13 +12,14 @@ const authRequest = (req, res, next) => {
         if (err) {
             req.user = null;
             next();
-        }
-        try {
-            const user = await User.findOne({ _id: payload.id }).select('_id');
-            req.user = user;
-            next();
-        } catch (e) {
-            res.status(500).send({ error: 'Internal server error.' });
+        } else {
+            try {
+                const user = await User.findOne({ _id: payload.id }).select('_id');
+                req.user = user;
+                next();
+            } catch (e) {
+                res.status(500).send({ error: 'Internal server error.' });
+            }
         }
     });
 };
