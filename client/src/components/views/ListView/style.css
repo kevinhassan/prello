@@ -42,3 +42,13 @@
     font-weight: bold;
     padding: 5px;
 }
+
+.archiveCardIcon {
+    font-size: 12px;
+    padding: 2px;
+}
+
+.archiveCardIcon:hover {
+    color: #ac1212;
+    cursor: pointer;
+}
