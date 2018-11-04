@@ -5,7 +5,7 @@
     position: fixed;
     text-align: center;
     transform: translateX(-50%);
-    z-index: 99999999999999;
+    z-index: 10000;
 }
 
 .loadingModalContent {
@@ -41,6 +41,10 @@
     min-width: 100px;
     padding: 10px;
     transition: 0.5s;
+}
+
+.errorMessageModalContent:hover, .successMessageModalContent:hover {
+    cursor: pointer;
 }
 
 .errorMessageModalContent {

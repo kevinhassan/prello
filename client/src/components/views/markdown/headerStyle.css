@@ -1,0 +1,29 @@
+.h1MD, .h2MD, .h3MD, .h4MD, .h5MD {
+    color: #222;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.h1MD {
+    font-size: 1.9rem;
+}
+
+.h2MD {
+    font-size: 1.7rem;
+}
+
+.h3MD {
+    font-size: 1.5rem;
+}
+
+.h4MD {
+    font-size: 1.3rem;
+}
+
+.h5MD {
+    font-size: 1.1rem;
+}
+
+.h6MD {
+    font-size: 0.9rem;
+}

@@ -38,6 +38,22 @@ export default function boardsReducer(state = initialState, action) {
             ...state,
         };
 
+    case actions.ADD_LIST_TO_BOARD_SUCCESS:
+        return {
+            ...state,
+            board: {
+                ...state.board,
+                lists: action.payload.lists,
+            },
+        };
+
+    case actions.ADD_LIST_TO_BOARD_FAILURE:
+        return {
+            ...state,
+            errorMessage: action.payload.error,
+        };
+
+
     default:
         return state;
     }

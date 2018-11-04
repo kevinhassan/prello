@@ -6,7 +6,6 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 import CardComp from '../../../containers/CardComp';
 
 // ===== Models
-import List from '../../../models/List';
 
 // ===== Others
 import './style.css';
@@ -15,8 +14,10 @@ import './style.css';
 
 const ListView = props => (
     <div className={'cardsListPanel '.concat(props.isBeingDragged ? 'listDragged' : '')}>
-        <h3>{props.list.name}</h3>
-        {props.list.isArchived ? 'Archived' : 'Not archived'}
+        <h3 className="listName">
+            {props.list.name}
+            <i className="archiveCardIcon fas fa-archive float-right" />
+        </h3>
 
         <Droppable droppableId={String(props.list._id)} type="CARD">
             {dropProvided => (
@@ -53,7 +54,7 @@ const ListView = props => (
 );
 
 ListView.propTypes = {
-    list: PropTypes.instanceOf(List).isRequired,
+    list: PropTypes.object.isRequired,
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
 };

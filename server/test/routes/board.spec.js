@@ -112,6 +112,7 @@ describe('GET /boards/:id', () => {
             .expect(200, done);
     });
 });
+
 describe('PUT /boards/:id/lists', () => {
     it('should return 404 OK', (done) => {
         request(app)

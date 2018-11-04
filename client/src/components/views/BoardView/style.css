@@ -23,11 +23,18 @@
     color: rgb(227, 227, 79)
 }
 
+.listsAndAddPanel {
+    display: flex;
+    height: 100%;
+    margin: 0 15px;
+    padding-bottom: 15px;
+    overflow-x: auto;
+}
+
 .listsPanel {
     flex: 1;
     height: 100%;
     min-height: 0;
-    margin: 15px;
     white-space: nowrap;
 }
 

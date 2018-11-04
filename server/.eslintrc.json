@@ -19,6 +19,7 @@
         "implicit-arrow-linebreak": [
             "off"
         ],
+        "max-len": [1, 150, 4],
         "no-param-reassign": 0,
         "no-underscore-dangle": 0,
         "no-shadow": 0,
