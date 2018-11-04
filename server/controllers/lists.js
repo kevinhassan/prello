@@ -1,4 +1,5 @@
 const listController = {};
+const socket = require('../socket');
 const MyError = require('../util/error');
 const List = require('../models/List');
 const Board = require('../models/Board');
@@ -17,6 +18,8 @@ listController.createList = async (data) => {
         const board = await Board.findById(data.boardId);
         board.lists.push(list);
         await board.save();
+
+        socket.updateClientsOnBoard(board._id);
 
         return list;
     } catch (err) {

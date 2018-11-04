@@ -1,4 +1,5 @@
 import * as APIFetch from '../helpers/APIFetch';
+import { displayErrorMessage, displaySuccessMessage } from './modal';
 
 // ========================
 
@@ -32,8 +33,10 @@ export const createList = list => (dispatch) => {
         .then((res) => {
             const listCreated = res.data.list;
             dispatch(createListSuccessAction(listCreated));
+            dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
             dispatch(createListFailureAction(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
         });
 };
