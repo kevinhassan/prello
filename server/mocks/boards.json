@@ -14,6 +14,8 @@
                 "_id": "l00000000003"
             }
         ],
-        "visibility": "public"
+        "privacy": "public",
+        "owner": "b00000000001",
+        "members": [{"_id": "b00000000001", "isAdmin": true}, {"_id": "b00000000002", "isAdmin": false}]
     }
 ]

@@ -5,7 +5,11 @@ const app = require('../../app.js');
 
 const BoardController = require('../../controllers/boards');
 const ListController = require('../../controllers/lists');
+const UserController = require('../../controllers/users');
 const Card = require('../../models/Card');
+const Board = require('../../models/Board');
+const List = require('../../models/List');
+const User = require('../../models/User');
 
 const newCard = {
     name: 'This is a valid description',
@@ -14,13 +18,27 @@ const newCard = {
 const newDescription = {
     description: 'Another valid description',
 };
-
+const userData = {
+    fullName: 'nameTest',
+    email: 'test@test.fr',
+    password: 'passTest',
+    bio: 'bio'
+};
+let user;
 describe('POST /cards', () => {
-    before(async () => {
-        await Card.deleteMany({});
-        const boardId = await BoardController.createBoard({ name: 'Test board', visibility: 'public' });
-        const list = await ListController.createList({ name: 'Test List', boardId });
-        newCard.list = list._id;
+    before((done) => {
+        Promise.all([Card.deleteMany({}), Board.deleteMany({}), User.deleteMany({}), List.deleteMany({})]).then(async () => {
+            try {
+                user = await UserController.postRegister(userData);
+                const boardId = await BoardController.createBoard(user._id, { name: 'Test board', visibility: 'public' });
+                const list = await ListController.createList({ name: 'Test List', boardId });
+                newCard.list = list._id;
+                done();
+            } catch (e) {
+                console.log('Error happened : ', e);
+                process.exit(-1);
+            }
+        });
     });
     it('should return 422 ERROR', (done) => {
         const wrongCard = {

@@ -17,7 +17,7 @@ const cardSchema = new mongoose.Schema({
         ref: 'List',
         required: true
     },
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 

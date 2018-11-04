@@ -18,13 +18,13 @@ userController.login = async (email, password) => {
     try {
         const user = await User.findOne({ email }).select('password');
         if (!user) {
-            throw new MyError(401, 'Invalid credentials.');
+            throw new MyError(403, 'Invalid credentials.');
         }
 
         // check password
         const isMatch = await user.comparePassword(password, user.password);
         if (!isMatch) {
-            throw new MyError(401, 'Invalid credentials.');
+            throw new MyError(403, 'Invalid credentials.');
         }
 
         // return token to the user
@@ -63,11 +63,12 @@ userController.postRegister = async (data) => {
             avatarUrl: data.avatarUrl,
             initials: initialsUser
         });
-        await user.save();
+        const newUser = await user.save();
+        return newUser;
     } catch (err) {
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'An account already exists for this email.');
-        } 
+        }
         return new MyError(500, 'Internal server error');
     }
 };
@@ -233,4 +234,25 @@ userController.resetPassword = async (token, password) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
+// add the board to the the user
+userController.joinBoard = async (userId, boardId) => {
+    try {
+        await User.updateOne({ _id: userId }, { $addToSet: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+// remove the board from the user
+userController.leaveBoard = async (userId, boardId) => {
+    try {
+        await User.updateOne({ _id: userId }, { $pull: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
 module.exports = userController;

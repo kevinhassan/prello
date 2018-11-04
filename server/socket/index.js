@@ -15,7 +15,7 @@ io.on('connection', (client) => {
     });
 });
 
-const updateClientsOnBoard = async (boardId) => {
+module.exports.updateClientsOnBoard = async (boardId) => {
     try {
         const boardFound = await boardController.get(boardId);
         io.sockets.emit('currentBoard', { board: boardFound });
@@ -26,6 +26,4 @@ const updateClientsOnBoard = async (boardId) => {
 
 io.listen(process.env.SOCKET_PORT || 9091);
 
-module.exports = {
-    io, updateClientsOnBoard
-};
+module.exports.io = io;
