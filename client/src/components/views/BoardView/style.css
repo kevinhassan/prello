@@ -32,7 +32,6 @@
 }
 
 .listsPanel {
-    flex: 1;
     height: 100%;
     min-height: 0;
     white-space: nowrap;

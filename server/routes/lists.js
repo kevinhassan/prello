@@ -51,7 +51,7 @@ module.exports = (router) => {
                 const listCreated = await listController.createList(req.body);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         });
 };
