@@ -80,8 +80,35 @@ class BoardComp extends React.Component {
             this.props.updateListsIndexes(_id, listsUpdated);
             return;
         }
+        // Card dropped
         if (type === 'CARD') {
-            // TODO : reorder cards
+            const { lists } = this.props.board;
+            const cardId = result.draggableId;
+            const destinationListId = destination.droppableId;
+            const destinationIndex = destination.index;
+            const sourceListId = source.droppableId;
+
+            // Get card info
+            const sourceList = lists.find(list => list._id === sourceListId);
+            const cardMoved = sourceList.cards.filter(c => c._id === cardId)[0];
+
+            // Update lists
+            const listsUpdated = lists.map((list) => {
+                if (list._id === sourceListId) {
+                    list.cards.splice(list.cards.findIndex(card => card._id === cardId), 1);
+                }
+                if (list._id === destinationListId) {
+                    list.cards.splice(destinationIndex, 0, cardMoved);
+                }
+                return list;
+            });
+
+            // Set pending State
+            this.setState({ pendingLists: listsUpdated });
+            this.setState({ isWaitingForAPIConfirmation: true });
+
+            // Dispatch action
+            // TODO
         }
     }
 
