@@ -1,6 +1,6 @@
-import * as actions from '../actions/card';
+import * as actions from '../actions/cards';
 
-export default function cardsReducer(state = undefined, action) {
+export default function cardsReducer(state = {}, action) {
     switch (action.type) {
     case actions.DELETE_CARD:
         return state;

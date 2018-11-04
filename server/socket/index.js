@@ -1,10 +1,10 @@
-const socket = require('socket.io')();
+const io = require('socket.io')();
 
 // ===== Controllers
 const boardController = require('../controllers/boards');
 
 // ===== Define behaviours
-socket.on('connection', (client) => {
+io.on('connection', (client) => {
     client.on('subscribeToCurrentBoard', async (boardId) => {
         try {
             const boardFound = await boardController.get(boardId);
@@ -14,7 +14,15 @@ socket.on('connection', (client) => {
         }
     });
 });
+io.listen(process.env.SOCKET_PORT || 9091);
 
-socket.listen(process.env.SOCKET_PORT || 9091);
+module.exports.updateClientsOnBoard = async (boardId) => {
+    try {
+        const boardFound = await boardController.get(boardId);
+        io.sockets.emit('currentBoard', { board: boardFound });
+    } catch (e) {
+        io.sockets.emit('currentBoard', { error: e.message });
+    }
+};
 
-module.exports = socket;
+module.exports.io = io;

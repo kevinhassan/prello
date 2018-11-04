@@ -107,6 +107,7 @@ li {
 .btnReseted {
     background: none;
     border: inherit;
+    color: #222;
     padding: inherit;
 }
 
@@ -177,4 +178,9 @@ li {
 }
 .signin-container {
     display: inline;
+}
+
+.appened-form{
+    border-radius: 0.25rem;
+    background-color: #dbdbed;
 }

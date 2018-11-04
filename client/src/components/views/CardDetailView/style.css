@@ -6,7 +6,7 @@
     text-align: center;
     top: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 1000;
 }
 
 .cardDetailOverlay:hover {
@@ -19,6 +19,8 @@
     box-shadow: 0px 2px 3px;
     display: inline-block;
     margin: 20px auto;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
     padding: 15px;
     text-align: left;
     transition: all 0.3s, visibility 0s;
@@ -37,20 +39,49 @@ h2.cardDetailTitle {
     text-align: left;
 }
 
-.cardDetailDate {
-
-
-}
-
-.cardDetailDescription {
+.descriptionContent {
     line-height: 20px;
-    margin: 0;
-    padding: 10px;
-    white-space: normal;
+    margin: 10px;
+    white-space: pre-line;
 }
 
-.CardDetailInList {
+.descriptionForm {
+    margin: 10px;
+}
+
+.descriptionFormGroup {
+    margin-bottom: 5px;
+}
+
+.btnDescription {
+    background: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.btn-addDescription {
+    color: #888;
+}
+
+.clickableDescription {
+    width: 100%;
+}
+.clickableDescription:hover {
+    background-color: #f4f4f4;
+}
+
+.btnDescription:hover {
+    cursor: pointer;
+}
+
+.cardDetailInList {
     font-weight: bold;
+}
+
+.descriptionTextArea, .descriptionTextArea:hover,  
+.descriptionTextArea:focus, .descriptionTextArea:active {
+    background-color: #efefff;
 }
 
 .closeCardDetailIcon {

@@ -107,12 +107,6 @@ const {
 *       summary: Get the user profile
 *       produces:
 *           - application/json
-*       parameters:
-*           - name: body
-*             in: header
-*             required: true
-*             schema:
-*               $ref: '#/definitions/ProfileForm'
 *       responses:
 *           200:
 *               description: User successfully get his profile
