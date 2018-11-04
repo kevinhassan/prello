@@ -248,11 +248,34 @@ userController.joinBoard = async (userId, boardId) => {
 // remove the board from the user
 userController.leaveBoard = async (userId, boardId) => {
     try {
-        await User.updateOne({ _id: userId }, { $pull: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+        await User.updateOne({ _id: userId },
+            { $pull: { boards: boardId } })
+            .catch(async () => { throw new MyError(404, 'User not found'); });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
-
+// join team
+userController.joinTeam = async (userId, teamId) => {
+    try {
+        await User.updateOne({ _id: userId },
+            { $addToSet: { teams: teamId } })
+            .catch(async () => { throw new MyError(404, 'User not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+// leave team
+userController.leaveTeam = async (userId, teamId) => {
+    try {
+        await User.updateOne({ _id: userId },
+            { $pull: { teams: teamId } })
+            .catch(async () => { throw new MyError(404, 'User not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 module.exports = userController;

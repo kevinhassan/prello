@@ -85,7 +85,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.removeTeam(req.params.teamId);
+                await teamController.removeTeam(req.user._id, req.params.teamId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });

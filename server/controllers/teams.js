@@ -1,6 +1,7 @@
 const teamController = {};
 const MyError = require('../util/error');
 const Team = require('../models/Team');
+const userController = require('../controllers/users');
 
 
 teamController.addBoard = async (boardId, teamId) => {
@@ -37,6 +38,9 @@ teamController.createTeam = async (userId, data) => {
         // the creator is the first member of the team
         newTeam.members.push(userId);
         await newTeam.save();
+
+        // add team to the team's creator
+        await userController.joinTeam(userId, newTeam._id);
         return newTeam;
     } catch (err) {
         if (err.name === 'ValidationError') {
@@ -51,12 +55,13 @@ teamController.createTeam = async (userId, data) => {
 /**
  * DELETE /teams/:teamId
  * Remove team
- * TODO: remove Team from the creator collection
  * TODO: remove Team from boards
  */
-teamController.removeTeam = async (teamId) => {
+teamController.removeTeam = async (userId, teamId) => {
     try {
         await Team.deleteOne({ _id: teamId });
+        // add team to the team's creator
+        await userController.leaveTeam(userId, teamId);
     } catch (err) {
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
