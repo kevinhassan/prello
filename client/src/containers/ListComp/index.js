@@ -30,7 +30,7 @@ class ListComp extends React.Component {
         event.preventDefault();
         const name = event.target.cardName.value;
         const newCard = new Card({
-            name, list: this.props.list,
+            name, list: this.props.list._id,
         });
         this.props.createCard(newCard);
         this.setState({ isInputVisible: false });
