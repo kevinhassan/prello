@@ -3,9 +3,9 @@ import { displayErrorMessage, displaySuccessMessage } from './modal';
 
 // ========================
 
-export const CREATE_LIST_STARTED = 'list/CREATE_LIST_STARTED';
-export const CREATE_LIST_FAILURE = 'list/CREATE_LIST_FAILURE';
-export const CREATE_LIST_SUCCESS = 'list/CREATE_LIST_SUCCESS';
+export const CREATE_LIST_STARTED = 'lists/CREATE_LIST_STARTED';
+export const CREATE_LIST_FAILURE = 'lists/CREATE_LIST_FAILURE';
+export const CREATE_LIST_SUCCESS = 'lists/CREATE_LIST_SUCCESS';
 
 export const createListStartedAction = () => ({
     type: CREATE_LIST_STARTED,
@@ -37,6 +37,44 @@ export const createList = list => (dispatch) => {
         })
         .catch((error) => {
             dispatch(createListFailureAction(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
+
+// ========================
+
+export const MOVE_CARD_STARTED = 'lists/MOVE_CARD_STARTED';
+export const MOVE_CARD_FAILURE = 'lists/MOVE_CARD_FAILURE';
+export const MOVE_CARD_SUCCESS = 'lists/MOVE_CARD_SUCCESS';
+
+export const moveCardStartedAction = () => ({
+    type: MOVE_CARD_STARTED,
+});
+
+export const moveCardFailureAction = error => ({
+    type: MOVE_CARD_FAILURE,
+    payload: {
+        error,
+    },
+});
+
+export const moveCardSuccessAction = lists => ({
+    type: MOVE_CARD_SUCCESS,
+    payload: {
+        lists,
+    },
+});
+
+export const moveCard = (sourceListId, destinationListId, cardId, destinationIndex, listsUpdated) => (dispatch) => {
+    dispatch(moveCardStartedAction());
+    const ressource = `lists/${destinationListId}/cards/${cardId}`;
+    APIFetch.fetchPrelloAPI(ressource, { index: destinationIndex, sourceListId }, APIFetch.PUT)
+        .then((res) => {
+            dispatch(moveCardSuccessAction(listsUpdated));
+            dispatch(displaySuccessMessage(res.data.message));
+        })
+        .catch((error) => {
+            dispatch(moveCardFailureAction(error.response.data.error));
             dispatch(displayErrorMessage(error.response.data.error));
         });
 };

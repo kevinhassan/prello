@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { fetchBoard, updateListsIndexes } from '../../actions/boards';
-import { createList } from '../../actions/lists';
+import { createList, moveCard } from '../../actions/lists';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
@@ -108,7 +108,7 @@ class BoardComp extends React.Component {
             this.setState({ isWaitingForAPIConfirmation: true });
 
             // Dispatch action
-            // TODO
+            this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated);
         }
     }
 
@@ -154,6 +154,7 @@ BoardComp.propTypes = {
             boardId: PropTypes.string,
         }),
     }).isRequired,
+    moveCard: PropTypes.func.isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
     createList: PropTypes.func.isRequired,
 };
@@ -170,9 +171,10 @@ const mapStateToProps = ({ boardsReducer }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        updateListsIndexes,
-        fetchBoard,
         createList,
+        fetchBoard,
+        moveCard,
+        updateListsIndexes,
     }, dispatch,
 );
 
