@@ -27,31 +27,22 @@ export default function boardsReducer(state = initialState, action) {
 
     case actions.FETCH_BOARD_SUCCESS:
         // Convert JSON to Object (Board, List, Card)
-        const boardObject = new Board(action.payload.board);
+        const newBoard = new Board(action.payload.board);
         action.payload.board.lists.forEach((list, listIdx) => {
-            boardObject.lists[listIdx] = new List(list);
+            newBoard.lists[listIdx] = new List(list);
             list.cards.forEach((card, cardIdx) => {
-                boardObject.lists[listIdx].cards[cardIdx] = new Card(card);
+                newBoard.lists[listIdx].cards[cardIdx] = new Card(card);
             });
         });
 
         return {
             ...state,
-            board: boardObject,
+            board: newBoard,
         };
 
     case listActions.MOVE_CARD_SUCCESS:
-        // Convert JSON to Object (Board, List, Card)
-        const boardObject = new Board(this.state.board);
-        action.payload.lists.forEach((list, listIdx) => {
-            boardObject.lists[listIdx] = new List(list);
-            list.cards.forEach((card, cardIdx) => {
-                boardObject.lists[listIdx].cards[cardIdx] = new Card(card);
-            });
-        });
         return {
             ...state,
-            board: boardObject,
             board: {
                 ...state.board,
                 lists: action.payload.lists,
