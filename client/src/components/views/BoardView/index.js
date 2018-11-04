@@ -29,23 +29,26 @@ const BoardView = props => (
                             {...dropProvided.droppableProps}
                         >
                             {props.board.lists.map((l, index) => (
-                                <Draggable draggableId={l._id} index={index} key={l._id} type="LIST">
-                                    {(dragProvided, dragSnapshot) => (
-                                        <div
-                                            className="listCompWrapper"
-                                            key={l._id}
-                                            ref={dragProvided.innerRef}
-                                            {...dragProvided.dragHandleProps}
-                                            {...dragProvided.draggableProps}
-                                        >
-                                            <ListComp
-                                                list={l}
-                                                isBeingDragged={dragSnapshot.isDragging}
-                                            />
-                                            {dragProvided.placeholder}
-                                        </div>
-                                    )}
-                                </Draggable>
+                                l.isArchived ? ''
+                                    : (
+                                        <Draggable draggableId={l._id} index={index} key={l._id} type="LIST">
+                                            {(dragProvided, dragSnapshot) => (
+                                                <div
+                                                    className="listCompWrapper"
+                                                    key={l._id}
+                                                    ref={dragProvided.innerRef}
+                                                    {...dragProvided.dragHandleProps}
+                                                    {...dragProvided.draggableProps}
+                                                >
+                                                    <ListComp
+                                                        list={l}
+                                                        isBeingDragged={dragSnapshot.isDragging}
+                                                    />
+                                                    {dragProvided.placeholder}
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    )
                             ))}
                             {dropProvided.placeholder}
                         </div>
