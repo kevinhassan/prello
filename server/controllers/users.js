@@ -260,9 +260,12 @@ userController.leaveBoard = async (userId, boardId) => {
 // join team
 userController.joinTeam = async (userId, teamId) => {
     try {
+        const user = await User.findById(userId);
+        if (!user) throw new MyError(404, 'User unknown');
+
         await User.updateOne({ _id: userId },
             { $addToSet: { teams: teamId } })
-            .catch(async () => { throw new MyError(404, 'User not found'); });
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
@@ -271,9 +274,12 @@ userController.joinTeam = async (userId, teamId) => {
 // leave team
 userController.leaveTeam = async (userId, teamId) => {
     try {
-        await User.updateOne({ _id: userId },
+        const user = await User.findById(userId);
+        if (!user) throw new MyError(404, 'User unknown');
+
+        await user.updateOne({ _id: userId },
             { $pull: { teams: teamId } })
-            .catch(async () => { throw new MyError(404, 'User not found'); });
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
@@ -282,7 +288,7 @@ userController.leaveTeam = async (userId, teamId) => {
 userController.findUserWithEmail = async (email) => {
     try {
         const user = await User.findOne({ email }).select('_id');
-        if (!user) throw new MyError(404, 'Member unknown');
+        if (!user) throw new MyError(404, 'User unknown');
 
         return user;
     } catch (err) {

@@ -138,6 +138,36 @@ const teamController = require('../controllers/teams');
 *               description: Forbidden access
 *           500:
 *               description: Internal server error
+*   delete:
+*       tags:
+*           - Team
+*       description: Remove member from team
+*       summary: Remove member
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*           - in: path
+*             name: memberId
+*             schema:
+*               type: string
+*             required: true
+*             description: member ID
+*
+*       responses:
+*           204:
+*               description: The member has been successfully removed
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
 *
 */
 
@@ -186,6 +216,14 @@ module.exports = (router) => {
             }
             try {
                 await teamController.changeAccess(req.params.teamId, req.params.memberId, req.body.isAdmin);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
+            }
+        })
+        .delete('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
+            try {
+                await teamController.removeMember(req.params.teamId, req.params.memberId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });

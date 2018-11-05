@@ -161,11 +161,35 @@ describe('PUT /teams/:id/members/:id', () => {
             .expect(204, done);
     });
 });
-describe('DELETE /team/:id', () => {
+describe('DELETE /teams/:id/members/:id', () => {
     before((done) => {
         TeamController.changeAccess(newTeam.id, userNotAdmin._id, false).then(done());
     });
-
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .delete(`/teams/${newTeam.id}/members/${userNotAdmin._id}`)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .delete(`/teams/${newTeam.id}/members/${userAdmin._id}`)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .delete(`/teams/${newTeam.id}/members/unknown`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .delete(`/teams/${newTeam.id}/members/${userNotAdmin._id}`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
+describe('DELETE /team/:id', () => {
     it('should return 401 OK', (done) => {
         request(app)
             .delete(`/teams/${newTeam.id}`)

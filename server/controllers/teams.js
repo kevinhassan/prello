@@ -131,4 +131,30 @@ teamController.changeAccess = async (teamId, memberId, accessRight) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+/**
+ * DELETE /teams/:id/members/:id
+ * Remove a member from the team (only for admins)
+ * Remove him from :
+ * - the member's teams collection
+ * - the team's members collection
+ * TODO: check if at least one member is admin before delete him
+ *
+ */
+teamController.removeMember = async (teamId, memberId) => {
+    try {
+        const team = await Team.findById(teamId);
+
+        // remove the member from the team
+        const newTeam = await team.updateOne({ $pull: { members: { _id: memberId } } }, { new: true })
+            .catch((async () => { throw new MyError(404, 'Member not found'); }));
+
+        // remove the team from the member
+        await userController.leaveTeam(memberId, teamId);
+        return newTeam;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
 module.exports = teamController;
