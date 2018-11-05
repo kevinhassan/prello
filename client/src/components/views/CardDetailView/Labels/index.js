@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
+// ===== Components
+import LabelsManager from './LabelsManager';
+
 // ===== Others
 import './style.css';
 
@@ -80,9 +84,13 @@ const Labels = props => (
 
         {props.isEditingLabels
             ? (
-                <p>Edition</p>
+                <LabelsManager
+                    activeLabels={props.labels}
+                    boardLabels={props.boardLabels}
+                    changeIsEditingLabels={props.changeIsEditingLabels}
+                />
             ) : (
-                <p>Pas édition</p>
+                ''
             )
         }
 
@@ -90,7 +98,8 @@ const Labels = props => (
 );
 
 Labels.propTypes = {
-    labels: PropTypes.arrayOf(Object).isRequired,
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
+    labels: PropTypes.arrayOf(PropTypes.object).isRequired,
     editLabels: PropTypes.func.isRequired,
     isEditingLabels: PropTypes.bool.isRequired,
     changeIsEditingLabels: PropTypes.func.isRequired,

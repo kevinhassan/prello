@@ -73,7 +73,7 @@ class CardComp extends React.Component {
     }
 
     render() {
-        const { card } = this.props;
+        const { boardLabels, card } = this.props;
         return (
             <div>
                 <CardView
@@ -83,6 +83,7 @@ class CardComp extends React.Component {
                 {(this.state.displayCardDetail)
                     ? (
                         <CardDetailView
+                            boardLabels={boardLabels}
                             card={card}
                             closeCardDetail={this.handleCloseCardDetail}
 
@@ -102,6 +103,7 @@ class CardComp extends React.Component {
     }
 }
 CardComp.propTypes = {
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     card: PropTypes.instanceOf(Card).isRequired,
     editCardDescription: PropTypes.func.isRequired,
 };

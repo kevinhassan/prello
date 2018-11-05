@@ -1,0 +1,8 @@
+.labelsManagerModal {
+    background-color: #eee;
+    box-shadow: 1px 1px 3px black;
+    min-width: 17rem;
+    position: absolute;
+    left: +25%;
+    top: 0;
+}

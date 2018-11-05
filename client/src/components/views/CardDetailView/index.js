@@ -58,6 +58,7 @@ const CardDetailView = props => (
                     {/* ===== LABELS ===== */}
                     <div className="col-sm-8">
                         <Labels
+                            boardLabels={props.boardLabels}
                             changeIsEditingLabels={props.changeIsEditingLabels}
                             editLabels={props.editLabels}
                             isEditingLabels={props.isEditingLabels}
@@ -83,6 +84,7 @@ const CardDetailView = props => (
 );
 
 CardDetailView.propTypes = {
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     card: PropTypes.instanceOf(Card).isRequired,
     closeCardDetail: PropTypes.func.isRequired,
 
