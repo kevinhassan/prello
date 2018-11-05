@@ -16,7 +16,9 @@
     transform: rotateZ(90deg) scale(1.5);
     transition: 0.2s;
 }
-.btn.addCard-btn:hover {
+
+.btn.addCard-btn:hover, .btn.addCard-btn:focus, .btn.addCard-btn:active,
+.btn.addCard-btn:active:not(:disabled):not(.disabled) {
     background: none;
     box-shadow: none;
 }
