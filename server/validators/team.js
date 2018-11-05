@@ -3,6 +3,7 @@ const { check } = require('express-validator/check');
 const addTeam = [
     check('name')
         .not().isEmpty()
+        .isString()
 ];
 
 const addMember = [
@@ -22,10 +23,19 @@ const changeAccess = [
         .escape()
         .isBoolean()
 ];
-
+const changeInformation = [
+    check('name')
+        .not().isEmpty()
+        .escape()
+        .isString(),
+    check('description')
+        .escape()
+        .isString()
+];
 module.exports = {
     addTeam,
     addMember,
     removeMember,
-    changeAccess
+    changeAccess,
+    changeInformation
 };

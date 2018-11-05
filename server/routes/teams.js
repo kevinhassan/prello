@@ -20,6 +20,13 @@ const teamController = require('../controllers/teams');
 *           isAdmin:
 *               type: boolean
 *
+*   NewInformation:
+*       properties:
+*           name:
+*               type: string
+*           description:
+*               type: string
+*
 * /teams:
 *   post:
 *       tags:
@@ -61,9 +68,44 @@ const teamController = require('../controllers/teams');
 *               type: string
 *             required: true
 *             description: Team ID
+*           - name: body
+*             description: The information of the new team
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewTeam'
 *       responses:
 *           204:
 *               description: Team successfully deleted
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
+*   put:
+*       tags:
+*           - Team
+*       description: Change team's information
+*       summary: Change information
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*           - name: body
+*             description: The information of the new team
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewInformation'
+*       responses:
+*           204:
+*               description: Team successfully updated
 *           401:
 *               description: Unauthorized user
 *           403:
@@ -106,8 +148,8 @@ const teamController = require('../controllers/teams');
 *   put:
 *       tags:
 *           - Team
-*       description: Add member to team
-*       summary: Add member
+*       description: Change access right for team's member
+*       summary: Change access right
 *       produces:
 *           - application/json
 *       parameters:
@@ -192,6 +234,18 @@ module.exports = (router) => {
             }
             try {
                 await teamController.removeTeam(req.user._id, req.params.teamId);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
+            }
+        })
+        .put('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], teamValidator.changeInformation, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                await teamController.changeInformation(req.params.teamId, req.body);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });

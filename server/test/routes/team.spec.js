@@ -189,6 +189,50 @@ describe('DELETE /teams/:id/members/:id', () => {
             .expect(204, done);
     });
 });
+describe('PUT /teams/:id/', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/`)
+            .send({ name: 'test', description: '' })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/`)
+            .send({ name: 'test', description: '' })
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongData = {
+            name: '',
+            description: ''
+        };
+        request(app)
+            .put(`/teams/${newTeam.id}/`)
+            .send(wrongData)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 404 OK', (done) => {
+        request(app)
+            .put('/teams/test1234/')
+            .send({ name: 'test', description: '' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/`)
+            .send({ name: 'test', description: '' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
 describe('DELETE /team/:id', () => {
     it('should return 401 OK', (done) => {
         request(app)

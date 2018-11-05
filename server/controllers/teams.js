@@ -156,5 +156,21 @@ teamController.removeMember = async (teamId, memberId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+/**
+ * PUT /teams/:id
+ * Change team information
+ */
+teamController.changeInformation = async (teamId, data) => {
+    try {
+        const team = await Team.findById(teamId);
+        const newTeam = await team.updateOne(data, { new: true })
+            .catch((async () => { throw new MyError(404, 'Member not found'); }));
+
+        return newTeam;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 
 module.exports = teamController;
