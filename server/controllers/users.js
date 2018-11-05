@@ -3,6 +3,7 @@ const crypto = require('crypto');
 
 const userController = {};
 const nodemailer = require('nodemailer');
+const boardController = require('../controllers/boards');
 const User = require('../models/User');
 const MyError = require('../util/error');
 const Auth = require('../auth');
@@ -19,7 +20,9 @@ const randomBytesAsync = promisify(crypto.randomBytes);
  */
 userController.postBoard = async (userId, boardId) => {
     try {
-        await User.updateOne({ _id: userId }, { $addToSet: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+        await User.updateOne({ _id: userId },
+            { $addToSet: { boards: boardId } })
+            .catch(async () => { throw new MyError(404, 'User not found'); });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
@@ -249,7 +252,30 @@ userController.deleteAccount = async (user) => {
  */
 userController.deleteBoard = async (userId, boardId) => {
     try {
-        await User.updateOne({ _id: userId }, { $pull: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+        await boardController.removeMember(boardId, userId);
+        await userController.removeBoard(userId, boardId);
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+userController.findMemberWithMail = async (email) => {
+    try {
+        const user = await User.findOne({ email });
+        if (!user) throw new MyError(404, 'User not found');
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+userController.removeBoard = async (userId, boardId) => {
+    try {
+        await User.updateOne({ _id: userId },
+            { $pull: { boards: boardId } })
+            .catch(async () => { throw new MyError(404, 'User not found'); });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');

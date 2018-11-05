@@ -7,7 +7,6 @@ const socket = require('../socket');
 
 const MyError = require('../util/error');
 const Board = require('../models/Board');
-const User = require('../models/User');
 
 // ========================= //
 // ===== Get functions ===== //
@@ -144,6 +143,7 @@ boardController.postBoard = async (owner, data) => {
 
 /**
  * Add team to the board (only for admins)
+ * Board already exits
  */
 boardController.postTeam = async (boardId, teamId) => {
     try {
@@ -163,8 +163,7 @@ boardController.postTeam = async (boardId, teamId) => {
  */
 boardController.postMemberWithMail = async (boardId, email) => {
     try {
-        const member = await User.findOne({ email }).select('_id');
-        if (!member) throw new MyError(404, 'Member to add unknown');
+        const member = await userController.findMemberWithMail(email);
 
         // add the board to the member
         await userController.postBoard(member._id, boardId);
@@ -189,6 +188,58 @@ boardController.postMemberWithMail = async (boardId, email) => {
  *
  */
 boardController.deleteMember = async (boardId, memberId) => {
+    try {
+        await boardController.removeMember(boardId, memberId);
+        // remove the board from the member
+        await userController.removeBoard(memberId, boardId);
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Remove the board's team (only for admins)
+ */
+boardController.deleteTeam = async (boardId, teamId) => {
+    try {
+        await teamController.deleteBoard(boardId, teamId);
+        const newBoard = await Board.updateOne({ _id: boardId },
+            { $pull: { teams: teamId } }, { new: true })
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
+        return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Add list to the boaard
+ */
+boardController.addList = async (boardId, listId) => {
+    try {
+        const board = await Board.findById(boardId).select('lists');
+        if (!board) throw new MyError(404, 'Board not found');
+        await board.updateOne({ $addToSet: { lists: listId } }, { new: true });
+
+        const newBoard = await board.save();
+        return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * Remove member of the board
+ */
+boardController.removeMember = async (boardId, memberId) => {
     try {
         const board = await Board.findById(boardId)
             .select(['members', 'lists'])
@@ -217,29 +268,15 @@ boardController.deleteMember = async (boardId, memberId) => {
         { new: true }).catch((async () => {
             throw new MyError(404, 'Member not found');
         }));
-
-        // remove the board from the member
-        await userController.deleteBoard(memberId, boardId);
-        return newBoard;
-    } catch (err) {
-        console.log(err);
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-
-/**
- * Remove the board's team (only for admins)
- */
-boardController.deleteTeam = async (boardId, teamId) => {
-    try {
-        await teamController.deleteBoard(boardId, teamId);
-        const newBoard = await Board.updateOne({ _id: boardId },
-            { $pull: { teams: teamId } }, { new: true })
-            .catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
         throw new MyError(500, 'Internal Server Error');
     }
 };

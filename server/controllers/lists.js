@@ -1,8 +1,8 @@
 const listController = {};
+const boardController = require('../controllers/boards');
 const socket = require('../socket');
 const MyError = require('../util/error');
 const List = require('../models/List');
-const Board = require('../models/Board');
 
 // ======================== //
 // ==== Post functions ==== //
@@ -14,12 +14,8 @@ listController.postList = async (data) => {
             boardId: data.boardId,
         });
         await list.save();
-
-        const board = await Board.findById(data.boardId);
-        board.lists.push(list);
-        await board.save();
-
-        socket.updateClientsOnBoard(board._id);
+        await boardController.addList(data.boardId, list._id);
+        socket.updateClientsOnBoard(data.boardId);
 
         return list;
     } catch (err) {

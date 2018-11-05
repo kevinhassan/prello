@@ -21,7 +21,8 @@ const boardSchema = new mongoose.Schema({
  */
 boardSchema.pre('save', function save(next) {
     const board = this;
-    if (board.members.length === 0) {
+    if (!board.members || board.members.length === 0) {
+        board.members = [];
         board.members.push({ _id: board.owner, isAdmin: true });
     }
     next();
