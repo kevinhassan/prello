@@ -24,12 +24,13 @@
 }
 
 .initials{
-    text-align: center; 
+    text-align: right; 
     padding: 30px;
+    color: #d44;
 }
 
 .userData{
-    background-color: #ddd;
+    
 }
 
 h5{

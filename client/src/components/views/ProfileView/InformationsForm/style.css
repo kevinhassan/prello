@@ -1,0 +1,20 @@
+.btnUpdate{
+    float: right;
+}
+
+.bio{
+}
+
+.cancelUpdate-btn{
+    float: right;
+}
+
+.informationsForm{
+    background-color: #ddd;
+    padding: 10px;
+}
+
+.informationsDisplay{
+    background-color: #ddd;
+    padding: 10px;
+}

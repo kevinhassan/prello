@@ -8,24 +8,26 @@ import './style.css';
 
 const InformationsForm = props => (
 
-    <span className="addListForm">
+    <span>
         {props.isVisible ? (
 
-            <div className="appened-form">
+            <div className="informationsForm">
                 <form onSubmit={console.log('yea')}>
-                    <input
+                    <textarea
                         className="form-control"
-                        id="listName"
-                        name="listName"
-                        placeholder="Enter list name"
+                        rows="5"
+                        name="Bio"
+                        placeholder="Update your bio (optional)"
                         required
                         type="text"
                     />
-                    <button className="btn btn-success addListForm-btn" type="submit">
-                    Add list
+
+                    <br />
+                    <button className="btn btn-success updateInformations-btn" type="submit">
+                        Update
                     </button>
                     <button
-                        className="btn btn-secondary addListForm-btn"
+                        className="btn btn-secondary cancelUpdate-btn"
                         type="reset"
                         onClick={() => props.displayUpdateForm(false)}
                     >
@@ -35,10 +37,10 @@ const InformationsForm = props => (
             </div>
 
         ) : (
-            <div className="appened-form">
+            <div className="informationsDisplay">
                 <button
                     className="btn btn-secondary btnUpdate"
-                    type="submit"
+                    type="button"
                     onClick={() => props.displayUpdateForm(true)}
                 >
                     <i className="fas fa-pen updateIcon" />
@@ -50,7 +52,6 @@ const InformationsForm = props => (
                     <h5>Email</h5>
                     <p>{props.email}</p>
                 </div>
-                
             </div>
         )}
     </span>
@@ -58,10 +59,13 @@ const InformationsForm = props => (
 );
 
 InformationsForm.propTypes = {
-    bio: PropTypes.object.isRequired,
+    bio: PropTypes.object,
     email: PropTypes.object.isRequired,
     displayUpdateForm: PropTypes.func.isRequired,
     isVisible: PropTypes.object.isRequired,
 };
+InformationsForm.defaultProps = {
+    bio: undefined,
+}
 
 export default InformationsForm;

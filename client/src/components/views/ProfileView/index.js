@@ -1,8 +1,5 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-
 
 // ===== Components
 import InformationsForm from './InformationsForm';
@@ -17,25 +14,45 @@ const ProfileView = props => (
 
     <div className="user" key={props.user.id}>
         <div className="row">
-            <div className="col-sm-2 offset-sm-1 initials">
-                <h2>
+            <div className="col-sm-1 offset-sm-3">
+                <h2 className="initials">
                     {props.user.initials}
                 </h2>
             </div>
-            <div className="col-sm-4 nickname">
+            <div className="col-sm-3 nickname">
                 <h1 className="userFullname">{props.user.fullName}</h1>
                 <p>
                     @
                     {props.user.username}
                 </p>
             </div>
-            <div className="col-sm-2 offset-sm-1 userData">
+            <div className="col-sm-3 userData">
                 <InformationsForm
                     displayUpdateForm={props.handleUpdateInformations}
                     isVisible={props.isUpdateVisible}
                     bio={props.user.bio}
                     email={props.user.email}
                 />
+            </div>
+        </div>
+
+        <hr />
+        <div className="row">
+            <div className="col-sm-8 offset-sm-2">
+                <h4 className="teams">
+                    <i className="fas fa-users teamIcon" />
+                    My teams
+                </h4>
+            </div>
+        </div>
+
+        <hr />
+        <div className="row">
+            <div className="col-sm-8 offset-sm-2">
+                <h4 className="news">
+                    <i className="far fa-newspaper teamIcon" />
+                    Activity
+                </h4>
             </div>
         </div>
     </div>
