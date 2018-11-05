@@ -3,10 +3,8 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// ===== Elements Components
-import Description from './Description';
-
 // ===== Card Detail Components
+import Description from './Description';
 import Labels from './Labels';
 
 // ===== Models
@@ -56,11 +54,13 @@ const CardDetailView = props => (
 
                     </div>
 
+                    {/* ===== LABELS ===== */}
                     <div className="col-sm-6">
                         <Labels
                             labels={props.card.labels}
                         />
                     </div>
+                    {/* ==================== */}
 
                 </div>
 
