@@ -31,7 +31,7 @@ describe('POST /cards', () => {
             try {
                 user = await userController.signUp(userData);
                 const boardId = await boardController.postBoard(user._id, { name: 'Test board', visibility: 'public' });
-                const list = await listController.postList({ name: 'Test List', boardId });
+                const list = await listController.postList(boardId, 'Test List');
                 newCard.list = list._id;
                 done();
             } catch (e) {

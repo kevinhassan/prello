@@ -32,8 +32,6 @@ const { Auth, Board } = require('../middlewares');
 *       properties:
 *           name:
 *               type: string
-*           boardId:
-*               type: string
 
 *
 * /boards/{boardId}:
@@ -60,6 +58,36 @@ const { Auth, Board } = require('../middlewares');
 *               description: Internal server error
 *
 * /boards/{boardId}/lists:
+*   post:
+*       tags:
+*           - Board
+*       description: Create a new empty List
+*       summary: Create new List
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - name: body
+*             description: The new list information
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewList'
+*       responses:
+*           201:
+*               description: List successfully created
+*           401:
+*               description: Unauthorized user
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*
 *   put:
 *       tags:
 *           - Board
@@ -333,31 +361,6 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
-* /boards/{boardId}/lists/:
-*   post:
-*       tags:
-*           - Board
-*       description: Create a new empty List
-*       summary: Create new List
-*       produces:
-*           - application/json
-*       parameters:
-*           - name: body
-*             description: The information of the new list
-*             in: body
-*             required: true
-*             schema:
-*               $ref: '#/definitions/NewList'
-*       responses:
-*           201:
-*               description: List successfully created
-*           401:
-*               description: Unauthorized user
-*           422:
-*               description: Invalid form data
-*           500:
-*               description: Internal server error
-
 */
 
 module.exports = (router) => {
@@ -461,13 +464,13 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/lists', listValidator.addList, async (req, res) => {
+        .post('/boards/:boardId/lists', Auth.isAuthenticated, Board.isAdmin, listValidator.addList, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                const listCreated = await listController.postList(req.body);
+                const listCreated = await listController.postList(req.params.boardId, req.body.name);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

@@ -32,6 +32,11 @@ const userData = {
         bio: 'bio'
     }
 };
+const listData = {
+    name: 'test',
+    id: ''
+};
+
 let userAdmin;
 let userNotAdmin;
 let tokenAdmin;
@@ -355,5 +360,47 @@ describe('DELETE /boards/:id/teams/:id', () => {
             .delete(`/boards/${data.id}/teams/${team._id}`)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
+    });
+});
+describe('POST /boards/:id/lists', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .post(`/boards/${data.id}/lists`)
+            .send(listData)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongList = {
+            name: ''
+        };
+        request(app)
+            .post(`/boards/${data.id}/lists`)
+            .send(wrongList)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .post(`/boards/${data.id}/lists`)
+            .send(listData)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .post('/boards/unknown/lists')
+            .send(listData)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(404, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .post(`/boards/${data.id}/lists`)
+            .send(listData)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(201, done);
     });
 });

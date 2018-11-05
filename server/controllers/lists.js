@@ -27,15 +27,15 @@ listController.getListByCard = async (cardId) => {
 
 // ==== Post functions ==== //
 // ======================== //
-listController.postList = async (data) => {
+listController.postList = async (boardId, name) => {
     try {
         const list = new List({
-            name: data.name,
-            boardId: data.boardId,
+            name,
+            boardId,
         });
+        await boardController.addList(boardId, list._id);
         await list.save();
-        await boardController.addList(data.boardId, list._id);
-        socket.updateClientsOnBoard(data.boardId);
+        socket.updateClientsOnBoard(boardId);
 
         return list;
     } catch (err) {
