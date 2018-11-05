@@ -238,11 +238,15 @@ boardController.postLabel = async (data) => {
         if (!board) {
             throw new MyError(404, 'Not found, the specified board doesn\'t exist');
         }
+
         label.name = data.name;
         label.color = data.color;
         label.boardId = data.boardId;
-
         await label.save();
+
+        board.labels.push(label);
+        await board.save();
+
         socket.updateClientsOnBoard(data.boardId);
 
         return label;
