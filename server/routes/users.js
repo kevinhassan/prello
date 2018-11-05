@@ -262,7 +262,6 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                if (!req.body.fullName || !req.body.email || !req.body.password) throw new MyError(400, 'Missing information.');
                 await userController.signUp(req.body);
                 res.status(201).send({ message: 'User successfully created.' });
             } catch (e) {

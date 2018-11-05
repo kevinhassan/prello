@@ -221,9 +221,7 @@ boardController.addList = async (boardId, listId) => {
     try {
         const board = await Board.findById(boardId).select('lists');
         if (!board) throw new MyError(404, 'Board not found');
-        await board.updateOne({ $addToSet: { lists: listId } }, { new: true });
-
-        const newBoard = await board.save();
+        const newBoard = await board.updateOne({ $addToSet: { lists: listId } }, { new: true });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;

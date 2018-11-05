@@ -32,14 +32,20 @@ const { Auth, Board } = require('../middlewares');
 *       properties:
 *           name:
 *               type: string
-
+*
+*   UpdatedList:
+*       properties:
+*           lists:
+*               type: array
+*               items:
+*                   type: string
 *
 * /boards/{boardId}:
 *   get:
 *       tags:
 *           - Board
 *       description: Get all information of the board
-*       summary: Get specific board information
+*       summary: Get board
 *       produces:
 *           - application/json
 *       parameters:
@@ -105,9 +111,7 @@ const { Auth, Board } = require('../middlewares');
 *           - in: body
 *             name: lists
 *             schema:
-*               type: array
-*               items:
-*                   type: string
+*               $ref: '#/definitions/UpdatedList'
 *             required: true
 *             description: Board ID
 *       responses:
@@ -163,7 +167,7 @@ const { Auth, Board } = require('../middlewares');
 *             required: true
 *             description: Board ID
 *           - name: body
-*             description: The new visibility of the boar
+*             description: The new visibility of the board
 *             in: body
 *             required: true
 *             schema:
@@ -180,6 +184,7 @@ const { Auth, Board } = require('../middlewares');
 *           422:
 *               description: Invalid form data or Incorrect Query
 *           500:
+*               description: Internal server error
 *
 * /boards/{boardId}/members:
 *   post:
@@ -389,7 +394,7 @@ module.exports = (router) => {
         .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: { form: errors.array() } });
+                return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
                 const boardCreated = await boardController.postBoard(req.user._id, req.body);
@@ -404,6 +409,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
+                console.log('tutu');
                 await boardController.putVisibility(req.params.boardId, req.body.visibility);
                 res.sendStatus(204);
             } catch (e) {
