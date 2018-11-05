@@ -43,8 +43,9 @@ const Label = props => (
             color: determineTextColorFromBackground(props.label.color),
         }}
     >
+        {props.isActive ? <i className="fas fa-check" /> : ''}
+        {' '}
         {props.label.name}
-        {props.isActive ? ' /' : ' .'}
     </li>
 );
 
@@ -53,7 +54,7 @@ Label.propTypes = {
     label: PropTypes.object.isRequired,
 };
 Label.defaultProps = {
-    isActive: true,
+    isActive: undefined,
 };
 
 export default Label;
