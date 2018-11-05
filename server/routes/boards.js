@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
-const { boardValidator } = require('../validators');
+const listController = require('../controllers/lists');
+const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
 /**
 * @swagger
@@ -23,10 +24,17 @@ const { Auth, Board } = require('../middlewares');
 *       properties:
 *           team:
 *               type: string
-*   changeAccessForm:
+*   ChangeAccessForm:
 *       properties:
 *           isAdmin:
 *               type: boolean
+*   NewList:
+*       properties:
+*           name:
+*               type: string
+*           boardId:
+*               type: string
+
 *
 * /boards/{boardId}:
 *   get:
@@ -240,7 +248,7 @@ const { Auth, Board } = require('../middlewares');
 *             in: body
 *             required: true
 *             schema:
-*               $ref: '#/definitions/changeAccessForm'
+*               $ref: '#/definitions/ChangeAccessForm'
 *       responses:
 *           204:
 *               description: The member's access is updated
@@ -325,7 +333,31 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
-*
+* /boards/{boardId}/lists/:
+*   post:
+*       tags:
+*           - Board
+*       description: Create a new empty List
+*       summary: Create new List
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The information of the new list
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewList'
+*       responses:
+*           201:
+*               description: List successfully created
+*           401:
+*               description: Unauthorized user
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+
 */
 
 module.exports = (router) => {
@@ -425,6 +457,18 @@ module.exports = (router) => {
             try {
                 await boardController.deleteTeam(req.params.boardId, req.params.teamId);
                 res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/lists', listValidator.addList, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                const listCreated = await listController.postList(req.body);
+                res.status(201).send({ message: 'List successfully created', list: listCreated });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

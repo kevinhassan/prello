@@ -11,6 +11,11 @@ const { cardValidator } = require('../validators');
 *               type: string
 *           list:
 *               type: string
+*   NewDescription:
+*       properties:
+*           description:
+*               type: string
+*
 * /cards:
 *   post:
 *       tags:
@@ -32,15 +37,12 @@ const { cardValidator } = require('../validators');
 *           401:
 *               description: Unauthorized user
 *           422:
-*               description:
-*                   oneOf:
-*                       - Incorrect query, data provided invalid
-*                       - Incorrect query, the specified list doesn\'t exist
+*               description: Incorrect query, data provided invalid or the specified list doesn\'t exist
 *           500:
 *               description: Internal server error
 *
 *
-* /cards/:cardId/description:
+* /cards/{cardId}/description:
 *   put:
 *       tags:
 *           - Card
@@ -57,10 +59,10 @@ const { cardValidator } = require('../validators');
 *             description: Card ID
 *           - in: body
 *             name: description
-*             schema:
-*               type: string
-*             required: false
 *             description: new description, can be empty.
+*             required: false
+*             schema:
+*               $ref: '#/definitions/NewDescription'
 *       responses:
 *           204:
 *               description: Card description updated

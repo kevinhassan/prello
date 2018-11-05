@@ -58,6 +58,9 @@ listController.addCard = async (listId, cardId) => {
         const newList = await List.updateOne({ _id: listId }, { $addToSet: { cards: cardId } }, { new: true });
         return newList;
     } catch (err) {
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'List not found');
+        }
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
         }

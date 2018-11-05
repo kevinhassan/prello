@@ -51,6 +51,14 @@ describe('POST /cards', () => {
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
+    it('should return 404 ERROR', (done) => {
+        const wrongData = { name: 'test', list: 'unknow' };
+        request(app)
+            .post('/cards')
+            .send(wrongData)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
     it('should return 201 OK', (done) => {
         request(app)
             .post('/cards')
