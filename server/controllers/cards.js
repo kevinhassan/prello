@@ -4,29 +4,32 @@ const MyError = require('../util/error');
 const socket = require('../socket');
 const List = require('../models/List');
 
-// remove the member from the card
-// TODO: use REST parameter to remove multiple members id
+// ============================ //
+// ===== Remove functions ===== //
+// ============================ //
+
+/**
+ * Remove the member from the card
+ * TODO: use REST parameter to remove multiple members id
+ */
 cardController.removeMember = async (cardId, memberId) => {
     try {
-        return await Card.findByIdAndUpdate(cardId, { $pull: { members: memberId } }, { new: true }).catch(async () => { throw new MyError(404, 'Card not found'); });
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-// add the member to the card
-// TODO: use REST parameter to add multiple members id
-cardController.addMember = async (cardId, memberId) => {
-    try {
-        return await Card.findByIdAndUpdate(cardId, { $addToSet: { members: memberId } }, { new: true }).catch(async () => { throw new MyError(404, 'Card not found'); });
+        return await Card.findByIdAndUpdate(cardId,
+            { $pull: { members: memberId } }, { new: true }).catch(async () => {
+            throw new MyError(404, 'Card not found');
+        });
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
 
+// ========================== //
+// ===== Post functions ===== //
+// ========================== //
+
 /**
- * POST card
+ * Create a new card.
  */
 cardController.createCard = async (data) => {
     try {
@@ -56,8 +59,29 @@ cardController.createCard = async (data) => {
     }
 };
 
+
+// ======================== //
+// ===== Put functions ==== //
+// ======================== //
+
 /**
- * PUT card description
+ * Add the member to the card
+ * TODO: use REST parameter to add multiple members id
+ */
+cardController.addMember = async (cardId, memberId) => {
+    try {
+        return await Card.findByIdAndUpdate(cardId, { $addToSet: { members: memberId } },
+            { new: true }).catch(async () => {
+            throw new MyError(404, 'Card not found');
+        });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Change card description
  */
 cardController.putDescription = async (data) => {
     try {

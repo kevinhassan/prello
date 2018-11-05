@@ -148,7 +148,11 @@ boardController.createBoard = async (owner, data) => {
 boardController.addTeam = async (boardId, teamId) => {
     try {
         await teamController.addBoard(boardId, teamId);
-        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
+        const newBoard = await Board.updateOne({ _id: boardId },
+            { $addToSet: { teams: teamId } },
+            { new: true }).catch(async () => {
+            throw new MyError(404, 'Team not found');
+        });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
@@ -209,7 +213,13 @@ boardController.removeMember = async (boardId, memberId) => {
         }));
 
         // remove the member from the board and update with the new lists
-        const newBoard = await board.updateOne({ $pull: { members: { _id: memberId } } }, { new: true }).catch((async () => { throw new MyError(404, 'Member not found'); }));
+        const newBoard = await board.updateOne({
+            $pull: { members: { _id: memberId } }
+        },
+        { new: true }).catch((async () => {
+            throw new MyError(404, 'Member not found');
+        }));
+
         // remove the board from the member
         await userController.leaveBoard(memberId, boardId);
         return newBoard;
@@ -225,7 +235,10 @@ boardController.removeMember = async (boardId, memberId) => {
 boardController.removeTeam = async (boardId, teamId) => {
     try {
         await teamController.removeBoard(boardId, teamId);
-        const newBoard = await Board.updateOne({ _id: boardId }, { $pull: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
+        const newBoard = await Board.updateOne({ _id: boardId },
+            { $pull: { teams: teamId } }, { new: true }).catch(async () => {
+            throw new MyError(404, 'Team not found');
+        });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
