@@ -55,6 +55,7 @@ const Labels = props => (
                     activeLabels={props.labels}
                     boardLabels={props.boardLabels}
                     cardId={props.cardId}
+                    onClickClose={() => props.changeIsEditingLabels(false)}
                 />
             ) : (
                 ''

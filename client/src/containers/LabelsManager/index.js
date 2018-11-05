@@ -59,8 +59,8 @@ class LabelsManager extends React.Component {
             <div className="labelsManagerModal">
                 <i
                     className="fas fa-times closeLabelManager-icon"
-                    onClick={() => alert('TODO: close me')}
-                    onKeyDown={() => alert('TODO: close me')}
+                    onClick={this.props.onClickClose}
+                    onKeyDown={this.props.onClickClose}
                 />
 
                 <h4>Labels</h4>
@@ -85,6 +85,7 @@ LabelsManager.propTypes = {
     addLabel: PropTypes.func.isRequired,
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     cardId: PropTypes.string.isRequired,
+    onClickClose: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
