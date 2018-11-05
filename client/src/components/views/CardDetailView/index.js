@@ -33,14 +33,33 @@ const CardDetailView = props => (
                 </p>
 
                 <div className="row">
+
+                    {/* ===== DUE DATE ===== */}
                     <div className="col-sm-6">
                         <h2 className="cardDetail-h2">
                             <i className="fas fa-calendar-alt" />
                             {' '}
                             Due date
                         </h2>
-                        <p className="cardDetailDate">{new Date(props.card.dueDate).toDateString()}</p>
+
+                        <div className="cardElementContent">
+                            {props.card.dueDate
+                                ? (
+                                    <p className="cardDetailDate">{new Date(props.card.dueDate).toDateString()}</p>
+                                )
+                                : (
+                                    <button
+                                        className="btn btn-link btn-addElement"
+                                        type="button"
+                                    >
+                                Add a due date...
+                                    </button>
+                                ) }
+                        </div>
+
                     </div>
+
+
                     <div className="col-sm-6">
                         <h2 className="cardDetail-h2">
                             <i className="fas fa-tags" />
@@ -57,7 +76,7 @@ const CardDetailView = props => (
                     Description
                 </h2>
 
-                <div>
+                <div className="cardElementContent">
                     {props.isEditingDescription
                         ? (
                             <form onSubmit={props.editDescription} className="descriptionForm">
@@ -115,7 +134,7 @@ const CardDetailView = props => (
                                     )
                                     : (
                                         <button
-                                            className="btn btn-link btn-addDescription"
+                                            className="btn btn-link btn-addElement"
                                             type="button"
                                             onClick={() => props.changeIsEditingDescription(true)}
                                         >
