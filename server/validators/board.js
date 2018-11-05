@@ -11,6 +11,7 @@ const addBoard = [
         .escape()
         .isIn(['public', 'private', 'team'])
 ];
+
 const updateBoardLists = [
     check('lists')
         .escape()
@@ -56,6 +57,7 @@ const createLabel = [
         .isString(),
     check('color')
         .not().isEmpty()
+        .matches('^#(?:[0-9a-fA-F]{3}){1,2}$')
         .isString(),
     check('boardId')
         .not().isEmpty()

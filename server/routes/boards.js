@@ -373,10 +373,36 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
+<<<<<<< develop
 * /boards/{boardId}/labels:
+=======
+* /boards/:boardId/labels:
+*   get:
+*       tags:
+*           - Board
+*       description: Get board labels
+*       summary: Get board labels
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*       responses:
+*           200:
+*               description: Board labels found
+*           404:
+*               description: Board not found
+*           500:
+*               description: Internal server error
+*
+>>>>>>> GET labels route
 *   post:
 *       tags:
-*           - Label
+*           - Board
 *       description: Create a new label
 *       summary: Create a new label
 *       produces:
@@ -421,6 +447,16 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+
+        .get('/boards/:boardId/labels', async (req, res) => {
+            try {
+                const labels = await boardController.getLabels(req.params.boardId);
+                res.status(200).send({ labels });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+
         .put('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {

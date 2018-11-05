@@ -270,20 +270,39 @@ const newLabel = {
 describe('POST /boards/:boardId/labels', () => {
     it('should return 201 OK', (done) => {
         request(app)
-            .post(`/boards/${data.id}/labels`)
+            .post(`/boards/${boardData.id}/labels`)
             .send(newLabel)
             .expect(201, done);
     });
-    it('should return 422 ERROR', (done) => {
+    it('should return 422 ERROR: no color and name provided', (done) => {
         request(app)
-            .post(`/boards/${data.id}/labels`)
+            .post(`/boards/${boardData.id}/labels`)
             .send({ name: '' })
+            .expect(422, done);
+    });
+    it('should return 422 ERROR: invalid color', (done) => {
+        request(app)
+            .post(`/boards/${boardData.id}/labels`)
+            .send({ name: 'a random lable', color: '#2y5689' })
             .expect(422, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
             .post('/boards/b12345678912/labels')
             .send({ name: 'ok', color: '#123456' })
+            .expect(404, done);
+    });
+});
+
+describe('GET /boards/:boardId/labels', () => {
+    it('should return 200 OK', (done) => {
+        request(app)
+            .get(`/boards/${boardData.id}/labels`)
+            .expect(200, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .get('/boards/arandomboard/labels')
             .expect(404, done);
     });
 });
