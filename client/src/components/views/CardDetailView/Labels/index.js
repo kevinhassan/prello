@@ -13,18 +13,20 @@ import './style.css';
 
 const Labels = props => (
     <div>
-        <button
-            className="btn btn-link btn-addElement clickableLabels-btn"
-            type="button"
-            onClick={() => props.changeIsEditingLabels(true)}
-            style={{ padding: 0 }}
-        >
-            <h2 className="cardDetail-h2">
-                <i className="fas fa-tags" />
-                {' '}
-            Labels
-            </h2>
-        </button>
+        <div>
+            <button
+                className="btn btn-link btn-addElement clickableLabels-btn"
+                type="button"
+                onClick={() => props.changeIsEditingLabels(true)}
+                style={{ padding: 0 }}
+            >
+                <h2 className="cardDetail-h2">
+                    <i className="fas fa-tags" />
+                    {' '}
+                    Labels
+                </h2>
+            </button>
+        </div>
         {props.labels.length > 0
             ? (
                 <ul className="labels-ul">
@@ -32,6 +34,7 @@ const Labels = props => (
                         <Label
                             key={label._id}
                             label={label}
+                            onClick={props.deleteLabel}
                         />
                     ))}
                     <li className="addLabel-li">
@@ -78,6 +81,7 @@ Labels.propTypes = {
     labels: PropTypes.arrayOf(PropTypes.object).isRequired,
     isEditingLabels: PropTypes.bool.isRequired,
     changeIsEditingLabels: PropTypes.func.isRequired,
+    deleteLabel: PropTypes.func.isRequired,
 };
 
 export default Labels;

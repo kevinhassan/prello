@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { editCardDescription } from '../../actions/cards';
+import { editCardDescription, deleteLabel } from '../../actions/cards';
 
 // ===== Models
 import Card from '../../models/Card';
@@ -29,7 +29,7 @@ class CardComp extends React.Component {
         this.handleEditDescription = this.handleEditDescription.bind(this);
 
         this.changeIsEditingLabels = this.changeIsEditingLabels.bind(this);
-        this.handleEditLabels = this.handleEditLabels.bind(this);
+        this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
     }
 
     handleCardClick() {
@@ -63,13 +63,8 @@ class CardComp extends React.Component {
         this.setState({ isEditingLabels: value });
     }
 
-    handleEditLabels(event) {
-        event.preventDefault();
-
-        // TODO : dispatch action
-        // const labels = event.target.labels.value;
-        // this.props.editCardDescription(this.props.card._id, description);
-        this.setState({ isEditingLabels: false });
+    handleDeleteLabel(label) {
+        this.props.deleteLabel(this.props.card._id, label._id);
     }
 
     render() {
@@ -92,7 +87,7 @@ class CardComp extends React.Component {
                             isEditingDescription={this.state.isEditingDescription}
 
                             changeIsEditingLabels={this.changeIsEditingLabels}
-                            editLabels={this.handleEditLabels}
+                            deleteLabel={this.handleDeleteLabel}
                             isEditingLabels={this.state.isEditingLabels}
                         />
                     )
@@ -105,6 +100,7 @@ class CardComp extends React.Component {
 CardComp.propTypes = {
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     card: PropTypes.instanceOf(Card).isRequired,
+    deleteLabel: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
 };
 
@@ -117,7 +113,8 @@ const mapStateToProps = cardsReducer => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        editCardDescription,
+        deleteLabel,
+        editCardDescription
     }, dispatch,
 );
 
