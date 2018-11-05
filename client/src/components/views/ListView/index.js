@@ -49,15 +49,15 @@ const ListView = props => (
                         </Draggable>
                     ))}
                     {dropProvided.placeholder}
+                    <AddCardForm
+                        displayAddCardForm={props.displayAddCardForm}
+                        isInputVisible={props.isInputVisible}
+                        onCardAdded={props.onCardAdded}
+                    />
                 </div>
             )}
         </Droppable>
 
-        <AddCardForm
-            displayAddCardForm={props.displayAddCardForm}
-            isInputVisible={props.isInputVisible}
-            onCardAdded={props.onCardAdded}
-        />
     </div>
 
 
