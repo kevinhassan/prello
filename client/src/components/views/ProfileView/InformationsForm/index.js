@@ -12,14 +12,14 @@ const InformationsForm = props => (
         {props.isVisible ? (
 
             <div className="informationsForm">
-                <form onSubmit={console.log('yea')}>
+                <form onSubmit={props.updateInformations}>
                     <textarea
                         className="form-control"
                         rows="5"
                         name="Bio"
                         placeholder="Update your bio (optional)"
-                        required
                         type="text"
+                        id="bio"
                     />
 
                     <br />
@@ -61,11 +61,12 @@ const InformationsForm = props => (
 InformationsForm.propTypes = {
     bio: PropTypes.object,
     email: PropTypes.object.isRequired,
-    displayUpdateForm: PropTypes.func.isRequired,
     isVisible: PropTypes.object.isRequired,
+    displayUpdateForm: PropTypes.func.isRequired,
+    updateInformations: PropTypes.func.isRequired,
 };
 InformationsForm.defaultProps = {
     bio: undefined,
-}
+};
 
 export default InformationsForm;

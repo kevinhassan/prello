@@ -14,6 +14,12 @@ export default function usersReducer(state = initialState, action) {
             user: userObject,
         };
 
+    case actions.USER_INFORMATIONS_FAILURE:
+        return {
+            ...state,
+            errorMessage: action.payload.error,
+        };
+
     default:
         return state;
     }

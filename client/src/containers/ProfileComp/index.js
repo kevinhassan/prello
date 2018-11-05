@@ -19,33 +19,52 @@ class ProfileComp extends React.Component {
         super(props);
         this.state = {
             isUpdateVisible: false,
+            errorMessage: null,
         };
         this.handleUpdateInformations = this.handleUpdateInformations.bind(this);
+        this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
     }
 
     componentWillMount() {
         this.props.getUserInformations();
     }
 
-    handleUpdateInformations(value) {
+    handleUpdateDisplay(value) {
         this.setState({ isUpdateVisible: value });
+    }
+
+    handleUpdateInformations(event) {
+        event.preventDefault();
+        const name = event.target.bio;
+        console.log(name);
+        this.setState({ isUpdateVisible: false });
     }
 
     render() {
         const { user } = this.props;
-        const element = (
-            <div className="usersPanel">
-                <ProfileView
-                    user={user}
-                    handleUpdateInformations={this.handleUpdateInformations}
-                    isUpdateVisible={this.state.isUpdateVisible}
-                />
-            </div>
-        );
-        if (user) {
-            return element;
+
+        if (!this.state.errorMessage) {
+            if (user) {
+                const element = (
+                    <div className="usersPanel">
+                        <ProfileView
+                            user={user}
+                            handleUpdateInformations={this.handleUpdateInformations}
+                            handleUpdateDisplay={this.handleUpdateDisplay}
+                            isUpdateVisible={this.state.isUpdateVisible}
+                        />
+                    </div>
+                );
+
+                return element;
+            }
         }
-        return <p>User not authorized  TODO : Redirect to login </p>;
+
+        return (
+            <h4 className="errorMessage">
+                { this.state.errorMessage }
+            </h4>
+        );
     }
 }
 

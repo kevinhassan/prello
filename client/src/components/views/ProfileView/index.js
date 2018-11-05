@@ -28,7 +28,8 @@ const ProfileView = props => (
             </div>
             <div className="col-sm-3 userData">
                 <InformationsForm
-                    displayUpdateForm={props.handleUpdateInformations}
+                    displayUpdateForm={props.handleUpdateDisplay}
+                    updateInformations={props.handleUpdateInformations}
                     isVisible={props.isUpdateVisible}
                     bio={props.user.bio}
                     email={props.user.email}
@@ -63,6 +64,7 @@ ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
     isUpdateVisible: PropTypes.object.isRequired,
     handleUpdateInformations: PropTypes.func.isRequired,
+    handleUpdateDisplay: PropTypes.func.isRequired,
     deleteUser: PropTypes.func,
 };
 ProfileView.defaultProps = {
