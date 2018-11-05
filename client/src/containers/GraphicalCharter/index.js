@@ -220,9 +220,7 @@ class GraphicalCharter extends React.Component {
                         </div>
                     </div>
                     <b>
-                        N.B.: A message is displayed during 5s.
-                        An error is always displayed over a success message which is displayed over a
-                        loading modal.
+                        N.B.: a message is displayed during 3s. It can be configured in actions/modal file.
                     </b>
                 </div>
 
