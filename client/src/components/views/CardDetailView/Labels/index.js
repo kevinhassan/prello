@@ -45,14 +45,26 @@ const Labels = props => (
             ? (
                 <ul className="labels-ul">
                     {props.labels.map(label => (
-                        <li className="label-li" style={{ backgroundColor: label.color, color: determineTextColorFromBackground(label.color) }}>
+                        <li
+                            className="label-li"
+                            style={{
+                                backgroundColor: label.color,
+                                boxShadow: '1px 1px 1px #000',
+                                color: determineTextColorFromBackground(label.color),
+                            }}
+                        >
                             {label.name}
                         </li>
                     ))}
                 </ul>
 
             ) : (
-                <p>No label found</p>
+                <button
+                    className="btn btn-link btn-addElement"
+                    type="button"
+                >
+                    Add label...
+                </button>
             )
         }
 

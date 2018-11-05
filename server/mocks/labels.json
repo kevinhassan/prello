@@ -18,5 +18,10 @@
         "_id": "la0000000004",
         "name": "White label",
         "color": "#ffffff"
+    },
+    {
+        "_id": "la0000000005",
+        "name": "Black label with a long name",
+        "color": "#000000"
     }
 ]

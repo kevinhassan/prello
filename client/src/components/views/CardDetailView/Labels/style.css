@@ -1,16 +1,22 @@
 .labels-ul {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
     margin-top: 5px;
     padding: 0;
 }
 
 .label-li {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    height: 30px;
+    height: 35px;
+    line-height: 35px;
+    margin-bottom: 5px;
     margin-right: 5px;
     min-width: 80px;
-    padding: 5px;
+    overflow: hidden;
+    padding: 0 5px;
     text-align: center;
-    width: auto;
+    text-overflow: ellipsis;
+    max-width: 100px;
 }
