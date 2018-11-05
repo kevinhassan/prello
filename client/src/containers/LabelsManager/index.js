@@ -63,8 +63,8 @@ class LabelsManager extends React.Component {
                     onKeyDown={this.props.onClickClose}
                 />
 
-                <h4>Labels</h4>
-                <ul>
+                <h4 style={{ color: '#004a75' }}>Labels</h4>
+                <ul style={{ padding: 0 }}>
                     {this.state.labels.map(label => (
                         <Label
                             key={label._id}

@@ -1,11 +1,10 @@
 .labelsManagerModal {
-    background-color: #eee;
-    box-shadow: 1px 1px 3px black;
-    min-width: 17rem;
+    background-color: #ddd;
+    box-shadow: 1px 2px 4px black;
     padding: 10px;
     position: absolute;
     left: +25%;
-    top: 0;
+    top: +100%;
 }
 
 .closeLabelManager-icon {
