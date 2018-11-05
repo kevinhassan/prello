@@ -49,7 +49,6 @@ const ListView = props => (
                         </Draggable>
                     ))}
                     {dropProvided.placeholder}
-                    <button className="btn btn-success addCardButton" type="submit" onClick={props.createCard}>Create new Card</button>
                 </div>
             )}
         </Droppable>
