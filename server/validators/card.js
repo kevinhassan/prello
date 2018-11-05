@@ -10,12 +10,18 @@ const addCard = [
 ];
 
 const addLabel = [
+    check('cardId')
+        .not().isEmpty()
+        .isString(),
     check('labelId')
         .not().isEmpty()
         .isString()
 ];
 
 const deleteLabel = [
+    check('cardId')
+        .not().isEmpty()
+        .isString(),
     check('labelId')
         .not().isEmpty()
         .isString()

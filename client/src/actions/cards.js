@@ -15,6 +15,10 @@ export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
 export const ADD_LABEL_STARTED = 'cards/ADD_LABEL_STARTED';
 export const ADD_LABEL_FAILURE = 'cards/ADD_LABEL_FAILURE';
 export const ADD_LABEL_SUCCESS = 'cards/ADD_LABEL_SUCCESS';
+
+export const DELETE_LABEL_STARTED = 'cards/DELETE_LABEL_STARTED';
+export const DELETE_LABEL_FAILURE = 'cards/DELETE_LABEL_FAILURE';
+export const DELETE_LABEL_SUCCESS = 'cards/DELETE_LABEL_SUCCESS';
 // ========================
 
 // ====== Create card
@@ -109,13 +113,45 @@ export const addLabel = (cardId, labelId) => (dispatch) => {
     dispatch(displayLoadingModal());
     const resource = `cards/${cardId}/labels/${labelId}`;
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.POST)
-        .then(() => {
+        .then((res) => {
             dispatch(addLabelSuccessAction(cardId, labelId));
             dispatch(hideLoadingModal());
-            dispatch(displaySuccessMessage('Card label(s) updated'));
+            dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
             dispatch(addLabelFailureAction(error.response.data.error));
+            dispatch(hideLoadingModal());
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
+
+// ===== Delete label
+export const deleteLabelStartedAction = () => ({ type: DELETE_LABEL_STARTED });
+export const deleteLabelFailureAction = error => ({
+    type: DELETE_LABEL_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const deleteLabelSuccessAction = message => ({
+    type: DELETE_LABEL_SUCCESS,
+    payload: {
+        message,
+    },
+});
+
+export const deleteLabel = (cardId, labelId) => (dispatch) => {
+    dispatch(deleteLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `cards/${cardId}/labels/${labelId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
+        .then((res) => {
+            dispatch(deleteLabelSuccessAction(cardId, labelId));
+            dispatch(hideLoadingModal());
+            dispatch(displaySuccessMessage(res.data.message));
+        })
+        .catch((error) => {
+            dispatch(deleteLabelFailureAction(error.response.data.error));
             dispatch(hideLoadingModal());
             dispatch(displayErrorMessage(error.response.data.error));
         });

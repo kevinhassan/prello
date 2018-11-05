@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { addLabel } from '../../actions/cards';
+import { addLabel, deleteLabel } from '../../actions/cards';
 
 // ===== Components
 import Label from '../../components/views/CardDetailView/Labels/Label';
@@ -48,7 +48,7 @@ class LabelsManager extends React.Component {
 
     handleClickOnLabel(label) {
         if (label.isActive) {
-            // TODO : remove it from card
+            this.props.deleteLabel(this.props.cardId, label._id);
         } else {
             this.props.addLabel(this.props.cardId, label._id);
         }
@@ -83,6 +83,7 @@ class LabelsManager extends React.Component {
 LabelsManager.propTypes = {
     activeLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     addLabel: PropTypes.func.isRequired,
+    deleteLabel: PropTypes.func.isRequired,
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     cardId: PropTypes.string.isRequired,
     onClickClose: PropTypes.func.isRequired,
@@ -95,6 +96,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         addLabel,
+        deleteLabel,
     }, dispatch,
 );
 

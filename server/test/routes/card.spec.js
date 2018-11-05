@@ -7,8 +7,8 @@ const boardController = require('../../controllers/boards');
 const listController = require('../../controllers/lists');
 const userController = require('../../controllers/users');
 const cardController = require('../../controllers/cards');
-const Card = require('../../models/Card');
 const Board = require('../../models/Board');
+const Card = require('../../models/Card');
 const List = require('../../models/List');
 const User = require('../../models/User');
 
@@ -44,7 +44,14 @@ let userMember;
 let userNotMember;
 let tokenMember;
 let tokenNotMember;
-describe('PUT /cards/:id/description', () => {
+let user;
+
+const newLabel = {
+    name: 'my new label',
+    color: '#123456',
+};
+
+describe('POST /cards', () => {
     before((done) => {
         Promise.all([Card.deleteMany({}), Board.deleteMany({}), User.deleteMany({}), List.deleteMany({}), Card.deleteMany({})]).then(async () => {
             try {
@@ -59,6 +66,8 @@ describe('PUT /cards/:id/description', () => {
                 listData.id = list._id;
                 const card = await cardController.createCard(cardData.name, list._id);
                 cardData.id = card._id;
+                const label = await boardController.postLabel(newLabel);
+                newLabel._id = label._id;
                 done();
             } catch (e) {
                 console.log('Error happened : ', e);
@@ -106,5 +115,31 @@ describe('PUT /cards/:id/description', () => {
             .send(newDescription)
             .set('Authorization', `Bearer ${tokenMember}`)
             .expect(204, done);
+    });
+});
+
+describe('POST /cards/:cardId/labels/:labelId', () => {
+    it('should return 200 OK', (done) => {
+        request(app)
+            .post(`/cards/${cardData.cardId}/labels/${newLabel._id}`)
+            .expect(200, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .post(`/cards/${cardData.id}/labels/123456789123`)
+            .expect(200, done);
+    });
+});
+
+describe('DELETE /cards/:cardId/labels/:labelId', () => {
+    it('should return 200 OK', (done) => {
+        request(app)
+            .post(`/cards/${cardData.id}/labels/${newLabel._id}`)
+            .expect(200, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .post(`/cards/${cardData.id}/labels/123456789123`)
+            .expect(200, done);
     });
 });
