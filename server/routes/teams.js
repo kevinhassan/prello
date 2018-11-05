@@ -68,12 +68,6 @@ const teamController = require('../controllers/teams');
 *               type: string
 *             required: true
 *             description: Team ID
-*           - name: body
-*             description: The information of the new team
-*             in: body
-*             required: true
-*             schema:
-*               $ref: '#/definitions/NewTeam'
 *       responses:
 *           204:
 *               description: Team successfully deleted
