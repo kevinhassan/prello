@@ -1,7 +1,7 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 
-const userController = {};
+const userController = module.exports;
 const nodemailer = require('nodemailer');
 const boardController = require('../controllers/boards');
 const User = require('../models/User');

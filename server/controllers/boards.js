@@ -1,4 +1,4 @@
-const boardController = {};
+const boardController = module.exports;
 const teamController = require('./teams');
 const userController = require('./users');
 const cardController = require('./cards');

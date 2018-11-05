@@ -1,8 +1,8 @@
-const cardController = {};
+const cardController = module.exports;
 const Card = require('../models/Card');
 const MyError = require('../util/error');
 const socket = require('../socket');
-const List = require('../models/List');
+const listController = require('../controllers/lists');
 
 // ============================ //
 // ===== Delete functions ===== //
@@ -34,19 +34,14 @@ cardController.deleteMember = async (cardId, memberId) => {
 cardController.postCard = async (data) => {
     try {
         const card = new Card();
-
-        const list = await List.findById(data.list);
-        if (!list) {
-            throw new MyError(422, 'Incorrect query, the specified list doesn\'t exist');
-        }
         card.name = data.name;
         card.list = data.list;
-        list.cards.push(card._id);
 
-        await list.save();
+        // add card to the list
+        const list = await listController.addCard(data.list, card._id);
+
         await card.save();
         socket.updateClientsOnBoard(list.boardId);
-
         return card;
     } catch (err) {
         if (err.name === 'ValidationError') {
@@ -91,9 +86,9 @@ cardController.putDescription = async (data) => {
         card.description = data.description;
         await card.save();
 
+        const newList = await listController.getListByCard(data.cardId);
         // update board via socket
-        const list = await List.findById(card.list);
-        socket.updateClientsOnBoard(list.boardId);
+        socket.updateClientsOnBoard(newList.boardId);
 
         return card;
     } catch (err) {

@@ -1,4 +1,4 @@
-const teamController = {};
+const teamController = module.exports;
 const MyError = require('../util/error');
 const Team = require('../models/Team');
 
