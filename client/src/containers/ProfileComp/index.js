@@ -10,6 +10,7 @@ import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
 import { getUserInformations } from '../../actions/user';
+import { updateUserBio } from '../../actions/user';
 
 // ===== Others
 import './style.css';
@@ -35,8 +36,7 @@ class ProfileComp extends React.Component {
 
     handleUpdateInformations(event) {
         event.preventDefault();
-        const name = event.target.bio;
-        console.log(name);
+        this.props.updateUserBio(event.target.bio.value);
         this.setState({ isUpdateVisible: false });
     }
 
@@ -70,6 +70,7 @@ class ProfileComp extends React.Component {
 
 ProfileComp.propTypes = {
     getUserInformations: PropTypes.func.isRequired,
+    updateUserBio: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
 };
 
@@ -82,6 +83,7 @@ const mapStateToProps = ({ usersReducer }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getUserInformations,
+        updateUserBio,
     }, dispatch,
 );
 

@@ -40,3 +40,21 @@ export const getUserInformations = () => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+export const updateUserBioSuccess = () => ({
+    type: UPDATE_USER_BIO_SUCCESS,
+});
+
+export const updateUserBio = bio => (dispatch) => {
+    APIFetch.fetchPrelloAPI('profile', {
+        bio,
+    }, APIFetch.PUT)
+        .then((res) => {
+            if (res) {
+                dispatch(updateUserBioSuccess(res.data.profile));
+            }
+        })
+        .catch((error) => {
+            console.log(error.response.data.error);
+        });
+};
