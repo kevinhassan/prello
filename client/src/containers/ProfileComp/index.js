@@ -15,8 +15,20 @@ import { getUserInformations } from '../../actions/user';
 import './style.css';
 
 class ProfileComp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isUpdateVisible: false,
+        };
+        this.handleUpdateInformations = this.handleUpdateInformations.bind(this);
+    }
+
     componentWillMount() {
         this.props.getUserInformations();
+    }
+
+    handleUpdateInformations(value) {
+        this.setState({ isUpdateVisible: value });
     }
 
     render() {
@@ -25,6 +37,8 @@ class ProfileComp extends React.Component {
             <div className="usersPanel">
                 <ProfileView
                     user={user}
+                    handleUpdateInformations={this.handleUpdateInformations}
+                    isUpdateVisible={this.state.isUpdateVisible}
                 />
             </div>
         );

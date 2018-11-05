@@ -1,3 +1,7 @@
+.user{
+    padding-top: 20px;
+}
+
 .infosPanel {
     padding:20px;
     background-color: #ddd;
@@ -6,11 +10,29 @@
 }
 
 .nickname{
-    text-align: center
+    text-align: left
 }
 
 
 .readOnly{
     background-color: #ccc;
     border: 0;
+}
+
+.btnUpdate{
+    float: right;
+}
+
+.initials{
+    text-align: center; 
+    padding: 30px;
+}
+
+.userData{
+    background-color: #ddd;
+}
+
+h5{
+    text-align: center;
+    font-style: italic;
 }

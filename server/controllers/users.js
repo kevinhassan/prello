@@ -147,8 +147,8 @@ exports.resetPassword = async (token, password) => {
 exports.getProfile = async (user) => {
     try {
     // return plain json object with lean
-        const userProfile = await User.findById(user._id).select({
-            fullName: 1, username: 1, biography: 1, initials: 1, _id: 0
+        const userProfile = await User.findById(user.id).select({
+            fullName: 1, username: 1, bio: 1, initials: 1, email: 1, _id: 0
         }).lean();
         return userProfile;
     } catch (err) {
