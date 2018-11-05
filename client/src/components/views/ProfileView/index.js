@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
-import InformationsForm from './InformationsForm';
+import InformationForm from './InformationForm';
 
 // ===== Others
 import './style.css';
@@ -27,9 +27,9 @@ const ProfileView = props => (
                 </p>
             </div>
             <div className="col-sm-3 userData">
-                <InformationsForm
+                <InformationForm
                     displayUpdateForm={props.handleUpdateDisplay}
-                    updateInformations={props.handleUpdateInformations}
+                    updateInformation={props.handleUpdateInformation}
                     isVisible={props.isUpdateVisible}
                     user={props.user}
                 />
@@ -62,7 +62,7 @@ const ProfileView = props => (
 ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
     isUpdateVisible: PropTypes.object.isRequired,
-    handleUpdateInformations: PropTypes.func.isRequired,
+    handleUpdateInformation: PropTypes.func.isRequired,
     handleUpdateDisplay: PropTypes.func.isRequired,
 };
 ProfileView.defaultProps = {

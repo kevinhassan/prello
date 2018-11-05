@@ -6,13 +6,13 @@ import './style.css';
 
 // ==================================
 
-const InformationsForm = props => (
+const InformationForm = props => (
 
     <span>
         {props.isVisible ? (
 
             <div className="informationsForm">
-                <form onSubmit={props.updateInformations}>
+                <form onSubmit={props.updateInformation}>
                     Full name
                     <input
                         className="form-control"
@@ -41,7 +41,7 @@ const InformationsForm = props => (
                         id="bio"
                     />
                     <br />
-                    <button className="btn btn-success updateInformations-btn" type="submit">
+                    <button className="btn btn-success updateInformation-btn" type="submit">
                         Update
                     </button>
                     <button
@@ -76,12 +76,12 @@ const InformationsForm = props => (
 
 );
 
-InformationsForm.propTypes = {
+InformationForm.propTypes = {
     user: PropTypes.object.isRequired,
     isVisible: PropTypes.object.isRequired,
     displayUpdateForm: PropTypes.func.isRequired,
-    updateInformations: PropTypes.func.isRequired,
+    updateInformation: PropTypes.func.isRequired,
 };
 
 
-export default InformationsForm;
+export default InformationForm;

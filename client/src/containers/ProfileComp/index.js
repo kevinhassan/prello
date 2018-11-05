@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
-import { getUserInformations, updateUserInformations } from '../../actions/user';
+import { getUserInformation, updateUserInformation } from '../../actions/user';
 
 // ===== Others
 import './style.css';
@@ -19,14 +19,14 @@ class ProfileComp extends React.Component {
         super(props);
         this.state = {
             isUpdateVisible: false,
-            errorMessage: null,
+            errorMessage: '',
         };
         this.handleUpdateInformations = this.handleUpdateInformations.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
     }
 
     componentWillMount() {
-        this.props.getUserInformations();
+        this.props.getUserInformation();
     }
 
     handleUpdateDisplay(value) {
@@ -35,7 +35,7 @@ class ProfileComp extends React.Component {
 
     handleUpdateInformations(event) {
         event.preventDefault();
-        this.props.updateUserInformations(event.target.fullname.value, event.target.initials.value, event.target.bio.value);
+        this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.bio.value);
         this.setState({ isUpdateVisible: false });
     }
 
@@ -60,29 +60,35 @@ class ProfileComp extends React.Component {
         }
 
         return (
-            <h4 className="errorMessage">
-                { this.state.errorMessage }
-            </h4>
+            <div>
+                {this.props.errorMessage}
+            </div>
+
         );
     }
 }
 
 ProfileComp.propTypes = {
-    getUserInformations: PropTypes.func.isRequired,
-    updateUserInformations: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired,
+    getUserInformation: PropTypes.func.isRequired,
+    updateUserInformation: PropTypes.func.isRequired,
+    user: PropTypes.object,
+};
+
+ProfileComp.defaultProps = {
+    user: undefined,
 };
 
 // Put info from the store state in props
 const mapStateToProps = ({ usersReducer }) => ({
     user: usersReducer.user,
+    errorMessage: usersReducer.errorMessage,
 });
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        getUserInformations,
-        updateUserInformations,
+        getUserInformation,
+        updateUserInformation,
     }, dispatch,
 );
 
