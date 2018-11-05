@@ -1,7 +1,8 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
+const cardController = require('../controllers/cards');
 const listController = require('../controllers/lists');
-const { boardValidator, listValidator } = require('../validators');
+const { boardValidator, listValidator, cardValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
 /**
 * @swagger
@@ -39,6 +40,35 @@ const { Auth, Board } = require('../middlewares');
 *               type: array
 *               items:
 *                   type: string
+*   NewCard:
+*       properties:
+*           name:
+*               type: string
+*
+* /boards:
+*   post:
+*       tags:
+*           - Board
+*       description: Create a new empty Board
+*       summary: Create new Board
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The information of the new boar
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewBoard'
+*       responses:
+*           201:
+*               description: Board successfully created
+*           401:
+*               description: Unauthorized user
+*           422:
+*               description: Invalid form data or Incorrect Query
+*           500:
+*               description: Internal server error
 *
 * /boards/{boardId}:
 *   get:
@@ -104,16 +134,16 @@ const { Auth, Board } = require('../middlewares');
 *       parameters:
 *           - in: path
 *             name: boardId
+*             required: true
+*             description: Board ID
 *             schema:
 *               type: string
-*             required: true
-*             description: Board ID
 *           - in: body
 *             name: lists
-*             schema:
-*               $ref: '#/definitions/UpdatedList'
 *             required: true
 *             description: Board ID
+*             schema:
+*               $ref: '#/definitions/UpdatedList'
 *       responses:
 *           204:
 *               description: Board's lists updated
@@ -126,30 +156,43 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
-* /boards:
+* /boards/{boardId}/lists/{listId}/cards:
 *   post:
 *       tags:
 *           - Board
-*       description: Create a new empty Board
-*       summary: Create new Board
+*       description: Create a new empty Card
+*       summary: Create new Card
 *       produces:
 *           - application/json
 *       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - in: path
+*             name: listId
+*             schema:
+*               type: string
+*             required: true
+*             description: List ID
 *           - name: body
-*             description: The information of the new boar
+*             description: The information of the new card
 *             in: body
 *             required: true
 *             schema:
-*               $ref: '#/definitions/NewBoard'
+*               $ref: '#/definitions/NewCard'
 *       responses:
 *           201:
-*               description: Board successfully created
+*               description: Card successfully created
 *           401:
 *               description: Unauthorized user
 *           422:
-*               description: Invalid form data or Incorrect Query
+*               description: Incorrect query, data provided invalid or the specified list doesn\'t exist
 *           500:
 *               description: Internal server error
+*
 *
 * /boards/{boardId}/visibility:
 *   put:
@@ -478,6 +521,21 @@ module.exports = (router) => {
             try {
                 const listCreated = await listController.postList(req.params.boardId, req.body.name);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/lists/:listId/cards', cardValidator.addCard, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            try {
+                const cardCreated = await cardController.postCard({
+                    name: req.body.name, list: req.params.listId,
+                });
+
+                res.status(201).send({ message: 'Card successfully created', card: cardCreated._id });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

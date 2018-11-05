@@ -5,42 +5,10 @@ const { cardValidator } = require('../validators');
 /**
 * @swagger
 * definitions:
-*   NewCard:
-*       properties:
-*           name:
-*               type: string
-*           list:
-*               type: string
 *   NewDescription:
 *       properties:
 *           description:
 *               type: string
-*
-* /cards:
-*   post:
-*       tags:
-*           - Card
-*       description: Create a new empty Card
-*       summary: Create new Card
-*       produces:
-*           - application/json
-*       parameters:
-*           - name: body
-*             description: The information of the new card
-*             in: body
-*             required: true
-*             schema:
-*               $ref: '#/definitions/NewCard'
-*       responses:
-*           201:
-*               description: Card successfully created
-*           401:
-*               description: Unauthorized user
-*           422:
-*               description: Incorrect query, data provided invalid or the specified list doesn\'t exist
-*           500:
-*               description: Internal server error
-*
 *
 * /cards/{cardId}/description:
 *   put:
@@ -76,22 +44,6 @@ const { cardValidator } = require('../validators');
 
 module.exports = (router) => {
     router
-        .post('/cards', cardValidator.addCard, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
-            }
-            try {
-                const cardCreated = await cardController.postCard({
-                    name: req.body.name, list: req.body.list,
-                });
-
-                res.status(201).send({ message: 'Card successfully created', card: cardCreated._id });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-
         .put('/cards/:cardId/description', cardValidator.updateCardDescription, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {

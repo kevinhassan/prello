@@ -3,10 +3,7 @@ const { check } = require('express-validator/check');
 const addCard = [
     check('name')
         .not().isEmpty()
-        .isString(),
-    check('list')
-        .not().isEmpty()
-        .isString(),
+        .isString()
 ];
 
 const updateCardDescription = [
