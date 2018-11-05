@@ -15,9 +15,11 @@ import './style.css';
 
 const BoardView = props => (
     <div className="boardPanel">
-        <div className="col-sm-12 boardSettingsBar">
-            <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
-            <i className="far fa-star boardSettingsBtn starBtn" />
+        <div className="row">
+            <div className="col-sm-12 boardSettingsBar">
+                <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
+                <i className="far fa-star boardSettingsBtn starBtn" />
+            </div>
         </div>
         <div className="listsAndAddPanel">
             <DragDropContext onDragEnd={props.onDragEnd}>

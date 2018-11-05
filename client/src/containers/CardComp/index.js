@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { deleteCard, editCardDescription } from '../../actions/cards';
+import { editCardDescription } from '../../actions/cards';
 
 // ===== Models
 import Card from '../../models/Card';
@@ -22,7 +22,6 @@ class CardComp extends React.Component {
         };
 
         this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
-        this.handleDeleteCard = this.handleDeleteCard.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
         this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
         this.handleEditDescription = this.handleEditDescription.bind(this);
@@ -30,10 +29,6 @@ class CardComp extends React.Component {
 
     changeIsEditingDescription(value) {
         this.setState({ isEditingDescription: value });
-    }
-
-    handleDeleteCard() {
-        this.props.deleteCard();
     }
 
     handleCardClick() {
@@ -84,7 +79,6 @@ class CardComp extends React.Component {
 }
 CardComp.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
-    deleteCard: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
 };
 
@@ -97,7 +91,6 @@ const mapStateToProps = cardsReducer => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        deleteCard,
         editCardDescription,
     }, dispatch,
 );

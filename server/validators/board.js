@@ -11,7 +11,7 @@ const addBoard = [
         .escape()
         .isIn(['public', 'private', 'team'])
 ];
-const updateBoardList = [
+const updateBoardLists = [
     check('lists')
         .escape()
         .custom(item => item)
@@ -52,7 +52,7 @@ const changeAccess = [
 
 module.exports = {
     addBoard,
-    updateBoardList,
+    updateBoardLists,
     changeVisibility,
     addMember,
     addTeam,

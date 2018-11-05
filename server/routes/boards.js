@@ -50,10 +50,12 @@ const { Auth, Board } = require('../middlewares');
 *               description: Board not found
 *           500:
 *               description: Internal server error
+*
+* /boards/{boardId}/lists:
 *   put:
 *       tags:
 *           - Board
-*       description: Update lists of the specific boar
+*       description: Update lists of the specified board
 *       summary: Update lists
 *       produces:
 *           - application/json
@@ -62,6 +64,14 @@ const { Auth, Board } = require('../middlewares');
 *             name: boardId
 *             schema:
 *               type: string
+*             required: true
+*             description: Board ID
+*           - in: body
+*             name: lists
+*             schema:
+*               type: array
+*               items:
+*                   type: string
 *             required: true
 *             description: Board ID
 *       responses:
@@ -329,7 +339,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/boards/:boardId/lists', boardValidator.updateBoardList, async (req, res) => {
+        .put('/boards/:boardId/lists', boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });

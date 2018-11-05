@@ -27,10 +27,6 @@
     margin: 5px;
 }
 
-.addCardButton {
-    width: 100%;
-}
-
 .listDragged {
     box-shadow: 0 5px 10px;
     transform: scale(1.005);
@@ -38,14 +34,23 @@
 }
 
 .listName {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: bold;
-    padding: 5px;
+    padding: 10px;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.cardHeader {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
 }
 
 .archiveCardIcon {
+    align-self: flex-start;
     font-size: 12px;
-    padding: 2px;
+    margin: 10px 10px 0 0;
 }
 
 .archiveCardIcon:hover {

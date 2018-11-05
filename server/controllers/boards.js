@@ -3,6 +3,8 @@ const teamController = require('./teams');
 const userController = require('./users');
 const cardController = require('./cards');
 
+const socket = require('../socket');
+
 const MyError = require('../util/error');
 const Board = require('../models/Board');
 /**
@@ -36,7 +38,7 @@ boardController.get = async (boardId) => {
     }
 };
 /**
- * PUT /boards/:boardId
+ * PUT /boards/:boardId/lists
  */
 boardController.putLists = async (boardId, lists) => {
     try {
@@ -46,6 +48,8 @@ boardController.putLists = async (boardId, lists) => {
         }
         board.lists = lists;
         await board.save();
+
+        socket.updateClientsOnBoard(board._id);
     } catch (err) {
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect Query');
