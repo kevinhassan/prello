@@ -71,7 +71,8 @@ export const moveCard = (sourceListId, destinationListId, cardId, destinationInd
     APIFetch.fetchPrelloAPI(ressource, { index: destinationIndex, sourceListId }, APIFetch.PUT)
         .then((res) => {
             dispatch(moveCardSuccessAction(listsUpdated));
-            dispatch(displaySuccessMessage(res.data.message));
+            // Don't display success message for this action
+            // dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
             dispatch(moveCardFailureAction(error.response.data.error));
