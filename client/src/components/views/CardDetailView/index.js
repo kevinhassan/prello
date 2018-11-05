@@ -61,7 +61,6 @@ const CardDetailView = props => (
                             boardLabels={props.boardLabels}
                             cardId={props.card._id}
                             changeIsEditingLabels={props.changeIsEditingLabels}
-                            editLabels={props.editLabels}
                             isEditingLabels={props.isEditingLabels}
                             labels={props.card.labels}
                         />
@@ -94,7 +93,6 @@ CardDetailView.propTypes = {
     isEditingDescription: PropTypes.bool,
 
     changeIsEditingLabels: PropTypes.func.isRequired,
-    editLabels: PropTypes.func.isRequired,
     isEditingLabels: PropTypes.bool,
 };
 

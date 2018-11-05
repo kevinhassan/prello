@@ -43,18 +43,22 @@ const Label = props => (
             color: determineTextColorFromBackground(props.label.color),
         }}
     >
-        {props.isActive ? <i className="fas fa-check" /> : ''}
-        {' '}
-        {props.label.name}
+        <button className="btn btnReseted label-btn" type="button" onClick={() => props.onClick(props.label)}>
+            {props.isActive ? <i className="fas fa-check activeLabel-icon" /> : ''}
+            {' '}
+            <span className="labelName">{props.label.name}</span>
+        </button>
     </li>
 );
 
 Label.propTypes = {
     isActive: PropTypes.bool,
     label: PropTypes.object.isRequired,
+    onClick: PropTypes.func,
 };
 Label.defaultProps = {
     isActive: undefined,
+    onClick: () => {},
 };
 
 export default Label;

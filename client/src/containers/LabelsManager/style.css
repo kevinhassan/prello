@@ -2,7 +2,17 @@
     background-color: #eee;
     box-shadow: 1px 1px 3px black;
     min-width: 17rem;
+    padding: 10px;
     position: absolute;
     left: +25%;
     top: 0;
+}
+
+.closeLabelManager-icon {
+    float: right;
+}
+
+.closeLabelManager-icon:hover {
+    color: #555;
+    cursor: pointer;
 }

@@ -11,6 +11,10 @@ export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
 export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
 export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
 export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
+
+export const ADD_LABEL_STARTED = 'cards/ADD_LABEL_STARTED';
+export const ADD_LABEL_FAILURE = 'cards/ADD_LABEL_FAILURE';
+export const ADD_LABEL_SUCCESS = 'cards/ADD_LABEL_SUCCESS';
 // ========================
 
 // ====== Create card
@@ -79,8 +83,40 @@ export const editCardDescription = (cardId, description) => (dispatch) => {
             dispatch(displaySuccessMessage('Description updated'));
         })
         .catch((error) => {
-            dispatch(editCardDescriptionFailureAction(error.message));
+            dispatch(editCardDescriptionFailureAction(error.response.data.error));
             dispatch(hideLoadingModal());
-            dispatch(displayErrorMessage(error.message));
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
+
+// ===== Add label
+export const addLabelStartedAction = () => ({ type: ADD_LABEL_STARTED });
+export const addLabelFailureAction = error => ({
+    type: ADD_LABEL_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const addLabelSuccessAction = message => ({
+    type: ADD_LABEL_SUCCESS,
+    payload: {
+        message,
+    },
+});
+
+export const addLabel = (cardId, labelId) => (dispatch) => {
+    dispatch(addLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `cards/${cardId}/labels/${labelId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.POST)
+        .then(() => {
+            dispatch(addLabelSuccessAction(cardId, labelId));
+            dispatch(hideLoadingModal());
+            dispatch(displaySuccessMessage('Card label(s) updated'));
+        })
+        .catch((error) => {
+            dispatch(addLabelFailureAction(error.response.data.error));
+            dispatch(hideLoadingModal());
+            dispatch(displayErrorMessage(error.response.data.error));
         });
 };

@@ -55,7 +55,6 @@ const Labels = props => (
                     activeLabels={props.labels}
                     boardLabels={props.boardLabels}
                     cardId={props.cardId}
-                    changeIsEditingLabels={props.changeIsEditingLabels}
                 />
             ) : (
                 ''
@@ -69,7 +68,6 @@ Labels.propTypes = {
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     cardId: PropTypes.string.isRequired,
     labels: PropTypes.arrayOf(PropTypes.object).isRequired,
-    editLabels: PropTypes.func.isRequired,
     isEditingLabels: PropTypes.bool.isRequired,
     changeIsEditingLabels: PropTypes.func.isRequired,
 };

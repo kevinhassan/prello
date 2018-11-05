@@ -1,0 +1,35 @@
+.label-li {
+    margin-bottom: 5px;
+    margin-right: 5px;
+    max-width: 150px;
+    min-width: 80px;
+}
+
+.label-li:hover {
+    cursor: pointer;
+    opacity: 0.90;
+}
+
+.activeLabel-icon {
+    background-color: rgba(127,127,127,0.5);
+    float: left;
+    line-height: 35px;
+    margin-right: 5px;
+    padding: 0 5px;
+}
+
+.labelName {
+    margin: 0 5px;
+}
+
+.label-btn {
+    color: inherit;
+    font-size: 0.8rem;
+    font-weight: bold;
+    height: 35px;
+    line-height: 35px;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    width: 100%;
+}
