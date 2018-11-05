@@ -8,9 +8,13 @@ const socket = require('../socket');
 const MyError = require('../util/error');
 const Board = require('../models/Board');
 const User = require('../models/User');
+
+// ========================= //
+// ===== Get functions ===== //
+// ========================= //
+
 /**
- * GET /boards/:boardId
- *
+ * Get a board with lists and cards populated.
  */
 boardController.get = async (boardId) => {
     try {
@@ -38,8 +42,13 @@ boardController.get = async (boardId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
+// ======================== //
+// ===== Put functions ==== //
+// ======================== //
+
 /**
- * PUT /boards/:boardId/lists
+ *
  */
 boardController.putLists = async (boardId, lists) => {
     try {
@@ -64,10 +73,54 @@ boardController.putLists = async (boardId, lists) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
 /**
- * POST /boards
- * Create the board with the creator like admin
- * Admin is automatically the member of the team
+ * Change admin access of the member
+ * TODO: check if at least 1 admin before remove access right
+ */
+boardController.changeAccess = async (boardId, memberId, accessRight) => {
+    try {
+        const board = await Board.findById(boardId).select(['members']);
+
+        // change the member access right
+        let memberFound = false;
+        await board.members.map((member) => {
+            if (member._id.toString() === memberId.toString()) {
+                member.isAdmin = accessRight;
+                memberFound = true;
+            }
+            return member;
+        });
+        if (!memberFound) throw new MyError(404, 'Member not found');
+        await board.save();
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Change the visibility of the board
+ */
+boardController.changeVisibility = async (boardId, visibility) => {
+    try {
+        await Board.updateOne({ _id: boardId }, { visibility });
+    } catch (err) {
+        if (err.status) throw err;
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect Query');
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+// ========================== //
+// ===== Post functions ===== //
+// ========================== //
+
+/**
+ * Create the board with the creator as admin.
+ * Admin is automatically the member of the team.
  */
 boardController.createBoard = async (owner, data) => {
     try {
@@ -88,25 +141,23 @@ boardController.createBoard = async (owner, data) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
 /**
- * PUT /board/:boardId/visibility
- * Change the visibility of the board
+ * Add team to the board (only for admins)
  */
-boardController.changeVisibility = async (boardId, visibility) => {
+boardController.addTeam = async (boardId, teamId) => {
     try {
-        await Board.updateOne({ _id: boardId }, { visibility });
+        await teamController.addBoard(boardId, teamId);
+        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
+        return newBoard;
     } catch (err) {
         if (err.status) throw err;
-        if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect Query');
-        }
         throw new MyError(500, 'Internal Server Error');
     }
 };
 
 /**
- * POST /board/:boardId/members
- * Add member to the board (only for admins)
+ * Add member to the board (only for admins).
  */
 boardController.addMemberWithMail = async (boardId, email) => {
     try {
@@ -123,8 +174,11 @@ boardController.addMemberWithMail = async (boardId, email) => {
     }
 };
 
+// ============================ //
+// ===== Remove functions ===== //
+// ============================ //
+
 /**
- * DELETE /board/:id/members/:id
  * Remove a member from the board (only for admins)
  * Remove him from :
  * - the members collection
@@ -164,48 +218,8 @@ boardController.removeMember = async (boardId, memberId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
-/**
- * PUT /board/:id/members/:id
- * Change admin access of the member
- * TODO: check if at least 1 admin before remove access right
- */
-boardController.changeAccess = async (boardId, memberId, accessRight) => {
-    try {
-        const board = await Board.findById(boardId).select(['members']);
-
-        // change the member access right
-        let memberFound = false;
-        await board.members.map((member) => {
-            if (member._id.toString() === memberId.toString()) {
-                member.isAdmin = accessRight;
-                memberFound = true;
-            }
-            return member;
-        });
-        if (!memberFound) throw new MyError(404, 'Member not found');
-        await board.save();
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-/**
- * POST /board/:id/teams
- * Add team to the board (only for admins)
- */
-boardController.addTeam = async (boardId, teamId) => {
-    try {
-        await teamController.addBoard(boardId, teamId);
-        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { teams: teamId } }, { new: true }).catch(async () => { throw new MyError(404, 'Team not found'); });
-        return newBoard;
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
 
 /**
- * DELETE /board/:id/teams
  * Remove the board's team (only for admins)
  */
 boardController.removeTeam = async (boardId, teamId) => {
@@ -218,4 +232,5 @@ boardController.removeTeam = async (boardId, teamId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
 module.exports = boardController;
