@@ -17,10 +17,12 @@ import './style.css';
 
 const ListView = props => (
     <div className={'cardsListPanel '.concat(props.isBeingDragged ? 'listDragged' : '')}>
-        <h3 className="listName">
-            {props.list.name}
+        <div className="cardHeader">
+            <h3 className="listName">
+                {props.list.name}
+            </h3>
             <i className="archiveCardIcon fas fa-archive float-right" />
-        </h3>
+        </div>
 
         <Droppable droppableId={String(props.list._id)} type="CARD">
             {dropProvided => (
