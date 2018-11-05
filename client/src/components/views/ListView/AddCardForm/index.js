@@ -9,7 +9,7 @@ const AddCardForm = props => (
     <span className="addListForm">
         {props.isInputVisible ? (
 
-            <div className="appened-form">
+            <div className="appened-form text-left">
                 <form onSubmit={props.onCardAdded}>
                     <input
                         className="form-control"
