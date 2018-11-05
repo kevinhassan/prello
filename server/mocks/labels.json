@@ -19,8 +19,8 @@
     },
     {
         "_id": "la0000000004",
-        "name": "White label",
-        "color": "#ffffff",
+        "name": "Gray label",
+        "color": "#999999",
         "boardId": "b00000000001"
     },
     {

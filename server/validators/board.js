@@ -57,7 +57,7 @@ const createLabel = [
         .isString(),
     check('color')
         .not().isEmpty()
-        .matches('^#(?:[0-9a-fA-F]{3}){1,2}$')
+        .matches('^#(?:[0-9a-fA-F]{3}){2}$')
         .isString(),
 ];
 

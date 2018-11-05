@@ -26,7 +26,6 @@
     background-color: #d2e5ee;
 }
 
-
 .btn-noCss{
     background-color: transparent;
     border: none;
@@ -40,4 +39,10 @@
 .btn-noCss:hover,
 .btn-noCss:focus {
     text-decoration: none;
+}
+
+.labelsBar {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
 }

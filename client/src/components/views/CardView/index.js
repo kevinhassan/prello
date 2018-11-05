@@ -2,14 +2,23 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
+// ===== Components
+import LabelPill from '../CardDetailView/Labels/LabelPill';
+
+// ===== Models
 import Card from '../../../models/Card';
 
+// ===== Others
 import './style.css';
 
 const CardView = props => (
     <div className="card" key={props.card._id}>
         <div className="cardContent">
             <button className="btn-noCss" type="button" onClick={props.onCardClick} onKeyDown={props.onCardClick}>
+                <div className="labelsBar">
+                    {props.card.labels.map(label => <LabelPill label={label} />)}
+                </div>
                 <div>
                     <b className="cardName">{props.card.name}</b>
                 </div>
