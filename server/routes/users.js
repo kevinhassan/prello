@@ -263,7 +263,7 @@ module.exports = (router) => {
             }
             try {
                 if (!req.body.fullName || !req.body.email || !req.body.password) throw new MyError(400, 'Missing information.');
-                await userController.postRegister(req.body);
+                await userController.signUp(req.body);
                 res.status(201).send({ message: 'User successfully created.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -295,7 +295,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await userController.updateProfile(req.user, req.body);
+                await userController.putProfile(req.user, req.body);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -307,7 +307,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await userController.updateAccount(req.user, req.body);
+                await userController.putAccount(req.user, req.body);
                 res.sendStatus(204);
                 // TODO: disconnect user if credentials change
             } catch (e) {

@@ -4,10 +4,10 @@ const MyError = require('../util/error');
 const List = require('../models/List');
 const Board = require('../models/Board');
 
-/**
- * POST /lists
- */
-listController.createList = async (data) => {
+// ======================== //
+// ==== Post functions ==== //
+// ======================== //
+listController.postList = async (data) => {
     try {
         const list = new List({
             name: data.name,

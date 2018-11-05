@@ -3,9 +3,9 @@ const { expect } = require('chai');
 
 const app = require('../../app.js');
 
-const BoardController = require('../../controllers/boards');
-const ListController = require('../../controllers/lists');
-const UserController = require('../../controllers/users');
+const boardController = require('../../controllers/boards');
+const listController = require('../../controllers/lists');
+const userController = require('../../controllers/users');
 const Card = require('../../models/Card');
 const Board = require('../../models/Board');
 const List = require('../../models/List');
@@ -29,9 +29,9 @@ describe('POST /cards', () => {
     before((done) => {
         Promise.all([Card.deleteMany({}), Board.deleteMany({}), User.deleteMany({}), List.deleteMany({})]).then(async () => {
             try {
-                user = await UserController.postRegister(userData);
-                const boardId = await BoardController.createBoard(user._id, { name: 'Test board', visibility: 'public' });
-                const list = await ListController.createList({ name: 'Test List', boardId });
+                user = await userController.signUp(userData);
+                const boardId = await boardController.postBoard(user._id, { name: 'Test board', visibility: 'public' });
+                const list = await listController.postList({ name: 'Test List', boardId });
                 newCard.list = list._id;
                 done();
             } catch (e) {

@@ -4,8 +4,8 @@ const app = require('../../app.js');
 const Board = require('../../models/Board');
 const User = require('../../models/User');
 const List = require('../../models/List');
-const BoardController = require('../../controllers/boards');
-const UserController = require('../../controllers/users');
+const boardController = require('../../controllers/boards');
+const userController = require('../../controllers/users');
 
 const testList = {
     name: 'test List',
@@ -23,8 +23,8 @@ describe('POST /lists', () => {
     before((done) => {
         Promise.all([User.deleteMany({}), Board.deleteMany({}), List.deleteMany({})]).then(async () => {
             try {
-                user = await UserController.postRegister(userData);
-                const boardId = await BoardController.createBoard(user._id, { name: 'testBoard', visibility: 'public' });
+                user = await userController.signUp(userData);
+                const boardId = await boardController.postBoard(user._id, { name: 'testBoard', visibility: 'public' });
                 testList.boardId = boardId;
                 done();
             } catch (e) {

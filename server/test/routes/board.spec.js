@@ -42,8 +42,8 @@ describe('POST /boards', () => {
         Promise.all([Board.deleteMany({}), User.deleteMany({}), Team.deleteMany({})])
             .then(async () => {
                 try {
-                    userAdmin = await userController.postRegister(userData.userAdmin);
-                    userNotAdmin = await userController.postRegister(userData.userNotAdmin);
+                    userAdmin = await userController.signUp(userData.userAdmin);
+                    userNotAdmin = await userController.signUp(userData.userNotAdmin);
 
                     // the owner of the team won't be the owner of the board (for tests)
                     dataTeam.members.push({ _id: userNotAdmin._id });

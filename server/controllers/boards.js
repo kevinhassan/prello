@@ -16,7 +16,7 @@ const User = require('../models/User');
 /**
  * Get a board with lists and cards populated.
  */
-boardController.get = async (boardId) => {
+boardController.getBoard = async (boardId) => {
     try {
         const board = await Board.findById(boardId).populate([{
             path: 'lists',
@@ -78,7 +78,7 @@ boardController.putLists = async (boardId, lists) => {
  * Change admin access of the member
  * TODO: check if at least 1 admin before remove access right
  */
-boardController.changeAccess = async (boardId, memberId, accessRight) => {
+boardController.putAccess = async (boardId, memberId, accessRight) => {
     try {
         const board = await Board.findById(boardId).select(['members']);
 
@@ -102,7 +102,7 @@ boardController.changeAccess = async (boardId, memberId, accessRight) => {
 /**
  * Change the visibility of the board
  */
-boardController.changeVisibility = async (boardId, visibility) => {
+boardController.putVisibility = async (boardId, visibility) => {
     try {
         await Board.updateOne({ _id: boardId }, { visibility });
     } catch (err) {
@@ -122,7 +122,7 @@ boardController.changeVisibility = async (boardId, visibility) => {
  * Create the board with the creator as admin.
  * Admin is automatically the member of the team.
  */
-boardController.createBoard = async (owner, data) => {
+boardController.postBoard = async (owner, data) => {
     try {
         const board = new Board();
         board.name = data.name;
@@ -145,14 +145,12 @@ boardController.createBoard = async (owner, data) => {
 /**
  * Add team to the board (only for admins)
  */
-boardController.addTeam = async (boardId, teamId) => {
+boardController.postTeam = async (boardId, teamId) => {
     try {
-        await teamController.addBoard(boardId, teamId);
+        await teamController.postBoard(boardId, teamId);
         const newBoard = await Board.updateOne({ _id: boardId },
-            { $addToSet: { teams: teamId } },
-            { new: true }).catch(async () => {
-            throw new MyError(404, 'Team not found');
-        });
+            { $addToSet: { teams: teamId } }, { new: true })
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
@@ -163,13 +161,13 @@ boardController.addTeam = async (boardId, teamId) => {
 /**
  * Add member to the board (only for admins).
  */
-boardController.addMemberWithMail = async (boardId, email) => {
+boardController.postMemberWithMail = async (boardId, email) => {
     try {
         const member = await User.findOne({ email }).select('_id');
         if (!member) throw new MyError(404, 'Member to add unknown');
 
         // add the board to the member
-        await userController.joinBoard(member._id, boardId);
+        await userController.postBoard(member._id, boardId);
         const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
         return newBoard;
     } catch (err) {
@@ -179,7 +177,7 @@ boardController.addMemberWithMail = async (boardId, email) => {
 };
 
 // ============================ //
-// ===== Remove functions ===== //
+// ===== Delete functions ===== //
 // ============================ //
 
 /**
@@ -190,7 +188,7 @@ boardController.addMemberWithMail = async (boardId, email) => {
  * TODO: check if at least one member is admin before delete him
  *
  */
-boardController.removeMember = async (boardId, memberId) => {
+boardController.deleteMember = async (boardId, memberId) => {
     try {
         const board = await Board.findById(boardId)
             .select(['members', 'lists'])
@@ -209,7 +207,7 @@ boardController.removeMember = async (boardId, memberId) => {
 
         // remove the member from all cards
         await Promise.all(board.lists.map(async (list) => {
-            Promise.all(list.cards.map(card => cardController.removeMember(card._id, memberId)));
+            Promise.all(list.cards.map(card => cardController.deleteMember(card._id, memberId)));
         }));
 
         // remove the member from the board and update with the new lists
@@ -221,9 +219,10 @@ boardController.removeMember = async (boardId, memberId) => {
         }));
 
         // remove the board from the member
-        await userController.leaveBoard(memberId, boardId);
+        await userController.deleteBoard(memberId, boardId);
         return newBoard;
     } catch (err) {
+        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
@@ -232,13 +231,12 @@ boardController.removeMember = async (boardId, memberId) => {
 /**
  * Remove the board's team (only for admins)
  */
-boardController.removeTeam = async (boardId, teamId) => {
+boardController.deleteTeam = async (boardId, teamId) => {
     try {
-        await teamController.removeBoard(boardId, teamId);
+        await teamController.deleteBoard(boardId, teamId);
         const newBoard = await Board.updateOne({ _id: boardId },
-            { $pull: { teams: teamId } }, { new: true }).catch(async () => {
-            throw new MyError(404, 'Team not found');
-        });
+            { $pull: { teams: teamId } }, { new: true })
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
     } catch (err) {
         if (err.status) throw err;

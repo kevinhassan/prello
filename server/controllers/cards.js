@@ -5,14 +5,14 @@ const socket = require('../socket');
 const List = require('../models/List');
 
 // ============================ //
-// ===== Remove functions ===== //
+// ===== Delete functions ===== //
 // ============================ //
 
 /**
  * Remove the member from the card
  * TODO: use REST parameter to remove multiple members id
  */
-cardController.removeMember = async (cardId, memberId) => {
+cardController.deleteMember = async (cardId, memberId) => {
     try {
         return await Card.findByIdAndUpdate(cardId,
             { $pull: { members: memberId } }, { new: true }).catch(async () => {
@@ -31,7 +31,7 @@ cardController.removeMember = async (cardId, memberId) => {
 /**
  * Create a new card.
  */
-cardController.createCard = async (data) => {
+cardController.postCard = async (data) => {
     try {
         const card = new Card();
 
@@ -68,7 +68,7 @@ cardController.createCard = async (data) => {
  * Add the member to the card
  * TODO: use REST parameter to add multiple members id
  */
-cardController.addMember = async (cardId, memberId) => {
+cardController.putMember = async (cardId, memberId) => {
     try {
         return await Card.findByIdAndUpdate(cardId, { $addToSet: { members: memberId } },
             { new: true }).catch(async () => {

@@ -10,8 +10,22 @@ const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetP
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 
+// ======================== //
+// ==== Post functions ==== //
+// ======================== //
+
 /**
- * POST /login
+ * Add the board to the the user
+ */
+userController.postBoard = async (userId, boardId) => {
+    try {
+        await User.updateOne({ _id: userId }, { $addToSet: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
  * Sign in using email and password.
  */
 userController.login = async (email, password) => {
@@ -38,10 +52,9 @@ userController.login = async (email, password) => {
 };
 
 /**
- * POST /signup
  * Create a new local account.
  */
-userController.postRegister = async (data) => {
+userController.signUp = async (data) => {
     try {
         const fullNameUser = data.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
         // count the number of user with same fullName
@@ -72,119 +85,7 @@ userController.postRegister = async (data) => {
         return new MyError(500, 'Internal server error');
     }
 };
-
 /**
- * GET /profile
- * Profile page.
- */
-userController.getProfile = async (user) => {
-    try {
-    // return plain json object with lean
-        const userProfile = await User.findById(user.id).select({
-            fullName: 1, username: 1, bio: 1, initials: 1, _id: 0
-        }).lean();
-        return userProfile;
-    } catch (err) {
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-
-/**
- * PUT /profile
- * Profile page.
- */
-userController.updateProfile = async (user, data) => {
-    const {
-        fullName, bio, initials, username
-    } = data;
-    try {
-        const userProfile = await User.findById(user.id).select({
-            fullName: 1, username: 1, bio: 1, initials: 1
-        });
-        userProfile.fullName = fullName;
-        userProfile.bio = bio;
-        userProfile.initials = initials;
-        const userFound = await User.findOne({ username, _id: { $ne: user._id } });
-        if (userFound) throw new MyError(409, 'Username is taken ');
-        userProfile.username = username;
-        await userProfile.save();
-        return userProfile;
-    } catch (err) {
-        if (err.name === 'MongoError' && err.code === 11000) {
-            throw new MyError(400, 'Update profile failed');
-        } else if (err.status) {
-            throw err;
-        }
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-/**
- * PUT /account
- * Account page (mail, password)
- */
-userController.updateAccount = async (user, data) => {
-    const {
-        email, password
-    } = data;
-    try {
-        const userProfile = await User.findById(user.id).select({
-            password: 1, email: 1
-        });
-        if (email && email !== '') {
-            const userFound = await User.findOne({ email, _id: { $ne: user._id } });
-            if (userFound) throw new MyError(409, 'Email already used');
-            userProfile.email = email;
-        }
-        if (password && password !== '') {
-            userProfile.password = password;
-        }
-        await userProfile.save();
-    } catch (err) {
-        // TODO: add more details (ex: if same username then error)
-        if (err.status) {
-            throw err;
-        }
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-/**
- * DELETE /account
- * Account page
- */
-userController.deleteAccount = async (user) => {
-    try {
-        await User.deleteOne({ _id: user._id });
-    } catch (err) {
-        if (err.status) {
-            throw err;
-        }
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-/**
- * GET /account
- * Profile page.
- */
-userController.getAccount = async (user) => {
-    try {
-        // return plain json object with lean
-        const userAccount = await User.findById(user.id).select({
-            email: 1
-        }).lean();
-        return userAccount;
-    } catch (err) {
-        throw new MyError(500, 'Internal Server Error');
-    }
-};
-
-/**
- * GET /account/unlink/:provider
- * Unlink OAuth provider.
- */
-userController.getOauthUnlink = () => { };
-
-/**
- * POST /forgot
  * Create a random token, then the send user an email with a reset link.
  */
 userController.postForgot = async (email, host) => {
@@ -210,7 +111,6 @@ userController.postForgot = async (email, host) => {
     }
 };
 /**
- * POST /reset/:token
  * Reset password with the new one.
  */
 userController.resetPassword = async (token, password) => {
@@ -235,18 +135,119 @@ userController.resetPassword = async (token, password) => {
     }
 };
 
-// add the board to the the user
-userController.joinBoard = async (userId, boardId) => {
+// ======================== //
+// ===== Get functions ==== //
+// ======================== //
+
+/**
+ * Profile page.
+ */
+userController.getProfile = async (user) => {
     try {
-        await User.updateOne({ _id: userId }, { $addToSet: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
+    // return plain json object with lean
+        const userProfile = await User.findById(user.id).select({
+            fullName: 1, username: 1, bio: 1, initials: 1, _id: 0
+        }).lean();
+        return userProfile;
     } catch (err) {
-        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * Profile page.
+ */
+userController.getAccount = async (user) => {
+    try {
+        // return plain json object with lean
+        const userAccount = await User.findById(user.id).select({
+            email: 1
+        }).lean();
+        return userAccount;
+    } catch (err) {
         throw new MyError(500, 'Internal Server Error');
     }
 };
 
-// remove the board from the user
-userController.leaveBoard = async (userId, boardId) => {
+// ======================== //
+// ===== Put functions ==== //
+// ======================== //
+/**
+ * Profile page.
+ */
+userController.putProfile = async (user, data) => {
+    const {
+        fullName, bio, initials, username
+    } = data;
+    try {
+        const userProfile = await User.findById(user.id).select({
+            fullName: 1, username: 1, bio: 1, initials: 1
+        });
+        userProfile.fullName = fullName;
+        userProfile.bio = bio;
+        userProfile.initials = initials;
+        const userFound = await User.findOne({ username, _id: { $ne: user._id } });
+        if (userFound) throw new MyError(409, 'Username is taken ');
+        userProfile.username = username;
+        await userProfile.save();
+        return userProfile;
+    } catch (err) {
+        if (err.name === 'MongoError' && err.code === 11000) {
+            throw new MyError(400, 'Update profile failed');
+        } else if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+/**
+ * Update account page (mail, password)
+ */
+userController.putAccount = async (user, data) => {
+    const {
+        email, password
+    } = data;
+    try {
+        const userProfile = await User.findById(user.id).select({
+            password: 1, email: 1
+        });
+        if (email && email !== '') {
+            const userFound = await User.findOne({ email, _id: { $ne: user._id } });
+            if (userFound) throw new MyError(409, 'Email already used');
+            userProfile.email = email;
+        }
+        if (password && password !== '') {
+            userProfile.password = password;
+        }
+        await userProfile.save();
+    } catch (err) {
+        // TODO: add more details (ex: if same username then error)
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+// ======================== //
+// === Delete functions === //
+// ======================== //
+/**
+ * remove account page
+ */
+userController.deleteAccount = async (user) => {
+    try {
+        await User.deleteOne({ _id: user._id });
+    } catch (err) {
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Remove the board from the user
+ */
+userController.deleteBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId }, { $pull: { boards: boardId } }).catch(async () => { throw new MyError(404, 'User not found'); });
     } catch (err) {

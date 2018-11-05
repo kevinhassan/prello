@@ -332,7 +332,7 @@ module.exports = (router) => {
     router
         .get('/boards/:boardId', async (req, res) => {
             try {
-                const boardFound = await boardController.get(req.params.boardId);
+                const boardFound = await boardController.getBoard(req.params.boardId);
                 res.status(200).send({ board: boardFound });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -357,7 +357,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: { form: errors.array() } });
             }
             try {
-                const boardCreated = await boardController.createBoard(req.user._id, req.body);
+                const boardCreated = await boardController.postBoard(req.user._id, req.body);
                 res.status(201).send({ message: 'Board successfully created', board: boardCreated._id });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -369,7 +369,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.changeVisibility(req.params.boardId, req.body.visibility);
+                await boardController.putVisibility(req.params.boardId, req.body.visibility);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -381,7 +381,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.addMemberWithMail(req.params.boardId, req.body.email);
+                await boardController.postMemberWithMail(req.params.boardId, req.body.email);
                 res.status(201).send({ message: 'Member successfully added' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -389,7 +389,7 @@ module.exports = (router) => {
         })
         .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
             try {
-                await boardController.removeMember(req.params.boardId, req.params.memberId);
+                await boardController.deleteMember(req.params.boardId, req.params.memberId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -401,7 +401,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.changeAccess(req.params.boardId,
+                await boardController.putAccess(req.params.boardId,
                     req.params.memberId,
                     req.body.isAdmin);
                 res.sendStatus(204);
@@ -415,7 +415,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await boardController.addTeam(req.params.boardId, req.body.team);
+                await boardController.postTeam(req.params.boardId, req.body.team);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -423,7 +423,7 @@ module.exports = (router) => {
         })
         .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
             try {
-                await boardController.removeTeam(req.params.boardId, req.params.teamId);
+                await boardController.deleteTeam(req.params.boardId, req.params.teamId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

@@ -48,7 +48,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                const listCreated = await listController.createList(req.body);
+                const listCreated = await listController.postList(req.body);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

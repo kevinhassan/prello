@@ -80,7 +80,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                const cardCreated = await cardController.createCard({
+                const cardCreated = await cardController.postCard({
                     name: req.body.name, list: req.body.list,
                 });
 
