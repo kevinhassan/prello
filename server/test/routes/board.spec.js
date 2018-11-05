@@ -261,6 +261,33 @@ describe('POST /boards/:id/members', () => {
             .expect(404, done);
     });
 });
+
+const newLabel = {
+    name: 'myLabel',
+    color: '#123456'
+};
+
+describe('POST /boards/:boardId/labels', () => {
+    it('should return 201 OK', (done) => {
+        request(app)
+            .post(`/boards/${data.id}/labels`)
+            .send(newLabel)
+            .expect(201, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .post(`/boards/${data.id}/labels`)
+            .send({ name: '' })
+            .expect(422, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .post('/boards/b12345678912/labels')
+            .send({ name: 'ok', color: '#123456' })
+            .expect(404, done);
+    });
+});
+
 describe('PUT /boards/:id/members/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)

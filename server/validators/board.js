@@ -50,11 +50,24 @@ const changeAccess = [
         .isBoolean()
 ];
 
+const createLabel = [
+    check('name')
+        .not().isEmpty()
+        .isString(),
+    check('color')
+        .not().isEmpty()
+        .isString(),
+    check('boardId')
+        .not().isEmpty()
+        .isString(),
+];
+
 module.exports = {
     addBoard,
-    updateBoardLists,
-    changeVisibility,
     addMember,
     addTeam,
-    changeAccess
+    changeAccess,
+    changeVisibility,
+    createLabel,
+    updateBoardLists,
 };

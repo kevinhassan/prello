@@ -8,6 +8,13 @@ const userController = require('./users');
 const cardController = require('./cards');
 const listController = require('./lists');
 
+const socket = require('../socket');
+
+const MyError = require('../util/error');
+const Board = require('../models/Board');
+const Label = require('../models/Label');
+const User = require('../models/User');
+
 // ========================= //
 // ===== Get functions ===== //
 // ========================= //
@@ -194,6 +201,36 @@ exports.postMemberWithMail = async (boardId, email) => {
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Create a new label.
+ */
+boardController.postLabel = async (data) => {
+    try {
+        const label = new Label();
+
+        const board = await Board.findById(data.boardId);
+        if (!board) {
+            throw new MyError(404, 'Not found, the specified board doesn\'t exist');
+        }
+        label.name = data.name;
+        label.color = data.color;
+
+        await label.save();
+        socket.updateClientsOnBoard(data.boardId);
+
+        return label;
+    } catch (err) {
+        console.log(err);
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
     }
 };
 
