@@ -179,7 +179,7 @@ exports.getAccount = async (user) => {
  */
 exports.putProfile = async (user, data) => {
     const {
-        fullName, biography, initials, username
+        fullName, bio, initials
     } = data;
     try {
         const userProfile = await User.findById(user._id).select({
@@ -188,9 +188,6 @@ exports.putProfile = async (user, data) => {
         userProfile.fullName = fullName;
         userProfile.biography = biography;
         userProfile.initials = initials;
-        const userFound = await User.findOne({ username, _id: { $ne: user._id } });
-        if (userFound) throw new MyError(409, 'Username is taken ');
-        userProfile.username = username;
         await userProfile.save();
         return userProfile;
     } catch (err) {

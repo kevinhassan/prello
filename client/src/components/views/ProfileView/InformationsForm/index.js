@@ -13,15 +13,33 @@ const InformationsForm = props => (
 
             <div className="informationsForm">
                 <form onSubmit={props.updateInformations}>
+                    Full name
+                    <input
+                        className="form-control"
+                        name="Full name"
+                        defaultValue={props.user.fullName}
+                        type="text"
+                        id="fullname"
+                    />
+                    <br />
+                    Initials
+                    <input
+                        className="form-control"
+                        name="Initials"
+                        defaultValue={props.user.initials}
+                        type="text"
+                        id="initials"
+                    />
+                    <br />
+                    Bio (optional)
                     <textarea
                         className="form-control"
                         rows="5"
                         name="Bio"
-                        placeholder="Update your bio (optional)"
+                        defaultValue={props.user.bio ? props.user.bio : ''}
                         type="text"
                         id="bio"
                     />
-
                     <br />
                     <button className="btn btn-success updateInformations-btn" type="submit">
                         Update
@@ -47,10 +65,10 @@ const InformationsForm = props => (
                 </button>
                 <div>
                     <h5>Bio</h5>
-                    <p>{props.bio ? props.bio : 'Unfilled'}</p>
+                    <p>{props.user.bio ? props.user.bio : 'Unfilled'}</p>
                     <br />
                     <h5>Email</h5>
-                    <p>{props.email}</p>
+                    <p>{props.user.email}</p>
                 </div>
             </div>
         )}
@@ -59,14 +77,11 @@ const InformationsForm = props => (
 );
 
 InformationsForm.propTypes = {
-    bio: PropTypes.object,
-    email: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
     isVisible: PropTypes.object.isRequired,
     displayUpdateForm: PropTypes.func.isRequired,
     updateInformations: PropTypes.func.isRequired,
 };
-InformationsForm.defaultProps = {
-    bio: undefined,
-};
+
 
 export default InformationsForm;

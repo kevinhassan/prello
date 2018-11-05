@@ -5,8 +5,8 @@ export const GET_USER_INFORMATIONS = 'user/GET_USER_INFORMATIONS';
 export const USER_INFORMATIONS_SUCCESS = 'user/USER_INFORMATIONS_SUCCESS';
 export const USER_INFORMATIONS_FAILURE = 'user/USER_INFORMATIONS_FAILURE';
 
-export const UPDATE_USER_BIO = 'user/UPDATE_USER_BIO';
-export const UPDATE_USER_BIO_SUCCESS = 'user/UPDATE_USER_BIO_SUCCESS';
+export const UPDATE_USER_INFORMATIONS = 'user/UPDATE_USER_INFORMATIONS';
+export const UPDATE_USER_INFORMATIONS_SUCCESS = 'user/UPDATE_USER_INFORMATIONS_SUCCESS';
 
 // ==========
 
@@ -29,9 +29,7 @@ export const getUserInformations = () => (dispatch) => {
     APIFetch.fetchPrelloAPI('profile', {
     }, APIFetch.GET)
         .then((res) => {
-            if (res) {
-                dispatch(userInformationsSuccess(res.data.profile));
-            }
+            dispatch(userInformationsSuccess(res.data.profile));
         })
         .catch((error) => {
             dispatch(userInformationsFailure(error.response.data.error));
@@ -41,18 +39,21 @@ export const getUserInformations = () => (dispatch) => {
         });
 };
 
-export const updateUserBioSuccess = () => ({
-    type: UPDATE_USER_BIO_SUCCESS,
+export const updateUserInformationsSuccess = (fullname, initials, bio) => ({
+    type: UPDATE_USER_INFORMATIONS_SUCCESS,
+    payload: {
+        fullname,
+        initials,
+        bio,
+    },
 });
 
-export const updateUserBio = bio => (dispatch) => {
+export const updateUserInformations = (fullName, initials, bio) => (dispatch) => {
     APIFetch.fetchPrelloAPI('profile', {
-        bio,
+        fullName, initials, bio,
     }, APIFetch.PUT)
-        .then((res) => {
-            if (res) {
-                dispatch(updateUserBioSuccess(res.data.profile));
-            }
+        .then(() => {
+            dispatch(updateUserInformationsSuccess(fullName, initials, bio));
         })
         .catch((error) => {
             console.log(error.response.data.error);

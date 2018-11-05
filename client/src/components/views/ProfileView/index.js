@@ -31,8 +31,7 @@ const ProfileView = props => (
                     displayUpdateForm={props.handleUpdateDisplay}
                     updateInformations={props.handleUpdateInformations}
                     isVisible={props.isUpdateVisible}
-                    bio={props.user.bio}
-                    email={props.user.email}
+                    user={props.user}
                 />
             </div>
         </div>

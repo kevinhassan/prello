@@ -20,6 +20,17 @@ export default function usersReducer(state = initialState, action) {
             errorMessage: action.payload.error,
         };
 
+    case actions.UPDATE_USER_INFORMATIONS_SUCCESS:
+        return {
+            ...state,
+            user: {
+                ...state.user,
+                fullName: action.payload.fullname,
+                bio: action.payload.bio,
+                initials: action.payload.initials,
+            },
+        };
+
     default:
         return state;
     }
