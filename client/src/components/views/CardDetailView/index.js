@@ -58,6 +58,9 @@ const CardDetailView = props => (
                     {/* ===== LABELS ===== */}
                     <div className="col-sm-8">
                         <Labels
+                            changeIsEditingLabels={props.changeIsEditingLabels}
+                            editLabels={props.editLabels}
+                            isEditingLabels={props.isEditingLabels}
                             labels={props.card.labels}
                         />
                     </div>
@@ -74,16 +77,6 @@ const CardDetailView = props => (
                 />
                 {/* ==================== */}
 
-                <div>
-                    {(props.deleteCard)
-                        ? (
-                            <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card._id)}>
-                                <i className="fas fa-trash-alt" />
-                            </button>
-                        )
-                        : ''
-                    }
-                </div>
             </div>
         </div>
     </div>
@@ -92,16 +85,19 @@ const CardDetailView = props => (
 CardDetailView.propTypes = {
     card: PropTypes.instanceOf(Card).isRequired,
     closeCardDetail: PropTypes.func.isRequired,
-    deleteCard: PropTypes.func,
 
-    editDescription: PropTypes.func.isRequired,
     changeIsEditingDescription: PropTypes.func.isRequired,
+    editDescription: PropTypes.func.isRequired,
     isEditingDescription: PropTypes.bool,
+
+    changeIsEditingLabels: PropTypes.func.isRequired,
+    editLabels: PropTypes.func.isRequired,
+    isEditingLabels: PropTypes.bool,
 };
 
 CardDetailView.defaultProps = {
-    deleteCard: undefined,
     isEditingDescription: false,
+    isEditingLabels: false,
 };
 
 // Put info from the store state in props (None)

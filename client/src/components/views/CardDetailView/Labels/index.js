@@ -46,25 +46,43 @@ const Labels = props => (
                 <ul className="labels-ul">
                     {props.labels.map(label => (
                         <li
+                            key={label._id}
                             className="label-li"
                             style={{
                                 backgroundColor: label.color,
-                                boxShadow: '1px 1px 1px #000',
                                 color: determineTextColorFromBackground(label.color),
                             }}
                         >
                             {label.name}
                         </li>
                     ))}
+                    <li className="addLabel-li">
+                        <button
+                            className="btn addLabel-btn"
+                            type="button"
+                            onClick={() => props.changeIsEditingLabels(true)}
+                        >
+                            <i className="fas fa-plus" />
+                        </button>
+                    </li>
                 </ul>
 
             ) : (
                 <button
                     className="btn btn-link btn-addElement"
                     type="button"
+                    onClick={() => props.changeIsEditingLabels(true)}
                 >
                     Add label...
                 </button>
+            )
+        }
+
+        {props.isEditingLabels
+            ? (
+                <p>Edition</p>
+            ) : (
+                <p>Pas édition</p>
             )
         }
 
@@ -73,6 +91,9 @@ const Labels = props => (
 
 Labels.propTypes = {
     labels: PropTypes.arrayOf(Object).isRequired,
+    editLabels: PropTypes.func.isRequired,
+    isEditingLabels: PropTypes.bool.isRequired,
+    changeIsEditingLabels: PropTypes.func.isRequired,
 };
 
 export default Labels;

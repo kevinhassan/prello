@@ -19,16 +19,17 @@ class CardComp extends React.Component {
         this.state = {
             displayCardDetail: false,
             isEditingDescription: false,
+            isEditingLabels: false,
         };
 
-        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
         this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
-        this.handleEditDescription = this.handleEditDescription.bind(this);
-    }
 
-    changeIsEditingDescription(value) {
-        this.setState({ isEditingDescription: value });
+        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
+        this.handleEditDescription = this.handleEditDescription.bind(this);
+
+        this.changeIsEditingLabels = this.changeIsEditingLabels.bind(this);
+        this.handleEditLabels = this.handleEditLabels.bind(this);
     }
 
     handleCardClick() {
@@ -45,11 +46,30 @@ class CardComp extends React.Component {
         }
     }
 
+    /* ===== DESCRIPTION ===== */
+    changeIsEditingDescription(value) {
+        this.setState({ isEditingDescription: value });
+    }
+
     handleEditDescription(event) {
         event.preventDefault();
         const description = event.target.description.value;
         this.props.editCardDescription(this.props.card._id, description);
         this.setState({ isEditingDescription: false });
+    }
+
+    /* ===== LABELS ===== */
+    changeIsEditingLabels(value) {
+        this.setState({ isEditingLabels: value });
+    }
+
+    handleEditLabels(event) {
+        event.preventDefault();
+
+        // TODO : dispatch action
+        // const labels = event.target.labels.value;
+        // this.props.editCardDescription(this.props.card._id, description);
+        this.setState({ isEditingLabels: false });
     }
 
     render() {
@@ -69,6 +89,10 @@ class CardComp extends React.Component {
                             changeIsEditingDescription={this.changeIsEditingDescription}
                             editDescription={this.handleEditDescription}
                             isEditingDescription={this.state.isEditingDescription}
+
+                            changeIsEditingLabels={this.changeIsEditingLabels}
+                            editLabels={this.handleEditLabels}
+                            isEditingLabels={this.state.isEditingLabels}
                         />
                     )
                     : ''

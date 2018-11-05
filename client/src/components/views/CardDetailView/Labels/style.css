@@ -13,10 +13,32 @@
     line-height: 35px;
     margin-bottom: 5px;
     margin-right: 5px;
+    max-width: 120px;
     min-width: 80px;
     overflow: hidden;
     padding: 0 5px;
     text-align: center;
     text-overflow: ellipsis;
-    max-width: 120px;
+}
+
+.addLabel-li {
+    font-size: 0.8rem;
+    height: 35px;
+    line-height: 35px;
+    padding: 0;
+    width: 35px;
+}
+
+.addLabel-btn {
+    background-color: #ddd;
+    border-radius: 5rem;
+    color: #000;
+    transition: 0.2s;
+}
+
+.addLabel-btn:hover {
+    background-color: #ccc;
+    transform: rotateZ(90deg);
+    transition: 0.2s;
+
 }
