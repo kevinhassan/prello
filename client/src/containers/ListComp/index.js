@@ -15,11 +15,11 @@ import ListView from '../../components/views/ListView';
 class ListComp extends React.Component {
     constructor(props) {
         super(props);
-        this.handleAddCard = this.handleAddCard.bind(this);
-        this.handleCardAdded = this.handleCardAdded.bind(this);
         this.state = {
             isInputVisible: false,
         };
+        this.handleAddCard = this.handleAddCard.bind(this);
+        this.handleCardAdded = this.handleCardAdded.bind(this);
     }
 
     handleAddCard(value) {
@@ -40,10 +40,10 @@ class ListComp extends React.Component {
         const { list, isBeingDragged } = this.props;
         return (
             <ListView
-                list={list}
                 isInputVisible={this.state.isInputVisible}
                 isBeingDragged={isBeingDragged}
                 displayAddCardForm={this.handleAddCard}
+                list={list}
                 onCardAdded={this.handleCardAdded}
             />
         );
