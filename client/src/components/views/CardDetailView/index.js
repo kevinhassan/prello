@@ -59,6 +59,7 @@ const CardDetailView = props => (
                     <div className="col-sm-8">
                         <Labels
                             boardLabels={props.boardLabels}
+                            cardId={props.card._id}
                             changeIsEditingLabels={props.changeIsEditingLabels}
                             editLabels={props.editLabels}
                             isEditingLabels={props.isEditingLabels}
