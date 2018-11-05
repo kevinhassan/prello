@@ -28,6 +28,10 @@
 }
 
 /* ===== Card elements ===== */
+.cardElementContent {
+    margin: 10px;
+}
+
 .cardDetail-h2 {
     color: #004a75;
     font-size: 1.4rem;
@@ -41,7 +45,6 @@ h2.cardDetailTitle {
 
 .descriptionContent {
     line-height: 20px;
-    margin: 10px;
     white-space: pre-line;
 }
 
@@ -60,7 +63,7 @@ h2.cardDetailTitle {
     width: 100%;
 }
 
-.btn-addDescription {
+.btn-addElement {
     color: #888;
 }
 

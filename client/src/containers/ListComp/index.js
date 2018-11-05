@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { createCard } from '../../actions/cards';
 
 // ===== Models
+import Card from '../../models/Card';
 
 // ===== View
 import ListView from '../../components/views/ListView';
@@ -14,20 +15,36 @@ import ListView from '../../components/views/ListView';
 class ListComp extends React.Component {
     constructor(props) {
         super(props);
-        this.handleCreateCard = this.handleCreateCard.bind(this);
+        this.state = {
+            isInputVisible: false,
+        };
+        this.handleAddCard = this.handleAddCard.bind(this);
+        this.handleCardAdded = this.handleCardAdded.bind(this);
     }
 
-    handleCreateCard() {
-        this.props.createCard();
+    handleAddCard(value) {
+        this.setState({ isInputVisible: value });
+    }
+
+    handleCardAdded(event) {
+        event.preventDefault();
+        const name = event.target.cardName.value;
+        const newCard = new Card({
+            name, list: this.props.list._id,
+        });
+        this.props.createCard(newCard);
+        this.setState({ isInputVisible: false });
     }
 
     render() {
         const { list, isBeingDragged } = this.props;
         return (
             <ListView
-                list={list}
-                createCard={this.handleCreateCard}
+                isInputVisible={this.state.isInputVisible}
                 isBeingDragged={isBeingDragged}
+                displayAddCardForm={this.handleAddCard}
+                list={list}
+                onCardAdded={this.handleCardAdded}
             />
         );
     }
