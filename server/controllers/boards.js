@@ -22,10 +22,15 @@ exports.getBoard = async (boardId) => {
             populate: {
                 path: 'cards',
                 model: 'Card',
-                populate: {
+                populate: [{
                     path: 'list',
                     select: 'name'
+                },
+                {
+                    path: 'labels',
+                    select: ['color', 'name']
                 }
+                ]
             }
         }, {
             path: 'labels'

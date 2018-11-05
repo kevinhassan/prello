@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 // ===== Elements Components
 import Description from './Description';
 
+// ===== Card Detail Components
+import Labels from './Labels';
+
 // ===== Models
 import Card from '../../../models/Card';
 
@@ -53,14 +56,12 @@ const CardDetailView = props => (
 
                     </div>
 
-
                     <div className="col-sm-6">
-                        <h2 className="cardDetail-h2">
-                            <i className="fas fa-tags" />
-                            {' '}
-                            Labels
-                        </h2>
+                        <Labels
+                            labels={props.card.labels}
+                        />
                     </div>
+
                 </div>
 
                 {/* ===== DESCRIPTION ===== */}
