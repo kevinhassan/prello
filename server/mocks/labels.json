@@ -6,10 +6,17 @@
     },
     {
         "_id": "la0000000002",
+        "name": "High priority",
         "color": "#ac1212"
     },
     {
         "_id": "la0000000003",
+        "name": "Database",
         "color": "#ddb107"
+    },
+    {
+        "_id": "la0000000004",
+        "name": "White label",
+        "color": "#ffffff"
     }
 ]
