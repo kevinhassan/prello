@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-
+import './style.css';
 // ==================================
 
 const AddCardForm = props => (
@@ -20,7 +20,7 @@ const AddCardForm = props => (
                         type="text"
                     />
                     <button className="btn btn-success addCardForm-btn" type="submit">
-                    Add list
+                    Add card
                     </button>
                     <button
                         className="btn btn-secondary addCardForm-btn"
@@ -34,11 +34,11 @@ const AddCardForm = props => (
 
         ) : (
             <button
-                className="btn btn-success addCardButton"
+                className="btn btn-success addCard-btn"
                 type="submit"
                 onClick={() => props.displayAddCardForm(true)}
             >
-            Create new Card
+                <i className="fas fa-plus-circle addCardIcon" />
             </button>
         )}
     </span>
