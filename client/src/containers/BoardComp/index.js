@@ -74,10 +74,11 @@ class BoardComp extends React.Component {
             const { lists, _id } = this.props.board;
             const listsUpdated = this.reorder(lists, source.index, destination.index);
 
-            this.setState({ pendingLists: listsUpdated });
-            this.setState({ isWaitingForAPIConfirmation: true });
-
-            this.props.updateListsIndexes(_id, listsUpdated);
+            // Set pending State
+            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
+                // Dispatch action
+                this.props.updateListsIndexes(_id, listsUpdated);
+            });
             return;
         }
         // Card dropped
@@ -104,11 +105,10 @@ class BoardComp extends React.Component {
             });
 
             // Set pending State
-            this.setState({ pendingLists: listsUpdated });
-            this.setState({ isWaitingForAPIConfirmation: true });
-
-            // Dispatch action
-            this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated);
+            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
+                // Dispatch action
+                this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated);
+            });
         }
     }
 
@@ -118,7 +118,6 @@ class BoardComp extends React.Component {
             // If changes were made on lists (moved for example), we give the board modified.
             // else, we give the board from the store which is the same as in server.
             if (this.state.isWaitingForAPIConfirmation) {
-
                 const pendingBoard = {
                     ...board,
                     lists: this.state.pendingLists,
@@ -135,9 +134,6 @@ class BoardComp extends React.Component {
                 );
             }
 
-            console.log('classic');
-            console.log(board.lists[0]);
-
             return (
                 <BoardView
                     board={board}
@@ -148,6 +144,7 @@ class BoardComp extends React.Component {
                 />
             );
         }
+
         return '';
     }
 }
