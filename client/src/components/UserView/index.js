@@ -22,22 +22,29 @@ class UserView extends React.Component {
                 <div className="userContent">
                     <div>
                         <div className="nickname">
-                            <b>{user.username}</b>
+                            <b>{user.fullName}</b>
+                            <p>
+                                @
+                                {user.username}
+                            </p>
                         </div>
+                        Full name:
+                        {' '}
+                        <input className="readOnly" readOnly type="text" placeholder={user.fullName} />
+                        <br />
                         <br />
                         Initials:
                         {' '}
                         <input className="readOnly" readOnly type="text" placeholder={user.initials} />
                         <br />
-                        Email:
-                        {' '}
-                        <input className="readOnly" readOnly type="text" placeholder={user.email} />
-                        <br />
                         Biography :
                         {' '}
-                        <input className="readOnly" readOnly type="text" placeholder={user.biography} />
+                        <input className="readOnly" readOnly type="text" placeholder={user.bio} />
 
                     </div>
+                </div>
+                <div className="teamsContent">
+                    <h>My teams</h>
                 </div>
             </div>
         );

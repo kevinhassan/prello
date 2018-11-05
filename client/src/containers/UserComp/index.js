@@ -21,13 +21,9 @@ class UserComp extends React.Component {
         const { user } = this.props;
         const element = (
             <div className="usersPanel">
-                <h1>My profile</h1>
-
-                <div className="infosPanel">
-                    <UserView
-                        user={user}
-                    />
-                </div>
+                <UserView
+                    user={user}
+                />
             </div>
         );
         if (user) {
