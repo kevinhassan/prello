@@ -7,7 +7,7 @@ import BoardsComp from '../BoardsComp';
 import HomeComp from '../HomeComp';
 import Modal from '../../components/modal';
 import Header from '../header';
-import UserComp from '../UserComp';
+import ProfileComp from '../ProfileComp';
 import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
 

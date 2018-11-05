@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import './style.css';
 
-class UserView extends React.Component {
+class ProfileView extends React.Component {
     constructor(props) {
         super(props);
         this.handleDeleteUser = this.handleDeleteUser.bind(this);
@@ -50,11 +50,11 @@ class UserView extends React.Component {
         );
     }
 }
-UserView.propTypes = {
+ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
     deleteUser: PropTypes.func,
 };
-UserView.defaultProps = {
+ProfileView.defaultProps = {
     deleteUser: undefined,
 };
 
@@ -70,4 +70,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(UserView);
+)(ProfileView);

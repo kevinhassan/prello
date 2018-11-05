@@ -3,8 +3,10 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+// ===== Models
+
 // ===== Components / Containers
-import UserView from '../../components/UserView';
+import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
 import { getUserInformations } from '../../actions/user';
@@ -12,7 +14,7 @@ import { getUserInformations } from '../../actions/user';
 // ===== Others
 import './style.css';
 
-class UserComp extends React.Component {
+class ProfileComp extends React.Component {
     componentWillMount() {
         this.props.getUserInformations();
     }
@@ -21,7 +23,7 @@ class UserComp extends React.Component {
         const { user } = this.props;
         const element = (
             <div className="usersPanel">
-                <UserView
+                <ProfileView
                     user={user}
                 />
             </div>
@@ -33,24 +35,24 @@ class UserComp extends React.Component {
     }
 }
 
-UserComp.propTypes = {
-    classicSignIn: PropTypes.func.isRequired,
+ProfileComp.propTypes = {
+    getUserInformations: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ users }) => ({
-    user: users.user,
+const mapStateToProps = ({ usersReducer }) => ({
+    user: usersReducer.user,
 });
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        classicSignIn,
+        getUserInformations,
     }, dispatch,
 );
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(UserComp);
+)(ProfileComp);
