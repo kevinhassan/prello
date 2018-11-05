@@ -30,7 +30,7 @@ const CardDetailView = props => (
                 <div className="row">
 
                     {/* ===== DUE DATE ===== */}
-                    <div className="col-sm-6">
+                    <div className="col-sm-4">
                         <h2 className="cardDetail-h2">
                             <i className="fas fa-calendar-alt" />
                             {' '}
@@ -53,9 +53,10 @@ const CardDetailView = props => (
                         </div>
 
                     </div>
+                    {/* ==================== */}
 
                     {/* ===== LABELS ===== */}
-                    <div className="col-sm-6">
+                    <div className="col-sm-8">
                         <Labels
                             labels={props.card.labels}
                         />
