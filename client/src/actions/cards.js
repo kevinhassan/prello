@@ -4,15 +4,19 @@ import {
 } from './modal';
 
 // ========================
-export const CREATE_CARD = 'cards/CREATE_CARD';
-export const DELETE_CARD = 'cards/DELETE_CARD';
+export const CREATE_CARD_STARTED = 'card/CREATE_CARD_FAILURE';
+export const CREATE_CARD_FAILURE = 'card/CREATE_CARD_FAILURE';
+export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
 
 export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
 export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
 export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
-// ======================== CREATE CARD
-export const CREATE_CARD_FAILURE = 'card/CREATE_CARD_FAILURE';
-export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
+// ========================
+
+// ====== Create card
+export const createCardStartedAction = () => ({
+    type: CREATE_CARD_STARTED,
+});
 
 export const createCardFailureAction = error => ({
     type: CREATE_CARD_FAILURE,
@@ -28,26 +32,10 @@ export const createCardSuccessAction = card => ({
     },
 });
 
-
-export const deleteCardAction = cardId => ({
-    type: DELETE_CARD,
-    payload: {
-        id: cardId,
-    },
-});
-export const deleteCard = cardId => (dispatch) => {
-    dispatch(deleteCardAction(cardId));
-};
-
-export const createCardAction = () => ({
-    type: CREATE_CARD,
-});
-
-
 export const createCard = card => (dispatch) => {
-    dispatch(createCardAction());
+    dispatch(createCardStartedAction());
+    dispatch(displayLoadingModal());
     const resource = 'cards/';
-
     APIFetch.fetchPrelloAPI(resource, { name: card.name, list: card.list }, APIFetch.POST)
         .then((res) => {
             const cardCreated = res.data.card;
@@ -57,6 +45,9 @@ export const createCard = card => (dispatch) => {
         .catch((error) => {
             dispatch(createCardFailureAction(error.response.data.error));
             dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
         });
 };
 
