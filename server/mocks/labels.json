@@ -2,26 +2,31 @@
     {
         "_id": "la0000000001",
         "name": "UX",
-        "color": "#43b949"
+        "color": "#43b949",
+        "boardId": "b00000000001"
     },
     {
         "_id": "la0000000002",
         "name": "High priority",
-        "color": "#ac1212"
+        "color": "#ac1212",
+        "boardId": "b00000000001"
     },
     {
         "_id": "la0000000003",
         "name": "Database",
-        "color": "#ddb107"
+        "color": "#ddb107",
+        "boardId": "b00000000001"
     },
     {
         "_id": "la0000000004",
         "name": "White label",
-        "color": "#ffffff"
+        "color": "#ffffff",
+        "boardId": "b00000000001"
     },
     {
         "_id": "la0000000005",
         "name": "Black label with a long name",
-        "color": "#000000"
+        "color": "#000000",
+        "boardId": "b00000000001"
     }
 ]

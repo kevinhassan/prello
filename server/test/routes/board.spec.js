@@ -264,7 +264,7 @@ describe('POST /boards/:id/members', () => {
 
 const newLabel = {
     name: 'myLabel',
-    color: '#123456'
+    color: '#123456',
 };
 
 describe('POST /boards/:boardId/labels', () => {

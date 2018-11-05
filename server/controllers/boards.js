@@ -240,6 +240,7 @@ boardController.postLabel = async (data) => {
         }
         label.name = data.name;
         label.color = data.color;
+        label.boardId = data.boardId;
 
         await label.save();
         socket.updateClientsOnBoard(data.boardId);
