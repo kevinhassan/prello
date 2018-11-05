@@ -64,10 +64,8 @@ ProfileView.propTypes = {
     isUpdateVisible: PropTypes.object.isRequired,
     handleUpdateInformations: PropTypes.func.isRequired,
     handleUpdateDisplay: PropTypes.func.isRequired,
-    deleteUser: PropTypes.func,
 };
 ProfileView.defaultProps = {
-    deleteUser: undefined,
 };
 
 export default ProfileView;

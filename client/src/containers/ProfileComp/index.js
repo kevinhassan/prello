@@ -9,8 +9,7 @@ import { connect } from 'react-redux';
 import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
-import { getUserInformations } from '../../actions/user';
-import { updateUserInformations } from '../../actions/user';
+import { getUserInformations, updateUserInformations } from '../../actions/user';
 
 // ===== Others
 import './style.css';
