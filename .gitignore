@@ -62,5 +62,4 @@ typings/
 
 .idea
 
-config_dev.js
-config.js
+**/build/
