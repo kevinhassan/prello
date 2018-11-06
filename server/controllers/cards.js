@@ -58,7 +58,7 @@ exports.putDescription = async (cardId, description) => {
 
         const newList = await listController.getList(card.list);
         // update board via socket
-        socket.updateClientsOnBoard(newList.boardId);
+        socket.updateClientsOnBoard(newList.board);
 
         return card;
     } catch (err) {

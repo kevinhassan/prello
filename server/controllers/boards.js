@@ -36,7 +36,7 @@ exports.getBoard = async (boardId) => {
         return board;
     } catch (err) {
         if (err.status) throw err;
-        if (err.name === 'CastError') {
+        else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
         throw new MyError(500, 'Internal Server Error');

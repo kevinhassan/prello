@@ -100,6 +100,23 @@ exports.deleteBoard = async (teamId, boardId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+exports.deleteMember = async (teamId, memberId) => {
+    try {
+        // remove the member from the team
+        const newTeam = await Team.findByIdAndUpdate(teamId, { $pull: { members: { _id: memberId } } }, { new: true });
+
+        // remove the team from the member
+        await userController.leaveTeam(memberId, teamId);
+        return newTeam;
+    } catch (err) {
+        if (err.status) throw err;
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Member not found');
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
 exports.addBoard = async (teamId, boardId) => {
     try {
         await Team.updateOne({ _id: teamId },
