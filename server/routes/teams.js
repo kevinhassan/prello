@@ -158,7 +158,7 @@ const teamController = require('../controllers/teams');
 *             schema:
 *               type: string
 *             required: true
-*             description: member ID
+*             description: Member ID
 *           - name: body
 *             description: New access right for the member
 *             in: body
@@ -259,7 +259,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.changeAccess(req.params.teamId, req.params.memberId, req.body.isAdmin);
+                await teamController.putMemberAccess(req.params.teamId, req.params.memberId, req.body.isAdmin);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });

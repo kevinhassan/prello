@@ -26,6 +26,29 @@ exports.putTeam = async (teamId, data) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+/**
+ * Change team's member right access
+ */
+exports.putMemberAccess = async (teamId, memberId, accessRight) => {
+    try {
+        const team = await Team.findById(teamId).select(['members']);
+
+        // change the member access right
+        let memberFound = false;
+        await team.members.map((member) => {
+            if (member._id.toString() === memberId.toString()) {
+                member.isAdmin = accessRight;
+                memberFound = true;
+            }
+            return member;
+        });
+        if (!memberFound) throw new MyError(404, 'Member not found');
+        await team.save();
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 
 
 // ======================== //
@@ -98,4 +121,3 @@ exports.addMemberWithEmail = async (teamId, email) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
-
