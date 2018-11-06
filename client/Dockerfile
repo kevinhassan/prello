@@ -1,8 +1,10 @@
 FROM node:latest
-WORKDIR /usr/src/app
-COPY package*.json ./
+RUN mkdir /home/prello-app
+WORKDIR /home/prello-app
+COPY package.json .
 RUN npm install
 COPY . .
-EXPOSE 9090
-RUN [ "npm", "run", "build" ]
-CMD [ "npm", "start"]
+EXPOSE 3000
+
+RUN npm start
+
