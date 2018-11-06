@@ -275,3 +275,31 @@ exports.removeBoard = async (userId, boardId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+
+exports.joinTeam = async (userId, teamId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) throw new MyError(404, 'User unknown');
+
+        await User.updateOne({ _id: userId },
+            { $addToSet: { teams: teamId } })
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+exports.leaveTeam = async (userId, teamId) => {
+    try {
+        const user = await User.findById(userId);
+        if (!user) throw new MyError(404, 'User unknown');
+
+        await User.updateOne({ _id: userId },
+            { $pull: { teams: teamId } })
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
