@@ -23,21 +23,21 @@ const userData = {
         email: 'test@test.fr',
         password: 'passTest',
         username: 'username',
-        bio: 'bio'
+        biography: 'biography'
     },
     userNotAdmin: {
         fullName: 'nameTest',
         email: 'test2@test.fr',
         password: 'passTest',
         username: 'username2',
-        bio: 'bio'
+        biography: 'biography'
     },
     userNotMember: {
         fullName: 'nameTest',
         email: 'test3@test.fr',
         password: 'passTest',
         username: 'username3',
-        bio: 'bio'
+        biography: 'biography'
     }
 };
 const listData = {

@@ -30,14 +30,14 @@ const userData = {
         email: 'test@test.fr',
         password: 'passTest',
         username: 'username',
-        bio: 'bio'
+        biography: 'biography'
     },
     userNotMember: {
         fullName: 'nameTest',
         email: 'test2@test.fr',
         password: 'passTest',
         username: 'username2',
-        bio: 'bio'
+        biography: 'biography'
     }
 };
 let userMember;

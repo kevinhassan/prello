@@ -74,7 +74,7 @@ exports.signUp = async (data) => {
             username: usernameUser,
             password: data.password,
             email: data.email,
-            bio: data.bio,
+            biography: data.biography,
             avatarUrl: data.avatarUrl,
             initials: initialsUser
         });
@@ -148,7 +148,7 @@ exports.getProfile = async (user) => {
     try {
     // return plain json object with lean
         const userProfile = await User.findById(user.id).select({
-            fullName: 1, username: 1, bio: 1, initials: 1, _id: 0
+            fullName: 1, username: 1, biography: 1, initials: 1, _id: 0
         }).lean();
         return userProfile;
     } catch (err) {
@@ -178,14 +178,14 @@ exports.getAccount = async (user) => {
  */
 exports.putProfile = async (user, data) => {
     const {
-        fullName, bio, initials, username
+        fullName, biography, initials, username
     } = data;
     try {
         const userProfile = await User.findById(user.id).select({
-            fullName: 1, username: 1, bio: 1, initials: 1
+            fullName: 1, username: 1, biography: 1, initials: 1
         });
         userProfile.fullName = fullName;
-        userProfile.bio = bio;
+        userProfile.biography = biography;
         userProfile.initials = initials;
         const userFound = await User.findOne({ username, _id: { $ne: user._id } });
         if (userFound) throw new MyError(409, 'Username is taken ');

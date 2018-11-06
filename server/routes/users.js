@@ -32,7 +32,7 @@ const {
 *               type: string
 *           initials:
 *               type: string
-*           bio:
+*           biography:
 *               type: string
 *   AccountForm:
 *       properties:

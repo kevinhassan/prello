@@ -227,7 +227,6 @@ exports.postMemberWithMail = async (boardId, email) => {
 exports.postLabel = async (data) => {
     try {
         const label = new Label();
-
         const board = await Board.findById(data.boardId);
         if (!board) {
             throw new MyError(404, 'Not found, the specified board doesn\'t exist');
@@ -235,7 +234,7 @@ exports.postLabel = async (data) => {
 
         label.name = data.name;
         label.color = data.color;
-        label.boardId = data.boardId;
+        label.board = data.boardId;
         await label.save();
 
         board.labels.push(label);

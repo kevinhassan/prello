@@ -9,7 +9,7 @@ const data = {
     fullName: 'nameTest',
     email: 'test@test.fr',
     password: 'passTest',
-    bio: 'bio'
+    biography: 'biography'
 };
 
 describe('POST /register', () => {
@@ -98,7 +98,7 @@ describe('GET /profile', () => {
             .set('Authorization', `Bearer ${token}`)
             .expect(200, (err, res) => {
                 assert(res.body.profile.fullName, data.fullName);
-                assert(res.body.profile.bio, data.bio);
+                assert(res.body.profile.biography, data.biography);
                 expect(res.body.profile.initials).to.not.be.empty;
                 expect(res.body.profile.username).to.not.be.empty;
                 // add processing data
