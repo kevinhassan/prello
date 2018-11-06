@@ -16,10 +16,10 @@ const App = () => (
         <Modal />
         <main>
             <Route exact path="/boards/:boardId" component={BoardComp} />
-            <Route exact path="/signin" component={SignInComp} />
-            <Route exact path="/register" component={RegisterComp} />
-            <Route exact path="/profile" component={UserComp} />
             <Route exact path="/graphical-charter" component={GraphicalCharter} />
+            <Route exact path="/profile" component={UserComp} />
+            <Route exact path="/register" component={RegisterComp} />
+            <Route exact path="/signin" component={SignInComp} />
         </main>
     </div>
 );

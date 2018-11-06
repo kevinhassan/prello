@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { fetchBoard, updateListsIndexes } from '../../actions/boards';
-import { createList } from '../../actions/lists';
+import { createList, moveCard } from '../../actions/lists';
 
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
@@ -74,14 +74,41 @@ class BoardComp extends React.Component {
             const { lists, _id } = this.props.board;
             const listsUpdated = this.reorder(lists, source.index, destination.index);
 
-            this.setState({ pendingLists: listsUpdated });
-            this.setState({ isWaitingForAPIConfirmation: true });
-
-            this.props.updateListsIndexes(_id, listsUpdated);
+            // Set pending State
+            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
+                // Dispatch action
+                this.props.updateListsIndexes(_id, listsUpdated);
+            });
             return;
         }
+        // Card dropped
         if (type === 'CARD') {
-            // TODO : reorder cards
+            const { lists } = this.props.board;
+            const cardId = result.draggableId;
+            const destinationListId = destination.droppableId;
+            const destinationIndex = destination.index;
+            const sourceListId = source.droppableId;
+
+            // Get card info
+            const sourceList = lists.find(list => list._id === sourceListId);
+            const cardMoved = sourceList.cards.filter(c => c._id === cardId)[0];
+
+            // Update lists
+            const listsUpdated = lists.map((list) => {
+                if (list._id === sourceListId) {
+                    list.cards.splice(list.cards.findIndex(card => card._id === cardId), 1);
+                }
+                if (list._id === destinationListId) {
+                    list.cards.splice(destinationIndex, 0, cardMoved);
+                }
+                return list;
+            });
+
+            // Set pending State
+            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
+                // Dispatch action
+                this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated);
+            });
         }
     }
 
@@ -91,10 +118,11 @@ class BoardComp extends React.Component {
             // If changes were made on lists (moved for example), we give the board modified.
             // else, we give the board from the store which is the same as in server.
             if (this.state.isWaitingForAPIConfirmation) {
-                // shallow copy of board
-                const pendingBoard = JSON.parse(JSON.stringify(board));
+                const pendingBoard = {
+                    ...board,
+                    lists: this.state.pendingLists,
+                };
 
-                pendingBoard.lists = this.state.pendingLists;
                 return (
                     <BoardView
                         board={pendingBoard}
@@ -116,6 +144,7 @@ class BoardComp extends React.Component {
                 />
             );
         }
+
         return '';
     }
 }
@@ -127,6 +156,7 @@ BoardComp.propTypes = {
             boardId: PropTypes.string,
         }),
     }).isRequired,
+    moveCard: PropTypes.func.isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
     createList: PropTypes.func.isRequired,
 };
@@ -143,9 +173,10 @@ const mapStateToProps = ({ boardsReducer }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        updateListsIndexes,
-        fetchBoard,
         createList,
+        fetchBoard,
+        moveCard,
+        updateListsIndexes,
     }, dispatch,
 );
 

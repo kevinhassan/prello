@@ -83,13 +83,14 @@ export const editCardDescription = (cardId, description) => (dispatch) => {
         .then(() => {
             // API doesn't need to return the card: use directly the new description
             dispatch(editCardDescriptionSuccessAction(description));
-            dispatch(hideLoadingModal());
             dispatch(displaySuccessMessage('Description updated'));
         })
         .catch((error) => {
             dispatch(editCardDescriptionFailureAction(error.response.data.error));
-            dispatch(hideLoadingModal());
             dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
         });
 };
 
@@ -115,13 +116,14 @@ export const addLabel = (cardId, labelId) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.POST)
         .then((res) => {
             dispatch(addLabelSuccessAction(cardId, labelId));
-            dispatch(hideLoadingModal());
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
             dispatch(addLabelFailureAction(error.response.data.error));
-            dispatch(hideLoadingModal());
             dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
         });
 };
 
@@ -147,12 +149,13 @@ export const deleteLabel = (cardId, labelId) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
         .then((res) => {
             dispatch(deleteLabelSuccessAction(cardId, labelId));
-            dispatch(hideLoadingModal());
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
             dispatch(deleteLabelFailureAction(error.response.data.error));
-            dispatch(hideLoadingModal());
             dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
         });
 };

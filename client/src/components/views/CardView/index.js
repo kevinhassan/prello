@@ -13,18 +13,21 @@ import Card from '../../../models/Card';
 import './style.css';
 
 const CardView = props => (
-    <div className="card" key={props.card._id}>
+    <a
+        className="card"
+        href={`/cards/${props.card._id}`}
+        key={props.card._id}
+        onClick={event => props.onCardClick(event)}
+    >
         <div className="cardContent">
-            <button className="btn-noCss" type="button" onClick={props.onCardClick} onKeyDown={props.onCardClick}>
-                <div className="labelsBar">
-                    {props.card.labels.map(label => <LabelPill key={label._id} label={label} />)}
-                </div>
-                <div>
-                    <b className="cardName">{props.card.name}</b>
-                </div>
-            </button>
+            <div className="labelsBar">
+                {props.card.labels.map(label => <LabelPill key={label._id} label={label} />)}
+            </div>
+            <div>
+                <b className="cardName">{props.card.name}</b>
+            </div>
         </div>
-    </div>
+    </a>
 );
 
 CardView.propTypes = {

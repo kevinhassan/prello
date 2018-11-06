@@ -32,7 +32,8 @@ class CardComp extends React.Component {
         this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
     }
 
-    handleCardClick() {
+    handleCardClick(event) {
+        event.preventDefault();
         this.setState({ displayCardDetail: true });
     }
 

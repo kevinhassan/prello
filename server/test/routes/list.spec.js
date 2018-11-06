@@ -5,6 +5,7 @@ const Card = require('../../models/Card');
 const User = require('../../models/User');
 const List = require('../../models/List');
 const boardController = require('../../controllers/boards');
+const cardController = require('../../controllers/cards');
 const userController = require('../../controllers/users');
 const listController = require('../../controllers/lists');
 
@@ -95,6 +96,59 @@ describe('POST /lists/:id/cards', () => {
             .post(`/lists/${listData.id}/cards`)
             .send(cardData)
             .set('Authorization', `Bearer ${tokenMember}`)
+            .expect('Content-Type', /json/)
+            .expect(201, done);
+    });
+});
+
+let list1 = {
+    name: 'List 1',
+};
+let list2 = {
+    name: 'List 2',
+};
+let card1 = {
+    name: 'card1'
+};
+
+describe('PUT /lists/:listId/cards/:cardId', () => {
+    before((done) => {
+        Promise.all([]).then(async () => {
+            try {
+                const boardId = await boardController.postBoard(userMember._id, { name: 'testBoard', visibility: 'public' });
+                list1 = await listController.createList(boardId, list1.name);
+                list2 = await listController.createList(boardId, list2.name);
+                card1.list = list1._id;
+                card1 = await cardController.createCard(card1.name, card1.list);
+                done();
+            } catch (e) {
+                console.log(e);
+            }
+        });
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/invalidCardId`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 422 ERROR if no body provided', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/${card1._id}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 404 ERROR if card not found', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/123456789abc`)
+            .send({ sourceListId: list2._id, index: 0 })
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .put(`/lists/${list1._id}/cards/${card1._id}`)
+            .send({ sourceListId: list2._id, index: 0 })
             .expect('Content-Type', /json/)
             .expect(201, done);
     });

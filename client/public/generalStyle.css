@@ -34,13 +34,13 @@ body {
 a, .btn-link {
     color: #009cdd;
     position: relative;
-    transition: 0.15s;
+    transition: 0.2s;
 }
 
 a:hover, .btn-link:hover {
     color: #004a75;
     text-decoration: none;
-    transition: 0.15s;
+    transition: 0.2s;
 }
 
 .text-warning {
@@ -61,8 +61,8 @@ a:before, .btn-link:before {
     visibility: hidden;
     -webkit-transform: scaleX(0);
     transform: scaleX(0);
-    -webkit-transition: all 0.3s ease-in-out 0s;
-    transition: all 0.3s ease-in-out 0s;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
 }
 a:hover:before, .btn-link:hover:before {
     visibility: visible;
