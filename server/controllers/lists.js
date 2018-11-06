@@ -34,33 +34,6 @@ exports.removeCard = async (data) => {
 };
 
 /**
- * PUT
- */
-exports.addCard = async (data) => {
-    try {
-        const list = await List.findById(data.listId);
-        if (!list) throw new MyError(404, 'List not found');
-
-        if (list.cards !== null) list.cards.splice(data.index, 0, data.cardId);
-        else list.cards = [data.cardId];
-        await list.save();
-
-        return list;
-    } catch (err) {
-        if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect query');
-        }
-        if (err.name === 'CastError') {
-            throw new MyError(404, 'List not found');
-        }
-        if (err.status) {
-            throw err;
-        }
-        throw new MyError(500, 'Internal server error');
-    }
-};
-
-/**
  * POST /lists
  */
 // ======================== //
@@ -88,14 +61,18 @@ exports.postCard = async (listId, name) => {
 };
 
 /**
- * Add card to the list
+ * Add card to the list at the specified index
  */
-exports.addCard = async (listId, cardId) => {
+exports.addCard = async (index, listId, cardId) => {
     try {
-        const list = List.findById(listId).select('cards');
+        const list = await List.findById(listId).select('cards');
         if (!list) throw new MyError(404, 'List not found');
-        const newList = await List.updateOne({ _id: listId }, { $addToSet: { cards: cardId } }, { new: true });
-        return newList;
+
+        if (list.cards) list.cards.splice(index, 0, cardId);
+        else list.cards = [cardId];
+        await list.save();
+
+        return list;
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'CastError') {

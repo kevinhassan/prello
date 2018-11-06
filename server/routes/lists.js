@@ -118,11 +118,9 @@ module.exports = (router) => {
                 });
 
                 // Add card to destination list
-                const listUpdated = await listController.addCard({
-                    index: req.body.index,
-                    cardId: req.params.cardId,
-                    listId: req.params.listId,
-                });
+                const listUpdated = await listController.addCard(req.body.index,
+                    req.params.listId,
+                    req.params.cardId);
 
                 // Update listId in card
                 await cardController.putList({
