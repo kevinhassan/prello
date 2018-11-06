@@ -98,10 +98,13 @@ const Description = props => (
 );
 
 Description.propTypes = {
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     editDescription: PropTypes.func.isRequired,
     isEditingDescription: PropTypes.bool.isRequired,
     changeIsEditingDescription: PropTypes.func.isRequired,
+};
+Description.defaultProps = {
+    description: undefined,
 };
 
 export default Description;
