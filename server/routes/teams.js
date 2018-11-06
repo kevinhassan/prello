@@ -235,7 +235,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.changeInformation(req.params.teamId, req.body);
+                await teamController.putTeam(req.params.teamId, req.body);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
@@ -247,7 +247,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                const newTeam = await teamController.addMemberWithMail(req.params.teamId, req.body.email);
+                const newTeam = await teamController.addMemberWithEmail(req.params.teamId, req.body.email);
                 res.status(201).send({ message: 'User successfully created', team: newTeam });
             } catch (e) {
                 res.status(e.status).send({ err: e.message });

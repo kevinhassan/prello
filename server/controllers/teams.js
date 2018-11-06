@@ -6,6 +6,29 @@ const userController = require('../controllers/users');
 const boardController = require('../controllers/boards');
 
 // ======================== //
+// ===== Put functions ==== //
+// ======================== //
+/**
+ * Change team's information
+ */
+exports.putTeam = async (teamId, data) => {
+    try {
+        const team = await Team.findById(teamId);
+        team.name = data.name;
+        team.description = data.description;
+        const newTeam = await team.save();
+        return newTeam;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+
+// ======================== //
 // ==== Post functions ==== //
 // ======================== //
 exports.postTeam = async (userId, data) => {
@@ -21,11 +44,9 @@ exports.postTeam = async (userId, data) => {
         await userController.joinTeam(userId, newTeam._id);
         return newTeam;
     } catch (err) {
-        if (err.name === 'ValidationError') {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
-        }
-        if (err.status) {
-            throw err;
         }
         throw new MyError(500, 'Internal server error');
     }
@@ -46,7 +67,7 @@ exports.deleteTeam = async (teamId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
-exports.deleteBoard = async (boardId, teamId) => {
+exports.deleteBoard = async (teamId, boardId) => {
     try {
         await Team.updateOne({ _id: teamId },
             { $pull: { boards: boardId } }, { new: true })
@@ -56,7 +77,7 @@ exports.deleteBoard = async (boardId, teamId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
-exports.addBoard = async (boardId, teamId) => {
+exports.addBoard = async (teamId, boardId) => {
     try {
         await Team.updateOne({ _id: teamId },
             { $addToSet: { boards: boardId } }, { new: true })
@@ -66,3 +87,15 @@ exports.addBoard = async (boardId, teamId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
+exports.addMemberWithEmail = async (teamId, email) => {
+    try {
+        const user = await userController.findMemberWithMail(email);
+        const team = await Team.findByIdAndUpdate(teamId, { $addToSet: { members: { _id: user._id, isAdmin: false } } });
+        await userController.joinTeam(user._id, team._id);
+        return team;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+

@@ -164,7 +164,7 @@ exports.postList = async (boardId, name) => {
  */
 exports.postTeam = async (boardId, teamId) => {
     try {
-        await teamController.addBoard(boardId, teamId);
+        await teamController.addBoard(teamId, boardId);
         const newBoard = await Board.updateOne({ _id: boardId },
             { $addToSet: { teams: teamId } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
@@ -221,7 +221,7 @@ exports.deleteMember = async (boardId, memberId) => {
  */
 exports.deleteTeam = async (boardId, teamId) => {
     try {
-        await teamController.deleteBoard(boardId, teamId);
+        await teamController.deleteBoard(teamId, boardId);
         const newBoard = await Board.updateOne({ _id: boardId },
             { $pull: { teams: teamId } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
