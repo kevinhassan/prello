@@ -50,9 +50,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.putDescription({
-                    cardId: req.params.cardId, description: req.body.description,
-                });
+                await cardController.putDescription(req.params.cardId, req.body.description);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

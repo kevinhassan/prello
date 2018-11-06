@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 const request = require('supertest');
 const { expect, assert } = require('chai');
 
@@ -22,7 +23,7 @@ describe('POST /register', () => {
             .expect('Content-Type', /json/)
             .expect(201, done);
     });
-    it('should return 409 OK', (done) => {
+    it('should return 409 ERROR', (done) => {
         request(app)
             .post('/register')
             .send(data)
@@ -148,7 +149,7 @@ describe('PUT /profile', () => {
     });
 });
 describe('POST /forgot', () => {
-    it('should return 404 OK', (done) => {
+    it('should return 404 ERROR', (done) => {
         request(app)
             .post('/forgot')
             .send({ email: 'test1@test.fr' })
@@ -200,7 +201,7 @@ describe('PUT /account', () => {
             .put('/account')
             .expect(401, done);
     });
-    it('should return 422 OK', (done) => {
+    it('should return 422 ERROR', (done) => {
         request(app)
             .put('/account')
             .set('Authorization', `Bearer ${token}`)

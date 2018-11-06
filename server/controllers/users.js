@@ -1,15 +1,14 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
-
-const userController = module.exports;
 const nodemailer = require('nodemailer');
-const boardController = require('../controllers/boards');
-const User = require('../models/User');
 const MyError = require('../util/error');
 const Auth = require('../auth');
 const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetPassword');
 
+const boardController = require('../controllers/boards');
+
 const randomBytesAsync = promisify(crypto.randomBytes);
+const User = require('../models/User');
 
 // ======================== //
 // ==== Post functions ==== //
@@ -18,7 +17,7 @@ const randomBytesAsync = promisify(crypto.randomBytes);
 /**
  * Add the board to the the user
  */
-userController.postBoard = async (userId, boardId) => {
+exports.postBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId },
             { $addToSet: { boards: boardId } })
@@ -31,7 +30,7 @@ userController.postBoard = async (userId, boardId) => {
 /**
  * Sign in using email and password.
  */
-userController.login = async (email, password) => {
+exports.login = async (email, password) => {
     try {
         const user = await User.findOne({ email }).select('password');
         if (!user) {
@@ -57,7 +56,7 @@ userController.login = async (email, password) => {
 /**
  * Create a new local account.
  */
-userController.signUp = async (data) => {
+exports.signUp = async (data) => {
     try {
         const fullNameUser = data.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
         // count the number of user with same fullName
@@ -91,7 +90,7 @@ userController.signUp = async (data) => {
 /**
  * Create a random token, then the send user an email with a reset link.
  */
-userController.postForgot = async (email, host) => {
+exports.forgot = async (email, host) => {
     try {
         let user = await User.findOne({ email });
         if (!user) throw new MyError(404, 'No user found');
@@ -116,7 +115,7 @@ userController.postForgot = async (email, host) => {
 /**
  * Reset password with the new one.
  */
-userController.resetPassword = async (token, password) => {
+exports.resetPassword = async (token, password) => {
     try {
         const user = await User.findOne({ passwordResetToken: token }).where('passwordResetExpires').gt(Date.now());
         if (!user) throw new MyError(403, 'User can\'t reset his password');
@@ -145,7 +144,7 @@ userController.resetPassword = async (token, password) => {
 /**
  * Profile page.
  */
-userController.getProfile = async (user) => {
+exports.getProfile = async (user) => {
     try {
     // return plain json object with lean
         const userProfile = await User.findById(user.id).select({
@@ -159,7 +158,7 @@ userController.getProfile = async (user) => {
 /**
  * Profile page.
  */
-userController.getAccount = async (user) => {
+exports.getAccount = async (user) => {
     try {
         // return plain json object with lean
         const userAccount = await User.findById(user.id).select({
@@ -177,7 +176,7 @@ userController.getAccount = async (user) => {
 /**
  * Profile page.
  */
-userController.putProfile = async (user, data) => {
+exports.putProfile = async (user, data) => {
     const {
         fullName, bio, initials, username
     } = data;
@@ -194,10 +193,9 @@ userController.putProfile = async (user, data) => {
         await userProfile.save();
         return userProfile;
     } catch (err) {
-        if (err.name === 'MongoError' && err.code === 11000) {
+        if (err.status) throw err;
+        else if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(400, 'Update profile failed');
-        } else if (err.status) {
-            throw err;
         }
         throw new MyError(500, 'Internal Server Error');
     }
@@ -205,7 +203,7 @@ userController.putProfile = async (user, data) => {
 /**
  * Update account page (mail, password)
  */
-userController.putAccount = async (user, data) => {
+exports.putAccount = async (user, data) => {
     const {
         email, password
     } = data;
@@ -224,9 +222,7 @@ userController.putAccount = async (user, data) => {
         await userProfile.save();
     } catch (err) {
         // TODO: add more details (ex: if same username then error)
-        if (err.status) {
-            throw err;
-        }
+        if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
@@ -236,13 +232,11 @@ userController.putAccount = async (user, data) => {
 /**
  * remove account page
  */
-userController.deleteAccount = async (user) => {
+exports.deleteAccount = async (user) => {
     try {
         await User.deleteOne({ _id: user._id });
     } catch (err) {
-        if (err.status) {
-            throw err;
-        }
+        if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
@@ -250,17 +244,17 @@ userController.deleteAccount = async (user) => {
 /**
  * Remove the board from the user
  */
-userController.deleteBoard = async (userId, boardId) => {
+exports.deleteBoard = async (userId, boardId) => {
     try {
         await boardController.removeMember(boardId, userId);
-        await userController.removeBoard(userId, boardId);
+        await exports.removeBoard(userId, boardId);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
     }
 };
 
-userController.findMemberWithMail = async (email) => {
+exports.findMemberWithMail = async (email) => {
     try {
         const user = await User.findOne({ email });
         if (!user) throw new MyError(404, 'User not found');
@@ -271,7 +265,7 @@ userController.findMemberWithMail = async (email) => {
     }
 };
 
-userController.removeBoard = async (userId, boardId) => {
+exports.removeBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId },
             { $pull: { boards: boardId } })
@@ -281,5 +275,3 @@ userController.removeBoard = async (userId, boardId) => {
         throw new MyError(500, 'Internal Server Error');
     }
 };
-
-module.exports = userController;

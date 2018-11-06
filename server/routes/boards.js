@@ -1,8 +1,6 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
-const cardController = require('../controllers/cards');
-const listController = require('../controllers/lists');
-const { boardValidator, listValidator, cardValidator } = require('../validators');
+const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
 /**
 * @swagger
@@ -40,10 +38,6 @@ const { Auth, Board } = require('../middlewares');
 *               type: array
 *               items:
 *                   type: string
-*   NewCard:
-*       properties:
-*           name:
-*               type: string
 *
 * /boards:
 *   post:
@@ -155,44 +149,6 @@ const { Auth, Board } = require('../middlewares');
 *               description: Incorrect Query
 *           500:
 *               description: Internal server error
-*
-* /boards/{boardId}/lists/{listId}/cards:
-*   post:
-*       tags:
-*           - Board
-*       description: Create a new empty Card
-*       summary: Create new Card
-*       produces:
-*           - application/json
-*       parameters:
-*           - in: path
-*             name: boardId
-*             schema:
-*               type: string
-*             required: true
-*             description: Board ID
-*           - in: path
-*             name: listId
-*             schema:
-*               type: string
-*             required: true
-*             description: List ID
-*           - name: body
-*             description: The information of the new card
-*             in: body
-*             required: true
-*             schema:
-*               $ref: '#/definitions/NewCard'
-*       responses:
-*           201:
-*               description: Card successfully created
-*           401:
-*               description: Unauthorized user
-*           422:
-*               description: Incorrect query, data provided invalid or the specified list doesn\'t exist
-*           500:
-*               description: Internal server error
-*
 *
 * /boards/{boardId}/visibility:
 *   put:
@@ -413,6 +369,18 @@ const { Auth, Board } = require('../middlewares');
 
 module.exports = (router) => {
     router
+        .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                const boardCreated = await boardController.postBoard(req.user._id, req.body);
+                res.status(201).send({ message: 'Board successfully created', board: boardCreated._id });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
         .get('/boards/:boardId', async (req, res) => {
             try {
                 const boardFound = await boardController.getBoard(req.params.boardId);
@@ -434,25 +402,12 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
-            }
-            try {
-                const boardCreated = await boardController.postBoard(req.user._id, req.body);
-                res.status(201).send({ message: 'Board successfully created', board: boardCreated._id });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
         .put('/boards/:boardId/visibility', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeVisibility, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                console.log('tutu');
                 await boardController.putVisibility(req.params.boardId, req.body.visibility);
                 res.sendStatus(204);
             } catch (e) {
@@ -513,29 +468,14 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/lists', Auth.isAuthenticated, Board.isAdmin, listValidator.addList, async (req, res) => {
+        .post('/boards/:boardId/lists', listValidator.addList, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                const listCreated = await listController.postList(req.params.boardId, req.body.name);
+                const listCreated = await boardController.postList(req.params.boardId, req.body.name);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-        .post('/boards/:boardId/lists/:listId/cards', cardValidator.addCard, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
-            }
-            try {
-                const cardCreated = await cardController.postCard({
-                    name: req.body.name, list: req.params.listId,
-                });
-
-                res.status(201).send({ message: 'Card successfully created', card: cardCreated._id });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

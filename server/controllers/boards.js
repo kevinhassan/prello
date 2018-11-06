@@ -1,12 +1,12 @@
-const boardController = module.exports;
+const socket = require('../socket');
+const MyError = require('../util/error');
+
+const Board = require('../models/Board');
+
 const teamController = require('./teams');
 const userController = require('./users');
 const cardController = require('./cards');
-
-const socket = require('../socket');
-
-const MyError = require('../util/error');
-const Board = require('../models/Board');
+const listController = require('./lists');
 
 // ========================= //
 // ===== Get functions ===== //
@@ -15,7 +15,7 @@ const Board = require('../models/Board');
 /**
  * Get a board with lists and cards populated.
  */
-boardController.getBoard = async (boardId) => {
+exports.getBoard = async (boardId) => {
     try {
         const board = await Board.findById(boardId).populate([{
             path: 'lists',
@@ -35,6 +35,7 @@ boardController.getBoard = async (boardId) => {
         }
         return board;
     } catch (err) {
+        if (err.status) throw err;
         if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
@@ -49,7 +50,7 @@ boardController.getBoard = async (boardId) => {
 /**
  *
  */
-boardController.putLists = async (boardId, lists) => {
+exports.putLists = async (boardId, lists) => {
     try {
         const board = await Board.findById(boardId);
         if (!board) {
@@ -60,14 +61,11 @@ boardController.putLists = async (boardId, lists) => {
 
         socket.updateClientsOnBoard(board._id);
     } catch (err) {
-        if (err.name === 'ValidationError') {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect Query');
-        }
-        if (err.name === 'CastError') {
+        } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
-        }
-        if (err.status) {
-            throw err;
         }
         throw new MyError(500, 'Internal Server Error');
     }
@@ -77,7 +75,7 @@ boardController.putLists = async (boardId, lists) => {
  * Change admin access of the member
  * TODO: check if at least 1 admin before remove access right
  */
-boardController.putAccess = async (boardId, memberId, accessRight) => {
+exports.putAccess = async (boardId, memberId, accessRight) => {
     try {
         const board = await Board.findById(boardId).select(['members']);
 
@@ -101,12 +99,12 @@ boardController.putAccess = async (boardId, memberId, accessRight) => {
 /**
  * Change the visibility of the board
  */
-boardController.putVisibility = async (boardId, visibility) => {
+exports.putVisibility = async (boardId, visibility) => {
     try {
         await Board.updateOne({ _id: boardId }, { visibility });
     } catch (err) {
         if (err.status) throw err;
-        if (err.name === 'ValidationError') {
+        else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect Query');
         }
         throw new MyError(500, 'Internal Server Error');
@@ -121,7 +119,7 @@ boardController.putVisibility = async (boardId, visibility) => {
  * Create the board with the creator as admin.
  * Admin is automatically the member of the team.
  */
-boardController.postBoard = async (owner, data) => {
+exports.postBoard = async (owner, data) => {
     try {
         const board = new Board();
         board.name = data.name;
@@ -129,15 +127,34 @@ boardController.postBoard = async (owner, data) => {
         board.owner = owner;
         // Owner is also the member of the board
         await board.save();
-        return board._id;
+        return board;
     } catch (err) {
-        if (err.name === 'ValidationError') {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect Query');
         }
-        if (err.status) {
-            throw err;
-        }
         throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+exports.postList = async (boardId, name) => {
+    try {
+        const board = Board.findById(boardId).select('lists');
+        if (!board) throw new MyError(404, 'Board not found');
+
+        const newList = await listController.createList(boardId, name);
+        const newBoard = await Board.findOneAndUpdate({ _id: boardId }, { $addToSet: { lists: newList._id } }, { new: true });
+
+        socket.updateClientsOnBoard(newBoard._id);
+        return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        } else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -145,9 +162,9 @@ boardController.postBoard = async (owner, data) => {
  * Add team to the board (only for admins)
  * Board already exits
  */
-boardController.postTeam = async (boardId, teamId) => {
+exports.postTeam = async (boardId, teamId) => {
     try {
-        await teamController.postBoard(boardId, teamId);
+        await teamController.addBoard(boardId, teamId);
         const newBoard = await Board.updateOne({ _id: boardId },
             { $addToSet: { teams: teamId } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
@@ -161,7 +178,7 @@ boardController.postTeam = async (boardId, teamId) => {
 /**
  * Add member to the board (only for admins).
  */
-boardController.postMemberWithMail = async (boardId, email) => {
+exports.postMemberWithMail = async (boardId, email) => {
     try {
         const member = await userController.findMemberWithMail(email);
 
@@ -187,9 +204,10 @@ boardController.postMemberWithMail = async (boardId, email) => {
  * TODO: check if at least one member is admin before delete him
  *
  */
-boardController.deleteMember = async (boardId, memberId) => {
+exports.deleteMember = async (boardId, memberId) => {
     try {
-        await boardController.removeMember(boardId, memberId);
+        await exports.removeMember(boardId, memberId);
+
         // remove the board from the member
         await userController.removeBoard(memberId, boardId);
     } catch (err) {
@@ -201,7 +219,7 @@ boardController.deleteMember = async (boardId, memberId) => {
 /**
  * Remove the board's team (only for admins)
  */
-boardController.deleteTeam = async (boardId, teamId) => {
+exports.deleteTeam = async (boardId, teamId) => {
     try {
         await teamController.deleteBoard(boardId, teamId);
         const newBoard = await Board.updateOne({ _id: boardId },
@@ -217,7 +235,7 @@ boardController.deleteTeam = async (boardId, teamId) => {
 /**
  * Add list to the boaard
  */
-boardController.addList = async (boardId, listId) => {
+exports.addList = async (boardId, listId) => {
     try {
         const board = await Board.findById(boardId).select('lists');
         if (!board) throw new MyError(404, 'Board not found');
@@ -225,10 +243,9 @@ boardController.addList = async (boardId, listId) => {
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
-        if (err.name === 'ValidationError') {
+        else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
-        }
-        if (err.name === 'CastError') {
+        } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
         throw new MyError(500, 'Internal Server Error');
@@ -237,7 +254,7 @@ boardController.addList = async (boardId, listId) => {
 /**
  * Remove member of the board
  */
-boardController.removeMember = async (boardId, memberId) => {
+exports.removeMember = async (boardId, memberId) => {
     try {
         const board = await Board.findById(boardId)
             .select(['members', 'lists'])
@@ -269,14 +286,11 @@ boardController.removeMember = async (boardId, memberId) => {
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
-        if (err.name === 'ValidationError') {
+        else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
-        }
-        if (err.name === 'CastError') {
+        } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
         throw new MyError(500, 'Internal Server Error');
     }
 };
-
-module.exports = boardController;

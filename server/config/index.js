@@ -4,16 +4,16 @@ const logger = require('../util/logger');
 const ENVIRONMENT = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 let databaseEnv = '_dev';
 if (ENVIRONMENT === 'test') {
-  databaseEnv = '_test';
+    databaseEnv = '_test';
 } else if (ENVIRONMENT === 'production') {
-  databaseEnv = '';
+    databaseEnv = '';
 }
 logger.debug('Using .env file to supply config environment variables');
 dotenv.config({ path: '.env' });
 
 if (!process.env.MONGODB_URI) {
-  logger.error('No mongo connection string. Set MONGODB_URI environment variable.');
-  process.exit(1);
+    logger.error('No mongo connection string. Set MONGODB_URI environment variable.');
+    process.exit(1);
 }
 const DATABASE_URI = process.env.MONGODB_URI + databaseEnv;
 
