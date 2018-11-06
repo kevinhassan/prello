@@ -100,7 +100,6 @@ describe('POST /lists/:id/cards', () => {
     });
 });
 
-
 let list1 = {
     name: 'List 1',
 };
@@ -112,15 +111,21 @@ let card1 = {
 };
 
 describe('PUT /lists/:listId/cards/:cardId', () => {
-    before(async () => {
-        await Board.deleteMany({});
-        const boardId = await BoardController.createBoard({ name: 'testBoard', visibility: 'public' });
-        list1.boardId = boardId;
-        list2.boardId = boardId;
-        list1 = await ListController.createList(list1);
-        list2 = await ListController.createList(list2);
-        card1.list = list1._id;
-        card1 = await CardController.createCard(card1);
+    before((done) => {
+        Promise.all([]).then(async () => {
+            try {
+                const boardId = await BoardController.postBoard(user._id, { name: 'testBoard', visibility: 'public' });
+                list1.boardId = boardId;
+                list2.boardId = boardId;
+                list1 = await ListController.postList(list1);
+                list2 = await ListController.postList(list2);
+                card1.list = list1._id;
+                card1 = await CardController.postCard(card1);
+                done();
+            } catch (e) {
+                console.log(e);
+            }
+        });
     });
     it('should return 422 ERROR', (done) => {
         request(app)
