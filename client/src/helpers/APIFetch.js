@@ -18,6 +18,7 @@ export const fetchPrelloAPI = (resource, params = {}, verb = GET) => {
         data: params,
         headers: {
             'Content-type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         method: verb,
         responseType: 'json',

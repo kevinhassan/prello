@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator/check');
 const listController = require('../controllers/lists');
 const { listValidator } = require('../validators');
-
+const { Auth, List } = require('../middlewares');
 /**
 * @swagger
 * definitions:
@@ -45,7 +45,7 @@ const { listValidator } = require('../validators');
 
 module.exports = (router) => {
     router
-        .post('/lists/:listId/cards', listValidator.addCard, async (req, res) => {
+        .post('/lists/:listId/cards', Auth.isAuthenticated, List.canEdit, listValidator.addCard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });

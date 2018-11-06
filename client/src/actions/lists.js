@@ -28,8 +28,8 @@ export const createListSuccessAction = list => ({
 
 export const createList = list => (dispatch) => {
     dispatch(createListStartedAction());
-    const ressource = 'lists/';
-    APIFetch.fetchPrelloAPI(ressource, { name: list.name, boardId: list.boardId }, APIFetch.POST)
+    const resource = 'boards/'.concat(list.boardId).concat('/lists/');
+    APIFetch.fetchPrelloAPI(resource, { name: list.name }, APIFetch.POST)
         .then((res) => {
             const listCreated = res.data.list;
             dispatch(createListSuccessAction(listCreated));

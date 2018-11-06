@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator/check');
 const cardController = require('../controllers/cards');
 const { cardValidator } = require('../validators');
+const { Auth, Card } = require('../middlewares');
 
 /**
 * @swagger
@@ -44,7 +45,7 @@ const { cardValidator } = require('../validators');
 
 module.exports = (router) => {
     router
-        .put('/cards/:cardId/description', cardValidator.updateCardDescription, async (req, res) => {
+        .put('/cards/:cardId/description', Auth.isAuthenticated, Card.canEdit, cardValidator.updateCardDescription, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });

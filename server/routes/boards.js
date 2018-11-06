@@ -389,8 +389,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-
-        .put('/boards/:boardId/lists', boardValidator.updateBoardLists, async (req, res) => {
+        .put('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -468,7 +467,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/lists', listValidator.addList, async (req, res) => {
+        .post('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, listValidator.addList, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });

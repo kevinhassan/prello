@@ -25,14 +25,14 @@ const newDescription = {
     description: 'Another valid description',
 };
 const userData = {
-    userAdmin: {
+    userMember: {
         fullName: 'nameTest',
         email: 'test@test.fr',
         password: 'passTest',
         username: 'username',
         bio: 'bio'
     },
-    userNotAdmin: {
+    userNotMember: {
         fullName: 'nameTest',
         email: 'test2@test.fr',
         password: 'passTest',
@@ -40,21 +40,21 @@ const userData = {
         bio: 'bio'
     }
 };
-let userAdmin;
-let userNotAdmin;
-let tokenAdmin;
-let tokenNotAdmin;
+let userMember;
+let userNotMember;
+let tokenMember;
+let tokenNotMember;
 describe('PUT /cards/:id/description', () => {
     before((done) => {
         Promise.all([Card.deleteMany({}), Board.deleteMany({}), User.deleteMany({}), List.deleteMany({}), Card.deleteMany({})]).then(async () => {
             try {
-                userAdmin = await userController.signUp(userData.userAdmin);
-                userNotAdmin = await userController.signUp(userData.userNotAdmin);
-                tokenAdmin = await userController.login(userData.userAdmin.email,
-                    userData.userAdmin.password);
-                tokenNotAdmin = await userController.login(userData.userNotAdmin.email,
-                    userData.userNotAdmin.password);
-                const board = await boardController.postBoard(userAdmin._id, { name: 'Test board', visibility: 'public' });
+                userMember = await userController.signUp(userData.userMember);
+                userNotMember = await userController.signUp(userData.userNotMember);
+                tokenMember = await userController.login(userData.userMember.email,
+                    userData.userMember.password);
+                tokenNotMember = await userController.login(userData.userNotMember.email,
+                    userData.userNotMember.password);
+                const board = await boardController.postBoard(userMember._id, { name: 'Test board', visibility: 'public' });
                 const list = await listController.createList(board._id, listData.name);
                 listData.id = list._id;
                 const card = await cardController.createCard(cardData.name, list._id);
@@ -66,6 +66,13 @@ describe('PUT /cards/:id/description', () => {
             }
         });
     });
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/description`)
+            .send(newDescription)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
     it('should return 422 ERROR', (done) => {
         const wrongDescription = {
             description: 43
@@ -73,13 +80,31 @@ describe('PUT /cards/:id/description', () => {
         request(app)
             .put(`/cards/${cardData.id}/description`)
             .send(wrongDescription)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect('Content-Type', /json/)
             .expect(422, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/description`)
+            .send(newDescription)
+            .set('Authorization', `Bearer ${tokenNotMember}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .post('/cards/unknown/description')
+            .send(cardData)
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
             .put(`/cards/${cardData.id}/description`)
             .send(newDescription)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect(204, done);
     });
 });

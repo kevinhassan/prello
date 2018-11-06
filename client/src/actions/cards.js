@@ -35,8 +35,8 @@ export const createCardSuccessAction = card => ({
 export const createCard = card => (dispatch) => {
     dispatch(createCardStartedAction());
     dispatch(displayLoadingModal());
-    const resource = 'cards/';
-    APIFetch.fetchPrelloAPI(resource, { name: card.name, list: card.list }, APIFetch.POST)
+    const resource = 'lists/'.concat(card.list).concat('/cards/');
+    APIFetch.fetchPrelloAPI(resource, { name: card.name }, APIFetch.POST)
         .then((res) => {
             const cardCreated = res.data.card;
             dispatch(createCardSuccessAction(cardCreated));

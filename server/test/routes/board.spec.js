@@ -31,6 +31,13 @@ const userData = {
         password: 'passTest',
         username: 'username2',
         bio: 'bio'
+    },
+    userNotMember: {
+        fullName: 'nameTest',
+        email: 'test3@test.fr',
+        password: 'passTest',
+        username: 'username3',
+        bio: 'bio'
     }
 };
 const listData = {
@@ -40,8 +47,10 @@ const listData = {
 
 let userAdmin;
 let userNotAdmin;
+let userNotMember;
 let tokenAdmin;
 let tokenNotAdmin;
+let tokenNotMember;
 let team;
 describe('POST /boards', () => {
     before((done) => {
@@ -50,6 +59,7 @@ describe('POST /boards', () => {
                 try {
                     userAdmin = await userController.signUp(userData.userAdmin);
                     userNotAdmin = await userController.signUp(userData.userNotAdmin);
+                    userNotMember = await userController.signUp(userData.userNotMember);
 
                     // the owner of the team won't be the owner of the board (for tests)
                     dataTeam.members.push({ _id: userNotAdmin._id });
@@ -57,6 +67,8 @@ describe('POST /boards', () => {
                         userData.userAdmin.password);
                     tokenNotAdmin = await userController.login(userData.userNotAdmin.email,
                         userData.userNotAdmin.password);
+                    tokenNotMember = await userController.login(userData.userNotMember.email,
+                        userData.userNotMember.password);
 
                     // create the team and add the admin
                     team = new Team();
@@ -120,10 +132,24 @@ describe('GET /boards/:id', () => {
 });
 
 describe('PUT /boards/:id/lists', () => {
+    it('should return 401 OK', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/lists`)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 OK', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/lists`)
+            .set('Authorization', `Bearer ${tokenNotMember}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
     it('should return 404 OK', (done) => {
         request(app)
-            .get('/boards/test1234')
+            .put('/boards/test1234/lists')
             .expect('Content-Type', /json/)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
     });
 
@@ -134,6 +160,7 @@ describe('PUT /boards/:id/lists', () => {
         request(app)
             .put(`/boards/${boardData.id}/lists`)
             .send(wrongLists)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
@@ -142,6 +169,7 @@ describe('PUT /boards/:id/lists', () => {
         request(app)
             .put(`/boards/${boardData.id}/lists`)
             .send({ lists: [] })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });
 });
