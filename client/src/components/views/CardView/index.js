@@ -20,9 +20,13 @@ const CardView = props => (
         onClick={event => props.onCardClick(event)}
     >
         <div className="cardContent">
-            <div className="labelsBar">
-                {props.card.labels.map(label => <LabelPill key={label._id} label={label} />)}
-            </div>
+            {props.card.labels.length > 0
+                ? (
+                    <div className="labelsBar">
+                        {props.card.labels.map(label => <LabelPill key={label._id} label={label} />)}
+                    </div>
+                ) : ''
+            }
             <div>
                 <b className="cardName">{props.card.name}</b>
             </div>
