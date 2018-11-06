@@ -1,12 +1,13 @@
 const socket = require('../socket');
 const MyError = require('../util/error');
 
-const Board = require('../models/Board');
-
 const teamController = require('./teams');
 const userController = require('./users');
 const cardController = require('./cards');
 const listController = require('./lists');
+
+const Board = require('../models/Board');
+const Label = require('../models/Label');
 
 // ========================= //
 // ===== Get functions ===== //
@@ -22,10 +23,15 @@ exports.getBoard = async (boardId) => {
             populate: {
                 path: 'cards',
                 model: 'Card',
-                populate: {
+                populate: [{
                     path: 'list',
                     select: 'name'
+                },
+                {
+                    path: 'labels',
+                    select: ['color', 'name']
                 }
+                ]
             }
         }, {
             path: 'labels'
@@ -37,6 +43,29 @@ exports.getBoard = async (boardId) => {
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Get a board labels.
+ */
+exports.getLabels = async (boardId) => {
+    try {
+        const board = await Board.findById(boardId).populate([{
+            path: 'labels'
+        }]);
+        if (!board) {
+            throw new MyError(404, 'Board not found');
+        }
+        return board;
+    } catch (err) {
+        if (err.status) {
+            throw err;
+        }
+        if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
         throw new MyError(500, 'Internal Server Error');
@@ -189,6 +218,40 @@ exports.postMemberWithMail = async (boardId, email) => {
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
+    }
+};
+
+/**
+ * Create a new label.
+ */
+exports.postLabel = async (data) => {
+    try {
+        const label = new Label();
+
+        const board = await Board.findById(data.boardId);
+        if (!board) {
+            throw new MyError(404, 'Not found, the specified board doesn\'t exist');
+        }
+
+        label.name = data.name;
+        label.color = data.color;
+        label.boardId = data.boardId;
+        await label.save();
+
+        board.labels.push(label);
+        await board.save();
+
+        socket.updateClientsOnBoard(data.boardId);
+
+        return label;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
     }
 };
 

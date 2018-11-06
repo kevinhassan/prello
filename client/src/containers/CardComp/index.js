@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { editCardDescription } from '../../actions/cards';
+import { editCardDescription, deleteLabel } from '../../actions/cards';
 
 // ===== Models
 import Card from '../../models/Card';
@@ -19,16 +19,17 @@ class CardComp extends React.Component {
         this.state = {
             displayCardDetail: false,
             isEditingDescription: false,
+            isEditingLabels: false,
         };
 
-        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleCardClick = this.handleCardClick.bind(this);
         this.handleCloseCardDetail = this.handleCloseCardDetail.bind(this);
-        this.handleEditDescription = this.handleEditDescription.bind(this);
-    }
 
-    changeIsEditingDescription(value) {
-        this.setState({ isEditingDescription: value });
+        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
+        this.handleEditDescription = this.handleEditDescription.bind(this);
+
+        this.changeIsEditingLabels = this.changeIsEditingLabels.bind(this);
+        this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
     }
 
     handleCardClick() {
@@ -45,6 +46,11 @@ class CardComp extends React.Component {
         }
     }
 
+    /* ===== DESCRIPTION ===== */
+    changeIsEditingDescription(value) {
+        this.setState({ isEditingDescription: value });
+    }
+
     handleEditDescription(event) {
         event.preventDefault();
         const description = event.target.description.value;
@@ -52,8 +58,17 @@ class CardComp extends React.Component {
         this.setState({ isEditingDescription: false });
     }
 
+    /* ===== LABELS ===== */
+    changeIsEditingLabels(value) {
+        this.setState({ isEditingLabels: value });
+    }
+
+    handleDeleteLabel(label) {
+        this.props.deleteLabel(this.props.card._id, label._id);
+    }
+
     render() {
-        const { card } = this.props;
+        const { boardLabels, card } = this.props;
         return (
             <div>
                 <CardView
@@ -63,12 +78,17 @@ class CardComp extends React.Component {
                 {(this.state.displayCardDetail)
                     ? (
                         <CardDetailView
+                            boardLabels={boardLabels}
                             card={card}
                             closeCardDetail={this.handleCloseCardDetail}
 
                             changeIsEditingDescription={this.changeIsEditingDescription}
                             editDescription={this.handleEditDescription}
                             isEditingDescription={this.state.isEditingDescription}
+
+                            changeIsEditingLabels={this.changeIsEditingLabels}
+                            deleteLabel={this.handleDeleteLabel}
+                            isEditingLabels={this.state.isEditingLabels}
                         />
                     )
                     : ''
@@ -78,7 +98,9 @@ class CardComp extends React.Component {
     }
 }
 CardComp.propTypes = {
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     card: PropTypes.instanceOf(Card).isRequired,
+    deleteLabel: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
 };
 
@@ -91,7 +113,8 @@ const mapStateToProps = cardsReducer => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        editCardDescription,
+        deleteLabel,
+        editCardDescription
     }, dispatch,
 );
 

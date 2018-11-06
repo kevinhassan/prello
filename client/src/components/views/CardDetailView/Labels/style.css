@@ -1,0 +1,38 @@
+.labels-ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 5px;
+    padding: 0;
+}
+
+.clickableLabels-btn:hover, .clickableLabels-btn:focus {
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.clickableLabels-btn:hover:before {
+    display: none;
+}
+
+.addLabel-li {
+    font-size: 0.8rem;
+    height: 35px;
+    line-height: 35px;
+    padding: 0;
+    width: 35px;
+}
+
+.addLabel-btn {
+    background-color: #ddd;
+    border-radius: 5rem;
+    color: #000;
+    transition: 0.2s;
+}
+
+.addLabel-btn:hover {
+    background-color: #ccc;
+    transform: rotateZ(90deg);
+    transition: 0.2s;
+
+}

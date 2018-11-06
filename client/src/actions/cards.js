@@ -11,6 +11,14 @@ export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
 export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
 export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
 export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
+
+export const ADD_LABEL_STARTED = 'cards/ADD_LABEL_STARTED';
+export const ADD_LABEL_FAILURE = 'cards/ADD_LABEL_FAILURE';
+export const ADD_LABEL_SUCCESS = 'cards/ADD_LABEL_SUCCESS';
+
+export const DELETE_LABEL_STARTED = 'cards/DELETE_LABEL_STARTED';
+export const DELETE_LABEL_FAILURE = 'cards/DELETE_LABEL_FAILURE';
+export const DELETE_LABEL_SUCCESS = 'cards/DELETE_LABEL_SUCCESS';
 // ========================
 
 // ====== Create card
@@ -79,8 +87,72 @@ export const editCardDescription = (cardId, description) => (dispatch) => {
             dispatch(displaySuccessMessage('Description updated'));
         })
         .catch((error) => {
-            dispatch(editCardDescriptionFailureAction(error.message));
+            dispatch(editCardDescriptionFailureAction(error.response.data.error));
             dispatch(hideLoadingModal());
-            dispatch(displayErrorMessage(error.message));
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
+
+// ===== Add label
+export const addLabelStartedAction = () => ({ type: ADD_LABEL_STARTED });
+export const addLabelFailureAction = error => ({
+    type: ADD_LABEL_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const addLabelSuccessAction = message => ({
+    type: ADD_LABEL_SUCCESS,
+    payload: {
+        message,
+    },
+});
+
+export const addLabel = (cardId, labelId) => (dispatch) => {
+    dispatch(addLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `cards/${cardId}/labels/${labelId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.POST)
+        .then((res) => {
+            dispatch(addLabelSuccessAction(cardId, labelId));
+            dispatch(hideLoadingModal());
+            dispatch(displaySuccessMessage(res.data.message));
+        })
+        .catch((error) => {
+            dispatch(addLabelFailureAction(error.response.data.error));
+            dispatch(hideLoadingModal());
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
+
+// ===== Delete label
+export const deleteLabelStartedAction = () => ({ type: DELETE_LABEL_STARTED });
+export const deleteLabelFailureAction = error => ({
+    type: DELETE_LABEL_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const deleteLabelSuccessAction = message => ({
+    type: DELETE_LABEL_SUCCESS,
+    payload: {
+        message,
+    },
+});
+
+export const deleteLabel = (cardId, labelId) => (dispatch) => {
+    dispatch(deleteLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `cards/${cardId}/labels/${labelId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
+        .then((res) => {
+            dispatch(deleteLabelSuccessAction(cardId, labelId));
+            dispatch(hideLoadingModal());
+            dispatch(displaySuccessMessage(res.data.message));
+        })
+        .catch((error) => {
+            dispatch(deleteLabelFailureAction(error.response.data.error));
+            dispatch(hideLoadingModal());
+            dispatch(displayErrorMessage(error.response.data.error));
         });
 };

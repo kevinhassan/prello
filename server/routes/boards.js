@@ -11,6 +11,14 @@ const { Auth, Board } = require('../middlewares');
 *               type: string
 *           visibility:
 *               type: string
+*   NewLabel:
+*       properties:
+*           name:
+*               type: string
+*           color:
+*               type: string
+*           boardId:
+*               type: string
 *   VisibilityForm:
 *       properties:
 *           visibility:
@@ -365,6 +373,52 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
+* /boards/{boardId}/labels:
+*   get:
+*       tags:
+*           - Board
+*       description: Get board labels
+*       summary: Get board labels
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*       responses:
+*           200:
+*               description: Board labels found
+*           404:
+*               description: Board not found
+*           500:
+*               description: Internal server error
+*
+*   post:
+*       tags:
+*           - Board
+*       description: Create a new label
+*       summary: Create a new label
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The information of the new label
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewLabel'
+*       responses:
+*           201:
+*               description: Label successfully created
+*           401:
+*               description: Unauthorized user
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -389,6 +443,16 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+
+        .get('/boards/:boardId/labels', async (req, res) => {
+            try {
+                const labels = await boardController.getLabels(req.params.boardId);
+                res.status(200).send({ labels });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+
         .put('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -421,6 +485,22 @@ module.exports = (router) => {
             try {
                 await boardController.postMemberWithMail(req.params.boardId, req.body.email);
                 res.status(201).send({ message: 'Member successfully added' });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/labels', boardValidator.createLabel, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                const labelCreated = await boardController.postLabel({
+                    color: req.body.color,
+                    name: req.body.name,
+                    boardId: req.params.boardId,
+                });
+                res.status(201).send({ message: 'Label successfully created', label: labelCreated });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

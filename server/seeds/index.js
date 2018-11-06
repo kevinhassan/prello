@@ -4,9 +4,10 @@ require('../database')(config);
 const seeders = [];
 seeders.push(require('./BoardSeeder'));
 seeders.push(require('./CardSeeder'));
+seeders.push(require('./LabelSeeder'));
 seeders.push(require('./ListSeeder'));
-seeders.push(require('./UserSeeder'));
 seeders.push(require('./TeamSeeder'));
+seeders.push(require('./UserSeeder'));
 
 // ====== Seed all collections
 async function seedAll() {

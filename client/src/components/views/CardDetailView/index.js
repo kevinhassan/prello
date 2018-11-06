@@ -3,8 +3,9 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// ===== Elements Components
+// ===== Card Detail Components
 import Description from './Description';
+import Labels from './Labels';
 
 // ===== Models
 import Card from '../../../models/Card';
@@ -29,7 +30,7 @@ const CardDetailView = props => (
                 <div className="row">
 
                     {/* ===== DUE DATE ===== */}
-                    <div className="col-sm-6">
+                    <div className="col-sm-4">
                         <h2 className="cardDetail-h2">
                             <i className="fas fa-calendar-alt" />
                             {' '}
@@ -52,15 +53,21 @@ const CardDetailView = props => (
                         </div>
 
                     </div>
+                    {/* ==================== */}
 
-
-                    <div className="col-sm-6">
-                        <h2 className="cardDetail-h2">
-                            <i className="fas fa-tags" />
-                            {' '}
-                            Labels
-                        </h2>
+                    {/* ===== LABELS ===== */}
+                    <div className="col-sm-8">
+                        <Labels
+                            boardLabels={props.boardLabels}
+                            cardId={props.card._id}
+                            changeIsEditingLabels={props.changeIsEditingLabels}
+                            isEditingLabels={props.isEditingLabels}
+                            labels={props.card.labels}
+                            deleteLabel={props.deleteLabel}
+                        />
                     </div>
+                    {/* ==================== */}
+
                 </div>
 
                 {/* ===== DESCRIPTION ===== */}
@@ -72,34 +79,28 @@ const CardDetailView = props => (
                 />
                 {/* ==================== */}
 
-                <div>
-                    {(props.deleteCard)
-                        ? (
-                            <button type="button" className="btn btn-sm btn-danger" onClick={() => props.deleteCard(props.card._id)}>
-                                <i className="fas fa-trash-alt" />
-                            </button>
-                        )
-                        : ''
-                    }
-                </div>
             </div>
         </div>
     </div>
 );
 
 CardDetailView.propTypes = {
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     card: PropTypes.instanceOf(Card).isRequired,
     closeCardDetail: PropTypes.func.isRequired,
-    deleteCard: PropTypes.func,
 
-    editDescription: PropTypes.func.isRequired,
     changeIsEditingDescription: PropTypes.func.isRequired,
+    editDescription: PropTypes.func.isRequired,
     isEditingDescription: PropTypes.bool,
+
+    changeIsEditingLabels: PropTypes.func.isRequired,
+    deleteLabel: PropTypes.func.isRequired,
+    isEditingLabels: PropTypes.bool,
 };
 
 CardDetailView.defaultProps = {
-    deleteCard: undefined,
     isEditingDescription: false,
+    isEditingLabels: false,
 };
 
 // Put info from the store state in props (None)

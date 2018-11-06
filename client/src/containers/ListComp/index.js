@@ -37,9 +37,10 @@ class ListComp extends React.Component {
     }
 
     render() {
-        const { list, isBeingDragged } = this.props;
+        const { boardLabels, list, isBeingDragged } = this.props;
         return (
             <ListView
+                boardLabels={boardLabels}
                 isInputVisible={this.state.isInputVisible}
                 isBeingDragged={isBeingDragged}
                 displayAddCardForm={this.handleAddCard}
@@ -50,6 +51,7 @@ class ListComp extends React.Component {
     }
 }
 ListComp.propTypes = {
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
     list: PropTypes.object.isRequired,

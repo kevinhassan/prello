@@ -40,6 +40,7 @@ const ListView = props => (
                                     >
                                         <CardComp
                                             card={c}
+                                            boardLabels={props.boardLabels}
                                         />
                                         {dragProvided.placeholder}
                                     </li>
@@ -63,6 +64,7 @@ const ListView = props => (
 );
 
 ListView.propTypes = {
+    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     list: PropTypes.object.isRequired,
     isInputVisible: PropTypes.bool.isRequired,
     isBeingDragged: PropTypes.bool,

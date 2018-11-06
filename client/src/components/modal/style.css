@@ -34,11 +34,11 @@
     display: inline-block;
     font-size: 0.9rem;
     height: 10vh;
-    min-height: 80px;
     line-height: 1rem;
+    min-height: 80px;
+    min-width: 100px;
     margin-top: 5px;
     width: 20vw;
-    min-width: 100px;
     padding: 10px;
     transition: 0.5s;
 }

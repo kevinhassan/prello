@@ -45,6 +45,7 @@ const BoardView = props => (
                                                     <ListComp
                                                         list={l}
                                                         isBeingDragged={dragSnapshot.isDragging}
+                                                        boardLabels={props.board.labels}
                                                     />
                                                     {dragProvided.placeholder}
                                                 </div>

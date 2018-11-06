@@ -11,6 +11,7 @@ const addBoard = [
         .escape()
         .isIn(['public', 'private', 'team'])
 ];
+
 const updateBoardLists = [
     check('lists')
         .escape()
@@ -50,11 +51,22 @@ const changeAccess = [
         .isBoolean()
 ];
 
+const createLabel = [
+    check('name')
+        .not().isEmpty()
+        .isString(),
+    check('color')
+        .not().isEmpty()
+        .matches('^#(?:[0-9a-fA-F]{3}){2}$')
+        .isString(),
+];
+
 module.exports = {
     addBoard,
-    updateBoardLists,
-    changeVisibility,
     addMember,
     addTeam,
-    changeAccess
+    changeAccess,
+    changeVisibility,
+    createLabel,
+    updateBoardLists,
 };
