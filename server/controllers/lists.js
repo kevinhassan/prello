@@ -3,9 +3,7 @@ const MyError = require('../util/error');
 
 const List = require('../models/List');
 
-const boardController = require('../controllers/boards');
 const cardController = require('../controllers/cards');
-
 
 // ======================== //
 // ==== Get functions ===== //
@@ -15,7 +13,7 @@ const cardController = require('../controllers/cards');
 /**
  * DELETE
  */
-listController.removeCard = async (data) => {
+exports.removeCard = async (data) => {
     try {
         const list = await List.findById(data.listId);
         const cardsUpdated = list.cards.filter(card => card._id.toString() !== data.cardId.toString());
@@ -38,7 +36,7 @@ listController.removeCard = async (data) => {
 /**
  * PUT
  */
-listController.addCard = async (data) => {
+exports.addCard = async (data) => {
     try {
         const list = await List.findById(data.listId);
         if (!list) throw new MyError(404, 'List not found');

@@ -5,6 +5,7 @@ const Card = require('../../models/Card');
 const User = require('../../models/User');
 const List = require('../../models/List');
 const boardController = require('../../controllers/boards');
+const cardController = require('../../controllers/cards');
 const userController = require('../../controllers/users');
 const listController = require('../../controllers/lists');
 
@@ -114,13 +115,13 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
     before((done) => {
         Promise.all([]).then(async () => {
             try {
-                const boardId = await BoardController.postBoard(user._id, { name: 'testBoard', visibility: 'public' });
+                const boardId = await boardController.postBoard(userMember._id, { name: 'testBoard', visibility: 'public' });
                 list1.boardId = boardId;
                 list2.boardId = boardId;
-                list1 = await ListController.postList(list1);
-                list2 = await ListController.postList(list2);
+                list1 = await listController.createList(list1);
+                list2 = await listController.createList(list2);
                 card1.list = list1._id;
-                card1 = await CardController.postCard(card1);
+                card1 = await cardController.postCard(card1);
                 done();
             } catch (e) {
                 console.log(e);
