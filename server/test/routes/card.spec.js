@@ -61,11 +61,13 @@ describe('POST /cards', () => {
                     userData.userMember.password);
                 tokenNotMember = await userController.login(userData.userNotMember.email,
                     userData.userNotMember.password);
+
                 const board = await boardController.postBoard(userMember._id, { name: 'Test board', visibility: 'public' });
                 const list = await listController.createList(board._id, listData.name);
                 listData.id = list._id;
                 const card = await cardController.createCard(cardData.name, list._id);
                 cardData.id = card._id;
+                newLabel.boardId = board._id;
                 const label = await boardController.postLabel(newLabel);
                 newLabel._id = label._id;
                 done();
@@ -121,12 +123,14 @@ describe('POST /cards', () => {
 describe('POST /cards/:cardId/labels/:labelId', () => {
     it('should return 200 OK', (done) => {
         request(app)
-            .post(`/cards/${cardData.cardId}/labels/${newLabel._id}`)
+            .post(`/cards/${cardData.id}/labels/${newLabel._id}`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect(200, done);
     });
     it('should return 422 ERROR', (done) => {
         request(app)
             .post(`/cards/${cardData.id}/labels/123456789123`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect(200, done);
     });
 });
@@ -135,11 +139,13 @@ describe('DELETE /cards/:cardId/labels/:labelId', () => {
     it('should return 200 OK', (done) => {
         request(app)
             .post(`/cards/${cardData.id}/labels/${newLabel._id}`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect(200, done);
     });
     it('should return 422 ERROR', (done) => {
         request(app)
             .post(`/cards/${cardData.id}/labels/123456789123`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect(200, done);
     });
 });

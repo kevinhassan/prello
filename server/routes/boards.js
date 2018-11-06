@@ -373,10 +373,7 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
-<<<<<<< develop
 * /boards/{boardId}/labels:
-=======
-* /boards/:boardId/labels:
 *   get:
 *       tags:
 *           - Board
@@ -399,7 +396,6 @@ const { Auth, Board } = require('../middlewares');
 *           500:
 *               description: Internal server error
 *
->>>>>>> GET labels route
 *   post:
 *       tags:
 *           - Board

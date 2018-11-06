@@ -1,19 +1,13 @@
 const socket = require('../socket');
 const MyError = require('../util/error');
 
-const Board = require('../models/Board');
-
 const teamController = require('./teams');
 const userController = require('./users');
 const cardController = require('./cards');
 const listController = require('./lists');
 
-const socket = require('../socket');
-
-const MyError = require('../util/error');
 const Board = require('../models/Board');
 const Label = require('../models/Label');
-const User = require('../models/User');
 
 // ========================= //
 // ===== Get functions ===== //
@@ -58,7 +52,7 @@ exports.getBoard = async (boardId) => {
 /**
  * Get a board labels.
  */
-boardController.getLabels = async (boardId) => {
+exports.getLabels = async (boardId) => {
     try {
         const board = await Board.findById(boardId).populate([{
             path: 'labels'
@@ -230,7 +224,7 @@ exports.postMemberWithMail = async (boardId, email) => {
 /**
  * Create a new label.
  */
-boardController.postLabel = async (data) => {
+exports.postLabel = async (data) => {
     try {
         const label = new Label();
 

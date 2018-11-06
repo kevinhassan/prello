@@ -1,10 +1,10 @@
 const { validationResult } = require('express-validator/check');
 const cardController = require('../controllers/cards');
-const Card = require('../models/Card');
+const CardModel = require('../models/Card');
 const List = require('../models/List');
 const socket = require('../socket');
 const { cardValidator } = require('../validators');
-const { Auth, CardMiddleware } = require('../middlewares');
+const { Auth, Card } = require('../middlewares');
 
 /**
 * @swagger
@@ -138,7 +138,7 @@ const { Auth, CardMiddleware } = require('../middlewares');
 
 module.exports = (router) => {
     router
-        .delete('/cards/:cardId/labels/:labelId', Auth.isAuthenticated, CardMiddleware.canEdit, cardValidator.deleteLabel, async (req, res) => {
+        .delete('/cards/:cardId/labels/:labelId', Auth.isAuthenticated, Card.canEdit, cardValidator.deleteLabel, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
@@ -148,7 +148,7 @@ module.exports = (router) => {
                     cardId: req.params.cardId, labelId: req.params.labelId,
                 });
 
-                const card = await Card.findById(req.params.cardId);
+                const card = await CardModel.findById(req.params.cardId);
                 const list = await List.findById(card.list._id);
                 socket.updateClientsOnBoard(list.boardId);
 
@@ -174,7 +174,7 @@ module.exports = (router) => {
             }
         })
 
-        .post('/cards/:cardId/labels/:labelId', Auth.isAuthenticated, CardMiddleware.canEdit, cardValidator.addLabel, async (req, res) => {
+        .post('/cards/:cardId/labels/:labelId', Auth.isAuthenticated, Card.canEdit, cardValidator.addLabel, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
@@ -184,7 +184,7 @@ module.exports = (router) => {
                     cardId: req.params.cardId, labelId: req.params.labelId,
                 });
 
-                const card = await Card.findById(req.params.cardId);
+                const card = await CardModel.findById(req.params.cardId);
                 const list = await List.findById(card.list._id);
                 socket.updateClientsOnBoard(list.boardId);
 
@@ -194,7 +194,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/cards/:cardId/description', Auth.isAuthenticated, CardMiddleware.canEdit, cardValidator.updateCardDescription, async (req, res) => {
+        .put('/cards/:cardId/description', Auth.isAuthenticated, Card.canEdit, cardValidator.updateCardDescription, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
