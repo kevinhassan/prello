@@ -150,7 +150,7 @@ module.exports = (router) => {
 
                 const card = await CardModel.findById(req.params.cardId);
                 const list = await List.findById(card.list._id);
-                socket.updateClientsOnBoard(list.boardId);
+                socket.updateClientsOnBoard(list.board._id);
 
                 res.status(200).send({ message: 'Label removed' });
             } catch (e) {
@@ -186,7 +186,7 @@ module.exports = (router) => {
 
                 const card = await CardModel.findById(req.params.cardId);
                 const list = await List.findById(card.list._id);
-                socket.updateClientsOnBoard(list.boardId);
+                socket.updateClientsOnBoard(list.board._id);
 
                 res.status(200).send({ message: 'Label added' });
             } catch (e) {
