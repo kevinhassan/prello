@@ -1,11 +1,13 @@
 export default function Board({
-    _id, isArchived, name, labels, lists, visibility, teams,
+    _id, isArchived, name, labels, lists, visibility, teams, members, owner,
 } = {}) {
     this._id = _id; // String
     this.isArchived = isArchived; // Boolean
     this.name = name; // String
+    this.visibility = visibility; // String
     this.labels = labels; // Array(Label)
     this.lists = lists; // Array(List)
-    this.visibility = visibility; // visibility
+    this.members = members; // Array({User, isAdmin: bool})
+    this.owner = owner; // User
     this.teams = teams; // Array(Team)
 }

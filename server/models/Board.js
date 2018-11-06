@@ -3,17 +3,17 @@ const mongoose = require('mongoose');
 const boardSchema = new mongoose.Schema({
     isArchived: { type: Boolean, required: true, default: false },
     name: { type: String, required: true },
-    labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
-    lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     visibility: {
         type: String, enum: ['public', 'private', 'team'], required: true, default: 'public'
     },
-    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
+    labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
+    lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
     members: [{
         _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         isAdmin: { type: Boolean, default: false }
-    }]
+    }],
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
 }, { timestamps: true });
 
 /**

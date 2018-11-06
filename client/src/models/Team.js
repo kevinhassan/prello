@@ -1,10 +1,11 @@
 export default function Team({
-    _id, description, isVisible, name, boardsId, users,
+    _id, avatarUrl, description, isVisible, name, boards, members,
 } = {}) {
     this._id = _id; // String
+    this.avatarUrl = avatarUrl; // String
     this.description = description; // String
     this.isVisible = isVisible; // Boolean
     this.name = name; // String
-    this.boardsId = boardsId; // String
-    this.users = users; // Array(User)
+    this.boards = boards; // Array[Board]
+    this.members = members; // Array(User)
 }

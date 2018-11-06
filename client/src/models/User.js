@@ -1,6 +1,6 @@
 export default function User({
     _id, avatarUrl, biography, email, fullName, initials,
-    password, username, notifs, teams,
+    password, username, notifications, boards, teams, passwordResetExpires, passwordResetToken,
 } = {}) {
     this._id = _id; // String
     this.avatarUrl = avatarUrl; // String
@@ -9,7 +9,10 @@ export default function User({
     this.fullName = fullName; // String
     this.initials = initials; // String
     this.password = password; // String
+    this.passwordResetExpires = passwordResetExpires; // String
+    this.passwordResetToken = passwordResetToken; // String
     this.username = username; // String
-    this.notifs = notifs; // Array(Notification)
+    this.boards = boards; // Array(Board)
+    this.notifications = notifications; // Array(Notification)
     this.teams = teams; // Array(Team)
 }

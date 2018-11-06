@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 
 const checklistItemSchema = new mongoose.Schema({
+    isChecked: { type: Boolean, required: true },
     name: { type: String, required: true },
-    isChecked: { type: Boolean, required: true }
+    checklist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Checklist' }]
 }, { timestamps: true });
 
 

@@ -1,28 +1,27 @@
 const bcrypt = require('bcrypt-nodejs');
-const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    fullName: { type: String, required: true },
-    username: { type: String, unique: true, required: true },
-    initials: String,
-    bio: String,
-    email: { type: String, unique: true, required: true },
-    password: { type: String, required: true },
-    passwordResetToken: String,
-    passwordResetExpires: Date,
     avatarUrl: String,
-    teams: [{
+    biography: String,
+    email: { type: String, unique: true, required: true },
+    fullName: { type: String, required: true },
+    initials: String,
+    password: { type: String, required: true },
+    passwordResetExpires: Date,
+    passwordResetToken: String,
+    username: { type: String, unique: true, required: true },
+    boards: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Team'
+        ref: 'Board'
     }],
     notifications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Notification'
     }],
-    boards: [{
+    teams: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Board'
+        ref: 'Team'
     }],
 }, { timestamps: true });
 

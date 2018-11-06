@@ -28,7 +28,7 @@ export const createListSuccessAction = list => ({
 
 export const createList = list => (dispatch) => {
     dispatch(createListStartedAction());
-    const resource = 'boards/'.concat(list.boardId).concat('/lists/');
+    const resource = 'boards/'.concat(list.board._id).concat('/lists/');
     APIFetch.fetchPrelloAPI(resource, { name: list.name }, APIFetch.POST)
         .then((res) => {
             const listCreated = res.data.list;
@@ -69,7 +69,7 @@ export const moveCard = (sourceListId, destinationListId, cardId, destinationInd
     dispatch(moveCardStartedAction());
     const ressource = `lists/${destinationListId}/cards/${cardId}`;
     APIFetch.fetchPrelloAPI(ressource, { index: destinationIndex, sourceListId }, APIFetch.PUT)
-        .then((res) => {
+        .then(() => {
             dispatch(moveCardSuccessAction(listsUpdated));
             // Don't display success message for this action
             // dispatch(displaySuccessMessage(res.data.message));

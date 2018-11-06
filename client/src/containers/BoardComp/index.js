@@ -54,7 +54,7 @@ class BoardComp extends React.Component {
         event.preventDefault();
         const name = event.target.listName.value;
         const newList = new List({
-            name, boardId: this.props.board._id,
+            name, board: this.props.board,
         });
         this.props.createList(newList);
         this.setState({ isInputVisible: false });

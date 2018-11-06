@@ -1,4 +1,4 @@
-export default function CheckItem({
+export default function ChecklistItem({
     _id, isChecked = false, name, checklist,
 } = {}) {
     this._id = _id; // String
