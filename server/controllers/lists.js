@@ -65,7 +65,7 @@ exports.postCard = async (listId, name) => {
  */
 exports.addCard = async (index, listId, cardId) => {
     try {
-        const list = await List.findById(listId).select('cards');
+        const list = await List.findById(listId);
         if (!list) throw new MyError(404, 'List not found');
 
         if (list.cards) list.cards.splice(index, 0, cardId);

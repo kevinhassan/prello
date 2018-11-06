@@ -129,7 +129,7 @@ module.exports = (router) => {
                 });
 
                 res.status(201).send({ message: 'Card successfully moved', list: listUpdated });
-                socket.updateClientsOnBoard(listUpdated.boardId);
+                socket.updateClientsOnBoard(listUpdated.board);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
