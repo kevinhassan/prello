@@ -16,7 +16,7 @@ const cardController = require('../controllers/cards');
 exports.removeCard = async (data) => {
     try {
         const list = await List.findById(data.listId);
-        const cardsUpdated = list.cards.filter(card => card._id !== data.cardId);
+        const cardsUpdated = list.cards.filter(card => card._id.toString() !== data.cardId.toString());
         list.cards = cardsUpdated;
 
         await list.save();
