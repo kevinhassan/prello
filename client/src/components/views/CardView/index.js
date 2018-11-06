@@ -17,7 +17,7 @@ const CardView = props => (
         <div className="cardContent">
             <button className="btn-noCss" type="button" onClick={props.onCardClick} onKeyDown={props.onCardClick}>
                 <div className="labelsBar">
-                    {props.card.labels.map(label => <LabelPill label={label} />)}
+                    {props.card.labels.map(label => <LabelPill key={label._id} label={label} />)}
                 </div>
                 <div>
                     <b className="cardName">{props.card.name}</b>

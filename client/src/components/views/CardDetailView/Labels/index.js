@@ -29,25 +29,26 @@ const Labels = props => (
         </div>
         {props.labels.length > 0
             ? (
-                <ul className="labels-ul">
-                    {props.labels.map(label => (
-                        <Label
-                            key={label._id}
-                            label={label}
-                            onClick={props.deleteLabel}
-                        />
-                    ))}
-                    <li className="addLabel-li">
-                        <button
-                            className="btn addLabel-btn"
-                            type="button"
-                            onClick={() => props.changeIsEditingLabels(true)}
-                        >
-                            <i className="fas fa-plus" />
-                        </button>
-                    </li>
-                </ul>
-
+                <div>
+                    <ul className="labels-ul">
+                        {props.labels.map(label => (
+                            <Label
+                                key={label._id}
+                                label={label}
+                                onClick={props.deleteLabel}
+                            />
+                        ))}
+                        <li className="addLabel-li">
+                            <button
+                                className="btn addLabel-btn"
+                                type="button"
+                                onClick={() => props.changeIsEditingLabels(true)}
+                            >
+                                <i className="fas fa-plus" />
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             ) : (
                 <button
                     className="btn btn-link btn-addElement"
