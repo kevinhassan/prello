@@ -4,7 +4,7 @@ import {
 } from './modal';
 
 // ========================
-export const CREATE_CARD_STARTED = 'card/CREATE_CARD_FAILURE';
+export const CREATE_CARD_STARTED = 'card/CREATE_CARD_STARTED';
 export const CREATE_CARD_FAILURE = 'card/CREATE_CARD_FAILURE';
 export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
 
