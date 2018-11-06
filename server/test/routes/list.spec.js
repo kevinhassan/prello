@@ -115,9 +115,9 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
     before((done) => {
         Promise.all([]).then(async () => {
             try {
-                const boardId = await boardController.postBoard(userMember._id, { name: 'testBoard', visibility: 'public' });
-                list1 = await listController.createList(boardId, list1.name);
-                list2 = await listController.createList(boardId, list2.name);
+                const board = await boardController.postBoard(userMember._id, { name: 'testBoard', visibility: 'public' });
+                list1 = await listController.createList(board._id, list1.name);
+                list2 = await listController.createList(board._id, list2.name);
                 card1.list = list1._id;
                 card1 = await cardController.createCard(card1.name, card1.list);
                 done();

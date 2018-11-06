@@ -234,7 +234,7 @@ exports.postLabel = async (data) => {
 
         label.name = data.name;
         label.color = data.color;
-        label.board = data.boardId;
+        label.board = { _id: data.boardId };
         await label.save();
 
         board.labels.push(label);

@@ -20,11 +20,11 @@ const User = require('../models/User');
 exports.postBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId },
-            { $addToSet: { boards: boardId } })
+            { $addToSet: { boards: { _id: boardId } } })
             .catch(async () => { throw new MyError(404, 'User not found'); });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 /**
@@ -97,7 +97,7 @@ exports.forgot = async (email, host) => {
         user.passwordResetToken = await randomBytesAsync(16).then(buf => buf.toString('hex'));
         user.passwordResetExpires = Date.now() + 3600000; // 1 hour
         user = await user.save();
-        if (!user) throw new MyError(500, 'Internal Server Error');
+        if (!user) throw new MyError(500, 'Internal server error');
         const token = user.passwordResetToken;
         const transporter = nodemailer.createTransport({
             service: 'Mailjet',
@@ -109,7 +109,7 @@ exports.forgot = async (email, host) => {
         await transporter.sendMail(resetPasswordMail(email, host, token));
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 /**
@@ -133,7 +133,7 @@ exports.resetPassword = async (token, password) => {
         await transporter.sendMail(confirmResetPasswordMail(user.email));
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -147,26 +147,27 @@ exports.resetPassword = async (token, password) => {
 exports.getProfile = async (user) => {
     try {
     // return plain json object with lean
-        const userProfile = await User.findById(user.id).select({
+        const userProfile = await User.findById(user._id).select({
             fullName: 1, username: 1, biography: 1, initials: 1, _id: 0
         }).lean();
         return userProfile;
     } catch (err) {
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
+
 /**
  * Profile page.
  */
 exports.getAccount = async (user) => {
     try {
         // return plain json object with lean
-        const userAccount = await User.findById(user.id).select({
+        const userAccount = await User.findById(user._id).select({
             email: 1
         }).lean();
         return userAccount;
     } catch (err) {
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -181,7 +182,7 @@ exports.putProfile = async (user, data) => {
         fullName, biography, initials, username
     } = data;
     try {
-        const userProfile = await User.findById(user.id).select({
+        const userProfile = await User.findById(user._id).select({
             fullName: 1, username: 1, biography: 1, initials: 1
         });
         userProfile.fullName = fullName;
@@ -197,7 +198,7 @@ exports.putProfile = async (user, data) => {
         else if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(400, 'Update profile failed');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 /**
@@ -208,7 +209,7 @@ exports.putAccount = async (user, data) => {
         email, password
     } = data;
     try {
-        const userProfile = await User.findById(user.id).select({
+        const userProfile = await User.findById(user._id).select({
             password: 1, email: 1
         });
         if (email && email !== '') {
@@ -223,7 +224,7 @@ exports.putAccount = async (user, data) => {
     } catch (err) {
         // TODO: add more details (ex: if same username then error)
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 // ======================== //
@@ -237,7 +238,7 @@ exports.deleteAccount = async (user) => {
         await User.deleteOne({ _id: user._id });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -250,7 +251,7 @@ exports.deleteBoard = async (userId, boardId) => {
         await exports.removeBoard(userId, boardId);
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -261,18 +262,18 @@ exports.findMemberWithMail = async (email) => {
         return user;
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
 exports.removeBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId },
-            { $pull: { boards: boardId } })
+            { $pull: { boards: { _id: boardId } } })
             .catch(async () => { throw new MyError(404, 'User not found'); });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -282,11 +283,11 @@ exports.joinTeam = async (userId, teamId) => {
         if (!user) throw new MyError(404, 'User unknown');
 
         await User.updateOne({ _id: userId },
-            { $addToSet: { teams: teamId } })
+            { $addToSet: { teams: { _id: teamId } } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -296,10 +297,10 @@ exports.leaveTeam = async (userId, teamId) => {
         if (!user) throw new MyError(404, 'User unknown');
 
         await User.updateOne({ _id: userId },
-            { $pull: { teams: teamId } })
+            { $pull: { teams: { _id: teamId } } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };

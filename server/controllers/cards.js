@@ -43,11 +43,11 @@ exports.postCard = async (data) => {
         }
         card.name = data.name;
         card.list = data.list;
-        list.cards.push(card._id);
+        list.cards.push({ _id: card._id });
 
         await list.save();
         await card.save();
-        socket.updateClientsOnBoard(list.boardId);
+        socket.updateClientsOnBoard(list.board._id);
 
         return card;
     } catch (err) {
@@ -71,13 +71,13 @@ exports.addLabel = async (data) => {
             throw new MyError(422, 'Incorrect query, the specified card doesn\'t exist');
         }
 
-        card.labels.push(data.labelId);
+        card.labels.push({ _id: data.labelId });
 
         await card.save();
 
         // Update clients on board
         const list = await List.findById(card.list._id);
-        socket.updateClientsOnBoard(list.boardId);
+        socket.updateClientsOnBoard(list.board._id);
 
         return card;
     } catch (err) {
@@ -101,7 +101,7 @@ exports.addLabel = async (data) => {
  */
 exports.putMember = async (cardId, memberId) => {
     try {
-        return await Card.findByIdAndUpdate(cardId, { $addToSet: { members: memberId } },
+        return await Card.findByIdAndUpdate(cardId, { $addToSet: { members: { _id: memberId } } },
             { new: true }).catch(async () => {
             throw new MyError(404, 'Card not found');
         });
@@ -122,9 +122,9 @@ exports.putDescription = async (cardId, description) => {
         card.description = description;
         await card.save();
 
-        const newList = await listController.getList(card.list);
+        const newList = await listController.getList(card.list._id);
         // update board via socket
-        socket.updateClientsOnBoard(newList.board);
+        socket.updateClientsOnBoard(newList.board._id);
 
         return card;
     } catch (err) {
@@ -142,7 +142,7 @@ exports.createCard = async (name, listId) => {
     try {
         const newCard = new Card();
         newCard.name = name;
-        newCard.list = listId;
+        newCard.list = { _id: listId };
         await newCard.save();
         return newCard;
     } catch (err) {
@@ -176,7 +176,7 @@ exports.putList = async (data) => {
         const card = await Card.findById(data.cardId);
         if (!card) throw new MyError(404, 'Card not found.');
 
-        card.list = data.listId;
+        card.list = { _id: data.listId };
         await card.save();
 
         return card;

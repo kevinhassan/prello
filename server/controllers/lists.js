@@ -16,7 +16,7 @@ const cardController = require('../controllers/cards');
 exports.removeCard = async (data) => {
     try {
         const list = await List.findById(data.listId);
-        const cardsUpdated = list.cards.filter(card => card._id.toString() !== data.cardId.toString());
+        const cardsUpdated = list.cards.filter(card => card._id !== data.cardId);
         list.cards = cardsUpdated;
 
         await list.save();
@@ -45,9 +45,11 @@ exports.postCard = async (listId, name) => {
         if (!list) throw new MyError(404, 'List not found');
 
         const newCard = await cardController.createCard(name, listId);
-        const newList = await List.findOneAndUpdate({ _id: listId }, { $addToSet: { cards: newCard._id } }, { new: true });
+        const newList = await List.findOneAndUpdate({ _id: listId },
+            { $addToSet: { cards: { _id: newCard._id } } },
+            { new: true });
 
-        socket.updateClientsOnBoard(newList.board);
+        socket.updateClientsOnBoard(newList.board._id);
         return newList;
     } catch (err) {
         if (err.status) throw err;
@@ -69,7 +71,7 @@ exports.addCard = async (index, listId, cardId) => {
         if (!list) throw new MyError(404, 'List not found');
 
         if (list.cards) list.cards.splice(index, 0, cardId);
-        else list.cards = [cardId];
+        else list.cards = [{ _id: cardId }];
         await list.save();
 
         return list;
@@ -88,7 +90,7 @@ exports.createList = async (boardId, name) => {
     try {
         const list = new List();
         list.name = name;
-        list.board = boardId;
+        list.board = { _id: boardId };
         const newList = await list.save();
         return newList;
     } catch (err) {

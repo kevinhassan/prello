@@ -87,17 +87,17 @@ exports.deleteTeam = async (teamId) => {
         await Promise.all(team.members.map(async member => userController.leaveTeam(member._id, teamId)));
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 exports.deleteBoard = async (teamId, boardId) => {
     try {
         await Team.updateOne({ _id: teamId },
-            { $pull: { boards: boardId } }, { new: true })
+            { $pull: { boards: { _id: boardId } } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 exports.deleteMember = async (teamId, memberId) => {
@@ -113,18 +113,18 @@ exports.deleteMember = async (teamId, memberId) => {
         if (err.name === 'CastError') {
             throw new MyError(404, 'Member not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
 exports.addBoard = async (teamId, boardId) => {
     try {
         await Team.updateOne({ _id: teamId },
-            { $addToSet: { boards: boardId } }, { new: true })
+            { $addToSet: { boards: { _id: boardId } } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 exports.addMemberWithEmail = async (teamId, email) => {
@@ -135,6 +135,6 @@ exports.addMemberWithEmail = async (teamId, email) => {
         return team;
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
