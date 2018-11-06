@@ -245,7 +245,6 @@ exports.postLabel = async (data) => {
 
         return label;
     } catch (err) {
-        console.log(err);
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
         }
