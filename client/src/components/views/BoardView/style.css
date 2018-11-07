@@ -1,7 +1,6 @@
 .boardSettingsBar {
     background-color: #eee;
     flex: none;
-    margin: 0 15px;
     margin-bottom: 10px;
 }
 
@@ -29,7 +28,6 @@
 .listsAndAddPanel {
     display: flex;
     height: 100%;
-    margin: 0 15px;
     padding-bottom: 15px;
     overflow-x: auto;
 }

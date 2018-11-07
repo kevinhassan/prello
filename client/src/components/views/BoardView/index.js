@@ -14,7 +14,7 @@ import './style.css';
 // ==================================
 
 const BoardView = props => (
-    <div className="boardPanel">
+    <div className="boardPanel container-fluid">
         <div className="row">
             <div className="col-sm-12 boardSettingsBar">
                 <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
