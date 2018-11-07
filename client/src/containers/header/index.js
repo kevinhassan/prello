@@ -5,12 +5,23 @@ import PropTypes from 'prop-types';
 import { push } from 'connected-react-router';
 
 // ===== Actions
+import { signOut } from '../../actions/auth';
 
 // ===== Others
 import logoPrello from '../../assets/logo_prello_white.png';
 import './style.css';
 
 class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleLogOut = this.handleLogOut.bind(this);
+    }
+
+    handleLogOut() {
+        this.props.signOut();
+        this.props.goHome();
+    }
+
     render() {
         const {
             goAbout, goBoards, goHome, goProfile, goRegister, goSignIn, isLoggedIn,
@@ -30,7 +41,7 @@ class Header extends React.Component {
                     }
                 </div>
                 <div className="centerHeader-div">
-                    <span onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>
+                    <span onClick={goHome} onKeyPress={goBoards} role="link" tabIndex={0}>
                         <img className="prello-logo" src={logoPrello} alt="Logo Prello" />
                     </span>
                 </div>
@@ -40,6 +51,9 @@ class Header extends React.Component {
                             <Fragment>
                                 <button className="btn btn-header" type="button" onClick={goProfile}><i className="fas fa-user" /></button>
                                 <button className="btn btn-header" type="button"><i className="fas fa-bell" /></button>
+                                <button className="btn btn-header btn-logout" type="button" onClick={this.handleLogOut}>
+                                    <i className="fas fa-sign-out-alt" />
+                                </button>
                             </Fragment>
                         ) : (
                             <Fragment>
@@ -62,6 +76,7 @@ Header.propTypes = {
     goRegister: PropTypes.func.isRequired,
     goSignIn: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    signOut: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props
@@ -78,6 +93,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         goProfile: () => push('/profile'),
         goRegister: () => push('/register'),
         goSignIn: () => push('/signin'),
+        signOut,
     }, dispatch,
 );
 

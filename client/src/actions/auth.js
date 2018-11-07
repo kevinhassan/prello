@@ -1,18 +1,15 @@
+import { push } from 'connected-react-router';
 import * as APIFetch from '../helpers/APIFetch';
 import { displayLoadingModal, hideLoadingModal, displaySuccessMessage } from './modal';
-import { push } from 'connected-react-router';
-
-export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
-export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
-export const CLASSIC_SIGN_IN_SUCCESS = 'auth/CLASSIC_SIGN_IN_SUCCESS';
-
-export const CLASSIC_REGISTER_STARTED = 'auth/CLASSIC_REGISTER_STARTED';
-export const CLASSIC_REGISTER_FAILURE = 'auth/CLASSIC_REGISTER_FAILURE';
-export const CLASSIC_REGISTER_SUCCESS = 'auth/CLASSIC_REGISTER_SUCCESS';
 
 export const UNAUTHENTICATED_USER_ERROR = 'auth/UNAUTHENTICATED_USER_ERROR';
 
 // ==========
+
+// ===== Classic sign in ===== //
+export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
+export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
+export const CLASSIC_SIGN_IN_SUCCESS = 'auth/CLASSIC_SIGN_IN_SUCCESS';
 
 export const classicSignInStarted = () => ({ type: CLASSIC_SIGN_IN_STARTED });
 export const classicSignInFailure = error => ({
@@ -43,6 +40,12 @@ export const classicSignIn = (email, password) => (dispatch) => {
         });
 };
 
+
+// ===== Classic Register ===== //
+export const CLASSIC_REGISTER_STARTED = 'auth/CLASSIC_REGISTER_STARTED';
+export const CLASSIC_REGISTER_FAILURE = 'auth/CLASSIC_REGISTER_FAILURE';
+export const CLASSIC_REGISTER_SUCCESS = 'auth/CLASSIC_REGISTER_SUCCESS';
+
 export const classicRegisterStarted = () => ({ type: CLASSIC_REGISTER_STARTED });
 
 export const classicRegisterFailure = error => ({
@@ -68,6 +71,15 @@ export const classicRegister = (fullName, email, password) => (dispatch) => {
         .catch((error) => {
             dispatch(classicRegisterFailure(error.response.data.error));
         });
+};
+
+// ===== Sign out ===== //
+export const SIGN_OUT = 'auth/SIGN_OUT';
+
+export const signOutAction = () => ({ type: SIGN_OUT });
+
+export const signOut = () => (dispatch) => {
+    dispatch(signOutAction());
 };
 
 export const UnauthenticatedUserError = error => ({

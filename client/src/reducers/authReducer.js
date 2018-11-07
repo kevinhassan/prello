@@ -3,7 +3,7 @@ import * as actions from '../actions/auth';
 export const initialState = {
     errorSignInMessage: '',
     errorRegisterMessage: '',
-    isLoggedIn: false,
+    isLoggedIn: localStorage.getItem('prello_token') !== null,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -33,6 +33,12 @@ export default function authReducer(state = initialState, action) {
             errorRegisterMessage: action.payload.error,
         };
 
+    case actions.SIGN_OUT:
+        localStorage.removeItem('prello_token');
+        return {
+            ...state,
+            isLoggedIn: false,
+        };
 
     case actions.UNAUTHENTICATED_USER_ERROR:
         return {
