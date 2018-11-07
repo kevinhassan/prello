@@ -34,7 +34,6 @@ export default function authReducer(state = initialState, action) {
         };
 
     case actions.SIGN_OUT:
-        localStorage.removeItem('prello_token');
         return {
             ...state,
             isLoggedIn: false,

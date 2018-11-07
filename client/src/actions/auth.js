@@ -79,6 +79,7 @@ export const SIGN_OUT = 'auth/SIGN_OUT';
 export const signOutAction = () => ({ type: SIGN_OUT });
 
 export const signOut = () => (dispatch) => {
+    localStorage.removeItem('prello_token');
     dispatch(signOutAction());
 };
 
