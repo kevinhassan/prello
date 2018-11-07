@@ -6,23 +6,23 @@ import './style.css';
 
 const ProfileTab = () => (
     <span>
-        <div className="row">
-            <div className="col-sm-8 offset-sm-2">
-                <h4 className="teams">
-                    <i className="fas fa-users teamIcon" />
-        My teams
-                </h4>
-            </div>
+        <div className="teamsPanel">
+
+            <h4 className="teams">
+                <i className="fas fa-users teamIcon" />
+                    My teams
+            </h4>
+
         </div>
 
         <hr />
-        <div className="row">
-            <div className="col-sm-8 offset-sm-2">
-                <h4 className="news">
-                    <i className="far fa-newspaper teamIcon" />
-        Activity
-                </h4>
-            </div>
+        <div className="activityPanel">
+
+            <h4 className="news">
+                <i className="far fa-newspaper teamIcon" />
+                    Activity
+            </h4>
+
         </div>
     </span>
 

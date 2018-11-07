@@ -20,7 +20,7 @@ const SettingsTab = () => (
                 <h5>Delete your account</h5>
                 <p>(Careful, this is definitive)</p>
             </div>
-            
+
             <button className="btn btn-danger" type="button">Delete U</button>
         </div>
     </div>

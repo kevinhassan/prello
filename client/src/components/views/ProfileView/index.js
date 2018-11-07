@@ -47,10 +47,18 @@ const ProfileView = props => (
         <Tabs>
             <TabList className="profileTabList">
                 <Tab className="labels">
-                    <h4>Profile</h4>
+                    <h4>
+                        <i className="fas fa-user teamIcon" />
+                        {' '}
+                        Profile
+                    </h4>
                 </Tab>
                 <Tab className="labels">
-                    <h4>Settings</h4>
+                    <h4>
+                        <i className="fas fa-cog teamIcon" />
+                        {' '}
+                        Settings
+                    </h4>
                 </Tab>
             </TabList>
 
