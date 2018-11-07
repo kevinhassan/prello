@@ -16,6 +16,7 @@ class BoardsComp extends React.Component {
         super(props);
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
         this.handleOnMemberClick = this.handleOnMemberClick.bind(this);
+        this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
     }
 
     componentWillMount() {
@@ -31,6 +32,11 @@ class BoardsComp extends React.Component {
         this.props.goToMember(memberId);
     }
 
+    handleOnTeamClick(event, teamId) {
+        event.stopPropagation();
+        this.props.goToTeam(teamId);
+    }
+
     render() {
         const { boards } = this.props;
         return (
@@ -38,6 +44,7 @@ class BoardsComp extends React.Component {
                 boards={boards}
                 onBoardClick={this.handleOnBoardClick}
                 onMemberClick={this.handleOnMemberClick}
+                onTeamClick={this.handleOnTeamClick}
             />
         );
     }
@@ -46,6 +53,7 @@ BoardsComp.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object).isRequired,
     goToBoard: PropTypes.func.isRequired,
     goToMember: PropTypes.func.isRequired,
+    goToTeam: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props
@@ -58,6 +66,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
+        goToTeam: teamId => push(`/teams/${teamId}`),
     }, dispatch,
 );
 

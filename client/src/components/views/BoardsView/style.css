@@ -62,6 +62,21 @@
     white-space: pre;
 }
 
+.teamLink {
+    transition: 0.2s;
+}
+
+.teamLink:hover {
+    color: #004a75;
+    text-decoration: underline;
+    transition: 0.2s;
+}
+
+.teamLink:hover::after {
+    color: initial;
+    text-decoration: none;
+}
+
 .membersInitialsList {
     display: flex;
     flex-wrap: wrap;
