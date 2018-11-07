@@ -7,6 +7,7 @@ const cardController = require('./cards');
 const listController = require('./lists');
 
 const Board = require('../models/Board');
+const User = require('../models/User');
 const Label = require('../models/Label');
 
 // ========================= //
@@ -45,6 +46,21 @@ exports.getBoard = async (boardId) => {
         else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+exports.getBoards = async (userId) => {
+    try {
+        const boards = await User.findById(userId).select('boards').populate({
+            path: 'boards',
+            select: ['isArchived', 'name', 'visibility', 'members', 'teams'],
+            populate: {
+                path: 'lists',
+                select: 'cards'
+            }
+        });
+        return boards;
+    } catch (err) {
         throw new MyError(500, 'Internal Server Error');
     }
 };
