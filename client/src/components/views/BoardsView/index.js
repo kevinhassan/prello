@@ -21,7 +21,7 @@ const BoardsView = props => (
         </h1>
         {props.boards.length > 0
             ? (
-                <div>
+                <div className="boardsContent">
                     <ul className="boards-ul">
                         {props.boards.map((board) => {
                             if (board.isArchived) {
