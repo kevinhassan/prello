@@ -7,7 +7,7 @@ import List from '../models/List';
 
 export const initialState = {
     board: undefined,
-    userBoards: [],
+    userBoards: undefined,
 };
 
 export default function boardsReducer(state = initialState, action) {
@@ -33,6 +33,7 @@ export default function boardsReducer(state = initialState, action) {
             ...state,
             userBoards: newBoards,
         };
+
     case actions.FETCH_BOARD_SUCCESS:
         // Convert JSON to Object (Board, List, Card)
         const newBoard = new Board(action.payload.board);

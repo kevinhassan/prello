@@ -40,22 +40,28 @@ class BoardsComp extends React.Component {
 
     render() {
         const { boards } = this.props;
-        return (
-            <BoardsView
-                boards={boards}
-                onBoardClick={this.handleOnBoardClick}
-                onMemberClick={this.handleOnMemberClick}
-                onTeamClick={this.handleOnTeamClick}
-            />
-        );
+        if (boards) {
+            return (
+                <BoardsView
+                    boards={boards}
+                    onBoardClick={this.handleOnBoardClick}
+                    onMemberClick={this.handleOnMemberClick}
+                    onTeamClick={this.handleOnTeamClick}
+                />
+            );
+        }
+        return '';
     }
 }
 BoardsComp.propTypes = {
-    boards: PropTypes.arrayOf(PropTypes.object).isRequired,
+    boards: PropTypes.arrayOf(PropTypes.object),
     fetchBoards: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
     goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
+};
+BoardsComp.defaultProps = {
+    boards: undefined,
 };
 
 // Put info from the store state in props
