@@ -5,8 +5,5 @@ module.exports = [
         .not().isEmpty(),
     check('initials')
         .not().isEmpty()
-        .isLength({ min: 1, max: 3 }),
-    check('username')
-        .not().isEmpty()
-
+        .isLength({ min: 1, max: 4 }),
 ];

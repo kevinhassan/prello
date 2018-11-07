@@ -2,6 +2,12 @@
     padding-top: 20px;
 }
 
+.headerProfile{
+    display: flex;
+    justify-content: space-around;
+}
+
+
 .infosPanel {
     padding:20px;
     background-color: #ddd;
@@ -10,6 +16,10 @@
 }
 
 .nickname{
+    display: flex;
+}
+
+.nickname > h1, p{
     text-align: left
 }
 
@@ -30,7 +40,8 @@
 }
 
 .userData{
-    border-radius: 0.25rem;
+    width:400px;
+    min-width: 300px;
 }
 
 h5{
@@ -38,6 +49,21 @@ h5{
     font-style: italic;
 }
 
+.labels{
+    background-color: #ddd;
+    width: 150px;
+    min-width: 100px;
+    border: 1px solid black;
+    border-bottom: none;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 5px;
+}
+
 .profileTabList{
-    float: center;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    margin-bottom: 100px;
 }

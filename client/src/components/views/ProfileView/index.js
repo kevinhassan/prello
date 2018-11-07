@@ -20,20 +20,20 @@ import './style.css';
 const ProfileView = props => (
 
     <div className="user" key={props.user.id}>
-        <div className="row">
-            <div className="col-sm-1 offset-sm-3">
+        <div className="headerProfile">
+            <div className="nickname">
                 <h2 className="initials">
                     {props.user.initials}
                 </h2>
+                <div>
+                    <h1 className="userFullname">{props.user.fullName}</h1>
+                    <p>
+                        @
+                        {props.user.username}
+                    </p>
+                </div>
             </div>
-            <div className="col-sm-3 nickname">
-                <h1 className="userFullname">{props.user.fullName}</h1>
-                <p>
-                    @
-                    {props.user.username}
-                </p>
-            </div>
-            <div className="col-sm-3 userData">
+            <div className="userData">
                 <InformationForm
                     displayUpdateForm={props.handleUpdateDisplay}
                     handleUpdateInformation={props.handleUpdateInformation}
@@ -43,10 +43,15 @@ const ProfileView = props => (
             </div>
         </div>
 
+        <br />
         <Tabs>
             <TabList className="profileTabList">
-                <Tab>Profile</Tab>
-                <Tab>Settings</Tab>
+                <Tab className="labels">
+                    <h4>Profile</h4>
+                </Tab>
+                <Tab className="labels">
+                    <h4>Settings</h4>
+                </Tab>
             </TabList>
 
             <TabPanel>

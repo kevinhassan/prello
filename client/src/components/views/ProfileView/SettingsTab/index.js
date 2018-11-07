@@ -5,16 +5,25 @@ import PropTypes from 'prop-types';
 import './style.css';
 
 const SettingsTab = () => (
-    <span>
-        <div className="row">
-            <div className="col-sm-8 offset-sm-2">
-                <h4 className="teams">                
-                Coucou
-                </h4>
-            </div>
+    <div className="settings">
+        <div className="changePassword">
+            <h5>Change your password</h5>
+            <button className="btn btn-success" type="button">Change</button>
         </div>
-    </span>
 
+        <br />
+        <hr />
+        <br />
+
+        <div className="deleteAccount">
+            <div>
+                <h5>Delete your account</h5>
+                <p>(Careful, this is definitive)</p>
+            </div>
+            
+            <button className="btn btn-danger" type="button">Delete U</button>
+        </div>
+    </div>
 );
 
 SettingsTab.propTypes = {
