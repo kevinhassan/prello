@@ -83,16 +83,25 @@ const BoardsView = props => (
                                         </ul>
                                     </div>
                                 </div>
-
                             </li>
                         );
                     })}
                 </ul>
             )
             : (
-                <h2>
-                    {'You don\'t have access to any boards currently'}
-                </h2>
+                <div>
+                    <p className="text-center h3">
+                        {'You don\'t have access to any boards currently '}
+                        <i className="fas fa-frown-open" />
+                    </p>
+                    <p className="text-center h3">
+                        <button type="button" className="btn btn-success">
+                            <i className="fas fa-plus" />
+                            {' '}
+                            Create one
+                        </button>
+                    </p>
+                </div>
             )
         }
     </div>
