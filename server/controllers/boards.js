@@ -7,6 +7,7 @@ const cardController = require('./cards');
 const listController = require('./lists');
 
 const Board = require('../models/Board');
+const User = require('../models/User');
 const Label = require('../models/Label');
 
 // ========================= //
@@ -45,6 +46,32 @@ exports.getBoard = async (boardId) => {
         else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+exports.getBoards = async (userId) => {
+    try {
+        const boards = await User.findById(userId).select('boards')
+            .populate({
+                path: 'boards',
+                select: ['isArchived', 'name', 'visibility'],
+                populate: [
+                    {
+                        path: 'lists',
+                        select: 'cards'
+                    },
+                    {
+                        path: 'members',
+                        select: 'initials'
+                    },
+                    {
+                        path: 'teams',
+                        select: 'name'
+                    },
+                ]
+            });
+        return boards;
+    } catch (err) {
         throw new MyError(500, 'Internal Server Error');
     }
 };
@@ -104,23 +131,21 @@ exports.putLists = async (boardId, lists) => {
  * Change admin access of the member
  * TODO: check if at least 1 admin before remove access right
  */
-exports.putAccess = async (boardId, memberId, accessRight) => {
+exports.putAccess = async (boardId, memberId, isAdmin) => {
     try {
-        const board = await Board.findById(boardId).select(['members']);
-
-        // change the member access right
-        let memberFound = false;
-        await board.members.map((member) => {
-            if (member._id.toString() === memberId.toString()) {
-                member.isAdmin = accessRight;
-                memberFound = true;
-            }
-            return member;
-        });
+        const memberFound = User.findById(memberId);
         if (!memberFound) throw new MyError(404, 'Member not found');
-        await board.save();
+        if (isAdmin) {
+            // add to admin collection
+            await Board.updateOne({ _id: boardId }, { $addToSet: { admins: memberId } });
+        } else {
+            await Board.updateOne({ _id: boardId }, { $pull: { admins: memberId } });
+        }
     } catch (err) {
         if (err.status) throw err;
+        else if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
         throw new MyError(500, 'Internal Server Error');
     }
 };
@@ -325,7 +350,7 @@ exports.removeMember = async (boardId, memberId) => {
                 select: 'cards',
                 populate: {
                     path: 'cards',
-                    select: 'members _id',
+                    select: 'members',
                     populate: {
                         path: 'members',
                         select: '_id'
@@ -340,7 +365,7 @@ exports.removeMember = async (boardId, memberId) => {
 
         // remove the member from the board and update with the new lists
         const newBoard = await board.updateOne({
-            $pull: { members: { _id: memberId } }
+            $pull: { members: memberId, admins: memberId }
         },
         { new: true }).catch((async () => {
             throw new MyError(404, 'Member not found');

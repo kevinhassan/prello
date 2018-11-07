@@ -11,7 +11,7 @@ const isMember = async (req, res, next) => {
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
-        const member = board.members.find(member => member._id.toString() === req.user._id.toString());
+        const member = board.members.find(member => req.user._id.toString() === member._id.toString());
         if (!member) throw new MyError(403, 'Forbidden access');
         next();
     } catch (e) {
@@ -30,12 +30,12 @@ const isMember = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try {
         if (!req.user) throw new MyError(401, 'Unauthorize user');
-        const board = await Board.findById(req.params.boardId).select('members');
+        const board = await Board.findById(req.params.boardId).select('admins');
 
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
-        const member = board.members.find(member => member._id.toString() === req.user._id.toString() && member.isAdmin);
+        const member = board.admins.find(admin => req.user._id.toString() === admin._id.toString());
         if (!member) throw new MyError(403, 'Forbidden access');
         next();
     } catch (e) {

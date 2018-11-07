@@ -1,11 +1,13 @@
 import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
+
 import Board from '../models/Board';
 import Card from '../models/Card';
 import List from '../models/List';
 
 export const initialState = {
     board: undefined,
+    userBoards: undefined,
 };
 
 export default function boardsReducer(state = initialState, action) {
@@ -23,6 +25,13 @@ export default function boardsReducer(state = initialState, action) {
         return {
             ...state,
             errorMessage: action.payload.error,
+        };
+
+    case actions.FETCH_BOARDS_SUCCESS:
+        const newBoards = action.payload.boards.map(board => new Board(board));
+        return {
+            ...state,
+            userBoards: newBoards,
         };
 
     case actions.FETCH_BOARD_SUCCESS:

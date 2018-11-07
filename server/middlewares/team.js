@@ -11,7 +11,7 @@ const isMember = async (req, res, next) => {
         if (!team) {
             throw new MyError(404, 'Team not found');
         }
-        const member = team.members.find(member => member._id.toString() === req.user._id.toString());
+        const member = team.members.find(member => req.user._id.toString() === member._id.toString());
         if (!member) throw new MyError(403, 'Forbidden access');
         next();
     } catch (e) {
@@ -30,12 +30,12 @@ const isMember = async (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try {
         if (!req.user) throw new MyError(401, 'Unauthorize user');
-        const team = await Team.findById(req.params.teamId).select('members');
+        const team = await Team.findById(req.params.teamId).select('admins');
 
         if (!team) {
             throw new MyError(404, 'Team not found');
         }
-        const member = team.members.find(member => member._id.toString() === req.user._id.toString() && member.isAdmin);
+        const member = team.admins.find(admin => req.user._id.toString() === admin._id.toString());
         if (!member) throw new MyError(403, 'Forbidden access');
         next();
     } catch (e) {

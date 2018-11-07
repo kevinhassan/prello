@@ -17,6 +17,20 @@
         ],
         "privacy": "public",
         "owner": "b00000000001",
-        "members": [{"_id": "b00000000001", "isAdmin": true}, {"_id": "b00000000002", "isAdmin": false}]
+        "members": ["u00000000001","u00000000002"],
+        "admins": ["u00000000001"],
+        "teams": ["t00000000001"]
+    },
+    {
+        "_id": "b00000000002",
+        "isArchived": false,
+        "name": "Facebook",
+        "labels": ["la0000000001", "la0000000002", "la0000000003", "la0000000004", "la0000000005"],
+        "lists": [],
+        "privacy": "public",
+        "owner": "b00000000001",
+        "members": ["u00000000001","u00000000002"],
+        "admins": ["u00000000001"],
+        "teams": ["t00000000001"]
     }
 ]

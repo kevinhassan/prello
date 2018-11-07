@@ -1,6 +1,9 @@
 [
   {
-      "name": "Team 1",
-      "members": [{"_id": "t00000000002", "isAdmin": true}]
+      "_id": "t00000000001",
+      "name": "Polytech Group 2.2",
+      "members": ["m00000000001"],
+      "admins": ["b00000000001"],
+      "boards": ["b00000000001"]
   }
 ]

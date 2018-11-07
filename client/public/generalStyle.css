@@ -78,7 +78,7 @@ h1, h2, h3 {
 
 h1 {
     color: #004a75;
-    font-size: 3rem;
+    font-size: 3.5em;
 }
 
 h2 {
@@ -99,6 +99,10 @@ p {
 /* ===== ELEMENTS ===== */
 
 /* List */
+ul {
+    padding: 0;
+}
+
 li {
     list-style-type: none;
 }

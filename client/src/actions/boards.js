@@ -4,9 +4,40 @@ import * as APIFetch from '../helpers/APIFetch';
 
 // ========================
 
+export const FETCH_BOARDS_STARTED = 'boards/FETCH_BOARDS_STARTED';
+export const FETCH_BOARDS_FAILURE = 'boards/FETCH_BOARDS_FAILURE';
+export const FETCH_BOARDS_SUCCESS = 'boards/FETCH_BOARDS_SUCCESS';
 export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
 export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
+
+export const fetchBoardsStartedAction = () => ({ type: FETCH_BOARDS_STARTED });
+export const fetchBoardsFailureAction = error => ({
+    type: FETCH_BOARDS_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const fetchBoardsSuccessAction = boards => ({
+    type: FETCH_BOARDS_SUCCESS,
+    payload: {
+        boards,
+    },
+});
+
+export const fetchBoards = () => (dispatch) => {
+    dispatch(fetchBoardsStartedAction());
+    dispatch(displayLoadingModal());
+    APIFetch.fetchPrelloAPI('boards')
+        .then((res) => {
+            dispatch(fetchBoardsSuccessAction(res.data.boards));
+            dispatch(hideLoadingModal());
+        })
+        .catch((error) => {
+            dispatch(fetchBoardsFailureAction(error.response.data.error));
+            dispatch(hideLoadingModal());
+        });
+};
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({

@@ -48,6 +48,22 @@ const { Auth, Board } = require('../middlewares');
 *                   type: string
 *
 * /boards:
+*
+*   get:
+*       tags:
+*           - Board
+*       description: Get all boards
+*       summary: Get boards
+*       produces:
+*           - application/json
+*       responses:
+*           200:
+*               description: Boards found
+*           401:
+*               description: Unauthorize user
+*           500:
+*               description: Internal server error
+
 *   post:
 *       tags:
 *           - Board
@@ -423,6 +439,14 @@ const { Auth, Board } = require('../middlewares');
 
 module.exports = (router) => {
     router
+        .get('/boards', Auth.isAuthenticated, async (req, res) => {
+            try {
+                const { boards } = await boardController.getBoards(req.user);
+                res.status(200).send({ boards });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
         .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -443,7 +467,6 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-
         .get('/boards/:boardId/labels', async (req, res) => {
             try {
                 const labels = await boardController.getLabels(req.params.boardId);
