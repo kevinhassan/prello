@@ -25,7 +25,7 @@ class SignInComp extends React.Component {
 
     componentDidUpdate() {
         if (this.props.isLoggedIn) {
-            this.props.goHome();
+            this.props.goBoards();
         }
     }
 
@@ -52,7 +52,7 @@ SignInComp.propTypes = {
     classicSignIn: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    goHome: PropTypes.func.isRequired,
+    goBoards: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props
@@ -65,7 +65,7 @@ const mapStateToProps = ({ authReducer }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         classicSignIn,
-        goHome: () => push('/'),
+        goBoards: () => push('/boards'),
     }, dispatch,
 );
 
