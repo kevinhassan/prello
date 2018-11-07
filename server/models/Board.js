@@ -8,10 +8,8 @@ const boardSchema = new mongoose.Schema({
     },
     labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
     lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
-    members: [{
-        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-        isAdmin: { type: Boolean, default: false }
-    }],
+    admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
 }, { timestamps: true });
@@ -23,7 +21,8 @@ boardSchema.pre('save', function save(next) {
     const board = this;
     if (!board.members || board.members.length === 0) {
         board.members = [];
-        board.members.push({ _id: board.owner, isAdmin: true });
+        board.members.push(board.owner);
+        board.admins.push(board.owner);
     }
     next();
 });

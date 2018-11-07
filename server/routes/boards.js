@@ -441,7 +441,7 @@ module.exports = (router) => {
     router
         .get('/boards', Auth.isAuthenticated, async (req, res) => {
             try {
-                const boards = await boardController.getBoards(req.user);
+                const { boards } = await boardController.getBoards(req.user);
                 res.status(200).send({ boards });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

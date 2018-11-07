@@ -1,6 +1,7 @@
 const MyError = require('../util/error');
 
 const Team = require('../models/Team');
+const User = require('../models/Team');
 
 const userController = require('../controllers/users');
 const boardController = require('../controllers/boards');
@@ -29,21 +30,17 @@ exports.putTeam = async (teamId, data) => {
 /**
  * Change team's member right access
  */
-exports.putMemberAccess = async (teamId, memberId, accessRight) => {
+exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
     try {
-        const team = await Team.findById(teamId).select(['members']);
+        const member = User.findById(memberId);
+        if (!member) throw new MyError(404, 'Member not found');
 
-        // change the member access right
-        let memberFound = false;
-        await team.members.map((member) => {
-            if (member._id.toString() === memberId.toString()) {
-                member.isAdmin = accessRight;
-                memberFound = true;
-            }
-            return member;
-        });
-        if (!memberFound) throw new MyError(404, 'Member not found');
-        await team.save();
+        if (isAdmin) {
+            // add to admin collection
+            await Team.updateOne({ _id: teamId }, { $addToSet: { admins: memberId } });
+        } else {
+            await Team.updateOne({ _id: teamId }, { $pull: { admins: memberId } });
+        }
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
@@ -60,7 +57,8 @@ exports.postTeam = async (userId, data) => {
         newTeam.name = data.name;
         newTeam.isVisible = data.isVisible;
         // the creator is the first member of the team
-        newTeam.members.push({ _id: userId, isAdmin: true });
+        newTeam.members.push(userId);
+        newTeam.admins.push(userId);
         await newTeam.save();
 
         // add team to the team's creator
@@ -130,7 +128,7 @@ exports.addBoard = async (teamId, boardId) => {
 exports.addMemberWithEmail = async (teamId, email) => {
     try {
         const user = await userController.findMemberWithMail(email);
-        const team = await Team.findByIdAndUpdate(teamId, { $addToSet: { members: { _id: user._id, isAdmin: false } } });
+        const team = await Team.findByIdAndUpdate(teamId, { $addToSet: { members: user._id } });
         await userController.joinTeam(user._id, team._id);
         return team;
     } catch (err) {

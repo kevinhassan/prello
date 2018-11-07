@@ -17,6 +17,8 @@
         ],
         "privacy": "public",
         "owner": "b00000000001",
-        "members": [{"_id": "b00000000001", "isAdmin": true}, {"_id": "b00000000002", "isAdmin": false}]
+        "members": ["b00000000001","b00000000002"],
+        "admins": ["b00000000001"],
+        "teams": ["b00000000001"]
     }
 ]
