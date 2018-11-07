@@ -69,6 +69,7 @@ class ProfileComp extends React.Component {
 }
 
 ProfileComp.propTypes = {
+    errorMessage: PropTypes.object,
     getUserInformation: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
     user: PropTypes.object,
@@ -76,6 +77,7 @@ ProfileComp.propTypes = {
 
 ProfileComp.defaultProps = {
     user: undefined,
+    errorMessage: undefined,
 };
 
 // Put info from the store state in props
