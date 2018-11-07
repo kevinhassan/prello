@@ -9,12 +9,14 @@
     float: right;
 }
 
-.informationsForm{
+.informationForm{
     background-color: #ddd;
     padding: 10px;
+    border-radius: 0.25rem;
 }
 
-.informationsDisplay{
+.informationDisplay{
     background-color: #ddd;
     padding: 10px;
+    border-radius: 0.25rem;
 }

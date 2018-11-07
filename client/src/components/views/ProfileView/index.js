@@ -1,8 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {
+    Tab, Tabs, TabList, TabPanel,
+} from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 
 // ===== Components
 import InformationForm from './InformationForm';
+import SettingsTab from './SettingsTab';
+import ProfileTab from './ProfileTab';
+
 
 // ===== Others
 import './style.css';
@@ -29,39 +36,33 @@ const ProfileView = props => (
             <div className="col-sm-3 userData">
                 <InformationForm
                     displayUpdateForm={props.handleUpdateDisplay}
-                    updateInformation={props.handleUpdateInformation}
+                    handleUpdateInformation={props.handleUpdateInformation}
                     isVisible={props.isUpdateVisible}
                     user={props.user}
                 />
             </div>
         </div>
 
-        <hr />
-        <div className="row">
-            <div className="col-sm-8 offset-sm-2">
-                <h4 className="teams">
-                    <i className="fas fa-users teamIcon" />
-                    My teams
-                </h4>
-            </div>
-        </div>
+        <Tabs>
+            <TabList className="profileTabList">
+                <Tab>Profile</Tab>
+                <Tab>Settings</Tab>
+            </TabList>
 
-        <hr />
-        <div className="row">
-            <div className="col-sm-8 offset-sm-2">
-                <h4 className="news">
-                    <i className="far fa-newspaper teamIcon" />
-                    Activity
-                </h4>
-            </div>
-        </div>
+            <TabPanel>
+                <ProfileTab />
+            </TabPanel>
+            <TabPanel>
+                <SettingsTab />
+            </TabPanel>
+        </Tabs>
     </div>
 
 );
 
 ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
-    isUpdateVisible: PropTypes.object.isRequired,
+    isUpdateVisible: PropTypes.bool.isRequired,
     handleUpdateInformation: PropTypes.func.isRequired,
     handleUpdateDisplay: PropTypes.func.isRequired,
 };

@@ -21,7 +21,7 @@ class ProfileComp extends React.Component {
             isUpdateVisible: false,
             errorMessage: '',
         };
-        this.handleUpdateInformations = this.handleUpdateInformations.bind(this);
+        this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
     }
 
@@ -33,7 +33,7 @@ class ProfileComp extends React.Component {
         this.setState({ isUpdateVisible: value });
     }
 
-    handleUpdateInformations(event) {
+    handleUpdateInformation(event) {
         event.preventDefault();
         this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.bio.value);
         this.setState({ isUpdateVisible: false });
@@ -48,13 +48,12 @@ class ProfileComp extends React.Component {
                     <div className="usersPanel">
                         <ProfileView
                             user={user}
-                            handleUpdateInformations={this.handleUpdateInformations}
+                            handleUpdateInformation={this.handleUpdateInformation}
                             handleUpdateDisplay={this.handleUpdateDisplay}
                             isUpdateVisible={this.state.isUpdateVisible}
                         />
                     </div>
                 );
-
                 return element;
             }
         }
@@ -63,7 +62,6 @@ class ProfileComp extends React.Component {
             <div>
                 {this.props.errorMessage}
             </div>
-
         );
     }
 }

@@ -11,8 +11,8 @@ const InformationForm = props => (
     <span>
         {props.isVisible ? (
 
-            <div className="informationsForm">
-                <form onSubmit={props.updateInformation}>
+            <div className="informationForm">
+                <form onSubmit={props.handleUpdateInformation}>
                     Full name
                     <input
                         className="form-control"
@@ -55,7 +55,7 @@ const InformationForm = props => (
             </div>
 
         ) : (
-            <div className="informationsDisplay">
+            <div className="informationDisplay">
                 <button
                     className="btn btn-secondary btnUpdate"
                     type="button"
@@ -78,9 +78,9 @@ const InformationForm = props => (
 
 InformationForm.propTypes = {
     user: PropTypes.object.isRequired,
-    isVisible: PropTypes.object.isRequired,
+    isVisible: PropTypes.bool.isRequired,
     displayUpdateForm: PropTypes.func.isRequired,
-    updateInformation: PropTypes.func.isRequired,
+    handleUpdateInformation: PropTypes.func.isRequired,
 };
 
 
