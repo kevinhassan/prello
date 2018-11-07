@@ -40,6 +40,12 @@ export default function boardsReducer(state = initialState, action) {
             board: newBoard,
         };
 
+    case actions.REMOVE_BOARD_FETCH_SUCCESS:
+        return {
+            ...state,
+            board: undefined,
+        };
+
     case listActions.MOVE_CARD_SUCCESS:
         return {
             ...state,

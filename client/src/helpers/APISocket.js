@@ -13,7 +13,7 @@ APISocket.subscribeToBoard = (boardId, callback) => {
 };
 
 APISocket.removeSubscriptionToCurrentBoard = (callback) => {
-    APISocket.socket.removeListener('subscribeToCurrentBoard', callback);
+    APISocket.socket.removeListener('subscribeToCurrentBoard', callback());
 };
 
 export default APISocket;

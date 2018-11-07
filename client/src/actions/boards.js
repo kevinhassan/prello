@@ -41,21 +41,21 @@ export const REMOVE_BOARD_FETCH_STARTED = 'board/REMOVE_BOARD_FETCH_STARTED';
 export const REMOVE_BOARD_FETCH_FAILURE = 'board/REMOVE_BOARD_FETCH_FAILURE';
 export const REMOVE_BOARD_FETCH_SUCCESS = 'board/REMOVE_BOARD_FETCH_SUCCESS';
 
-export const removeBoardFetchStartedAction = () => ({ type: FETCH_BOARD_STARTED });
+export const removeBoardFetchStartedAction = () => ({ type: REMOVE_BOARD_FETCH_STARTED });
 export const removeBoardFetchFailureAction = error => ({
-    type: FETCH_BOARD_FAILURE,
+    type: REMOVE_BOARD_FETCH_FAILURE,
     payload: {
         error,
     },
 });
 export const removeBoardFetchSuccessAction = () => ({
-    type: FETCH_BOARD_SUCCESS,
+    type: REMOVE_BOARD_FETCH_SUCCESS,
 });
 
 export const removeBoardFetch = () => (dispatch) => {
     dispatch(removeBoardFetchStartedAction());
     APISocket.removeSubscriptionToCurrentBoard(() => {
-        dispatch(removeBoardFetchFailureAction());
+        dispatch(removeBoardFetchSuccessAction());
     });
 };
 
