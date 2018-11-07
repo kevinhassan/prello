@@ -1,7 +1,9 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+
 import GraphicalCharter from '../GraphicalCharter';
 import BoardComp from '../BoardComp';
+import BoardsComp from '../BoardsComp';
 import Modal from '../../components/modal';
 import Header from '../header';
 import UserComp from '../UserComp';
@@ -23,8 +25,9 @@ const App = () => (
             <Route exact path="/register" component={RegisterComp} />
             <Route exact path="/signin" component={SignInComp} />
 
-            <PrivateRoute authed={isAuthenticated()} path="/boards/:boardId" component={BoardComp} />
-            <PrivateRoute authed={isAuthenticated()} path="/profile" component={UserComp} />
+            <PrivateRoute authed={isAuthenticated()} exact path="/boards/:boardId" component={BoardComp} />
+            <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
+            <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={UserComp} />
         </main>
     </div>
 );

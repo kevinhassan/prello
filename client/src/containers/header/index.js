@@ -13,13 +13,13 @@ import './style.css';
 class Header extends React.Component {
     render() {
         const {
-            goAbout, goBoardExample, goHome, goProfile, goRegister, goSignIn,
+            goAbout, goBoards, goHome, goProfile, goRegister, goSignIn,
         } = this.props;
         const element = (
             <div className="header-bar">
                 <div className="leftHeader-div">
                     <button className="btn btn-header" type="button" onClick={goHome}><i className="fas fa-home" /></button>
-                    <button className="btn btn-header" type="button" onClick={goBoardExample}><i className="fas fa-chalkboard" /></button>
+                    <button className="btn btn-header" type="button" onClick={goBoards}><i className="fas fa-chalkboard" /></button>
                 </div>
                 <div className="centerHeader-div">
                     <span onClick={goHome} onKeyPress={goHome} role="link" tabIndex={0}>
@@ -40,7 +40,7 @@ class Header extends React.Component {
 }
 Header.propTypes = {
     goAbout: PropTypes.func.isRequired,
-    goBoardExample: PropTypes.func.isRequired,
+    goBoards: PropTypes.func.isRequired,
     goHome: PropTypes.func.isRequired,
     goProfile: PropTypes.func.isRequired,
     goRegister: PropTypes.func.isRequired,
@@ -54,7 +54,7 @@ const mapStateToProps = () => ({});
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         goAbout: () => push('/graphical-charter'),
-        goBoardExample: () => push('/boards/b00000000001'),
+        goBoards: () => push('/boards'),
         goHome: () => push('/'),
         goProfile: () => push('/profile'),
         goRegister: () => push('/register'),
