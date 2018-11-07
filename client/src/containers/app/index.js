@@ -12,7 +12,7 @@ import PrivateRoute from '../../components/PrivateRoute';
 
 import './style.css';
 
-const isAuthenticated = () => localStorage.getItem('token') !== null;
+const isAuthenticated = () => localStorage.getItem('prello_token') !== null;
 
 const App = () => (
     <div className="appContainer">

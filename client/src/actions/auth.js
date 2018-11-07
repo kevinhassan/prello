@@ -32,7 +32,7 @@ export const classicSignIn = (email, password) => (dispatch) => {
     dispatch(classicSignInStarted());
     APIFetch.fetchPrelloAPI('login', { email, password }, APIFetch.POST)
         .then((res) => {
-            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('prello_token', res.data.token);
             dispatch(classicSignInSuccess());
             dispatch(hideLoadingModal());
         })
