@@ -7,8 +7,6 @@ import * as APIFetch from '../helpers/APIFetch';
 export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
 export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
-export const ADD_LIST_TO_BOARD_FAILURE = 'boards/ADD_LIST_TO_BOARD_FAILURE';
-export const ADD_LIST_TO_BOARD_SUCCESS = 'boards/ADD_LIST_TO_BOARD_SUCCESS';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({
@@ -35,6 +33,29 @@ export const fetchBoard = boardId => (dispatch) => {
             dispatch(fetchBoardSuccessAction(res.board));
         }
         dispatch(hideLoadingModal());
+    });
+};
+
+// ===== REMOVE BOARD FETCH =====
+export const REMOVE_BOARD_FETCH_STARTED = 'board/REMOVE_BOARD_FETCH_STARTED';
+export const REMOVE_BOARD_FETCH_FAILURE = 'board/REMOVE_BOARD_FETCH_FAILURE';
+export const REMOVE_BOARD_FETCH_SUCCESS = 'board/REMOVE_BOARD_FETCH_SUCCESS';
+
+export const removeBoardFetchStartedAction = () => ({ type: FETCH_BOARD_STARTED });
+export const removeBoardFetchFailureAction = error => ({
+    type: FETCH_BOARD_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const removeBoardFetchSuccessAction = () => ({
+    type: FETCH_BOARD_SUCCESS,
+});
+
+export const removeBoardFetch = () => (dispatch) => {
+    dispatch(removeBoardFetchStartedAction());
+    APISocket.removeSubscriptionToCurrentBoard(() => {
+        dispatch(removeBoardFetchFailureAction());
     });
 };
 
@@ -81,6 +102,10 @@ export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== ADD LISTS ======
+export const ADD_LIST_TO_BOARD_FAILURE = 'boards/ADD_LIST_TO_BOARD_FAILURE';
+export const ADD_LIST_TO_BOARD_SUCCESS = 'boards/ADD_LIST_TO_BOARD_SUCCESS';
 
 export const addListToBoardSuccess = lists => ({
     type: ADD_LIST_TO_BOARD_SUCCESS,

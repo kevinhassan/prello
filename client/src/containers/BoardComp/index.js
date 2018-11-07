@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { fetchBoard, updateListsIndexes } from '../../actions/boards';
+import { fetchBoard, updateListsIndexes, removeBoardFetch } from '../../actions/boards';
 import { createList, moveCard } from '../../actions/lists';
 
 // ===== Components / Containers
@@ -33,6 +33,10 @@ class BoardComp extends React.Component {
 
     componentWillReceiveProps() {
         this.setState({ isWaitingForAPIConfirmation: false });
+    }
+
+    componentWillUnmount() {
+        this.props.removeBoardFetch();
     }
 
     /*
@@ -156,9 +160,10 @@ BoardComp.propTypes = {
             boardId: PropTypes.string,
         }),
     }).isRequired,
-    moveCard: PropTypes.func.isRequired,
-    updateListsIndexes: PropTypes.func.isRequired,
     createList: PropTypes.func.isRequired,
+    moveCard: PropTypes.func.isRequired,
+    removeBoardFetch: PropTypes.func.isRequired,
+    updateListsIndexes: PropTypes.func.isRequired,
 };
 BoardComp.defaultProps = {
     board: undefined,
@@ -176,6 +181,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         createList,
         fetchBoard,
         moveCard,
+        removeBoardFetch,
         updateListsIndexes,
     }, dispatch,
 );
