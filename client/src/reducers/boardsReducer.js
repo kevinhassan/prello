@@ -1,250 +1,13 @@
 import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
+
 import Board from '../models/Board';
 import Card from '../models/Card';
 import List from '../models/List';
 
 export const initialState = {
     board: undefined,
-    userBoards: [
-        {
-            _id: '623030303030303030303031',
-            isArchived: false,
-            visibility: 'public',
-            labels: [
-                '6c6130303030303030303031',
-                '6c6130303030303030303032',
-                '6c6130303030303030303033',
-                '6c6130303030303030303034',
-                '6c6130303030303030303035',
-            ],
-            lists: [
-                {
-                    _id: '6c3030303030303030303032',
-                    cards: [1, 2, 3],
-                },
-                {
-                    _id: '6c3030303030303030303034',
-                    cards: [1, 2],
-                },
-                {
-                    _id: '6c3030303030303030303035',
-                    cards: [1, 2, 3, 4],
-                },
-            ],
-            teams: [],
-            name: 'Trello',
-            members: [
-                {
-                    _id: '623030303030303030303031',
-                    initials: 'PL',
-                    isAdmin: true,
-                },
-                {
-                    _id: '623030303030303030303032',
-                    initials: 'SA5',
-                    isAdmin: false,
-                },
-            ],
-        },
-        {
-            _id: '623030303030303030303032',
-            isArchived: false,
-            visibility: 'public',
-            labels: [
-                '6c6130303030303030303031',
-                '6c6130303030303030303032',
-                '6c6130303030303030303033',
-                '6c6130303030303030303034',
-                '6c6130303030303030303035',
-            ],
-            lists: [
-                {
-                    _id: '6c3030303030303030303032',
-                    cards: [1, 2, 3],
-                },
-            ],
-            teams: [],
-            name: 'Polytech',
-            members: [
-                {
-                    _id: '623030303030303030303031',
-                    initials: 'LO',
-                    isAdmin: true,
-                },
-                {
-                    _id: '623030303030303030303032',
-                    isAdmin: false,
-                    initials: 'CA2',
-                },
-            ],
-        },
-        {
-            _id: '623030303030303030303033',
-            isArchived: false,
-            visibility: 'public',
-            labels: [
-                '6c6130303030303030303031',
-                '6c6130303030303030303032',
-                '6c6130303030303030303033',
-                '6c6130303030303030303034',
-                '6c6130303030303030303035',
-            ],
-            lists: [
-            ],
-            teams: [],
-            name: 'AWI Project',
-            members: [
-                {
-                    _id: '623030303030303030303029',
-                    initials: 'CR',
-                    isAdmin: true,
-                },
-                {
-                    isAdmin: false,
-                    initials: 'IK8',
-                    _id: '623030303030303030303030',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LB',
-                    _id: '623030303030303030303031',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'RM5',
-                    _id: '623030303030303030303032',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LB',
-                    _id: '623030303030303030303033',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'AC',
-                    _id: '623030303030303030303034',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LK2',
-                    _id: '623030303030303030303035',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'AC',
-                    _id: '623030303030303030303036',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LK2',
-                    _id: '623030303030303030303037',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'AC',
-                    _id: '623030303030303030303038',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LK2',
-                    _id: '623030303030303030303039',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'AC',
-                    _id: '623030303030303030303040',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LK2',
-                    _id: '623030303030303030303041',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'AC',
-                    _id: '623030303030303030303042',
-                },
-                {
-                    isAdmin: false,
-                    initials: 'LK2',
-                    _id: '623030303030303030303043',
-                },
-            ],
-        },
-        {
-            _id: '623030303030303030303034',
-            isArchived: false,
-            visibility: 'public',
-            labels: [
-                '6c6130303030303030303031',
-                '6c6130303030303030303032',
-                '6c6130303030303030303033',
-                '6c6130303030303030303034',
-                '6c6130303030303030303035',
-            ],
-            lists: [
-                {
-                    _id: '6c3030303030303030303031',
-                    cards: [],
-                },
-                {
-                    _id: '6c3030303030303030303032',
-                    cards: [],
-                },
-                {
-                    _id: '6c3030303030303030303033',
-                    cards: [],
-                },
-            ],
-            teams: [
-                {
-                    _id: '6c6130303030303030303033',
-                    name: 'Awesome team',
-                },
-            ],
-            name: 'A board with a long title to see how it will be displayed',
-            members: [
-                {
-                    _id: '623030303030303030303031',
-                    initials: 'AB',
-                    isAdmin: true,
-                },
-            ],
-        },
-        {
-            _id: '623030303030303030303035',
-            isArchived: false,
-            visibility: 'public',
-            labels: [
-                '6c6130303030303030303031',
-                '6c6130303030303030303032',
-                '6c6130303030303030303033',
-                '6c6130303030303030303034',
-                '6c6130303030303030303035',
-            ],
-            lists: [],
-            teams: [
-                {
-                    _id: '6c6130303030303030303033',
-                    name: 'Awesome team',
-                },
-                {
-                    _id: '6c6130303030303030303036',
-                    name: 'Polytech',
-                },
-            ],
-            name: 'Some board',
-            members: [
-                {
-                    _id: '623030303030303030303031',
-                    initials: 'CR',
-                    isAdmin: true,
-                },
-            ],
-        },
-
-    ],
+    userBoards: [],
 };
 
 export default function boardsReducer(state = initialState, action) {
@@ -264,6 +27,12 @@ export default function boardsReducer(state = initialState, action) {
             errorMessage: action.payload.error,
         };
 
+    case actions.FETCH_BOARDS_SUCCESS:
+        const newBoards = action.payload.boards.map(board => new Board(board));
+        return {
+            ...state,
+            userBoards: newBoards,
+        };
     case actions.FETCH_BOARD_SUCCESS:
         // Convert JSON to Object (Board, List, Card)
         const newBoard = new Board(action.payload.board);

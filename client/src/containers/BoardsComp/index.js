@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
 // ===== Actions
+import { fetchBoards } from '../../actions/boards';
 
 // ===== Components / Containers
 import BoardsView from '../../components/views/BoardsView';
@@ -20,7 +21,7 @@ class BoardsComp extends React.Component {
     }
 
     componentWillMount() {
-        // TODO fetch boards
+        this.props.fetchBoards();
     }
 
     handleOnBoardClick(boardId) {
@@ -51,6 +52,7 @@ class BoardsComp extends React.Component {
 }
 BoardsComp.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object).isRequired,
+    fetchBoards: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
     goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
@@ -64,6 +66,7 @@ const mapStateToProps = ({ boardsReducer }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        fetchBoards,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
