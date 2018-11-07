@@ -150,6 +150,26 @@ export const initialState = {
                     initials: 'LK2',
                     _id: '623030303030303030303039',
                 },
+                {
+                    isAdmin: false,
+                    initials: 'AC',
+                    _id: '623030303030303030303038',
+                },
+                {
+                    isAdmin: false,
+                    initials: 'LK2',
+                    _id: '623030303030303030303039',
+                },
+                {
+                    isAdmin: false,
+                    initials: 'AC',
+                    _id: '623030303030303030303038',
+                },
+                {
+                    isAdmin: false,
+                    initials: 'LK2',
+                    _id: '623030303030303030303039',
+                },
             ],
         },
         {
@@ -177,7 +197,12 @@ export const initialState = {
                     cards: [],
                 },
             ],
-            teams: [],
+            teams: [
+                {
+                    _id: '6c6130303030303030303033',
+                    name: 'Awesome team',
+                },
+            ],
             name: 'A board with a long title to see how it will be displayed',
             members: [
                 {
@@ -199,7 +224,16 @@ export const initialState = {
                 '6c6130303030303030303035',
             ],
             lists: [],
-            teams: [],
+            teams: [
+                {
+                    _id: '6c6130303030303030303033',
+                    name: 'Awesome team',
+                },
+                {
+                    _id: '6c6130303030303030303036',
+                    name: 'Polytech',
+                },
+            ],
             name: 'Some board',
             members: [
                 {

@@ -56,6 +56,12 @@
     margin: 0;
 }
 
+.teamLink:not(:last-child)::after {
+    content: ", ";
+    display: inline-block;
+    white-space: pre;
+}
+
 .membersInitialsList {
     display: flex;
     flex-wrap: wrap;

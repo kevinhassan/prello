@@ -40,8 +40,31 @@ const BoardsView = props => (
                                         {` card${board.lists.reduce((sum, list) => sum + list.cards.length, 0) > 1 ? 's' : ''}`}
                                     </p>
                                     <div>
+                                        { board.teams.length === 0
+                                            ? (
+                                                <p className="boardInfo">
+                                                    <i>No team assigned yet.</i>
+                                                </p>
+                                            ) : (
+                                                <p className="boardInfo teamsList">
+                                                    <i className="fas fa-users" />
+                                                    {' '}
+                                                    {board.teams.map(team => (
+                                                        <span
+                                                            key={team._id}
+                                                            className="teamLink"
+                                                            onClick={event => props.onTeamClick(event, team._id)}
+                                                            onKeyDown={event => props.onTeamClick(event, team._id)}
+                                                        >
+                                                            {team.name}
+                                                        </span>
+                                                    ))}
+                                                </p>
+                                            )
+                                        }
+                                    </div>
+                                    <div>
                                         <p className="boardInfo">
-                                            <i className="fas fa-users" />
                                             <b>{` ${board.members.length}`}</b>
                                             {` member${board.members.length > 1 ? 's' : ''}: `}
                                         </p>
@@ -78,6 +101,7 @@ BoardsView.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object).isRequired,
     onBoardClick: PropTypes.func.isRequired,
     onMemberClick: PropTypes.func.isRequired,
+    onTeamClick: PropTypes.func.isRequired,
 };
 
 export default BoardsView;
