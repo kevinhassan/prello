@@ -64,7 +64,6 @@ class BoardComp extends React.Component {
         this.setState({ isInputVisible: false });
     }
 
-
     handleOnDragEnd(result) {
         const { destination, source, type } = result;
 

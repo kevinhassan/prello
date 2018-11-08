@@ -200,7 +200,7 @@ exports.postList = async (boardId, name) => {
         const newBoard = await Board.findOneAndUpdate({ _id: boardId }, { $addToSet: { lists: newList._id } }, { new: true });
 
         socket.updateClientsOnBoard(newBoard._id);
-        return newBoard;
+        return newList;
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'CastError') {

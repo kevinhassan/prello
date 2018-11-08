@@ -8,8 +8,13 @@ export const initialState = {
 export default function currentBoardReducer(state = initialState, action) {
     switch (action.type) {
     case listActions.CREATE_LIST_SUCCESS:
+        const newLists = state.board.lists.concat(action.payload.list);
         return {
             ...state,
+            board: {
+                ...state.board,
+                lists: newLists,
+            },
         };
 
     case listActions.CREATE_LIST_FAILURE:
