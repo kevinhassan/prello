@@ -56,8 +56,8 @@ RegisterComp.propTypes = {
     errorMessage: PropTypes.string.isRequired,
 };
 // Put info from the store state in props
-const mapStateToProps = ({ authReducer }) => ({
-    errorMessage: authReducer.errorRegisterMessage,
+const mapStateToProps = ({ auth }) => ({
+    errorMessage: auth.errorRegisterMessage,
 });
 
 

@@ -78,10 +78,10 @@ Modal.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ modalReducer }) => ({
-    errorMessage: modalReducer.errorMessage,
-    isLoadingModalOpen: modalReducer.isLoadingModalOpen,
-    successMessage: modalReducer.successMessage,
+const mapStateToProps = ({ modal }) => ({
+    errorMessage: modal.errorMessage,
+    isLoadingModalOpen: modal.isLoadingModalOpen,
+    successMessage: modal.successMessage,
 });
 
 // Put actions in props

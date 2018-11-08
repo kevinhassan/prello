@@ -65,8 +65,8 @@ BoardsComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ boardsReducer }) => ({
-    boards: boardsReducer.userBoards,
+const mapStateToProps = ({ boards }) => ({
+    boards: boards.userBoards,
 });
 
 // Put actions in props

@@ -15,7 +15,7 @@ describe('board/UPDATE_LISTS_INDEXES_SUCCESS reducer', () => {
         const updateAction = actions.updateListsIndexesSuccessAction(lists);
         const finalState = boardsReducer({}, updateAction);
 
-        expect(finalState.board.lists.length).toEqual(3);
-        expect(finalState.board.lists[2]._id).toEqual(3);
+        expect(finalState.currentBoard.lists.length).toEqual(3);
+        expect(finalState.currentBoard.lists[2]._id).toEqual(3);
     });
 });

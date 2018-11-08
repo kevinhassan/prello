@@ -170,9 +170,8 @@ BoardComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ boardsReducer }) => ({
-    board: boardsReducer.board,
-    didAnErrorOccured: boardsReducer.didAnErrorOccured,
+const mapStateToProps = ({ boards }) => ({
+    board: boards.currentBoard,
 });
 
 // Put actions in props

@@ -6,7 +6,7 @@ import Card from '../models/Card';
 import List from '../models/List';
 
 export const initialState = {
-    board: undefined,
+    currentBoard: undefined,
     userBoards: undefined,
 };
 
@@ -15,8 +15,8 @@ export default function boardsReducer(state = initialState, action) {
     case actions.ADD_LIST_TO_BOARD_SUCCESS:
         return {
             ...state,
-            board: {
-                ...state.board,
+            currentBoard: {
+                ...state.currentBoard,
                 lists: action.payload.lists,
             },
         };
@@ -46,20 +46,20 @@ export default function boardsReducer(state = initialState, action) {
 
         return {
             ...state,
-            board: newBoard,
+            currentBoard: newBoard,
         };
 
     case actions.REMOVE_BOARD_FETCH_SUCCESS:
         return {
             ...state,
-            board: undefined,
+            currentBoard: undefined,
         };
 
     case listActions.MOVE_CARD_SUCCESS:
         return {
             ...state,
-            board: {
-                ...state.board,
+            currentBoard: {
+                ...state.currentBoard,
                 lists: action.payload.lists,
             },
         };
@@ -74,8 +74,8 @@ export default function boardsReducer(state = initialState, action) {
         return {
             ...state,
             didAnErrorOccured: false,
-            board: {
-                ...state.board,
+            currentBoard: {
+                ...state.currentBoard,
                 lists: action.payload.lists,
             },
         };

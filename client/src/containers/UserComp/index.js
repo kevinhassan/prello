@@ -48,8 +48,8 @@ UserComp.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ usersReducer }) => ({
-    user: usersReducer.user,
+const mapStateToProps = ({ users }) => ({
+    user: users.user,
 });
 
 // Put actions in props

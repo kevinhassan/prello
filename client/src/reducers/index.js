@@ -5,8 +5,8 @@ import modalReducer from './modalReducer';
 import usersReducer from './usersReducer';
 
 export default combineReducers({
-    authReducer,
-    boardsReducer,
-    modalReducer,
-    usersReducer,
+    auth: authReducer,
+    boards: boardsReducer,
+    modal: modalReducer,
+    users: usersReducer,
 });
