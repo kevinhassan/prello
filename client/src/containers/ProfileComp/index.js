@@ -48,8 +48,8 @@ class ProfileComp extends React.Component {
 
     handleModifyingPassword(event) {
         event.preventDefault();
+        this.setState({ isPasswordVisible: false });
         this.props.updatePassword(event.target.passwordOld.value, event.target.passwordNew.value);
-        this.setState({ isUpdateVisible: false });
     }
 
     render() {
@@ -86,6 +86,7 @@ ProfileComp.propTypes = {
     errorMessage: PropTypes.object,
     getUserInformation: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
+    updatePassword: PropTypes.func.isRequired,
     user: PropTypes.object,
 };
 

@@ -1,5 +1,5 @@
 import * as APIFetch from '../helpers/APIFetch';
-import { displayLoadingModal, hideLoadingModal } from './modal';
+import { displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage } from './modal';
 
 export const GET_USER_INFORMATION = 'user/GET_USER_INFORMATION';
 export const USER_INFORMATION_SUCCESS = 'user/USER_INFORMATION_SUCCESS';
@@ -7,6 +7,7 @@ export const USER_INFORMATION_FAILURE = 'user/USER_INFORMATION_FAILURE';
 
 export const UPDATE_USER_INFORMATION = 'user/UPDATE_USER_INFORMATION';
 export const UPDATE_USER_INFORMATION_SUCCESS = 'user/UPDATE_USER_INFORMATION_SUCCESS';
+
 
 // ==========
 
@@ -65,11 +66,11 @@ export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
     APIFetch.fetchPrelloAPI('account/password', {
         oldPassword, newPassword,
     }, APIFetch.PUT)
-        .then((res) => {
-            console.log(res.data.user);
+        .then(() => {
+            dispatch(displaySuccessMessage('Password well updated'));
         })
         .catch((error) => {
-            console.log(error);
+            dispatch(displayErrorMessage(error.message));
         })
         .finally(() => {
             dispatch(hideLoadingModal());

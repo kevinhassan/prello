@@ -39,7 +39,7 @@ const SettingsTab = props => (
                         <p>(Careful, this is definitive)</p>
                     </div>
 
-                    <button className="btn btn-danger" type="button">Delete U</button>
+                    <button className="btn btn-danger" type="button">Delete</button>
                 </div>
             </div>
         )}

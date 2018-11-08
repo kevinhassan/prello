@@ -15,7 +15,6 @@ export default function usersReducer(state = initialState, action) {
         };
 
     case actions.USER_INFORMATION_FAILURE:
-        console.log(action.payload.error);
         return {
             ...state,
             errorMessage: action.payload.error,
