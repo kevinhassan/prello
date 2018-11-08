@@ -4,7 +4,7 @@ const Auth = require('../middlewares/auth');
 
 const {
     registerValidator, loginValidator, accountValidator, profileValidator,
-    forgotValidator, resetValidator
+    forgotValidator, resetValidator, passwordValidator,
 } = require('../validators');
 
 /**
@@ -325,6 +325,18 @@ module.exports = (router) => {
         .get('/account', Auth.isAuthenticated, async (req, res) => {
             try {
                 const user = await userController.getAccount(req.user);
+                res.status(200).send({ user });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/account/password', Auth.isAuthenticated, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                const user = await userController.updatePassword(req.body.oldPassword, req.body.newPassword, req.user);
                 res.status(200).send({ user });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

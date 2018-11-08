@@ -56,6 +56,22 @@ export const updateUserInformation = (fullName, initials, bio) => (dispatch) => 
             dispatch(updateUserInformationSuccess(fullName, initials, bio));
         })
         .catch((error) => {
-            console.log(error.response.data.error);
+            console.log(error);
+        });
+};
+
+export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
+    dispatch(displayLoadingModal());
+    APIFetch.fetchPrelloAPI('account/password', {
+        oldPassword, newPassword,
+    }, APIFetch.PUT)
+        .then((res) => {
+            console.log(res.data.user);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
         });
 };

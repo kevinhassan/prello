@@ -136,6 +136,28 @@ exports.resetPassword = async (token, password) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+/**
+ * Update password with old password confirmation.
+ */
+userController.updatePassword = async (oldPassword, newPassword, user) => {
+    try {
+        const email = user.email;
+        const userCheck = await User.findOne({ email }).select('password');
+        if (!userCheck) {
+            throw new MyError(403, 'Invalid password.');
+        }
+        const isMatch = await user.comparePassword(oldPassword, user.password);
+        if (!isMatch) {
+            throw new MyError(403, 'Invalid credentials.');
+        }
+        user.password = newPassword;
+        await user.save();
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 
 // ======================== //
 // ===== Get functions ==== //

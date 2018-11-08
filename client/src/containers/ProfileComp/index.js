@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
-import { getUserInformation, updateUserInformation } from '../../actions/user';
+import { getUserInformation, updateUserInformation, updatePassword } from '../../actions/user';
 
 // ===== Others
 import './style.css';
@@ -19,10 +19,12 @@ class ProfileComp extends React.Component {
         super(props);
         this.state = {
             isUpdateVisible: false,
+            isPasswordVisible: false,
             errorMessage: '',
         };
         this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
+        this.handlePasswordModifyDisplay = this.handlePasswordModifyDisplay.bind(this);
     }
 
     componentWillMount() {
@@ -39,6 +41,16 @@ class ProfileComp extends React.Component {
         this.setState({ isUpdateVisible: false });
     }
 
+    handlePasswordModifyDisplay(value) {
+        this.setState({ isPasswordVisible: value });
+    }
+
+    handleModifyingPassword(event) {
+        event.preventDefault();
+        this.props.updatePassword(event.target.fullname.value, event.target.initials.value, event.target.bio.value);
+        this.setState({ isUpdateVisible: false });
+    }
+
     render() {
         const { user } = this.props;
 
@@ -51,6 +63,8 @@ class ProfileComp extends React.Component {
                             handleUpdateInformation={this.handleUpdateInformation}
                             handleUpdateDisplay={this.handleUpdateDisplay}
                             isUpdateVisible={this.state.isUpdateVisible}
+                            handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
+                            isPasswordVisible={this.state.isPasswordVisible}
                         />
                     </div>
                 );
@@ -89,6 +103,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getUserInformation,
         updateUserInformation,
+        updatePassword,
     }, dispatch,
 );
 
