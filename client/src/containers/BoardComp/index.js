@@ -170,8 +170,8 @@ BoardComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ boards }) => ({
-    board: boards.currentBoard,
+const mapStateToProps = ({ currentBoard }) => ({
+    board: currentBoard.board,
 });
 
 // Put actions in props

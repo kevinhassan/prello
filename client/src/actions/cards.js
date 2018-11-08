@@ -4,24 +4,12 @@ import {
 } from './modal';
 
 // ========================
+
+// ====== Create card ===== //
 export const CREATE_CARD_STARTED = 'card/CREATE_CARD_STARTED';
 export const CREATE_CARD_FAILURE = 'card/CREATE_CARD_FAILURE';
 export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
 
-export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
-export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
-export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
-
-export const ADD_LABEL_STARTED = 'cards/ADD_LABEL_STARTED';
-export const ADD_LABEL_FAILURE = 'cards/ADD_LABEL_FAILURE';
-export const ADD_LABEL_SUCCESS = 'cards/ADD_LABEL_SUCCESS';
-
-export const DELETE_LABEL_STARTED = 'cards/DELETE_LABEL_STARTED';
-export const DELETE_LABEL_FAILURE = 'cards/DELETE_LABEL_FAILURE';
-export const DELETE_LABEL_SUCCESS = 'cards/DELETE_LABEL_SUCCESS';
-// ========================
-
-// ====== Create card
 export const createCardStartedAction = () => ({
     type: CREATE_CARD_STARTED,
 });
@@ -60,7 +48,11 @@ export const createCard = card => (dispatch) => {
 };
 
 
-// ===== Edit description
+// ===== Edit description ===== //
+export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
+export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
+export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
+
 export const editCardDescriptionStartedAction = () => ({ type: EDIT_CARD_DESCRIPTION_STARTED });
 export const editCardDescriptionFailureAction = error => ({
     type: EDIT_CARD_DESCRIPTION_FAILURE,
@@ -94,7 +86,11 @@ export const editCardDescription = (cardId, description) => (dispatch) => {
         });
 };
 
-// ===== Add label
+// ===== Add label ===== //
+export const ADD_LABEL_STARTED = 'cards/ADD_LABEL_STARTED';
+export const ADD_LABEL_FAILURE = 'cards/ADD_LABEL_FAILURE';
+export const ADD_LABEL_SUCCESS = 'cards/ADD_LABEL_SUCCESS';
+
 export const addLabelStartedAction = () => ({ type: ADD_LABEL_STARTED });
 export const addLabelFailureAction = error => ({
     type: ADD_LABEL_FAILURE,
@@ -127,7 +123,11 @@ export const addLabel = (cardId, labelId) => (dispatch) => {
         });
 };
 
-// ===== Delete label
+// ===== Delete label ===== //
+export const DELETE_LABEL_STARTED = 'cards/DELETE_LABEL_STARTED';
+export const DELETE_LABEL_FAILURE = 'cards/DELETE_LABEL_FAILURE';
+export const DELETE_LABEL_SUCCESS = 'cards/DELETE_LABEL_SUCCESS';
+
 export const deleteLabelStartedAction = () => ({ type: DELETE_LABEL_STARTED });
 export const deleteLabelFailureAction = error => ({
     type: DELETE_LABEL_FAILURE,

@@ -2,7 +2,7 @@ import User from '../models/User';
 
 const user1 = new User({
     id: '1',
-    nickname: 'cypcyplebg',
+    nickname: 'Cyprien',
     initials: 'CL',
     email: 'cyprien_legrand@hotmail.fr',
     password: 'meaux2pasce',
