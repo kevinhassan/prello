@@ -6,7 +6,7 @@ module.exports = (router) => {
     router
         .post('/slack', async (req, res) => {
             try {
-                res.status(200).send('Fetching...');
+                res.status(204).send();
                 const board = await slackController.getBoard();
                 axios({
                     url: req.param('response_url'),
@@ -26,10 +26,10 @@ module.exports = (router) => {
         .post('/slack/lists', async (req, res) => {
             try {
                 let listTitle = ' ';
-                res.status(200).send('Fetching...');
+                res.status(204).send();
                 const board = await slackController.getBoard();
                 board.lists.forEach((list) => {
-                    listTitle += ` ${list.name}`;
+                    listTitle += ` \n-${list.name}`;
                 });
                 axios({
                     url: req.param('response_url'),
@@ -37,7 +37,7 @@ module.exports = (router) => {
                     data: {
                         attachments: [{
                             color: '#009cdd',
-                            text: `The lists of the board ${board.name} are ${listTitle}.`
+                            text: `The lists of the board ${board.name} are:${listTitle}.`
                         }]
                     },
                     method: 'post',
@@ -49,11 +49,11 @@ module.exports = (router) => {
         .post('/slack/cards', async (req, res) => {
             try {
                 let cardTitle = ' ';
-                res.status(200).send('Fetching...');
+                res.status(204).send();
                 const board = await slackController.getBoard();
                 board.lists.forEach((list) => {
                     list.cards.forEach((card) => {
-                        cardTitle += ` ${card.name}`;
+                        cardTitle += `\n-${card.name}`;
                     });
                 });
                 axios({
@@ -62,7 +62,7 @@ module.exports = (router) => {
                     data: {
                         attachments: [{
                             color: '#009cdd',
-                            text: `The card of the board ${board.name} are ${cardTitle}.`
+                            text: `The card of the board ${board.name} are:${cardTitle}.`
                         }]
                     },
                     method: 'post',
