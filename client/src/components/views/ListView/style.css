@@ -3,10 +3,7 @@
 }
 
 .cardsList {
-    display: flex;
-    flex-direction: column;
     height: 100%;
-    justify-content: space-around;
     margin: 0;
     overflow-y: auto;
     padding: 0;
