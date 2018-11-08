@@ -10,8 +10,9 @@
 }
 
 .cardsListPanel {
-    background-color: #dbdbed;
+    background-color: rgba(255,255,255, 0.7);
     border-radius: 0.25rem;
+    box-shadow: 1px 1px 2px black;
     display: flex;
     max-height: 100%;
     flex-direction: column;
