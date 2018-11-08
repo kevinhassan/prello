@@ -48,7 +48,7 @@ class ProfileComp extends React.Component {
 
     handleModifyingPassword(event) {
         event.preventDefault();
-        this.props.updatePassword(event.target.fullname.value, event.target.initials.value, event.target.bio.value);
+        this.props.updatePassword(event.target.passwordOld.value, event.target.passwordNew.value);
         this.setState({ isUpdateVisible: false });
     }
 
