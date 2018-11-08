@@ -30,7 +30,7 @@ class ListComp extends React.Component {
         event.preventDefault();
         const name = event.target.cardName.value;
         const newCard = new Card({
-            name, list: this.props.list._id,
+            name, list: this.props.listId,
         });
         this.props.createCard(newCard);
         this.setState({ isInputVisible: false });
@@ -54,6 +54,7 @@ ListComp.propTypes = {
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
+    listId: PropTypes.string.isRequired,
     list: PropTypes.object.isRequired,
 };
 ListComp.defaultProps = {
@@ -61,7 +62,10 @@ ListComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ currentBoard }, props) => ({
+    list: currentBoard.board.lists.find(l => l._id === props.listId),
+    boardLabels: currentBoard.board.labels,
+});
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(

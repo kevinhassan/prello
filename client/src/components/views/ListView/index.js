@@ -59,8 +59,6 @@ const ListView = props => (
         </Droppable>
 
     </div>
-
-
 );
 
 ListView.propTypes = {
