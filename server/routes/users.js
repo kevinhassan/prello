@@ -336,8 +336,8 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                const user = await userController.updatePassword(req.body.oldPassword, req.body.newPassword, req.user);
-                res.status(200).send({ user });
+                await userController.updatePassword(req.body.oldPassword, req.body.newPassword, req.user);
+                res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

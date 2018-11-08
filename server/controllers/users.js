@@ -38,7 +38,7 @@ exports.login = async (email, password) => {
         }
 
         // check password
-        const isMatch = await user.comparePassword(password, user.password);
+        const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             throw new MyError(403, 'Invalid credentials.');
         }
@@ -145,13 +145,13 @@ userController.updatePassword = async (oldPassword, newPassword, user) => {
         if (!userCheck) {
             throw new MyError(403, 'Invalid credentials.');
         }
-        const isMatch = await user.comparePassword(oldPassword, userCheck.password);
+        const isMatch = await userCheck.comparePassword(oldPassword);
+        
         if (!isMatch) {
             throw new MyError(403, 'Invalid password.');
         }
-        user.password = newPassword;
-        await user.save();
-        return user;
+        userCheck.password = newPassword;
+        await userCheck.save();
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal Server Error');
