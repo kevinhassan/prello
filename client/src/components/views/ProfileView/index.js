@@ -69,6 +69,8 @@ const ProfileView = props => (
                 <SettingsTab
                     isVisible={props.isPasswordVisible}
                     displayPasswordForm={props.handlePasswordModifyDisplay}
+                    handleModifyingPassword={props.handleModifyingPassword}
+
                 />
             </TabPanel>
         </Tabs>
@@ -83,6 +85,7 @@ ProfileView.propTypes = {
     handleUpdateInformation: PropTypes.func.isRequired,
     handleUpdateDisplay: PropTypes.func.isRequired,
     handlePasswordModifyDisplay: PropTypes.func.isRequired,
+    handleModifyingPassword: PropTypes.func.isRequired,
 };
 ProfileView.defaultProps = {
 };

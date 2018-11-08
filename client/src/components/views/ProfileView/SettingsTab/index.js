@@ -16,7 +16,7 @@ const SettingsTab = props => (
                 <div className="changePassword">
                     <div>
                         <button className="btn btn-primary closeForm" type="button" onClick={() => props.displayPasswordForm(false)}>X</button>
-                        <NewPasswordForm />
+                        <NewPasswordForm handleUpdatePassword={props.handleModifyingPassword} />
                     </div>
                 </div>
             </div>
@@ -49,6 +49,7 @@ const SettingsTab = props => (
 SettingsTab.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     displayPasswordForm: PropTypes.func.isRequired,
+    handleModifyingPassword: PropTypes.func.isRequired,
 };
 SettingsTab.defaultProps = {
 };

@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 import './style.css';
 
-const NewPasswordForm = () => (
+const NewPasswordForm = props => (
 
     <div className="passwordFormWrapper">
         <h4 className="registerTitle">Change your password</h4>
-        <form className="passwordForm" onSubmit={console.log('ok')}>
+        <form className="passwordForm" onSubmit={props.handleUpdatePassword}>
 
             <div className="form-group row">
                 <label htmlFor="password" className="col-form-label col-sm-5">
@@ -73,7 +73,7 @@ const NewPasswordForm = () => (
 );
 
 NewPasswordForm.propTypes = {
-
+    handleUpdatePassword: PropTypes.func.isRequired,
 };
 NewPasswordForm.defaultProps = {
 };

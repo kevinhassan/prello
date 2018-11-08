@@ -25,6 +25,7 @@ class ProfileComp extends React.Component {
         this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
         this.handlePasswordModifyDisplay = this.handlePasswordModifyDisplay.bind(this);
+        this.handleModifyingPassword = this.handleModifyingPassword.bind(this);
     }
 
     componentWillMount() {
@@ -64,6 +65,7 @@ class ProfileComp extends React.Component {
                             handleUpdateDisplay={this.handleUpdateDisplay}
                             isUpdateVisible={this.state.isUpdateVisible}
                             handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
+                            handleModifyingPassword={this.handleModifyingPassword}
                             isPasswordVisible={this.state.isPasswordVisible}
                         />
                     </div>
