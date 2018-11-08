@@ -48,7 +48,10 @@ userSchema.pre('save', function save(next) {
 userSchema.methods.comparePassword = async function comparePassword(candidatePassword) {
     const isMatch = await new Promise((resolve, reject) => {
         bcrypt.compare(candidatePassword, this.password, (err, result) => {
-            if (err) reject(new Error(500, 'Internal Server Error'));
+            if (err) {
+                console.log(err);
+                reject(new Error(500, 'Internal Server Error'));
+            }
             resolve(result);
         });
     });

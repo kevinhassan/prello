@@ -141,14 +141,13 @@ exports.resetPassword = async (token, password) => {
  */
 userController.updatePassword = async (oldPassword, newPassword, user) => {
     try {
-        const email = user.email;
-        const userCheck = await User.findOne({ email }).select('password');
+        const userCheck = await User.findById(user._id).select('password');
         if (!userCheck) {
-            throw new MyError(403, 'Invalid password.');
-        }
-        const isMatch = await user.comparePassword(oldPassword, user.password);
-        if (!isMatch) {
             throw new MyError(403, 'Invalid credentials.');
+        }
+        const isMatch = await user.comparePassword(oldPassword, userCheck.password);
+        if (!isMatch) {
+            throw new MyError(403, 'Invalid password.');
         }
         user.password = newPassword;
         await user.save();
