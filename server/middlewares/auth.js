@@ -26,7 +26,7 @@ const authRequest = (req, res, next) => {
 const isAuthenticated = async (req, res, next) => {
     try {
         if (!req.user) {
-            throw new MyError(401, 'Unauthorize user');
+            throw new MyError(401, 'Unauthorized user');
         }
         next();
     } catch (e) {
