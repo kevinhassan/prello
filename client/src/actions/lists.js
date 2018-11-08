@@ -52,35 +52,36 @@ export const MOVE_CARD_STARTED = 'lists/MOVE_CARD_STARTED';
 export const MOVE_CARD_FAILURE = 'lists/MOVE_CARD_FAILURE';
 export const MOVE_CARD_SUCCESS = 'lists/MOVE_CARD_SUCCESS';
 
-export const moveCardStartedAction = () => ({
+export const moveCardStartedAction = lists => ({
     type: MOVE_CARD_STARTED,
-});
-
-export const moveCardFailureAction = error => ({
-    type: MOVE_CARD_FAILURE,
-    payload: {
-        error,
-    },
-});
-
-export const moveCardSuccessAction = lists => ({
-    type: MOVE_CARD_SUCCESS,
     payload: {
         lists,
     },
 });
 
-export const moveCard = (sourceListId, destinationListId, cardId, destinationIndex, listsUpdated) => (dispatch) => {
-    dispatch(moveCardStartedAction());
+export const moveCardFailureAction = (error, initialLists) => ({
+    type: MOVE_CARD_FAILURE,
+    payload: {
+        lists: initialLists,
+        error,
+    },
+});
+
+export const moveCardSuccessAction = () => ({
+    type: MOVE_CARD_SUCCESS,
+});
+
+export const moveCard = (sourceListId, destinationListId, cardId, destinationIndex, listsUpdated, initialLists) => (dispatch) => {
+    dispatch(moveCardStartedAction(listsUpdated));
     const ressource = `lists/${destinationListId}/cards/${cardId}`;
     APIFetch.fetchPrelloAPI(ressource, { index: destinationIndex, sourceListId }, APIFetch.PUT)
         .then(() => {
-            dispatch(moveCardSuccessAction(listsUpdated));
+            dispatch(moveCardSuccessAction());
             // Don't display success message for this action
             // dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(moveCardFailureAction(error.response.data.error));
+            dispatch(moveCardFailureAction(error.response.data.error, initialLists));
             dispatch(displayErrorMessage(error.response.data.error));
         });
 };

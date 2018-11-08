@@ -34,7 +34,7 @@ export default function currentBoardReducer(state = initialState, action) {
             board: undefined,
         };
 
-    case listActions.MOVE_CARD_SUCCESS:
+    case listActions.MOVE_CARD_STARTED:
         return {
             ...state,
             board: {
@@ -43,9 +43,18 @@ export default function currentBoardReducer(state = initialState, action) {
             },
         };
 
+    case listActions.MOVE_CARD_SUCCESS:
+        return {
+            ...state,
+        };
+
     case listActions.MOVE_CARD_FAILURE:
         return {
             ...state,
+            board: {
+                ...state.board,
+                lists: action.payload.lists,
+            },
         };
 
     case actions.UPDATE_LISTS_INDEXES_SUCCESS:

@@ -18,8 +18,6 @@ class BoardComp extends React.Component {
         super(props);
         this.state = {
             isInputVisible: false,
-            isWaitingForAPIConfirmation: false,
-            pendingLists: [],
         };
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.handleAddList = this.handleAddList.bind(this);
@@ -29,10 +27,6 @@ class BoardComp extends React.Component {
 
     componentWillMount() {
         this.props.fetchBoard(this.props.match.params.boardId);
-    }
-
-    componentWillReceiveProps() {
-        this.setState({ isWaitingForAPIConfirmation: false });
     }
 
     componentWillUnmount() {
@@ -65,6 +59,8 @@ class BoardComp extends React.Component {
     }
 
     handleOnDragEnd(result) {
+        console.log(this.props.board.lists);
+
         const { destination, source, type } = result;
 
         // Drop elsewhere than Drag N Drop context
@@ -77,16 +73,15 @@ class BoardComp extends React.Component {
             const { lists, _id } = this.props.board;
             const listsUpdated = this.reorder(lists, source.index, destination.index);
 
-            // Set pending State
-            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
-                // Dispatch action
-                this.props.updateListsIndexes(_id, listsUpdated);
-            });
+            // Dispatch action
+            this.props.updateListsIndexes(_id, listsUpdated);
+
             return;
         }
+
         // Card dropped
         if (type === 'CARD') {
-            const { lists } = this.props.board;
+            const lists = this.props.board.lists.slice(0);
             const cardId = result.draggableId;
             const destinationListId = destination.droppableId;
             const destinationIndex = destination.index;
@@ -96,52 +91,38 @@ class BoardComp extends React.Component {
             const sourceList = lists.find(list => list._id === sourceListId);
             const cardMoved = sourceList.cards.filter(c => c._id === cardId)[0];
 
+            // Update card
+            const cardUpdated = {
+                ...cardMoved,
+                list: {
+                    _id: destinationListId,
+                },
+            };
+
             // Update lists
             const listsUpdated = lists.map((list) => {
                 if (list._id === sourceListId) {
                     list.cards.splice(list.cards.findIndex(card => card._id === cardId), 1);
                 }
                 if (list._id === destinationListId) {
-                    list.cards.splice(destinationIndex, 0, cardMoved);
+                    list.cards.splice(destinationIndex, 0, cardUpdated);
                 }
                 return list;
             });
 
-            // Set pending State
-            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
-                // Dispatch action
-                this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated);
-            });
+            // Dispatch action
+            this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated, lists);
         }
     }
 
     render() {
         const { board } = this.props;
         if (board) {
-            // If changes were made on lists (moved for example), we give the board modified.
-            // else, we give the board from the store which is the same as in server.
-            if (this.state.isWaitingForAPIConfirmation) {
-                const pendingBoard = {
-                    ...board,
-                    lists: this.state.pendingLists,
-                };
-
-                return (
-                    <BoardView
-                        board={pendingBoard}
-                        isInputVisible={this.state.isInputVisible}
-                        onDragEnd={this.handleOnDragEnd}
-                        displayAddListForm={this.handleAddList}
-                        onListAdded={this.handleListAdded}
-                    />
-                );
-            }
-
             return (
                 <BoardView
                     board={board}
-                    onDragEnd={this.handleOnDragEnd}
                     isInputVisible={this.state.isInputVisible}
+                    onDragEnd={this.handleOnDragEnd}
                     displayAddListForm={this.handleAddList}
                     onListAdded={this.handleListAdded}
                 />

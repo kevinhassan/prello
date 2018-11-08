@@ -145,11 +145,11 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
             .expect('Content-Type', /json/)
             .expect(404, done);
     });
-    it('should return 201 OK', (done) => {
+    it('should return 200 OK', (done) => {
         request(app)
             .put(`/lists/${list1._id}/cards/${card1._id}`)
             .send({ sourceListId: list2._id, index: 0 })
             .expect('Content-Type', /json/)
-            .expect(201, done);
+            .expect(200, done);
     });
 });

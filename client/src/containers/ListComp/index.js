@@ -60,7 +60,7 @@ ListComp.defaultProps = {
     isBeingDragged: false,
 };
 
-// Put info from the store state in props (None)
+// Put info from the store state in props
 const mapStateToProps = () => ({});
 
 // Put actions in props
