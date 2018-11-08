@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { editCardDescription, deleteLabel } from '../../actions/cards';
 
-// ===== Models
-import Card from '../../models/Card';
-
 // ===== View
 import CardView from '../../components/views/CardView';
 import CardDetailView from '../../components/views/CardDetailView';
@@ -100,7 +97,7 @@ class CardComp extends React.Component {
 }
 CardComp.propTypes = {
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
-    card: PropTypes.instanceOf(Card).isRequired,
+    card: PropTypes.object.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
 };

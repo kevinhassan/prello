@@ -3,9 +3,6 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// ===== Models
-import User from '../../models/User';
-
 // ===== Components / Containers
 import UserView from '../../components/UserView';
 
@@ -44,7 +41,7 @@ class UserComp extends React.Component {
 
 UserComp.propTypes = {
     classicSignIn: PropTypes.func.isRequired,
-    user: PropTypes.instanceOf(User).isRequired,
+    user: PropTypes.object.isRequired,
 };
 
 // Put info from the store state in props

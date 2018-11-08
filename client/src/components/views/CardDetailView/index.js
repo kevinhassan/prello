@@ -7,9 +7,6 @@ import { connect } from 'react-redux';
 import Description from './Description';
 import Labels from './Labels';
 
-// ===== Models
-import Card from '../../../models/Card';
-
 import './style.css';
 
 const CardDetailView = props => (
@@ -86,7 +83,7 @@ const CardDetailView = props => (
 
 CardDetailView.propTypes = {
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
-    card: PropTypes.instanceOf(Card).isRequired,
+    card: PropTypes.object.isRequired,
     closeCardDetail: PropTypes.func.isRequired,
 
     changeIsEditingDescription: PropTypes.func.isRequired,
