@@ -8,6 +8,7 @@ const registerValidator = require('./register');
 const resetValidator = require('./reset');
 const listValidator = require('./list');
 const teamValidator = require('./team');
+const passwordValidator = require('./password');
 
 module.exports = {
     accountValidator,
@@ -19,5 +20,6 @@ module.exports = {
     registerValidator,
     resetValidator,
     listValidator,
+    passwordValidator
     teamValidator
 };

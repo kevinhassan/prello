@@ -330,7 +330,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/account/password', Auth.isAuthenticated, async (req, res) => {
+        .put('/account/password', Auth.isAuthenticated, [passwordValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
