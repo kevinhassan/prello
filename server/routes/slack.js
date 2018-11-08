@@ -6,12 +6,17 @@ module.exports = (router) => {
     router
         .post('/slack', async (req, res) => {
             try {
-                res.status(200).send('Working on it');
+                res.status(200).send('Fetching...');
                 const board = await slackController.getBoard();
                 axios({
                     url: req.param('response_url'),
                     headers: { 'Content-Type': 'application/json' },
-                    data: { text: `The board ${board.name} has ${board.lists.length} lists` },
+                    data: {
+                        attachments: [{
+                            color: '#009cdd',
+                            text: `The board ${board.name} has ${board.lists.length} lists.`
+                        }]
+                    },
                     method: 'post',
                 }).then().catch();
             } catch (e) {
