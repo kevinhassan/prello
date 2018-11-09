@@ -200,9 +200,9 @@ export const archiveCard = cardId => (dispatch) => {
     dispatch(displayLoadingModal());
     const resource = `cards/${cardId}/archive`;
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.PUT)
-        .then((res) => {
+        .then(() => {
             dispatch(archiveCardSuccessAction(cardId));
-            dispatch(displaySuccessMessage(res.data.message));
+            dispatch(displaySuccessMessage('Card archived'));
         })
         .catch((error) => {
             dispatch(archiveCardFailureAction(error.response.data.error, cardId));
