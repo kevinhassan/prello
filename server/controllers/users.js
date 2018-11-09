@@ -139,7 +139,7 @@ exports.resetPassword = async (token, password) => {
 /**
  * Update password with old password confirmation.
  */
-userController.updatePassword = async (oldPassword, newPassword, user) => {
+exports.updatePassword = async (oldPassword, newPassword, user) => {
     try {
         const userCheck = await User.findById(user._id).select('password');
         if (!userCheck) {

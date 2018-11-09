@@ -96,9 +96,9 @@ ProfileComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ usersReducer }) => ({
-    user: usersReducer.user,
-    errorMessage: usersReducer.errorMessage,
+const mapStateToProps = ({ users }) => ({
+    user: users.user,
+    errorMessage: users.errorMessage,
 });
 
 // Put actions in props

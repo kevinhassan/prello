@@ -30,7 +30,7 @@ const App = () => (
 
             <PrivateRoute authed={isAuthenticated()} exact path="/boards/:boardId" component={BoardComp} />
             <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
-            <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={UserComp} />
+            <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
         </main>
     </div>
 );

@@ -1,5 +1,5 @@
 import * as APIFetch from '../helpers/APIFetch';
-import { displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage } from './modal';
+import { displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage, displayErrorMessageAction } from './modal';
 
 export const GET_USER_INFORMATION = 'user/GET_USER_INFORMATION';
 export const USER_INFORMATION_SUCCESS = 'user/USER_INFORMATION_SUCCESS';
@@ -18,13 +18,6 @@ export const userInformationSuccess = profile => ({
     },
 });
 
-export const userInformationFailure = error => ({
-    type: USER_INFORMATION_FAILURE,
-    payload: {
-        error,
-    },
-});
-
 export const getUserInformation = () => (dispatch) => {
     dispatch(displayLoadingModal());
     APIFetch.fetchPrelloAPI('profile', {
@@ -33,7 +26,7 @@ export const getUserInformation = () => (dispatch) => {
             dispatch(userInformationSuccess(res.data.profile));
         })
         .catch((error) => {
-            dispatch(userInformationFailure(error.message));
+            dispatch(displayErrorMessageAction(error.message));
         })
         .finally(() => {
             dispatch(hideLoadingModal());
@@ -57,7 +50,7 @@ export const updateUserInformation = (fullName, initials, bio) => (dispatch) => 
             dispatch(updateUserInformationSuccess(fullName, initials, bio));
         })
         .catch((error) => {
-            console.log(error);
+            dispatch(displayErrorMessageAction(error.message));
         });
 };
 

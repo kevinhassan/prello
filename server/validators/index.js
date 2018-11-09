@@ -20,6 +20,6 @@ module.exports = {
     registerValidator,
     resetValidator,
     listValidator,
-    passwordValidator
+    passwordValidator,
     teamValidator
 };
