@@ -76,6 +76,11 @@ const CardDetailView = props => (
                 />
                 {/* ==================== */}
 
+
+                <button type="button" className="archiveBtn btn-primary" onClick={props.archiveCard}>
+                    <i className="fas fa-archive"> Archive card</i>
+                </button>
+
             </div>
         </div>
     </div>
@@ -93,6 +98,7 @@ CardDetailView.propTypes = {
     changeIsEditingLabels: PropTypes.func.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     isEditingLabels: PropTypes.bool,
+    archiveCard: PropTypes.func.isRequired,
 };
 
 CardDetailView.defaultProps = {
