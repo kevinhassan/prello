@@ -1,19 +1,37 @@
-const io = require('socket.io')();
-
 // ===== Controllers
 const boardController = require('../controllers/boards');
 
-// ===== Define behaviours
-io.on('connection', (client) => {
-    client.on('subscribeToCurrentBoard', async (boardId) => {
-        try {
-            const boardFound = await boardController.getBoard(boardId);
-            client.emit('currentBoard', { board: boardFound });
-        } catch (e) {
-            client.emit('currentBoard', { error: e.message });
-        }
+// Set up socket
+module.exports = (server) => {
+    /* eslint-disable global-require */
+    const socket = require('socket.io')(server);
+    /* eslint-enable global-require */
+
+    socket.on('connection', (socket) => {
+        console.log('New client');
+
+        socket.on('subscribeToCurrentBoard', async (boardId) => {
+            console.log('Client subscribed to board');
+            try {
+                const boardFound = await boardController.getBoard(boardId);
+                socket.emit('currentBoard', { board: boardFound });
+            } catch (e) {
+                socket.emit('currentBoard', { error: e.message });
+            }
+        });
+
+        socket.on('unsuscribeFromCurrentBoard', async (callback) => {
+            console.log('Client unsuscribing from board...');
+            socket.removeListener('subscribeToCurrentBoard', callback);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Client disconnected');
+        });
     });
-});
+};
+
+/*
 
 module.exports.updateClientsOnBoard = async (boardId) => {
     try {
@@ -25,5 +43,6 @@ module.exports.updateClientsOnBoard = async (boardId) => {
 };
 
 io.listen(process.env.SOCKET_PORT || 9091);
+*/
 
-module.exports.io = io;
+// module.exports.io = io;

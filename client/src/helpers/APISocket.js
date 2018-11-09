@@ -1,19 +1,28 @@
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 
 // ===================
+let instance = null;
 
-const APISocket = {};
-APISocket.socket = openSocket(process.env.REACT_APP_SOCKET_API_HOST);
+export default class APISocket {
+    constructor() {
+        if (instance) {
+            return instance;
+        }
+        this.socket = io.connect(process.env.REACT_APP_SOCKET_API_HOST);
 
-APISocket.subscribeToBoard = (boardId, callback) => {
-    APISocket.socket.on('currentBoard', (res) => {
-        callback(res);
-    });
-    APISocket.socket.emit('subscribeToCurrentBoard', boardId);
-};
+        instance = this;
+    }
 
-APISocket.removeSubscriptionToCurrentBoard = (callback) => {
-    APISocket.socket.removeListener('subscribeToCurrentBoard', callback());
-};
+    subscribeToBoard = (boardId, callback) => {
+        this.socket.emit('subscribeToCurrentBoard', boardId);
+        this.socket.on('currentBoard', (res) => {
+            callback(res);
+        });
+    };
 
-export default APISocket;
+    removeSubscriptionToCurrentBoard = () => {
+        this.socket.emit('unsuscribeFromCurrentBoard', (res) => {
+            console.log(res);
+        });
+    };
+}

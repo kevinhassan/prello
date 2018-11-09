@@ -42,11 +42,6 @@ app.use('/', require('./middlewares/auth').authRequest);
 require('./models');
 
 /**
- * Set up socket
- */
-require('./socket');
-
-/**
  * Swagger API documentation
  */
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

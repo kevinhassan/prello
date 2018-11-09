@@ -166,7 +166,7 @@ module.exports = (router) => {
                 const listsUpdated = await boardController.getBoard(listUpdated.board._id).lists;
 
                 res.status(200).send({ message: 'Card successfully moved', lists: listsUpdated });
-                socket.updateClientsOnBoard(listUpdated.board._id);
+                //socket.updateClientsOnBoard(listUpdated.board._id);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }

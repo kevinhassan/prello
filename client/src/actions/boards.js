@@ -55,7 +55,7 @@ export const fetchBoardSuccessAction = board => ({
 export const fetchBoard = boardId => (dispatch) => {
     dispatch(fetchBoardStartedAction());
     dispatch(displayLoadingModal());
-    APISocket.subscribeToBoard(boardId, (res) => {
+    new APISocket().subscribeToBoard(boardId, (res) => {
         if (res.error) {
             dispatch(fetchBoardFailureAction());
             dispatch(displayErrorMessage(res.error));
@@ -79,7 +79,7 @@ export const removeBoardFetchSuccessAction = () => ({
 
 export const removeBoardFetch = () => (dispatch) => {
     dispatch(removeBoardFetchStartedAction());
-    APISocket.removeSubscriptionToCurrentBoard(() => {
+    new APISocket().removeSubscriptionToCurrentBoard(() => {
         dispatch(removeBoardFetchSuccessAction());
     });
 };
