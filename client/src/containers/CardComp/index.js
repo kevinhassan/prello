@@ -52,7 +52,7 @@ class CardComp extends React.Component {
     handleEditDescription(event) {
         event.preventDefault();
         const description = event.target.description.value;
-        this.props.editCardDescription(this.props.card._id, description);
+        this.props.editCardDescription(this.props.card._id, description, this.props.card.description);
         this.setState({ isEditingDescription: false });
     }
 

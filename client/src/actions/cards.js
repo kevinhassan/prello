@@ -53,32 +53,36 @@ export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';
 export const EDIT_CARD_DESCRIPTION_FAILURE = 'cards/EDIT_DESCRIPTION_FAILURE';
 export const EDIT_CARD_DESCRIPTION_SUCCESS = 'cards/EDIT_DESCRIPTION_SUCCESS';
 
-export const editCardDescriptionStartedAction = () => ({ type: EDIT_CARD_DESCRIPTION_STARTED });
-export const editCardDescriptionFailureAction = error => ({
-    type: EDIT_CARD_DESCRIPTION_FAILURE,
+export const editCardDescriptionStartedAction = (cardId, description) => ({
+    type: EDIT_CARD_DESCRIPTION_STARTED,
     payload: {
-        error,
-    },
-});
-export const editCardDescriptionSuccessAction = message => ({
-    type: EDIT_CARD_DESCRIPTION_SUCCESS,
-    payload: {
-        message,
+        cardId,
+        description,
     },
 });
 
-export const editCardDescription = (cardId, description) => (dispatch) => {
-    dispatch(editCardDescriptionStartedAction());
+export const editCardDescriptionFailureAction = (error, cardId, initialDescription) => ({
+    type: EDIT_CARD_DESCRIPTION_FAILURE,
+    payload: {
+        cardId,
+        description: initialDescription,
+        error,
+    },
+});
+export const editCardDescriptionSuccessAction = () => ({ type: EDIT_CARD_DESCRIPTION_SUCCESS });
+
+export const editCardDescription = (cardId, description, initialDescription) => (dispatch) => {
+    dispatch(editCardDescriptionStartedAction(cardId, description));
     dispatch(displayLoadingModal());
     const resource = 'cards/'.concat(cardId).concat('/description/');
     APIFetch.fetchPrelloAPI(resource, { description }, APIFetch.PUT)
         .then(() => {
             // API doesn't need to return the card: use directly the new description
-            dispatch(editCardDescriptionSuccessAction(description));
+            dispatch(editCardDescriptionSuccessAction());
             dispatch(displaySuccessMessage('Description updated'));
         })
         .catch((error) => {
-            dispatch(editCardDescriptionFailureAction(error.response.data.error));
+            dispatch(editCardDescriptionFailureAction(error.response.data.error, cardId, initialDescription));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
