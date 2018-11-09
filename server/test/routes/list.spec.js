@@ -129,18 +129,21 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
     it('should return 422 ERROR', (done) => {
         request(app)
             .put(`/lists/${list1._id}/cards/invalidCardId`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
     it('should return 422 ERROR if no body provided', (done) => {
         request(app)
             .put(`/lists/${list1._id}/cards/${card1._id}`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
     it('should return 404 ERROR if card not found', (done) => {
         request(app)
             .put(`/lists/${list1._id}/cards/123456789abc`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .send({ sourceListId: list2._id, index: 0 })
             .expect('Content-Type', /json/)
             .expect(404, done);
@@ -148,6 +151,7 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
     it('should return 200 OK', (done) => {
         request(app)
             .put(`/lists/${list1._id}/cards/${card1._id}`)
+            .set('Authorization', `Bearer ${tokenMember}`)
             .send({ sourceListId: list2._id, index: 0 })
             .expect('Content-Type', /json/)
             .expect(200, done);
