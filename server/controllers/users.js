@@ -168,11 +168,12 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
 exports.getProfile = async (user) => {
     try {
     // return plain json object with lean
-        const userProfile = await User.findById(user.id).select({
+        const userProfile = await User.findById(user._id).select({
             fullName: 1, username: 1, bio: 1, initials: 1, email: 1, _id: 0
         }).lean();
         return userProfile;
     } catch (err) {
+        console.log(err);
         throw new MyError(500, 'Internal server error');
     }
 };
