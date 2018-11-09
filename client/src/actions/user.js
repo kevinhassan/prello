@@ -42,12 +42,12 @@ export const updateUserInformationSuccess = (fullname, initials, bio) => ({
     },
 });
 
-export const updateUserInformation = (fullName, initials, bio) => (dispatch) => {
+export const updateUserInformation = (fullName, initials, biography) => (dispatch) => {
     APIFetch.fetchPrelloAPI('profile', {
-        fullName, initials, bio,
+        fullName, initials, biography,
     }, APIFetch.PUT)
         .then(() => {
-            dispatch(updateUserInformationSuccess(fullName, initials, bio));
+            dispatch(updateUserInformationSuccess(fullName, initials, biography));
         })
         .catch((error) => {
             dispatch(displayErrorMessageAction(error.message));
