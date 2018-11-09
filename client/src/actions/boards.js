@@ -94,37 +94,39 @@ export const removeBoardFetch = () => (dispatch) => {
 };
 
 // ===== Update lists ======
-export const UPDATE_LISTS_INDEXESD_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
+export const UPDATE_LISTS_INDEXES_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
 export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE';
 export const UPDATE_LISTS_INDEXES_SUCCESS = 'board/UPDATE_LISTS_INDEXES_SUCCESS';
 
-export const updateListsIndexesFailureAction = error => ({
+export const updateListsIndexesFailureAction = (error, initialLists) => ({
     type: UPDATE_LISTS_INDEXES_FAILURE,
     payload: {
+        lists: initialLists,
         error,
     },
 });
-export const updateListsIndexesStartedAction = () => ({ type: UPDATE_LISTS_INDEXESD_STARTED });
-export const updateListsIndexesSuccessAction = newLists => ({
-    type: UPDATE_LISTS_INDEXES_SUCCESS,
+export const updateListsIndexesStartedAction = newLists => ({
+    type: UPDATE_LISTS_INDEXES_STARTED,
     payload: {
         lists: newLists,
     },
 });
+export const updateListsIndexesSuccessAction = () => ({ type: UPDATE_LISTS_INDEXES_SUCCESS });
 
-export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
-    dispatch(updateListsIndexesStartedAction());
+export const updateListsIndexes = (boardId, newLists, initialLists) => (dispatch) => {
+    dispatch(updateListsIndexesStartedAction(newLists));
     dispatch(displayLoadingModal());
     const resource = 'boards/'.concat(boardId).concat('/lists/');
     APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
         .then(() => {
             // API doesn't need to return the lists (too long): use directly the new order
             dispatch(updateListsIndexesSuccessAction(newLists));
-            dispatch(hideLoadingModal());
         })
         .catch((error) => {
-            dispatch(updateListsIndexesFailureAction(error.response.data.error));
+            dispatch(updateListsIndexesFailureAction(error.response.data.error, initialLists));
             dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
             dispatch(hideLoadingModal());
         });
 };

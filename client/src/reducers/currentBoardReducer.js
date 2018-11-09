@@ -57,7 +57,7 @@ export default function currentBoardReducer(state = initialState, action) {
             },
         };
 
-    case actions.UPDATE_LISTS_INDEXES_SUCCESS:
+    case actions.UPDATE_LISTS_INDEXES_STARTED:
         return {
             ...state,
             board: {
@@ -67,7 +67,13 @@ export default function currentBoardReducer(state = initialState, action) {
         };
 
     case actions.UPDATE_LISTS_INDEXES_FAILURE:
-        return state;
+        return {
+            ...state,
+            board: {
+                ...state.board,
+                lists: action.payload.lists,
+            },
+        };
 
     default:
         return state;

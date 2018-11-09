@@ -75,7 +75,7 @@ class BoardComp extends React.Component {
             const listsUpdated = this.reorder(lists, source.index, destination.index);
 
             // Dispatch action
-            this.props.updateListsIndexes(_id, listsUpdated);
+            this.props.updateListsIndexes(_id, listsUpdated, this.props.board.lists);
             return;
         }
 
