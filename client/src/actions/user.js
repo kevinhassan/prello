@@ -72,6 +72,10 @@ export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
         });
 };
 
+export const SIGN_OUT_FROM_DELETE = 'user/SIGN_OUT_FROM_DELETE';
+
+export const signOutAction = () => ({ type: SIGN_OUT_FROM_DELETE });
+
 export const deleteUser = username => (dispatch) => {
     dispatch(displayLoadingModal());
     APIFetch.fetchPrelloAPI('account', {
@@ -80,6 +84,7 @@ export const deleteUser = username => (dispatch) => {
         .then(() => {
             dispatch(displaySuccessMessage('User deleted'));
             localStorage.removeItem('prello_token');
+            dispatch(signOutAction());
             dispatch(push('/'));
         })
         .catch((error) => {
@@ -88,13 +93,4 @@ export const deleteUser = username => (dispatch) => {
         .finally(() => {
             dispatch(hideLoadingModal());
         });
-};
-
-export const SIGN_OUT = 'auth/SIGN_OUT';
-
-export const signOutAction = () => ({ type: SIGN_OUT });
-
-export const signOut = () => (dispatch) => {
-    localStorage.removeItem('prello_token');
-    dispatch(signOutAction());
 };
