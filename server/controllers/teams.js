@@ -1,7 +1,7 @@
 const MyError = require('../util/error');
 
 const Team = require('../models/Team');
-const User = require('../models/Team');
+const User = require('../models/User');
 
 const userController = require('../controllers/users');
 const boardController = require('../controllers/boards');
@@ -73,6 +73,23 @@ exports.postTeam = async (userId, data) => {
     }
 };
 
+exports.postMember = async (teamId, memberId) => {
+    try {
+        console.log('memberId : ', memberId);
+        const user = await User.findById(memberId);
+        console.log(user);
+
+        if (!user) throw new MyError(404, 'User not found');
+        await Team.updateOne({ _id: teamId },
+            { $addToSet: { members: memberId } }, { new: true })
+            .catch(async () => { throw new MyError(404, 'Team not found'); });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+
 // ======================== //
 // === Delete functions === //
 // ======================== //
@@ -120,17 +137,6 @@ exports.addBoard = async (teamId, boardId) => {
         await Team.updateOne({ _id: teamId },
             { $addToSet: { boards: { _id: boardId } } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal server error');
-    }
-};
-exports.addMemberWithEmail = async (teamId, email) => {
-    try {
-        const user = await userController.findMemberWithMail(email);
-        const team = await Team.findByIdAndUpdate(teamId, { $addToSet: { members: user._id } });
-        await userController.joinTeam(user._id, team._id);
-        return team;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');

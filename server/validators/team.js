@@ -6,9 +6,9 @@ const addTeam = [
         .isString()
 ];
 const addMember = [
-    check('email')
+    check('member')
         .not().isEmpty()
-        .isEmail(),
+        .isString(),
 ];
 const removeMember = [
     check('member')

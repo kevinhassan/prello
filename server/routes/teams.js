@@ -13,7 +13,7 @@ const teamController = require('../controllers/teams');
 *               type: boolean
 *   AddMemberForm:
 *       properties:
-*           email:
+*           member:
 *               type: string
 *   ChangeAccessForm:
 *       properties:
@@ -123,7 +123,7 @@ const teamController = require('../controllers/teams');
 *             required: true
 *             description: Team ID
 *           - name: body
-*             description: The information of the new member
+*             description: The ID of the new member
 *             in: body
 *             required: true
 *             schema:
@@ -247,7 +247,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                const newTeam = await teamController.addMemberWithEmail(req.params.teamId, req.body.email);
+                const newTeam = await teamController.postMember(req.params.teamId, req.body.member);
                 res.status(201).send({ message: 'User successfully created', team: newTeam });
             } catch (e) {
                 res.status(e.status).send({ err: e.message });

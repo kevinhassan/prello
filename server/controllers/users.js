@@ -380,3 +380,14 @@ exports.leaveTeam = async (userId, teamId) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+exports.foundMembers = async (username) => {
+    try {
+        const users = await User.find({ username: new RegExp(`.*${username}.*`, 'i') }).select(['username', 'email']);
+        return users;
+        // Do your action here..
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
