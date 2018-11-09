@@ -19,9 +19,12 @@ class LabelsManager extends React.Component {
         super(props);
 
         const labels = this.props.boardLabels.map((label) => {
-            const found = this.props.activeLabels.some(activeLab => activeLab._id === label._id);
-            if (found) return { ...label, isActive: true };
-            return { ...label, isActive: false };
+            if (this.props.activeLabels) {
+                const found = this.props.activeLabels.some(activeLab => activeLab._id === label._id);
+                if (found) return { ...label, isActive: true };
+                return { ...label, isActive: false };
+            }
+            return label;
         });
         labels.sort((a, b) => a.name > b.name);
         this.state = { labels };
@@ -38,9 +41,12 @@ class LabelsManager extends React.Component {
 
     onLabelsUpdate = () => {
         const labels = this.props.boardLabels.map((label) => {
-            const found = this.props.activeLabels.some(activeLab => activeLab._id === label._id);
-            if (found) return { ...label, isActive: true };
-            return { ...label, isActive: false };
+            if (this.props.activeLabels) {
+                const found = this.props.activeLabels.some(activeLab => activeLab._id === label._id);
+                if (found) return { ...label, isActive: true };
+                return { ...label, isActive: false };
+            }
+            return label;
         });
         labels.sort((a, b) => a.name > b.name);
         this.setState({ labels });

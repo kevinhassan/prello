@@ -95,31 +95,34 @@ export const ADD_LABEL_STARTED = 'cards/ADD_LABEL_STARTED';
 export const ADD_LABEL_FAILURE = 'cards/ADD_LABEL_FAILURE';
 export const ADD_LABEL_SUCCESS = 'cards/ADD_LABEL_SUCCESS';
 
-export const addLabelStartedAction = () => ({ type: ADD_LABEL_STARTED });
-export const addLabelFailureAction = error => ({
+export const addLabelStartedAction = (cardId, labelId) => ({
+    type: ADD_LABEL_STARTED,
+    payload: {
+        cardId,
+        labelId,
+    },
+});
+export const addLabelFailureAction = (error, cardId, labelId) => ({
     type: ADD_LABEL_FAILURE,
     payload: {
+        cardId,
+        labelId,
         error,
     },
 });
-export const addLabelSuccessAction = message => ({
-    type: ADD_LABEL_SUCCESS,
-    payload: {
-        message,
-    },
-});
+export const addLabelSuccessAction = () => ({ type: ADD_LABEL_SUCCESS });
 
 export const addLabel = (cardId, labelId) => (dispatch) => {
-    dispatch(addLabelStartedAction());
+    dispatch(addLabelStartedAction(cardId, labelId));
     dispatch(displayLoadingModal());
     const resource = `cards/${cardId}/labels/${labelId}`;
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.POST)
         .then((res) => {
-            dispatch(addLabelSuccessAction(cardId, labelId));
+            dispatch(addLabelSuccessAction());
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(addLabelFailureAction(error.response.data.error));
+            dispatch(addLabelFailureAction(error.response.data.error, cardId, labelId));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
