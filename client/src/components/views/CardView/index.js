@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 // ===== Components
 import LabelPill from '../CardDetailView/Labels/LabelPill';
 
-// ===== Models
-import Card from '../../../models/Card';
-
 // ===== Others
 import './style.css';
 
@@ -35,7 +32,7 @@ const CardView = props => (
 );
 
 CardView.propTypes = {
-    card: PropTypes.instanceOf(Card).isRequired,
+    card: PropTypes.object.isRequired,
     onCardClick: PropTypes.func.isRequired,
 };
 

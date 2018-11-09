@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { editCardDescription, deleteLabel } from '../../actions/cards';
 
-// ===== Models
-import Card from '../../models/Card';
-
 // ===== View
 import CardView from '../../components/views/CardView';
 import CardDetailView from '../../components/views/CardDetailView';
@@ -55,7 +52,7 @@ class CardComp extends React.Component {
     handleEditDescription(event) {
         event.preventDefault();
         const description = event.target.description.value;
-        this.props.editCardDescription(this.props.card._id, description);
+        this.props.editCardDescription(this.props.card, description, this.props.card.description);
         this.setState({ isEditingDescription: false });
     }
 
@@ -100,22 +97,20 @@ class CardComp extends React.Component {
 }
 CardComp.propTypes = {
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
-    card: PropTypes.instanceOf(Card).isRequired,
+    card: PropTypes.object.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
-const mapStateToProps = cardsReducer => ({
-    errorMessage: cardsReducer.errorMessage,
-    successMessage: cardsReducer.successMessage,
+const mapStateToProps = () => ({
 });
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         deleteLabel,
-        editCardDescription
+        editCardDescription,
     }, dispatch,
 );
 

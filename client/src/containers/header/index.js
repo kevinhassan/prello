@@ -80,8 +80,8 @@ Header.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ authReducer }) => ({
-    isLoggedIn: authReducer.isLoggedIn,
+const mapStateToProps = ({ auth }) => ({
+    isLoggedIn: auth.isLoggedIn,
 });
 
 // Put actions in props

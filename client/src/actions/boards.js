@@ -4,12 +4,10 @@ import * as APIFetch from '../helpers/APIFetch';
 
 // ========================
 
+// ===== Fetch boards =====
 export const FETCH_BOARDS_STARTED = 'boards/FETCH_BOARDS_STARTED';
 export const FETCH_BOARDS_FAILURE = 'boards/FETCH_BOARDS_FAILURE';
 export const FETCH_BOARDS_SUCCESS = 'boards/FETCH_BOARDS_SUCCESS';
-export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
-export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
-export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 
 export const fetchBoardsStartedAction = () => ({ type: FETCH_BOARDS_STARTED });
 export const fetchBoardsFailureAction = error => ({
@@ -39,6 +37,11 @@ export const fetchBoards = () => (dispatch) => {
         });
 };
 
+// ===== Fetch Board =====
+export const FETCH_BOARD_STARTED = 'board/FETCH_BOARD_STARTED';
+export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
+export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
+
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
 export const fetchBoardFailureAction = (boardId, error) => ({
     type: FETCH_BOARD_FAILURE,
@@ -67,7 +70,7 @@ export const fetchBoard = boardId => (dispatch) => {
     });
 };
 
-// ===== REMOVE BOARD FETCH =====
+// ===== Remove board fetch =====
 export const REMOVE_BOARD_FETCH_STARTED = 'board/REMOVE_BOARD_FETCH_STARTED';
 export const REMOVE_BOARD_FETCH_FAILURE = 'board/REMOVE_BOARD_FETCH_FAILURE';
 export const REMOVE_BOARD_FETCH_SUCCESS = 'board/REMOVE_BOARD_FETCH_SUCCESS';
@@ -90,65 +93,40 @@ export const removeBoardFetch = () => (dispatch) => {
     });
 };
 
-// ===== UPDATE LISTS ======
-export const UPDATE_LISTS_INDEXES = 'board/UPDATE_LISTS_INDEXES';
+// ===== Update lists ======
+export const UPDATE_LISTS_INDEXES_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
 export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE';
-export const UPDATE_LISTS_INDEXESD_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
 export const UPDATE_LISTS_INDEXES_SUCCESS = 'board/UPDATE_LISTS_INDEXES_SUCCESS';
 
-export const updateListsIndexesFailureAction = error => ({
+export const updateListsIndexesFailureAction = (error, initialLists) => ({
     type: UPDATE_LISTS_INDEXES_FAILURE,
     payload: {
+        lists: initialLists,
         error,
     },
 });
-export const updateListsIndexesStartedAction = () => ({ type: UPDATE_LISTS_INDEXESD_STARTED });
-export const updateListsIndexesSuccessAction = newLists => ({
-    type: UPDATE_LISTS_INDEXES_SUCCESS,
+export const updateListsIndexesStartedAction = newLists => ({
+    type: UPDATE_LISTS_INDEXES_STARTED,
     payload: {
         lists: newLists,
     },
 });
+export const updateListsIndexesSuccessAction = () => ({ type: UPDATE_LISTS_INDEXES_SUCCESS });
 
-export const updateListsIndexesAction = newLists => ({
-    type: UPDATE_LISTS_INDEXES,
-    payload: {
-        lists: newLists,
-    },
-});
-
-export const updateListsIndexes = (boardId, newLists) => (dispatch) => {
-    dispatch(updateListsIndexesStartedAction());
+export const updateListsIndexes = (boardId, newLists, initialLists) => (dispatch) => {
+    dispatch(updateListsIndexesStartedAction(newLists));
     dispatch(displayLoadingModal());
     const resource = 'boards/'.concat(boardId).concat('/lists/');
     APIFetch.fetchPrelloAPI(resource, { lists: newLists }, APIFetch.PUT)
         .then(() => {
             // API doesn't need to return the lists (too long): use directly the new order
             dispatch(updateListsIndexesSuccessAction(newLists));
-            dispatch(hideLoadingModal());
         })
         .catch((error) => {
-            dispatch(updateListsIndexesFailureAction(error.response.data.error));
+            dispatch(updateListsIndexesFailureAction(error.response.data.error, initialLists));
             dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
             dispatch(hideLoadingModal());
         });
 };
-
-// ===== ADD LISTS ======
-export const ADD_LIST_TO_BOARD_FAILURE = 'boards/ADD_LIST_TO_BOARD_FAILURE';
-export const ADD_LIST_TO_BOARD_SUCCESS = 'boards/ADD_LIST_TO_BOARD_SUCCESS';
-
-export const addListToBoardSuccess = lists => ({
-    type: ADD_LIST_TO_BOARD_SUCCESS,
-    payload: {
-        lists,
-    },
-});
-
-
-export const addListToBoardFailure = error => ({
-    type: ADD_LIST_TO_BOARD_FAILURE,
-    payload: {
-        error,
-    },
-});

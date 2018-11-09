@@ -18,8 +18,6 @@ class BoardComp extends React.Component {
         super(props);
         this.state = {
             isInputVisible: false,
-            isWaitingForAPIConfirmation: false,
-            pendingLists: [],
         };
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.handleAddList = this.handleAddList.bind(this);
@@ -29,10 +27,6 @@ class BoardComp extends React.Component {
 
     componentWillMount() {
         this.props.fetchBoard(this.props.match.params.boardId);
-    }
-
-    componentWillReceiveProps() {
-        this.setState({ isWaitingForAPIConfirmation: false });
     }
 
     componentWillUnmount() {
@@ -64,7 +58,6 @@ class BoardComp extends React.Component {
         this.setState({ isInputVisible: false });
     }
 
-
     handleOnDragEnd(result) {
         const { destination, source, type } = result;
 
@@ -75,19 +68,22 @@ class BoardComp extends React.Component {
 
         // List dropped
         if (type === 'LIST') {
-            const { lists, _id } = this.props.board;
+            const { _id } = this.props.board;
+
+            // Copy by value
+            const lists = JSON.parse(JSON.stringify(this.props.board.lists));
             const listsUpdated = this.reorder(lists, source.index, destination.index);
 
-            // Set pending State
-            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
-                // Dispatch action
-                this.props.updateListsIndexes(_id, listsUpdated);
-            });
+            // Dispatch action
+            this.props.updateListsIndexes(_id, listsUpdated, this.props.board.lists);
             return;
         }
+
         // Card dropped
         if (type === 'CARD') {
-            const { lists } = this.props.board;
+            // Copy by value
+            const lists = JSON.parse(JSON.stringify(this.props.board.lists));
+
             const cardId = result.draggableId;
             const destinationListId = destination.droppableId;
             const destinationIndex = destination.index;
@@ -97,52 +93,38 @@ class BoardComp extends React.Component {
             const sourceList = lists.find(list => list._id === sourceListId);
             const cardMoved = sourceList.cards.filter(c => c._id === cardId)[0];
 
+            // Update card
+            const cardUpdated = {
+                ...cardMoved,
+                list: {
+                    _id: destinationListId,
+                },
+            };
+
             // Update lists
             const listsUpdated = lists.map((list) => {
                 if (list._id === sourceListId) {
                     list.cards.splice(list.cards.findIndex(card => card._id === cardId), 1);
                 }
                 if (list._id === destinationListId) {
-                    list.cards.splice(destinationIndex, 0, cardMoved);
+                    list.cards.splice(destinationIndex, 0, cardUpdated);
                 }
                 return list;
             });
 
-            // Set pending State
-            this.setState({ pendingLists: listsUpdated, isWaitingForAPIConfirmation: true }, () => {
-                // Dispatch action
-                this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated);
-            });
+            // Dispatch action
+            this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated, this.props.board.lists);
         }
     }
 
     render() {
         const { board } = this.props;
         if (board) {
-            // If changes were made on lists (moved for example), we give the board modified.
-            // else, we give the board from the store which is the same as in server.
-            if (this.state.isWaitingForAPIConfirmation) {
-                const pendingBoard = {
-                    ...board,
-                    lists: this.state.pendingLists,
-                };
-
-                return (
-                    <BoardView
-                        board={pendingBoard}
-                        isInputVisible={this.state.isInputVisible}
-                        onDragEnd={this.handleOnDragEnd}
-                        displayAddListForm={this.handleAddList}
-                        onListAdded={this.handleListAdded}
-                    />
-                );
-            }
-
             return (
                 <BoardView
                     board={board}
-                    onDragEnd={this.handleOnDragEnd}
                     isInputVisible={this.state.isInputVisible}
+                    onDragEnd={this.handleOnDragEnd}
                     displayAddListForm={this.handleAddList}
                     onListAdded={this.handleListAdded}
                 />
@@ -170,9 +152,8 @@ BoardComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ boardsReducer }) => ({
-    board: boardsReducer.board,
-    didAnErrorOccured: boardsReducer.didAnErrorOccured,
+const mapStateToProps = ({ currentBoard }) => ({
+    board: currentBoard.board,
 });
 
 // Put actions in props

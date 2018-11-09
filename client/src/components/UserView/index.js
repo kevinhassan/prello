@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import User from '../../models/User';
 import './style.css';
 
 class UserView extends React.Component {
@@ -45,7 +44,7 @@ class UserView extends React.Component {
     }
 }
 UserView.propTypes = {
-    user: PropTypes.instanceOf(User).isRequired,
+    user: PropTypes.object.isRequired,
     deleteUser: PropTypes.func,
 };
 UserView.defaultProps = {

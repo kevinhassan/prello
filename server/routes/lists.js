@@ -1,4 +1,5 @@
 const { validationResult } = require('express-validator/check');
+const boardController = require('../controllers/boards');
 const cardController = require('../controllers/cards');
 const listController = require('../controllers/lists');
 const { listValidator } = require('../validators');
@@ -105,7 +106,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/lists/:listId/cards/:cardId', listValidator.moveCard, async (req, res) => {
+        .put('/lists/:listId/cards/:cardId', Auth.isAuthenticated, listValidator.moveCard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -128,8 +129,11 @@ module.exports = (router) => {
                     listId: req.params.listId
                 });
 
-                res.status(201).send({ message: 'Card successfully moved', list: listUpdated });
-                socket.updateClientsOnBoard(listUpdated.board);
+                // Return all the board lists updated
+                const listsUpdated = await boardController.getBoard(listUpdated.board._id).lists;
+
+                res.status(200).send({ message: 'Card successfully moved', lists: listsUpdated });
+                socket.updateClientsOnBoard(listUpdated.board._id);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
