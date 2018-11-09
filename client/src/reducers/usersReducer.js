@@ -14,12 +14,6 @@ export default function usersReducer(state = initialState, action) {
             user: userObject,
         };
 
-    case actions.USER_INFORMATION_FAILURE:
-        return {
-            ...state,
-            errorMessage: action.payload.error,
-        };
-
     case actions.UPDATE_USER_INFORMATION_SUCCESS:
         return {
             ...state,
