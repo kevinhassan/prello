@@ -76,32 +76,30 @@ export default function currentBoardReducer(state = initialState, action) {
             ...state,
         };
 
-    // ===== Card Actions ===== //
+        // ===== Card Actions ===== //
+
+    // ===== Description ===== //
     // With started: action.payload.description is the new description.
     // With failure: action.payload.description is the old description.
     case cardActions.EDIT_CARD_DESCRIPTION_STARTED:
     case cardActions.EDIT_CARD_DESCRIPTION_FAILURE:
-        newLists = state.board.lists.map((l) => {
-            newCards = l.cards.map((card) => {
-                if (card._id === action.payload.cardId) {
-                    return {
-                        ...card,
-                        description: action.payload.description,
-                    };
-                }
-                return card;
-            });
-            return {
-                ...l,
-                cards: newCards,
-            };
-        });
-
         return {
             ...state,
             board: {
                 ...state.board,
-                lists: newLists,
+                lists: state.board.lists.map(l => (
+                    l._id !== action.payload.card.list._id
+                        ? l
+                        : {
+                            ...l,
+                            cards: l.cards.map(card => (card._id === action.payload.card._id
+                                ? {
+                                    ...card,
+                                    description: action.payload.description,
+                                }
+                                : card)),
+                        }
+                )),
             },
         };
 
