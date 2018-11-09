@@ -251,8 +251,15 @@ exports.putAccount = async (user, data) => {
 /**
  * remove account page
  */
-exports.deleteAccount = async (user) => {
+exports.deleteAccount = async (user, username) => {
     try {
+        const userToDelete = await User.findById({ _id: user._id }).select('username');
+        if (!userToDelete) {
+            throw new MyError(402, 'Not existing user');
+        }
+        if (username !== userToDelete.username) {
+            throw new MyError(403, 'Invalid username input');
+        }
         await User.deleteOne({ _id: user._id });
     } catch (err) {
         if (err.status) throw err;

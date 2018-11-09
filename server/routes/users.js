@@ -197,6 +197,33 @@ const {
 *               description: Unauthorized user
 *           500:
 *               description: Internal server error
+*
+* /account/password:
+*    put:
+*       tags:
+*           - User
+*       description: User object that needs to update his password
+*       summary: Update the user password
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The user password to update
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/AccountForm'
+*       responses:
+*           204:
+*               description: User password updated
+*           401:
+*               description: Unauthorized user
+*           409:
+*               description: Email already used
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 * /forgot:
 *   post:
 *       tags:
@@ -316,7 +343,7 @@ module.exports = (router) => {
         // TODO: remove him from all boards(check if not the last admin) & teams
         .delete('/account', Auth.isAuthenticated, async (req, res) => {
             try {
-                await userController.deleteAccount(req.user);
+                await userController.deleteAccount(req.user, req.body.username);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
