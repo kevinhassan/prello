@@ -59,8 +59,6 @@ class BoardComp extends React.Component {
     }
 
     handleOnDragEnd(result) {
-        console.log(this.props.board.lists);
-
         const { destination, source, type } = result;
 
         // Drop elsewhere than Drag N Drop context
@@ -70,18 +68,22 @@ class BoardComp extends React.Component {
 
         // List dropped
         if (type === 'LIST') {
-            const { lists, _id } = this.props.board;
+            const { _id } = this.props.board;
+
+            // Copy by value
+            const lists = JSON.parse(JSON.stringify(this.props.board.lists));
             const listsUpdated = this.reorder(lists, source.index, destination.index);
 
             // Dispatch action
             this.props.updateListsIndexes(_id, listsUpdated);
-
             return;
         }
 
         // Card dropped
         if (type === 'CARD') {
-            const lists = this.props.board.lists.slice(0);
+            // Copy by value
+            const lists = JSON.parse(JSON.stringify(this.props.board.lists));
+
             const cardId = result.draggableId;
             const destinationListId = destination.droppableId;
             const destinationIndex = destination.index;
@@ -111,7 +113,7 @@ class BoardComp extends React.Component {
             });
 
             // Dispatch action
-            this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated, lists);
+            this.props.moveCard(sourceListId, destinationListId, cardId, destinationIndex, listsUpdated, this.props.board.lists);
         }
     }
 
