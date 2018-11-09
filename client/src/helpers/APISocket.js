@@ -9,7 +9,6 @@ export default class APISocket {
             return instance;
         }
         this.socket = io.connect(process.env.REACT_APP_SOCKET_API_HOST);
-
         instance = this;
     }
 

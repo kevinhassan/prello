@@ -1,10 +1,13 @@
 const chalk = require('chalk');
-const app = require('./app');
 // =====
+/* eslint-disable import/order */
+const app = require('./app');
+const server = require('http').Server(app);
+/* eslint-enable import/order */
 
-const server = app.listen(app.get('port'), () => {
+require('./socket')(server);
+
+server.listen(app.get('port'), () => {
     console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
     console.log('  Press CTRL-C to stop\n');
 });
-
-require('./socket')(server);
