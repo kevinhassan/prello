@@ -1,0 +1,22 @@
+.deleteFormWrapper {
+    justify-content: center;
+    max-width: 700px;
+    width: 500px;
+}
+
+
+.deleteTitle{
+    color:#933;
+    margin-bottom: 10px;
+}
+
+.deleteInfo{
+    color:#300;
+    margin-bottom: 10px;
+    text-align: center;
+    font-style: italic;
+}
+
+.deleteBtn{
+    float: right;
+}

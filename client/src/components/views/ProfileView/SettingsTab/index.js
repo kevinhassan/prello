@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 // Component
 import NewPasswordForm from './NewPasswordForm';
+import DeleteAccountForm from './DeleteAccountForm';
 
 // ===================
 import './style.css';
@@ -30,13 +31,11 @@ const SettingsTab = props => (
         ) : (
             settingsDisplay(props.isDeleteVisible,
                 (
-                    <div className="settings">
-                        <div className="changePassword">
-                            <h5>Delete</h5>
-                            <button className="btn btn-primary" type="button" onClick={() => props.displayDeleteForm(false)}>Close</button>
-
-                            <button className="btn btn-danger" type="button" onClick={() => props.handleDeletingAccount(true)}>Delete</button>
-                        </div>
+                    <div className="deleteAccountForm">
+                        <DeleteAccountForm
+                            displayDeleteForm={props.displayDeleteForm}
+                            handleDeleteAccount={props.handleDeletingAccount}
+                        />
                     </div>
                 ), (
                     <div className="settings">
