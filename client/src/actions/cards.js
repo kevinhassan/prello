@@ -135,31 +135,35 @@ export const DELETE_LABEL_STARTED = 'cards/DELETE_LABEL_STARTED';
 export const DELETE_LABEL_FAILURE = 'cards/DELETE_LABEL_FAILURE';
 export const DELETE_LABEL_SUCCESS = 'cards/DELETE_LABEL_SUCCESS';
 
-export const deleteLabelStartedAction = () => ({ type: DELETE_LABEL_STARTED });
-export const deleteLabelFailureAction = error => ({
-    type: DELETE_LABEL_FAILURE,
+export const deleteLabelStartedAction = (cardId, labelId) => ({
+    type: DELETE_LABEL_STARTED,
     payload: {
-        error,
-    },
-});
-export const deleteLabelSuccessAction = message => ({
-    type: DELETE_LABEL_SUCCESS,
-    payload: {
-        message,
+        cardId,
+        labelId,
     },
 });
 
+export const deleteLabelFailureAction = (error, cardId, labelId) => ({
+    type: DELETE_LABEL_FAILURE,
+    payload: {
+        cardId,
+        labelId,
+        error,
+    },
+});
+export const deleteLabelSuccessAction = () => ({ type: DELETE_LABEL_SUCCESS });
+
 export const deleteLabel = (cardId, labelId) => (dispatch) => {
-    dispatch(deleteLabelStartedAction());
+    dispatch(deleteLabelStartedAction(cardId, labelId));
     dispatch(displayLoadingModal());
     const resource = `cards/${cardId}/labels/${labelId}`;
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
         .then((res) => {
-            dispatch(deleteLabelSuccessAction(cardId, labelId));
+            dispatch(deleteLabelSuccessAction());
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(deleteLabelFailureAction(error.response.data.error));
+            dispatch(deleteLabelFailureAction(error.response.data.error, cardId, labelId));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
