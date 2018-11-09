@@ -20,12 +20,15 @@ class ProfileComp extends React.Component {
         this.state = {
             isUpdateVisible: false,
             isPasswordVisible: false,
+            isDeleteVisible: false,
             errorMessage: '',
         };
         this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
         this.handlePasswordModifyDisplay = this.handlePasswordModifyDisplay.bind(this);
         this.handleModifyingPassword = this.handleModifyingPassword.bind(this);
+        this.handleDeleteAccountDisplay = this.handleDeleteAccountDisplay.bind(this);
+        this.handleDeletingAccount = this.handleDeletingAccount.bind(this);
     }
 
     componentWillMount() {
@@ -52,6 +55,16 @@ class ProfileComp extends React.Component {
         this.props.updatePassword(event.target.passwordOld.value, event.target.passwordNew.value);
     }
 
+    handleDeleteAccountDisplay(value) {
+        this.setState({ isDeleteVisible: value });
+    }
+
+    handleDeletingAccount(event) {
+        event.preventDefault();
+        this.setState({ isDeleteVisible: false });
+        this.props.updatePassword(event.target.passwordOld.value, event.target.passwordNew.value);
+    }
+
     render() {
         const { user } = this.props;
 
@@ -66,7 +79,10 @@ class ProfileComp extends React.Component {
                             isUpdateVisible={this.state.isUpdateVisible}
                             handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
                             handleModifyingPassword={this.handleModifyingPassword}
+                            handleDeleteAccountDisplay={this.handleDeleteAccountDisplay}
+                            handleDeletingAccount={this.handleDeletingAccount}
                             isPasswordVisible={this.state.isPasswordVisible}
+                            isDeleteVisible={this.state.isDeleteVisible}
                         />
                     </div>
                 );

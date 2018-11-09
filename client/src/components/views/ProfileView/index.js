@@ -67,9 +67,12 @@ const ProfileView = props => (
             </TabPanel>
             <TabPanel>
                 <SettingsTab
-                    isVisible={props.isPasswordVisible}
+                    isUpdateVisible={props.isPasswordVisible}
+                    isDeleteVisible={props.isDeleteVisible}
                     displayPasswordForm={props.handlePasswordModifyDisplay}
                     handleModifyingPassword={props.handleModifyingPassword}
+                    displayDeleteForm={props.handleDeleteAccountDisplay}
+                    handleDeletingAccount={props.handleDeletingAccount}
 
                 />
             </TabPanel>
@@ -81,11 +84,14 @@ const ProfileView = props => (
 ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
     isUpdateVisible: PropTypes.bool.isRequired,
+    isDeleteVisible: PropTypes.bool.isRequired,
     isPasswordVisible: PropTypes.bool.isRequired,
     handleUpdateInformation: PropTypes.func.isRequired,
     handleUpdateDisplay: PropTypes.func.isRequired,
     handlePasswordModifyDisplay: PropTypes.func.isRequired,
     handleModifyingPassword: PropTypes.func.isRequired,
+    handleDeleteAccountDisplay: PropTypes.func.isRequired,
+    handleDeletingAccount: PropTypes.func.isRequired,
 };
 ProfileView.defaultProps = {
 };

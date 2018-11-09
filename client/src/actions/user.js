@@ -71,3 +71,20 @@ export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+export const deleteUser = username => (dispatch) => {
+    dispatch(displayLoadingModal());
+    APIFetch.fetchPrelloAPI('account', {
+        username,
+    }, APIFetch.DELETE)
+        .then(() => {
+            dispatch(displaySuccessMessage('User deleted'));
+            dispatch(push('/'));
+        })
+        .catch((error) => {
+            dispatch(displayErrorMessage(error.message));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
