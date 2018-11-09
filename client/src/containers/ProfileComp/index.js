@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
-import { getUserInformation, updateUserInformation, updatePassword } from '../../actions/user';
+import { getUserInformation, updateUserInformation, updatePassword, deleteUser } from '../../actions/user';
 
 // ===== Others
 import './style.css';
@@ -62,7 +62,7 @@ class ProfileComp extends React.Component {
     handleDeletingAccount(event) {
         event.preventDefault();
         this.setState({ isDeleteVisible: false });
-        this.props.updatePassword(event.target.passwordOld.value, event.target.passwordNew.value);
+        this.props.deleteUser(event.target.username.value);
     }
 
     render() {
@@ -102,6 +102,7 @@ ProfileComp.propTypes = {
     errorMessage: PropTypes.object,
     getUserInformation: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
     updatePassword: PropTypes.func.isRequired,
     user: PropTypes.object,
 };
@@ -123,6 +124,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         getUserInformation,
         updateUserInformation,
         updatePassword,
+        deleteUser,
     }, dispatch,
 );
 
