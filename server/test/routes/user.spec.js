@@ -128,7 +128,7 @@ describe('PUT /profile', () => {
     });
     it('should return 422 ERROR', (done) => {
         const wrongData = data;
-        wrongData.username = '';
+        wrongData.fullName = '';
         request(app)
             .put('/profile')
             .set('Authorization', `Bearer ${token}`)
