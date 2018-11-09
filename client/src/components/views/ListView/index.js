@@ -28,25 +28,28 @@ const ListView = props => (
             {dropProvided => (
                 <div ref={dropProvided.innerRef} className="cardsList">
                     {props.list.cards.map((c, index) => (
-                        <Draggable key={c._id} draggableId={String(c._id)} index={index} type="CARD">
-                            {dragProvided => (
-                                <div>
-                                    <li
-                                        className="card-li"
-                                        key={c._id}
-                                        {...dragProvided.draggableProps}
-                                        {...dragProvided.dragHandleProps}
-                                        ref={dragProvided.innerRef}
-                                    >
-                                        <CardComp
-                                            card={c}
-                                            boardLabels={props.boardLabels}
-                                        />
-                                        {dragProvided.placeholder}
-                                    </li>
-                                </div>
-                            )}
-                        </Draggable>
+                        c.isArchived ? ''
+                            : (
+                                <Draggable key={c._id} draggableId={String(c._id)} index={index} type="CARD">
+                                    {dragProvided => (
+                                        <div>
+                                            <li
+                                                className="card-li"
+                                                key={c._id}
+                                                {...dragProvided.draggableProps}
+                                                {...dragProvided.dragHandleProps}
+                                                ref={dragProvided.innerRef}
+                                            >
+                                                <CardComp
+                                                    card={c}
+                                                    boardLabels={props.boardLabels}
+                                                />
+                                                {dragProvided.placeholder}
+                                            </li>
+                                        </div>
+                                    )}
+                                </Draggable>
+                            )
                     ))}
                     {dropProvided.placeholder}
                     <AddCardForm
