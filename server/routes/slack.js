@@ -4,6 +4,25 @@ const slackController = require('../controllers/slack');
 
 module.exports = (router) => {
     router
+        .post('/slack/test', async (req, res) => {
+            try {
+                res.status(204).send();
+                const result = await slackController.slackAction(req.param('text'));
+                axios({
+                    url: req.param('response_url'),
+                    headers: { 'Content-Type': 'application/json' },
+                    data: {
+                        attachments: [{
+                            color: '#009cdd',
+                            text: `${result}`
+                        }]
+                    },
+                    method: 'post',
+                }).then().catch();
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
         .post('/slack', async (req, res) => {
             try {
                 res.status(204).send();
