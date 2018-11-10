@@ -62,7 +62,9 @@ const ProfileView = props => (
             </TabList>
 
             <TabPanel>
-                <ProfileTab />
+                <ProfileTab
+                    teams={props.user.teams}
+                />
             </TabPanel>
             <TabPanel>
                 <SettingsTab
