@@ -41,9 +41,8 @@ const BoardsView = props => (
                                         <p className="boardInfo">
                                             <b>{`${board.lists.length}`}</b>
                                             {` list${board.lists.length > 1 ? 's' : ''}`}
-                                        </p>
-                                        <p className="boardInfo">
-                                            <b>{board.lists.reduce((sum, list) => sum + list.cards.length, 0)}</b>
+                                            {' '}
+                                            <b style={{ marginLeft: '5px' }}>{board.lists.reduce((sum, list) => sum + list.cards.length, 0)}</b>
                                             {` card${board.lists.reduce((sum, list) => sum + list.cards.length, 0) > 1 ? 's' : ''}`}
                                         </p>
                                         <div>
