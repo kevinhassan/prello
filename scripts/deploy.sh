@@ -17,7 +17,7 @@ echo ""
 echo ""
 echo "Deploying React app"
 echo "----------------------"
-#$APPDIR/client/scripts/deploy.sh $APPDIR/client
+$APPDIR/client/scripts/deploy.sh $APPDIR/client
 echo ""
 echo ""
 echo "======================="

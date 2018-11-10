@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "postinstall": "npm rebuild node-sass",
-    "start": "npm run-script db:init && node server.js",
+    "start": "npm run db:init && node server.js",
     "test": "NODE_ENV=test nyc mocha --timeout=10000 --recursive --exit",
     "lint": "eslint \"**/*.js\"",
     "watch": "nodemon server.js",

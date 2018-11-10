@@ -8,8 +8,14 @@ if (ENVIRONMENT === 'test') {
 } else if (ENVIRONMENT === 'production') {
     databaseEnv = '';
 }
-logger.debug('Using .env file to supply config environment variables');
-dotenv.config({ path: '.env' });
+
+if (ENVIRONMENT !== 'production') {
+    logger.debug('Using .env file to supply config environment variables');
+    dotenv.config({ path: '.env' });
+} else {
+    logger.debug('Using config environment variables');
+    dotenv.config();
+}
 
 if (!process.env.MONGODB_URI) {
     logger.error('No mongo connection string. Set MONGODB_URI environment variable.');
