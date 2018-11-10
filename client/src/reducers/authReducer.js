@@ -7,45 +7,48 @@ export const initialState = {
 };
 
 export default function authReducer(state = initialState, action) {
-    switch (action.type) {
-    case actions.CLASSIC_SIGN_IN_SUCCESS:
-        return {
-            ...state,
-            isLoggedIn: true,
-            errorSignInMessage: '',
-        };
+    if (action) {
+        switch (action.type) {
+        case actions.CLASSIC_SIGN_IN_SUCCESS:
+            return {
+                ...state,
+                isLoggedIn: true,
+                errorSignInMessage: '',
+            };
 
-    case actions.CLASSIC_SIGN_IN_FAILURE:
-        return {
-            ...state,
-            errorSignInMessage: action.payload.error,
-        };
+        case actions.CLASSIC_SIGN_IN_FAILURE:
+            return {
+                ...state,
+                errorSignInMessage: action.payload.error,
+            };
 
-    case actions.CLASSIC_REGISTER_SUCCESS:
-        return {
-            ...state,
-            errorRegisterMessage: '',
-        };
+        case actions.CLASSIC_REGISTER_SUCCESS:
+            return {
+                ...state,
+                errorRegisterMessage: '',
+            };
 
-    case actions.CLASSIC_REGISTER_FAILURE:
-        return {
-            ...state,
-            errorRegisterMessage: action.payload.error,
-        };
+        case actions.CLASSIC_REGISTER_FAILURE:
+            return {
+                ...state,
+                errorRegisterMessage: action.payload.error,
+            };
 
-    case actions.SIGN_OUT:
-        return {
-            ...state,
-            isLoggedIn: false,
-        };
+        case actions.SIGN_OUT:
+            return {
+                ...state,
+                isLoggedIn: false,
+            };
 
-    case actions.UNAUTHENTICATED_USER_ERROR:
-        return {
-            ...state,
-            errorMessage: action.payload.error,
-        };
+        case actions.UNAUTHENTICATED_USER_ERROR:
+            return {
+                ...state,
+                errorMessage: action.payload.error,
+            };
 
-    default:
-        return state;
+        default:
+            return state;
+        }
     }
+    return state;
 }

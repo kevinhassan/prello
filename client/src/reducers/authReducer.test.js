@@ -1,5 +1,14 @@
-import authReducer from './authReducer';
+import authReducer, { initialState } from './authReducer';
 import * as actions from '../actions/auth';
+
+describe('Action not referenced', () => {
+    it('should return the current state', () => {
+        const finalState = authReducer();
+        expect(finalState).toEqual(initialState);
+        const finalState2 = authReducer(initialState, { type: 'notReferencedAction ' });
+        expect(finalState2).toEqual(initialState);
+    });
+});
 
 describe('auth/CLASSIC_SIGN_IN_SUCCESS reducer', () => {
     it('should mark the user as loggedIn in store and empty the errorSignInMessage', () => {

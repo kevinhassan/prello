@@ -1,9 +1,9 @@
-import currentBoardReducer from './currentBoardReducer';
+import currentBoardReducer, { initialState } from './currentBoardReducer';
 import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
 import * as cardActions from '../actions/cards';
 
-const initialState = {
+const state = {
     board: {
         _id: 'b1',
         isArchived: false,
@@ -53,6 +53,15 @@ const initialState = {
     },
 };
 
+describe('Action not referenced', () => {
+    it('should return the current state', () => {
+        const finalState = currentBoardReducer();
+        expect(finalState).toEqual(initialState);
+        const finalState2 = currentBoardReducer(initialState, { type: 'notReferencedAction ' });
+        expect(finalState2).toEqual(initialState);
+    });
+});
+
 describe(actions.UPDATE_LISTS_INDEXES_STARTED, () => {
     it('should correctly change the lists order to the new one', () => {
         const newLists = [
@@ -61,7 +70,7 @@ describe(actions.UPDATE_LISTS_INDEXES_STARTED, () => {
             { _id: 'l1' },
         ];
         const action = actions.updateListsIndexesStartedAction(newLists);
-        const finalState = currentBoardReducer(initialState, action);
+        const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board.lists).toEqual(newLists);
     });
@@ -75,7 +84,7 @@ describe(actions.UPDATE_LISTS_INDEXES_FAILURE, () => {
             { _id: 'l1' },
         ];
         const action = actions.updateListsIndexesFailureAction('error', initialLists);
-        const finalState = currentBoardReducer(initialState, action);
+        const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board.lists).toEqual(initialLists);
     });
@@ -87,9 +96,9 @@ describe(listActions.CREATE_LIST_STARTED, () => {
             name: 'My New List',
         };
         const action = listActions.createListSuccessAction(newList);
-        const finalState = currentBoardReducer(initialState, action);
+        const finalState = currentBoardReducer(state, action);
 
-        expect(finalState.board.lists.length).toEqual(initialState.board.lists.length + 1);
+        expect(finalState.board.lists.length).toEqual(state.board.lists.length + 1);
         expect(finalState.board.lists.slice(-1)[0]).toEqual(newList);
     });
 });
@@ -101,10 +110,10 @@ describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
             isArchived: false,
         };
         const action = cardActions.archiveCardSuccessAction(newCard._id);
-        const finalState = currentBoardReducer(initialState, action);
+        const finalState = currentBoardReducer(state, action);
 
         expect(
             finalState.board.lists.filter(list => list._id === 'l1')[0].cards.length,
-        ).toEqual(initialState.board.lists.filter(list => list._id === 'l1')[0].cards.length - 1);
+        ).toEqual(state.board.lists.filter(list => list._id === 'l1')[0].cards.length - 1);
     });
 });

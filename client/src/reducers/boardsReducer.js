@@ -5,19 +5,22 @@ export const initialState = {
 };
 
 export default function boardsReducer(state = initialState, action) {
-    switch (action.type) {
-    case actions.FETCH_BOARDS_SUCCESS:
-        return {
-            ...state,
-            userBoards: action.payload.boards,
-        };
+    if (action) {
+        switch (action.type) {
+        case actions.FETCH_BOARDS_SUCCESS:
+            return {
+                ...state,
+                userBoards: action.payload.boards,
+            };
 
-    case actions.FETCH_BOARD_FAILURE:
-        return {
-            ...state,
-        };
+        case actions.FETCH_BOARDS_FAILURE:
+            return {
+                ...state,
+            };
 
-    default:
-        return state;
+        default:
+            return state;
+        }
     }
+    return state;
 }
