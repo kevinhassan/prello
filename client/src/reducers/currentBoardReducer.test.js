@@ -1,6 +1,7 @@
 import currentBoardReducer from './currentBoardReducer';
 import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
+import * as cardActions from '../actions/cards';
 
 const initialState = {
     board: {
@@ -13,9 +14,27 @@ const initialState = {
             { _id: 'lab3' },
         ],
         lists: [
-            { _id: 'l1' },
-            { _id: 'l2' },
-            { _id: 'l3' },
+            {
+                _id: 'l1',
+                cards: [{
+                    _id: 'c0',
+                },
+                {
+                    _id: 'c1',
+                }],
+            },
+            {
+                _id: 'l2',
+                cards: [{
+                    _id: 'c2',
+                }],
+            },
+            {
+                _id: 'l3',
+                cards: [{
+                    _id: 'c3',
+                }],
+            },
         ],
         admins: [
             { _id: 'ad1' },
@@ -72,5 +91,18 @@ describe(listActions.CREATE_LIST_STARTED, () => {
 
         expect(finalState.board.lists.length).toEqual(initialState.board.lists.length + 1);
         expect(finalState.board.lists.slice(-1)[0]).toEqual(newList);
+    });
+});
+
+describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
+    it('should set the card as "archived"', () => {
+        const newCard = {
+            _id: 'c1',
+            isArchived: false,
+        };
+        const action = cardActions.archiveCardSuccessAction(newCard._id);
+        const finalState = currentBoardReducer(initialState, action);
+
+        expect(finalState.board.lists.filter(list => list._id === 'l1')[0].cards.length).toEqual(initialState.board.lists.filter(list => list._id === 'l1')[0].cards.length - 1);
     });
 });
