@@ -1,6 +1,14 @@
-import usersReducer from './usersReducer';
+import usersReducer, { initialState } from './usersReducer';
 import * as actions from '../actions/user';
 
+describe('Action not referenced', () => {
+    it('should return the current state', () => {
+        const finalState = usersReducer();
+        expect(finalState).toEqual(initialState);
+        const finalState2 = usersReducer({}, { type: 'notReferencedAction ' });
+        expect(finalState2).toEqual(initialState);
+    });
+});
 
 describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
     it('should update the state with the profile provided', () => {

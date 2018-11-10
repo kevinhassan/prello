@@ -5,26 +5,29 @@ export const initialState = {
 };
 
 export default function usersReducer(state = initialState, action) {
-    switch (action.type) {
-    case actions.GET_USER_INFORMATION_SUCCESS:
-        return {
-            ...state,
-            user: action.payload.profile,
-        };
+    if (action) {
+        switch (action.type) {
+        case actions.GET_USER_INFORMATION_SUCCESS:
+            return {
+                ...state,
+                user: action.payload.profile,
+            };
 
-    case actions.UPDATE_USER_INFORMATION_STARTED:
-    case actions.UPDATE_USER_INFORMATION_FAILURE:
-        return {
-            ...state,
-            user: {
-                ...state.user,
-                fullName: action.payload.fullName,
-                biography: action.payload.biography,
-                initials: action.payload.initials,
-            },
-        };
+        case actions.UPDATE_USER_INFORMATION_STARTED:
+        case actions.UPDATE_USER_INFORMATION_FAILURE:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    fullName: action.payload.fullName,
+                    biography: action.payload.biography,
+                    initials: action.payload.initials,
+                },
+            };
 
-    default:
-        return state;
+        default:
+            return state;
+        }
     }
+    return state;
 }
