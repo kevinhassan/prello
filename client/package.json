@@ -43,7 +43,8 @@
     },
     "jest": {
         "collectCoverageFrom": [
-            "src/reducers/*"
+            "src/reducers/*",
+            "!src/reducers/index.js"
         ]
     },
     "browserslist": [
