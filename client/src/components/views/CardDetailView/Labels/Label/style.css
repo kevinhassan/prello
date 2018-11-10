@@ -1,4 +1,5 @@
 .label-li {
+    border-radius: 0.25rem;
     margin-bottom: 5px;
     margin-right: 5px;
     max-width: 150px;
@@ -23,6 +24,7 @@
 }
 
 .label-btn {
+    border-radius: 0.25rem;
     color: inherit;
     font-size: 0.8rem;
     font-weight: bold;

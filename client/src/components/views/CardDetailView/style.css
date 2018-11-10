@@ -96,7 +96,13 @@ h2.cardDetailTitle {
     cursor: pointer;
 }
 
-.archiveBtn{
-    margin-top: 10px;
-    float: right;
+.cardDetailContent .archiveBtn:hover {
+    background-color: #ac1212;
+}
+
+.cardDetailActions button {
+    font-size: 0.8rem;
+}
+.cardDetailActions button:not(:first-child) {
+    margin-left: 5px;
 }
