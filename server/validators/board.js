@@ -54,9 +54,11 @@ const changeAccess = [
 const createLabel = [
     check('name')
         .not().isEmpty()
+        .trim()
         .isString(),
     check('color')
         .not().isEmpty()
+        .trim()
         .matches('^#(?:[0-9a-fA-F]{3}){2}$')
         .isString(),
 ];

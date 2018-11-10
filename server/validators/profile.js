@@ -3,12 +3,12 @@ const { check } = require('express-validator/check');
 module.exports = [
     check('fullName')
         .not().isEmpty()
-        .escape(),
+        .trim(),
     check('initials')
         .not().isEmpty()
-        .escape()
+        .trim()
         .isLength({ min: 1, max: 4 }),
     check('biography')
-        .escape()
         .isString()
+        .trim()
 ];
