@@ -12,7 +12,7 @@ const NewPasswordForm = props => (
 
             <div className="form-group row">
                 <label htmlFor="password" className="col-form-label col-sm-5">
-                    Actual password
+                    Current password
                     <span className="text-warning"> *</span>
                 </label>
                 <div className="col-sm-7">
@@ -64,6 +64,9 @@ const NewPasswordForm = props => (
                     />
                 </div>
             </div>
+            <p className="text-warning">
+                <i>* Password must be at least 5 characters long.</i>
+            </p>
 
             <button className="btn btn-success" type="submit">Validate</button>
         </form>

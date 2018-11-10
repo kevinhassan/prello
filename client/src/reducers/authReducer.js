@@ -1,5 +1,5 @@
 import * as actions from '../actions/auth';
-import { SIGN_OUT_FROM_DELETE } from '../actions/user';
+import { DELETE_USER_SUCCESS } from '../actions/user';
 
 export const initialState = {
     errorSignInMessage: '',

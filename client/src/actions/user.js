@@ -4,14 +4,14 @@ import {
     displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage, displayErrorMessageAction,
 } from './modal';
 
-// ==========
-export const GET_USER_INFORMATION = 'user/GET_USER_INFORMATION';
+
+// ===== Get user info ===== //
+export const GET_USER_INFORMATION_STARTED = 'user/GET_USER_INFORMATION_STARTED';
+export const GET_USER_INFORMATION_FAILURE = 'user/GET_USER_INFORMATION_FAILURE';
 export const GET_USER_INFORMATION_SUCCESS = 'user/GET_USER_INFORMATION_SUCCESS';
 
-export const UPDATE_USER_INFORMATION = 'user/UPDATE_USER_INFORMATION';
-export const UPDATE_USER_INFORMATION_SUCCESS = 'user/UPDATE_USER_INFORMATION_SUCCESS';
-// ==========
-
+export const getUserInformationStarted = () => ({ type: GET_USER_INFORMATION_STARTED });
+export const getUserInformationFailure = () => ({ type: GET_USER_INFORMATION_FAILURE });
 export const getUserInformationSuccess = profile => ({
     type: GET_USER_INFORMATION_SUCCESS,
     payload: {
@@ -21,18 +21,28 @@ export const getUserInformationSuccess = profile => ({
 
 export const getUserInformation = () => (dispatch) => {
     dispatch(displayLoadingModal());
+    dispatch(getUserInformationStarted());
     APIFetch.fetchPrelloAPI('profile', {}, APIFetch.GET)
         .then((res) => {
             dispatch(getUserInformationSuccess(res.data.profile));
         })
         .catch((error) => {
-            dispatch(displayErrorMessageAction(error.message));
+            dispatch(getUserInformationFailure());
+            dispatch(displayErrorMessageAction(error.response.data.error));
         })
         .finally(() => {
             dispatch(hideLoadingModal());
         });
 };
 
+
+// ===== Update user info ===== //
+export const UPDATE_USER_INFORMATION_STARTED = 'user/UPDATE_USER_INFORMATION_STARTED';
+export const UPDATE_USER_INFORMATION_FAILURE = 'user/UPDATE_USER_INFORMATION_FAILURE';
+export const UPDATE_USER_INFORMATION_SUCCESS = 'user/UPDATE_USER_INFORMATION_SUCCESS';
+
+export const updateUserInformationStarted = () => ({ type: UPDATE_USER_INFORMATION_STARTED });
+export const updateUserInformationFailure = () => ({ type: UPDATE_USER_INFORMATION_FAILURE });
 export const updateUserInformationSuccess = (fullname, initials, biography) => ({
     type: UPDATE_USER_INFORMATION_SUCCESS,
     payload: {
@@ -43,6 +53,8 @@ export const updateUserInformationSuccess = (fullname, initials, biography) => (
 });
 
 export const updateUserInformation = (fullName, initials, biography) => (dispatch) => {
+    dispatch(displayLoadingModal());
+    dispatch(updateUserInformationStarted());
     APIFetch.fetchPrelloAPI('profile', {
         fullName, initials, biography,
     }, APIFetch.PUT)
@@ -50,19 +62,35 @@ export const updateUserInformation = (fullName, initials, biography) => (dispatc
             dispatch(updateUserInformationSuccess(fullName, initials, biography));
         })
         .catch((error) => {
+            dispatch(updateUserInformationFailure());
             dispatch(displayErrorMessageAction(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
         });
 };
 
+// ===== Update password ===== //
+export const UPDATE_PASSWORD_STARTED = 'user/UPDATE_PASSWORD_STARTED';
+export const UPDATE_PASSWORD_FAILURE = 'user/UPDATE_PASSWORD_FAILURE';
+export const UPDATE_PASSWORD_SUCCESS = 'user/UPDATE_PASSWORD_SUCCESS';
+
+export const updatePasswordStarted = () => ({ type: UPDATE_PASSWORD_STARTED });
+export const updatePasswordFailure = () => ({ type: UPDATE_PASSWORD_FAILURE });
+export const updatePasswordSuccess = () => ({ type: UPDATE_PASSWORD_SUCCESS });
+
 export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
     dispatch(displayLoadingModal());
+    dispatch(updatePasswordStarted());
     APIFetch.fetchPrelloAPI('account/password', {
         oldPassword, newPassword,
     }, APIFetch.PUT)
         .then(() => {
-            dispatch(displaySuccessMessage('Password well updated'));
+            dispatch(updatePasswordSuccess());
+            dispatch(displaySuccessMessage('Password updated!'));
         })
         .catch((error) => {
+            dispatch(updatePasswordFailure());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -70,9 +98,12 @@ export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
         });
 };
 
-export const SIGN_OUT_FROM_DELETE = 'user/SIGN_OUT_FROM_DELETE';
+// ===== Delete account ===== //
 
-export const signOutAction = () => ({ type: SIGN_OUT_FROM_DELETE });
+export const DELETE_USER_SUCCESS = 'user/DELETE_USER';
+
+
+export const deleteUserActionSuccess = () => ({ type: DELETE_USER_SUCCESS });
 
 export const deleteUser = username => (dispatch) => {
     dispatch(displayLoadingModal());
@@ -82,7 +113,7 @@ export const deleteUser = username => (dispatch) => {
         .then(() => {
             dispatch(displaySuccessMessage('User deleted'));
             localStorage.removeItem('prello_token');
-            dispatch(signOutAction());
+            dispatch(deleteUserActionSuccess());
             dispatch(push('/'));
         })
         .catch((error) => {
