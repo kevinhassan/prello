@@ -50,7 +50,7 @@ export const updateUserInformation = (fullName, initials, biography) => (dispatc
             dispatch(updateUserInformationSuccess(fullName, initials, biography));
         })
         .catch((error) => {
-            dispatch(displayErrorMessageAction(error.message));
+            dispatch(displayErrorMessageAction(error.response.data.error));
         });
 };
 
@@ -63,7 +63,7 @@ export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
             dispatch(displaySuccessMessage('Password well updated'));
         })
         .catch((error) => {
-            dispatch(displayErrorMessage(error.message));
+            dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
             dispatch(hideLoadingModal());
@@ -86,7 +86,7 @@ export const deleteUser = username => (dispatch) => {
             dispatch(push('/'));
         })
         .catch((error) => {
-            dispatch(displayErrorMessage(error.message));
+            dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
             dispatch(hideLoadingModal());

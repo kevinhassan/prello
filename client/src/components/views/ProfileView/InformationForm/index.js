@@ -22,7 +22,11 @@ const InformationForm = props => (
                     >
                         <i className="fas fa-pen updateIcon" />
                     </button>
-                    <label htmlFor="biography" className="col-form-label font-weight-bold">Biography (optional)</label>
+                    <label htmlFor="biography" className="col-form-label">
+                        <b>Biography</b>
+                        {' '}
+                        (optional)
+                    </label>
                     <Textarea
                         className="form-control"
                         name="biography"
@@ -31,7 +35,9 @@ const InformationForm = props => (
                         id="biography"
                     />
 
-                    <label htmlFor="fullname" className="col-form-label font-weight-bold">Full name (optional)</label>
+                    <label htmlFor="fullname" className="col-form-label">
+                        <b>Full name</b>
+                    </label>
                     <input
                         className="form-control"
                         name="fullname"
@@ -40,11 +46,16 @@ const InformationForm = props => (
                         id="fullname"
                     />
 
-                    <label htmlFor="initials" className="col-form-label font-weight-bold">Initials</label>
+                    <label htmlFor="initials" className="col-form-label">
+                        <b>Initials</b>
+                        {' '}
+                        (4 characters max)
+                    </label>
                     <input
                         className="form-control"
                         name="initials"
                         defaultValue={props.user.initials}
+                        maxLength="4"
                         type="text"
                         id="initials"
                     />
