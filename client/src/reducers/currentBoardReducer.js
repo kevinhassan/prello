@@ -212,16 +212,23 @@ export default function currentBoardReducer(state = initialState, action) {
 
         // ===== Archive Card ===== //
         case cardActions.ARCHIVE_CARD_SUCCESS:
-            newLists = state.board.lists.map(list => ({
-                ...list,
-                cards: list.cards.filter(card => card._id !== action.payload.cardId),
-            }));
-
             return {
                 ...state,
                 board: {
                     ...state.board,
-                    lists: newLists,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.map(card => (card._id === action.payload.card._id
+                                    ? {
+                                        ...card,
+                                        isArchived: true,
+                                    }
+                                    : card)),
+                            }
+                    )),
                 },
             };
 

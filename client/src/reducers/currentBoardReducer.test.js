@@ -62,6 +62,8 @@ describe('Action not referenced', () => {
     });
 });
 
+// ===== BOARDS ACTIONS ===== //
+
 describe(actions.UPDATE_LISTS_INDEXES_STARTED, () => {
     it('should correctly change the lists order to the new one', () => {
         const newLists = [
@@ -90,6 +92,8 @@ describe(actions.UPDATE_LISTS_INDEXES_FAILURE, () => {
     });
 });
 
+// ===== LISTS ACTIONS ===== //
+
 describe(listActions.CREATE_LIST_STARTED, () => {
     it('should add a list to the bcreateListStartedActionoard', () => {
         const newList = {
@@ -103,17 +107,22 @@ describe(listActions.CREATE_LIST_STARTED, () => {
     });
 });
 
+// ===== CARDS ACTIONS ===== //
+
 describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
     it('should set the card as "archived"', () => {
-        const newCard = {
+        const cardtoArchive = {
             _id: 'c1',
-            isArchived: false,
+            list: {
+                _id: 'l1',
+            },
         };
-        const action = cardActions.archiveCardSuccessAction(newCard._id);
+        const action = cardActions.archiveCardSuccessAction(cardtoArchive);
         const finalState = currentBoardReducer(state, action);
 
         expect(
-            finalState.board.lists.filter(list => list._id === 'l1')[0].cards.length,
-        ).toEqual(state.board.lists.filter(list => list._id === 'l1')[0].cards.length - 1);
+            finalState.board.lists.find(l => l._id === cardtoArchive.list._id)
+                .cards.find(c => c._id === cardtoArchive._id).isArchived,
+        ).toEqual(true);
     });
 });

@@ -179,10 +179,10 @@ export const ARCHIVE_CARD_FAILURE = 'cards/ARCHIVE_CARD_FAILURE';
 
 export const archiveCardStartedAction = () => ({ type: ARCHIVE_CARD_STARTED });
 
-export const archiveCardSuccessAction = cardId => ({
+export const archiveCardSuccessAction = card => ({
     type: ARCHIVE_CARD_SUCCESS,
     payload: {
-        cardId,
+        card,
     },
 });
 
@@ -193,18 +193,18 @@ export const archiveCardFailureAction = error => ({
     },
 });
 
-export const archiveCard = cardId => (dispatch) => {
+export const archiveCard = card => (dispatch) => {
     dispatch(archiveCardStartedAction());
     dispatch(displayLoadingModal());
-    const resource = `cards/${cardId}/archive`;
+    const resource = `cards/${card._id}/archive`;
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.PUT)
         .then(() => {
-            dispatch(archiveCardSuccessAction(cardId));
+            dispatch(archiveCardSuccessAction(card));
             dispatch(displaySuccessMessage('Card archived'));
         })
         .catch((error) => {
-            dispatch(archiveCardFailureAction(error));
-            dispatch(displayErrorMessage(error));
+            dispatch(archiveCardFailureAction(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
             dispatch(hideLoadingModal());
