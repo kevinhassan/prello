@@ -11,14 +11,14 @@ export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
 export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
 export const CLASSIC_SIGN_IN_SUCCESS = 'auth/CLASSIC_SIGN_IN_SUCCESS';
 
-export const classicSignInStarted = () => ({ type: CLASSIC_SIGN_IN_STARTED });
-export const classicSignInFailure = error => ({
+export const classicSignInStartedAction = () => ({ type: CLASSIC_SIGN_IN_STARTED });
+export const classicSignInFailureAction = error => ({
     type: CLASSIC_SIGN_IN_FAILURE,
     payload: {
         error,
     },
 });
-export const classicSignInSuccess = token => ({
+export const classicSignInSuccessAction = token => ({
     type: CLASSIC_SIGN_IN_SUCCESS,
     payload: {
         token,
@@ -27,15 +27,15 @@ export const classicSignInSuccess = token => ({
 
 export const classicSignIn = (email, password) => (dispatch) => {
     dispatch(displayLoadingModal());
-    dispatch(classicSignInStarted());
+    dispatch(classicSignInStartedAction());
     APIFetch.fetchPrelloAPI('login', { email, password }, APIFetch.POST)
         .then((res) => {
             localStorage.setItem('prello_token', res.data.token);
-            dispatch(classicSignInSuccess());
+            dispatch(classicSignInSuccessAction());
             dispatch(hideLoadingModal());
         })
         .catch((error) => {
-            dispatch(classicSignInFailure(error.response.data.error));
+            dispatch(classicSignInFailureAction(error.response.data.error));
             dispatch(hideLoadingModal());
         });
 };
@@ -46,30 +46,30 @@ export const CLASSIC_REGISTER_STARTED = 'auth/CLASSIC_REGISTER_STARTED';
 export const CLASSIC_REGISTER_FAILURE = 'auth/CLASSIC_REGISTER_FAILURE';
 export const CLASSIC_REGISTER_SUCCESS = 'auth/CLASSIC_REGISTER_SUCCESS';
 
-export const classicRegisterStarted = () => ({ type: CLASSIC_REGISTER_STARTED });
+export const classicRegisterStartedAction = () => ({ type: CLASSIC_REGISTER_STARTED });
 
-export const classicRegisterFailure = error => ({
+export const classicRegisterFailureAction = error => ({
     type: CLASSIC_REGISTER_FAILURE,
     payload: {
         error,
     },
 });
-export const classicRegisterSuccess = () => ({ type: CLASSIC_REGISTER_SUCCESS });
+export const classicRegisterSuccessAction = () => ({ type: CLASSIC_REGISTER_SUCCESS });
 
 export const classicRegister = (fullName, email, password) => (dispatch) => {
-    dispatch(classicRegisterStarted());
+    dispatch(classicRegisterStartedAction());
     APIFetch.fetchPrelloAPI('register', {
         fullName,
         email,
         password,
     }, APIFetch.POST)
         .then(() => {
-            dispatch(classicRegisterSuccess());
+            dispatch(classicRegisterSuccessAction());
             dispatch(displaySuccessMessage('You have been successfully registered!'));
             dispatch(push('/signin'));
         })
         .catch((error) => {
-            dispatch(classicRegisterFailure(error.response.data.error));
+            dispatch(classicRegisterFailureAction(error.response.data.error));
         });
 };
 

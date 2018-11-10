@@ -103,6 +103,8 @@ describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
         const action = cardActions.archiveCardSuccessAction(newCard._id);
         const finalState = currentBoardReducer(initialState, action);
 
-        expect(finalState.board.lists.filter(list => list._id === 'l1')[0].cards.length).toEqual(initialState.board.lists.filter(list => list._id === 'l1')[0].cards.length - 1);
+        expect(
+            finalState.board.lists.filter(list => list._id === 'l1')[0].cards.length,
+        ).toEqual(initialState.board.lists.filter(list => list._id === 'l1')[0].cards.length - 1);
     });
 });
