@@ -77,8 +77,10 @@ const CardDetailView = props => (
                 {/* ==================== */}
 
 
-                <button type="button" className="archiveBtn btn-primary" onClick={props.archiveCard}>
-                    <i className="fas fa-archive"> Archive card</i>
+                <button type="button" className="archiveBtn btn btn-primary" onClick={props.archiveCard}>
+                    <i className="fas fa-archive" />
+                    {' '}
+                    Archive card
                 </button>
 
             </div>

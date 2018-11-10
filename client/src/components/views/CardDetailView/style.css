@@ -96,6 +96,7 @@ h2.cardDetailTitle {
     cursor: pointer;
 }
 
-.archiveBtn {
+.archiveBtn{
+    margin-top: 10px;
     float: right;
 }
