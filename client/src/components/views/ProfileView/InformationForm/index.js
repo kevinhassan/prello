@@ -12,9 +12,17 @@ const InformationForm = props => (
     <span>
         {props.isVisible ? (
 
-            <div className="informationForm">
+            <div className="informationDisplay">
+
                 <form onSubmit={props.handleUpdateInformation}>
-                    Biography (optional)
+                    <button
+                        className="btn btn-secondary btnUpdate"
+                        type="button"
+                        onClick={() => props.displayUpdateForm(true)}
+                    >
+                        <i className="fas fa-pen updateIcon" />
+                    </button>
+                    <label htmlFor="biography" className="col-form-label font-weight-bold">Biography (optional)</label>
                     <Textarea
                         className="form-control"
                         name="biography"
@@ -22,40 +30,43 @@ const InformationForm = props => (
                         type="text"
                         id="biography"
                     />
-                    <br />
-                    Full name
+
+                    <label htmlFor="fullname" className="col-form-label font-weight-bold">Full name (optional)</label>
                     <input
                         className="form-control"
-                        name="Full name"
+                        name="fullname"
                         defaultValue={props.user.fullName}
                         type="text"
                         id="fullname"
                     />
-                    <br />
-                    Initials
+
+                    <label htmlFor="initials" className="col-form-label font-weight-bold">Initials</label>
                     <input
                         className="form-control"
-                        name="Initials"
+                        name="initials"
                         defaultValue={props.user.initials}
                         type="text"
                         id="initials"
                     />
-                    <br />
-                    <button className="btn btn-success updateInformation-btn" type="submit">
+
+                    <div style={{ marginTop: '10px' }}>
+                        <button className="btn btn-success updateInformation-btn" type="submit">
                         Update
-                    </button>
-                    <button
-                        className="btn btn-secondary cancelUpdate-btn"
-                        type="reset"
-                        onClick={() => props.displayUpdateForm(false)}
-                    >
-                        <i className="fas fa-times" />
-                    </button>
+                        </button>
+                        <button
+                            className="btn btn-secondary cancelUpdate-btn"
+                            type="reset"
+                            onClick={() => props.displayUpdateForm(false)}
+                        >
+                            <i className="fas fa-times" />
+                        </button>
+                    </div>
                 </form>
             </div>
 
         ) : (
             <div className="informationDisplay">
+
                 <div className="informationDisplay-header">
                     <h5>Biography</h5>
                     <button
@@ -67,7 +78,7 @@ const InformationForm = props => (
                     </button>
                 </div>
                 <p>{props.user.biography ? props.user.biography : (<i style={{ color: '#999' }}>No biography</i>)}</p>
-                <br />
+
                 <h5>Email</h5>
                 <p>{props.user.email}</p>
             </div>

@@ -5,7 +5,7 @@ import './style.css';
 // =====
 
 const ProfileTab = () => (
-    <span>
+    <div className="profilePanelsList">
         <div className="teamsPanel">
 
             <h4 className="teams">
@@ -24,8 +24,7 @@ const ProfileTab = () => (
             </h4>
 
         </div>
-    </span>
-
+    </div>
 );
 
 export default ProfileTab;

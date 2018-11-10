@@ -18,7 +18,7 @@ import './style.css';
 
 const ProfileView = props => (
 
-    <div className="user" key={props.user.id}>
+    <div className="userPage" key={props.user.id}>
         <div className="headerProfile">
             <div className="nickname">
                 <h2 className="initials">
@@ -27,7 +27,8 @@ const ProfileView = props => (
                 <div>
                     <h1 className="userFullname">{props.user.fullName}</h1>
                     <p>
-                        @
+                        <b>Username:</b>
+                        {' @'}
                         {props.user.username}
                     </p>
                 </div>

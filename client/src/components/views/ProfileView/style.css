@@ -1,6 +1,7 @@
 .headerProfile{
     background-color: rgba(0, 140, 220, 0.1);
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
     padding: 20px 0;
 }
@@ -12,7 +13,6 @@
 .nickname > h1, p{
     text-align: left
 }
-
 
 .readOnly{
     background-color: #ccc;
@@ -36,7 +36,8 @@
 
 .profileTabList{
     background-color: rgba(0, 140, 220, 0.1);
-    text-align:center;
+    margin: 0;
+    text-align: center;
 }
 
 .profileTab:hover {

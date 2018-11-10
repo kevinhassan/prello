@@ -18,7 +18,7 @@ const settingsDisplay = (isDeleteVisible, visible, hidden) => {
 };
 
 const SettingsTab = props => (
-    <div>
+    <div className="settingsPanel">
         {(props.isUpdateVisible) ? (
             <div className="settings">
                 <div className="changePassword">
@@ -38,28 +38,26 @@ const SettingsTab = props => (
                         />
                     </div>
                 ), (
-                    <div className="settings">
-                        <div className="changePassword">
-                            <h5>Change your password</h5>
-                            <button className="btn btn-primary" type="button" onClick={() => props.displayPasswordForm(true)}>Change</button>
+                    <div className="settingsList">
+                        <div className="settingBlock">
+                            <h5>
+                                <button className="btn btn-primary" type="button" onClick={() => props.displayPasswordForm(true)}>Change</button>
+                                {' '}
+                                your password
+                            </h5>
                         </div>
 
-                        <br />
-                        <hr />
-                        <br />
-
-                        <div className="deleteAccount">
-                            <div>
-                                <h5>Delete your account</h5>
-                                <p>(Careful, this is definitive)</p>
-                            </div>
-
-                            <button className="btn btn-danger" type="button" onClick={() => props.displayDeleteForm(true)}>Delete</button>
+                        <div className="settingBlock">
+                            <h5 style={{ marginBottom: 0 }}>
+                                <button className="btn btn-danger" type="button" onClick={() => props.displayDeleteForm(true)}>Delete</button>
+                                {' '}
+                                your account
+                            </h5>
+                            <p className="text-danger">(Careful, this is definitive)</p>
                         </div>
                     </div>
                 ))
         )
-
 
             /**
 
