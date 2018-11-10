@@ -1,18 +1,8 @@
-.user{
-    padding-top: 20px;
-}
-
 .headerProfile{
+    background-color: rgba(0, 140, 220, 0.1);
     display: flex;
     justify-content: space-around;
-}
-
-
-.infosPanel {
-    padding:20px;
-    background-color: #ddd;
-    border-radius: 10px;
-    width: 300px;
+    padding: 20px 0;
 }
 
 .nickname{
@@ -44,26 +34,11 @@
     min-width: 300px;
 }
 
-.labels{
-    background-color: #ddd;
-    width: 150px;
-    min-width: 100px;
-    border: 1px solid black;
-    border-bottom: none;
-    margin-left: 10px;
-    margin-right: 10px;
-    padding: 5px;
-    display: flex;
-    align-items:center;
-    justify-content:center;
-    text-align: center;
+.profileTabList{
+    background-color: rgba(0, 140, 220, 0.1);
+    text-align:center;
 }
 
-.profileTabList{
-    display: flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    margin-top: 20px;
-    margin-bottom: 50px;
+.profileTab:hover {
+    cursor: pointer;
 }

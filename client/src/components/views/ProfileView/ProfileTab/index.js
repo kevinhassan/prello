@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
 
 import './style.css';
+
+// =====
 
 const ProfileTab = () => (
     <span>
@@ -27,10 +27,5 @@ const ProfileTab = () => (
     </span>
 
 );
-
-ProfileTab.propTypes = {
-};
-ProfileTab.defaultProps = {
-};
 
 export default ProfileTab;

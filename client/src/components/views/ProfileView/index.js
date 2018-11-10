@@ -16,7 +16,6 @@ import './style.css';
 
 // ==================================
 
-
 const ProfileView = props => (
 
     <div className="user" key={props.user.id}>
@@ -43,17 +42,16 @@ const ProfileView = props => (
             </div>
         </div>
 
-        <br />
         <Tabs>
-            <TabList className="profileTabList">
-                <Tab className="labels">
+            <TabList className="profileTabList react-tabs__tab-list">
+                <Tab className="profileTab react-tabs__tab">
                     <h4>
                         <i className="fas fa-user teamIcon" />
                         {' '}
                         Profile
                     </h4>
                 </Tab>
-                <Tab className="labels">
+                <Tab className="profileTab react-tabs__tab">
                     <h4>
                         <i className="fas fa-cog teamIcon" />
                         {' '}
