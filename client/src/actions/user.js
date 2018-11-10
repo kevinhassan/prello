@@ -41,28 +41,37 @@ export const UPDATE_USER_INFORMATION_STARTED = 'user/UPDATE_USER_INFORMATION_STA
 export const UPDATE_USER_INFORMATION_FAILURE = 'user/UPDATE_USER_INFORMATION_FAILURE';
 export const UPDATE_USER_INFORMATION_SUCCESS = 'user/UPDATE_USER_INFORMATION_SUCCESS';
 
-export const updateUserInformationStarted = () => ({ type: UPDATE_USER_INFORMATION_STARTED });
-export const updateUserInformationFailure = () => ({ type: UPDATE_USER_INFORMATION_FAILURE });
-export const updateUserInformationSuccess = (fullname, initials, biography) => ({
-    type: UPDATE_USER_INFORMATION_SUCCESS,
+export const updateUserInformationStarted = (fullName, initials, biography) => ({
+    type: UPDATE_USER_INFORMATION_STARTED,
     payload: {
-        fullname,
+        fullName,
+        initials,
+        biography,
+    },
+});
+export const updateUserInformationSuccess = () => ({ type: UPDATE_USER_INFORMATION_SUCCESS });
+export const updateUserInformationFailure = (fullName, initials, biography) => ({
+    type: UPDATE_USER_INFORMATION_FAILURE,
+    payload: {
+        fullName,
         initials,
         biography,
     },
 });
 
-export const updateUserInformation = (fullName, initials, biography) => (dispatch) => {
+export const updateUserInformation = (fullName, initials, biography, currentUser) => (dispatch) => {
     dispatch(displayLoadingModal());
-    dispatch(updateUserInformationStarted());
+    dispatch(updateUserInformationStarted(fullName, initials, biography));
     APIFetch.fetchPrelloAPI('profile', {
         fullName, initials, biography,
     }, APIFetch.PUT)
         .then(() => {
-            dispatch(updateUserInformationSuccess(fullName, initials, biography));
+            dispatch(updateUserInformationSuccess());
+            dispatch(displaySuccessMessage('Profile information updated'));
         })
         .catch((error) => {
-            dispatch(updateUserInformationFailure());
+            console.log(currentUser);
+            dispatch(updateUserInformationFailure(currentUser.fullName, currentUser.initials, currentUser.biography));
             dispatch(displayErrorMessageAction(error.response.data.error));
         })
         .finally(() => {

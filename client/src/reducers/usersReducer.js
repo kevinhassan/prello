@@ -14,12 +14,13 @@ export default function usersReducer(state = initialState, action) {
             user: userObject,
         };
 
-    case actions.UPDATE_USER_INFORMATION_SUCCESS:
+    case actions.UPDATE_USER_INFORMATION_STARTED:
+    case actions.UPDATE_USER_INFORMATION_FAILURE:
         return {
             ...state,
             user: {
                 ...state.user,
-                fullName: action.payload.fullname,
+                fullName: action.payload.fullName,
                 biography: action.payload.biography,
                 initials: action.payload.initials,
             },

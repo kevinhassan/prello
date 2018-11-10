@@ -18,9 +18,9 @@ const InformationForm = props => (
                     <button
                         className="btn btn-secondary btnUpdate"
                         type="button"
-                        onClick={() => props.displayUpdateForm(true)}
+                        onClick={() => props.displayUpdateForm(false)}
                     >
-                        <i className="fas fa-pen updateIcon" />
+                        <i className="fas fa-times updateIcon" />
                     </button>
                     <label htmlFor="biography" className="col-form-label">
                         <b>Biography</b>
@@ -63,13 +63,6 @@ const InformationForm = props => (
                     <div style={{ marginTop: '10px' }}>
                         <button className="btn btn-success updateInformation-btn" type="submit">
                         Update
-                        </button>
-                        <button
-                            className="btn btn-secondary cancelUpdate-btn"
-                            type="reset"
-                            onClick={() => props.displayUpdateForm(false)}
-                        >
-                            <i className="fas fa-times" />
                         </button>
                     </div>
                 </form>

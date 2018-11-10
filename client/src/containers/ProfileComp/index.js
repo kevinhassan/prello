@@ -43,7 +43,7 @@ class ProfileComp extends React.Component {
 
     handleUpdateInformation(event) {
         event.preventDefault();
-        this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.biography.value);
+        this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.biography.value, this.props.user);
         this.setState({ isUpdateVisible: false });
     }
 
