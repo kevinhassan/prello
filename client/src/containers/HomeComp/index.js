@@ -31,8 +31,8 @@ class HomeComp extends React.Component {
                     <br />
                     <p style={{ fontSize: '1.2rem', marginLeft: '20vw', marginRight: '20vw' }}>
                         {`
-                        Trello is a collaboration tool that organizes your projects into boards.
-                        In one glance, Trello tells you what's being worked on, who's working on what,
+                        Prello is a collaboration tool that organizes your projects into boards.
+                        In one glance, Prello tells you what's being worked on, who's working on what,
                         and where something is in a process.
                         Imagine a white board, filled with lists of sticky notes,
                         with each note as a task for you and your team.
