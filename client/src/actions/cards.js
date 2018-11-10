@@ -205,8 +205,8 @@ export const archiveCard = cardId => (dispatch) => {
             dispatch(displaySuccessMessage('Card archived'));
         })
         .catch((error) => {
-            dispatch(archiveCardFailureAction(error.response.data.error, cardId));
-            dispatch(displayErrorMessage(error.response.data.error));
+            dispatch(archiveCardFailureAction(error, cardId));
+            dispatch(displayErrorMessage(error));
         })
         .finally(() => {
             dispatch(hideLoadingModal());
