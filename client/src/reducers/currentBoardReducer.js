@@ -162,7 +162,6 @@ export default function currentBoardReducer(state = initialState, action) {
                         return {
                             ...card,
                             labels: card.labels.filter(label => label._id !== newLabel._id),
-
                         };
                     }
                     return card;

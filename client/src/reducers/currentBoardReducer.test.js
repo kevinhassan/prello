@@ -3,30 +3,21 @@ import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
 import * as cardActions from '../actions/cards';
 
+const labels = [
+    { _id: 'lab1', name: 'label1' },
+    { _id: 'lab2', name: 'label2' },
+    { _id: 'lab3', name: 'label3' },
+];
 const card1 = {
     _id: 'c1',
     name: 'card1',
-    labels: [
-        {
-            _id: 'lab1',
-            name: 'label1',
-        },
-        {
-            _id: 'lab2',
-            name: 'label2',
-        },
-    ],
+    labels: [labels[0], labels[1]],
     list: { _id: 'l1' },
 };
 const card2 = {
     _id: 'c2',
     name: 'card2',
-    labels: [
-        {
-            _id: 'lab1',
-            name: 'label1',
-        },
-    ],
+    labels: [labels[0]],
 };
 const card3 = {
     _id: 'c3',
@@ -34,16 +25,13 @@ const card3 = {
     labels: [],
     list: { _id: 'l3' },
 };
+
 const state = {
     board: {
         _id: 'b1',
         isArchived: false,
         visibility: 'public',
-        labels: [
-            { _id: 'lab1' },
-            { _id: 'lab2' },
-            { _id: 'lab3' },
-        ],
+        labels,
         lists: [
             {
                 _id: 'l1',
@@ -85,6 +73,35 @@ describe('Action not referenced', () => {
 });
 
 // ===== BOARDS ACTIONS ===== //
+describe(actions.FETCH_BOARD_SUCCESS, () => {
+    it('should put the new board in state', () => {
+        const newBoard = { _id: 'newBoardI', name: 'new board' };
+        const action = actions.fetchBoardSuccessAction(newBoard);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board).toEqual(newBoard);
+    });
+});
+
+describe(actions.REMOVE_BOARD_FETCH_SUCCESS, () => {
+    it('should set the board to undefined', () => {
+        const action = actions.removeBoardFetchSuccessAction();
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board).toEqual(undefined);
+    });
+});
+
+
+describe(actions.REMOVE_BOARD_FETCH_SUCCESS, () => {
+    it('should correctly change the lists order to the new one', () => {
+        const newListsOrder = state.board.lists.reverse();
+        const action = actions.updateListsIndexesStartedAction(newListsOrder);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.lists).toEqual(newListsOrder);
+    });
+});
 
 describe(actions.UPDATE_LISTS_INDEXES_STARTED, () => {
     it('should correctly change the lists order to the new one', () => {
@@ -108,6 +125,7 @@ describe(actions.UPDATE_LISTS_INDEXES_FAILURE, () => {
 
 // ===== LISTS ACTIONS ===== //
 
+// Create list
 describe(listActions.CREATE_LIST_STARTED, () => {
     it('should add a list to the board', () => {
         const newList = {
@@ -121,24 +139,61 @@ describe(listActions.CREATE_LIST_STARTED, () => {
     });
 });
 
+// Move card
+describe(listActions.MOVE_CARD_STARTED, () => {
+    it('should assign the new lists (and cards) to the state', () => {
+        const newLists = state.board.lists.reverse();
+        const action = listActions.moveCardStartedAction(newLists);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.lists).toEqual(newLists);
+    });
+});
+
+describe(listActions.MOVE_CARD_FAILURE, () => {
+    it('should replace the state lists with the lists (and cards) given', () => {
+        const lists = state.board.lists.reverse();
+        const action = listActions.moveCardFailureAction('error', lists);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.lists).toEqual(lists);
+    });
+});
+
 // ===== CARDS ACTIONS ===== //
-describe(cardActions.DELETE_LABEL_STARTED, () => {
-    it('should remove the label sent to the current ones', () => {
-        const labelToRemove = card1.labels.pop();
-        const action = cardActions.deleteLabelStartedAction('an error occured', card1._id, labelToRemove);
+// Edit description
+describe(cardActions.EDIT_CARD_DESCRIPTION_STARTED, () => {
+    it('should update the description with the given one', () => {
+        const newDescription = 'this is a new description';
+        const action = cardActions.editCardDescriptionStartedAction(card1, newDescription);
         const finalState = currentBoardReducer(state, action);
 
         expect(
             finalState.board.lists.find(l => l._id === card1.list._id)
-                .cards.find(c => c._id === card1._id).labels,
-        ).toEqual(card1.labels);
+                .cards.find(c => c._id === card1._id).description,
+        ).toEqual(newDescription);
     });
 });
 
-describe(cardActions.DELETE_LABEL_FAILURE, () => {
-    it('should append the label sent to the current ones', () => {
-        const newLabel = state.board.labels[3];
-        const action = cardActions.deleteLabelFailureAction('an error occured', card1._id, newLabel);
+describe(cardActions.EDIT_CARD_DESCRIPTION_FAILURE, () => {
+    it('should update the description with the given one', () => {
+        const oldDescription = 'this is a the old description';
+        const action = cardActions.editCardDescriptionStartedAction(card1, oldDescription);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).description,
+        ).toEqual(oldDescription);
+    });
+});
+
+
+// Add label
+describe(cardActions.ADD_LABEL_STARTED, () => {
+    it('should add the label sent to the current ones', () => {
+        const newLabel = labels[2];
+        const action = cardActions.addLabelStartedAction(card1._id, newLabel._id);
         const finalState = currentBoardReducer(state, action);
 
         expect(
@@ -148,6 +203,66 @@ describe(cardActions.DELETE_LABEL_FAILURE, () => {
     });
 });
 
+describe(cardActions.ADD_LABEL_FAILURE, () => {
+    it('should remove the label sent to the current ones', () => {
+        const labelAddFailed = card1.labels[1];
+        const action = cardActions.addLabelFailureAction('An error occured', card1._id, labelAddFailed._id);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).labels,
+        ).toEqual(card1.labels.filter(lab => lab._id !== labelAddFailed._id));
+    });
+});
+
+// Delete label
+describe(cardActions.DELETE_LABEL_STARTED, () => {
+    it('should remove the label sent to the current ones', () => {
+        const labelToRemove = card1.labels[0];
+        const action = cardActions.deleteLabelStartedAction(card1._id, labelToRemove._id);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).labels,
+        ).toEqual(card1.labels.filter(l => l._id !== labelToRemove._id));
+    });
+});
+
+describe(`${cardActions.DELETE_LABEL_STARTED}: labelId given incorrect`, () => {
+    it('should send the previous state (nothing deleted)', () => {
+        const action = cardActions.deleteLabelStartedAction(card1._idn, 'anInvalidLabeId');
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState).toEqual(state);
+    });
+});
+
+describe(`${cardActions.DELETE_LABEL_STARTED}: cardId given incorrect`, () => {
+    it('should send the previous state (nothing deleted)', () => {
+        const labelToRemove = state.board.labels[0];
+        const action = cardActions.deleteLabelStartedAction('anInvalidCardId', labelToRemove._id);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState).toEqual(state);
+    });
+});
+
+describe(cardActions.DELETE_LABEL_FAILURE, () => {
+    it('should append the label sent to the current ones', () => {
+        const newLabel = state.board.labels[2];
+        const action = cardActions.deleteLabelFailureAction('an error occured', card1._id, newLabel._id);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).labels,
+        ).toEqual(card1.labels.concat(newLabel));
+    });
+});
+
+// Archive card
 describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
     it('should set the card as "archived"', () => {
         const action = cardActions.archiveCardSuccessAction(card3);
@@ -157,5 +272,19 @@ describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
             finalState.board.lists.find(l => l._id === card3.list._id)
                 .cards.find(c => c._id === card3._id).isArchived,
         ).toEqual(true);
+    });
+});
+
+describe(`${cardActions.ARCHIVE_CARD_SUCCESS}: inexistant card given`, () => {
+    it('should send the previous state (nothing changed)', () => {
+        const inexistantCard = {
+            _id: 'anInvalidCardId',
+            name: 'random card',
+            list: { _id: 'anInvalidListId' },
+        };
+        const action = cardActions.archiveCardSuccessAction(inexistantCard);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState).toEqual(state);
     });
 });
