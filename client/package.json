@@ -26,6 +26,7 @@
         "dotenv": "^6.1.0",
         "history": "^4.7.2",
         "prop-types": "^15.6.2",
+        "randomcolor": "^0.5.3",
         "react": "16.5.2",
         "react-beautiful-dnd": "^9.0.2",
         "react-dom": "16.5.2",

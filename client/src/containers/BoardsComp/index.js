@@ -16,7 +16,6 @@ class BoardsComp extends React.Component {
     constructor(props) {
         super(props);
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
-        this.handleOnMemberClick = this.handleOnMemberClick.bind(this);
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
     }
 
@@ -26,11 +25,6 @@ class BoardsComp extends React.Component {
 
     handleOnBoardClick(boardId) {
         this.props.goToBoard(boardId);
-    }
-
-    handleOnMemberClick(event, memberId) {
-        event.stopPropagation();
-        this.props.goToMember(memberId);
     }
 
     handleOnTeamClick(event, teamId) {
@@ -45,7 +39,6 @@ class BoardsComp extends React.Component {
                 <BoardsView
                     boards={boards}
                     onBoardClick={this.handleOnBoardClick}
-                    onMemberClick={this.handleOnMemberClick}
                     onTeamClick={this.handleOnTeamClick}
                 />
             );
@@ -57,7 +50,6 @@ BoardsComp.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object),
     fetchBoards: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
-    goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
 };
 BoardsComp.defaultProps = {
@@ -74,7 +66,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         fetchBoards,
         goToBoard: boardId => push(`/boards/${boardId}`),
-        goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
     }, dispatch,
 );

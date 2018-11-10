@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
+import MemberPill from '../../MemberPill';
 
 // ===== Containers
 
@@ -76,14 +77,8 @@ const BoardsView = props => (
                                             </p>
                                             <ul className="membersInitialsList">
                                                 {board.members.map(member => (
-                                                    <li key={member._id} className="memberInitials">
-                                                        <div
-                                                            className="memberLink"
-                                                            onClick={event => props.onMemberClick(event, member._id)}
-                                                            onKeyDown={event => props.onMemberClick(event, member._id)}
-                                                        >
-                                                            {member.initials}
-                                                        </div>
+                                                    <li key={member._id}>
+                                                        <MemberPill member={member} />
                                                     </li>
                                                 ))}
                                             </ul>
@@ -121,7 +116,6 @@ const BoardsView = props => (
 BoardsView.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object).isRequired,
     onBoardClick: PropTypes.func.isRequired,
-    onMemberClick: PropTypes.func.isRequired,
     onTeamClick: PropTypes.func.isRequired,
 };
 

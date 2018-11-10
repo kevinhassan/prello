@@ -4,6 +4,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // ===== Components
 import AddListForm from './AddListForm';
+import MemberPill from '../../MemberPill';
 
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
@@ -19,6 +20,10 @@ const BoardView = props => (
             <div className="col-sm-12 boardSettingsBar">
                 <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
                 <i className="far fa-star boardSettingsBtn starBtn" />
+
+                {props.board.members.map(member => (
+                    <MemberPill key={member._id} member={member} />
+                ))}
             </div>
         </div>
         <div className="listsAndAddPanel">

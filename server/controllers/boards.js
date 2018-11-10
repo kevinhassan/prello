@@ -36,7 +36,12 @@ exports.getBoard = async (boardId) => {
             }
         }, {
             path: 'labels'
-        }, { path: 'teams' }]);
+        }, {
+            path: 'teams'
+        }, {
+            path: 'members'
+        }
+        ]);
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
