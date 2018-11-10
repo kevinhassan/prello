@@ -167,7 +167,6 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
  */
 exports.getProfile = async (userId) => {
     try {
-    // return plain json object with lean
         const userProfile = await User.findById(userId).select('-password').populate('teams');
         return userProfile;
     } catch (err) {
@@ -180,10 +179,7 @@ exports.getProfile = async (userId) => {
  */
 exports.getAccount = async (user) => {
     try {
-        // return plain json object with lean
-        const userAccount = await User.findById(user._id).select({
-            email: 1
-        }).lean();
+        const userAccount = await User.findById(user._id).select('email');
         return userAccount;
     } catch (err) {
         throw new MyError(500, 'Internal server error');
@@ -201,9 +197,7 @@ exports.putProfile = async (user, data) => {
         fullName, biography, initials
     } = data;
     try {
-        const userProfile = await User.findById(user._id).select({
-            fullName: 1, username: 1, biography: 1, initials: 1
-        });
+        const userProfile = await User.findById(user._id);
         userProfile.fullName = fullName;
         userProfile.biography = biography;
         userProfile.initials = initials;
