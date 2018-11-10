@@ -1,5 +1,4 @@
 import * as actions from '../actions/user';
-import User from '../models/User';
 
 export const initialState = {
     user: undefined,
@@ -8,10 +7,9 @@ export const initialState = {
 export default function usersReducer(state = initialState, action) {
     switch (action.type) {
     case actions.GET_USER_INFORMATION_SUCCESS:
-        const userObject = new User(action.payload.profile);
         return {
             ...state,
-            user: userObject,
+            user: action.payload.profile,
         };
 
     case actions.UPDATE_USER_INFORMATION_STARTED:

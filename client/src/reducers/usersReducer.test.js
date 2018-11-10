@@ -1,18 +1,19 @@
 import usersReducer from './usersReducer';
 import * as actions from '../actions/user';
 
-describe('users reducer', () => {
-    it('should return the initial state', () => {
-        // Specify empty state
-        expect(usersReducer({}, {})).toEqual({});
+
+describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
+    it('should update the state with profile provided', () => {
+        const profile = {
+            biograhy: 'A random student',
+            email: 'kevin@test.com',
+            fullName: 'Kévin Test',
+            initial: 'KT',
+            username: 'kevintest1',
+        };
+        const action = actions.getUserInformationSuccessAction(profile);
+        const finalState = usersReducer({}, action);
+
+        expect(finalState.user).toEqual(profile);
     });
 });
-
-describe('auth/USER_INFORMATIONS_SUCCESS reducer', () => {
-    it('should ?', () => {
-        const getInfoAction = actions.getUserInformation();
-        const finalState = usersReducer({}, getInfoAction);
-
-        expect(finalState.user).toEqual(undefined);
-    });
-})
