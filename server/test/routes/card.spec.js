@@ -149,3 +149,18 @@ describe('DELETE /cards/:cardId/labels/:labelId', () => {
             .expect(200, done);
     });
 });
+
+describe('PUT /cards/:cardId/archive', () => {
+    it('should return 200 OK', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/archive`)
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(204, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .put('/cards/123456/archive/')
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(404, done);
+    });
+});
