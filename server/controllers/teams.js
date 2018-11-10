@@ -7,6 +7,32 @@ const userController = require('../controllers/users');
 const boardController = require('../controllers/boards');
 
 // ======================== //
+// ===== Get functions ==== //
+// ======================== //
+exports.getTeam = async (teamId) => {
+  try {
+    const team = await Team.findById(teamId).populate([{
+      path: 'boards',
+      select: ['name', 'isVisible', 'description', 'avatarUrl'],
+    },{
+      path: 'members',
+      select: 'username'
+    },
+      {
+        path: 'admins',
+        select: 'username'
+      }]);
+    return team;
+  } catch (err) {
+    if (err.status) throw err;
+    else if (err.name === 'ValidationError') {
+      throw new MyError(422, 'Incorrect query');
+    }
+    throw new MyError(500, 'Internal server error');
+  }
+};
+
+// ======================== //
 // ===== Put functions ==== //
 // ======================== //
 /**

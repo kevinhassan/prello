@@ -11,6 +11,7 @@ import MemberComp from '../MemberComp';
 import ProfileComp from '../ProfileComp';
 import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
+import TeamComp from '../TeamComp';
 
 import PrivateRoute from '../../components/PrivateRoute';
 import Page404 from '../../components/Page404';
@@ -34,9 +35,10 @@ const App = () => (
                 <PrivateRoute authed={isAuthenticated()} exact path="/boards/:boardId" component={BoardComp} />
                 <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                 <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
+                <PrivateRoute authed={isAuthenticated()} exact path="/teams/:teamId" component={TeamComp} />
 
                 <Route component={Page404} />
-            </Switch>
+            </Switch>      
         </main>
     </div>
 );

@@ -54,6 +54,27 @@ const teamController = require('../controllers/teams');
 *
 *
 * /teams/{teamId}:
+*   get:
+*       tags:
+*           - Team
+*       description: Get the team
+*       summary: Get the team
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*       responses:
+*           200:
+*               description: Team successfully found
+*           401:
+*               description: Unauthorized user
+*           500:
+*               description: Internal server error
 *   delete:
 *       tags:
 *           - Team
@@ -221,7 +242,14 @@ module.exports = (router) => {
                 res.status(e.status).send({ err: e.message });
             }
         })
-        .delete('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
+        .get('/teams/:teamId', Auth.isAuthenticated, async (req, res) => {
+            try {
+                const team = await teamController.getTeam(req.params.teamId);
+                res.status(200).send({team});
+            } catch (e) {
+                res.status(e.status).send({ err: e.message });
+            }
+        }).delete('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
             try {
                 await teamController.deleteTeam(req.params.teamId);
                 res.sendStatus(204);
