@@ -13,11 +13,6 @@ export default function boardsReducer(state = initialState, action) {
                 userBoards: action.payload.boards,
             };
 
-        case actions.FETCH_BOARDS_FAILURE:
-            return {
-                ...state,
-            };
-
         default:
             return state;
         }
