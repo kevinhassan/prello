@@ -40,12 +40,6 @@ export default function authReducer(state = initialState, action) {
                 isLoggedIn: false,
             };
 
-        case actions.UNAUTHENTICATED_USER_ERROR:
-            return {
-                ...state,
-                errorMessage: action.payload.error,
-            };
-
         default:
             return state;
         }

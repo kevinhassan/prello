@@ -2,10 +2,6 @@ import { push } from 'connected-react-router';
 import * as APIFetch from '../helpers/APIFetch';
 import { displayLoadingModal, hideLoadingModal, displaySuccessMessage } from './modal';
 
-export const UNAUTHENTICATED_USER_ERROR = 'auth/UNAUTHENTICATED_USER_ERROR';
-
-// ==========
-
 // ===== Classic sign in ===== //
 export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
 export const CLASSIC_SIGN_IN_FAILURE = 'auth/CLASSIC_SIGN_IN_FAILURE';
@@ -78,14 +74,7 @@ export const SIGN_OUT = 'auth/SIGN_OUT';
 
 export const signOutAction = () => ({ type: SIGN_OUT });
 
-export const signOut = () => (dispatch) => {
+export const signOut = async () => (dispatch) => {
     localStorage.removeItem('prello_token');
     dispatch(signOutAction());
 };
-
-export const UnauthenticatedUserError = error => ({
-    type: UNAUTHENTICATED_USER_ERROR,
-    payload: {
-        error,
-    },
-});
