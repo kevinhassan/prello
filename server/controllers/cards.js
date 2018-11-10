@@ -193,3 +193,30 @@ exports.putList = async (data) => {
         throw new MyError(500, 'Internal server error.');
     }
 };
+
+
+/**
+ * Set card archived
+ */
+exports.archiveCard = async (data) => {
+    try {
+        const card = await Card.findById(data);
+        if (!card) throw new MyError(404, 'Card not found.');
+
+        card.isArchived = true;
+        await card.save();
+
+        return card;
+    } catch (err) {
+        if (err.status === 404) {
+            throw err;
+        }
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query.');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Card not found.');
+        }
+        throw new MyError(500, 'Internal server error.');
+    }
+};

@@ -95,3 +95,8 @@ h2.cardDetailTitle {
 .closeCardDetailIcon:hover {
     cursor: pointer;
 }
+
+.archiveBtn{
+    margin-top: 10px;
+    float: right;
+}

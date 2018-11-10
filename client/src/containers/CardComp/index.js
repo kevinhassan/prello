@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { editCardDescription, deleteLabel } from '../../actions/cards';
+import { editCardDescription, deleteLabel, archiveCard } from '../../actions/cards';
 
 // ===== View
 import CardView from '../../components/views/CardView';
@@ -27,6 +27,8 @@ class CardComp extends React.Component {
 
         this.changeIsEditingLabels = this.changeIsEditingLabels.bind(this);
         this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
+
+        this.handleArchiveCard = this.handleArchiveCard.bind(this);
     }
 
     handleCardClick(event) {
@@ -65,6 +67,11 @@ class CardComp extends React.Component {
         this.props.deleteLabel(this.props.card._id, label._id);
     }
 
+    /* ===== ARCHIVE ===== */
+    handleArchiveCard() {
+        this.props.archiveCard(this.props.card._id);
+    }
+
     render() {
         const { boardLabels, card } = this.props;
         return (
@@ -87,6 +94,8 @@ class CardComp extends React.Component {
                             changeIsEditingLabels={this.changeIsEditingLabels}
                             deleteLabel={this.handleDeleteLabel}
                             isEditingLabels={this.state.isEditingLabels}
+
+                            archiveCard={this.handleArchiveCard}
                         />
                     )
                     : ''
@@ -100,6 +109,7 @@ CardComp.propTypes = {
     card: PropTypes.object.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
+    archiveCard: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
@@ -111,6 +121,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         deleteLabel,
         editCardDescription,
+        archiveCard,
     }, dispatch,
 );
 

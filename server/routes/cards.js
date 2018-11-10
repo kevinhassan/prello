@@ -205,5 +205,20 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
+        })
+
+        .put('/cards/:cardId/archive', Auth.isAuthenticated, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            console.log(req.params.cardId);
+
+            try {
+                await cardController.archiveCard(req.params.cardId);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };

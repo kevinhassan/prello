@@ -236,6 +236,33 @@ export default function currentBoardReducer(state = initialState, action) {
         };
 
 
+    // ===== Archive Card ===== //
+    case cardActions.ARCHIVE_CARD_STARTED:
+        return {
+            ...state,
+        };
+
+    case cardActions.ARCHIVE_CARD_FAILURE:
+        return {
+            ...state,
+        };
+
+
+    case cardActions.ARCHIVE_CARD_SUCCESS:
+        newLists = state.board.lists.map(list => ({
+            ...list,
+            cards: list.cards.filter(card => card._id !== action.payload.cardId),
+        }));
+
+        return {
+            ...state,
+            board: {
+                ...state.board,
+                lists: newLists,
+            },
+        };
+
+
     default:
         return state;
     }

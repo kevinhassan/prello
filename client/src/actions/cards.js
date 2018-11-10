@@ -170,3 +170,45 @@ export const deleteLabel = (cardId, labelId) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+
+// ===== ARCHIVE CARD =====
+export const ARCHIVE_CARD_SUCCESS = 'cards/ARCHIVE_CARD_SUCCESS';
+export const ARCHIVE_CARD_STARTED = 'cards/ARCHIVE_CARD_STARTED';
+export const ARCHIVE_CARD_FAILURE = 'cards/ARCHIVE_CARD_FAILURE';
+
+
+export const archiveCardStartedAction = () => ({ type: ARCHIVE_CARD_STARTED });
+
+export const archiveCardSuccessAction = cardId => ({
+    type: ARCHIVE_CARD_SUCCESS,
+    payload: {
+        cardId,
+    },
+});
+
+export const archiveCardFailureAction = (error, cardId) => ({
+    type: ARCHIVE_CARD_FAILURE,
+    payload: {
+        cardId,
+        error,
+    },
+});
+
+export const archiveCard = cardId => (dispatch) => {
+    dispatch(archiveCardStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `cards/${cardId}/archive`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.PUT)
+        .then(() => {
+            dispatch(archiveCardSuccessAction(cardId));
+            dispatch(displaySuccessMessage('Card archived'));
+        })
+        .catch((error) => {
+            dispatch(archiveCardFailureAction(error, cardId));
+            dispatch(displayErrorMessage(error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
