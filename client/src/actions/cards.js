@@ -172,11 +172,10 @@ export const deleteLabel = (cardId, labelId) => (dispatch) => {
 };
 
 
-// ===== ARCHIVE CARD =====
+// ===== ARCHIVE CARD ===== //
 export const ARCHIVE_CARD_SUCCESS = 'cards/ARCHIVE_CARD_SUCCESS';
 export const ARCHIVE_CARD_STARTED = 'cards/ARCHIVE_CARD_STARTED';
 export const ARCHIVE_CARD_FAILURE = 'cards/ARCHIVE_CARD_FAILURE';
-
 
 export const archiveCardStartedAction = () => ({ type: ARCHIVE_CARD_STARTED });
 
@@ -187,10 +186,9 @@ export const archiveCardSuccessAction = cardId => ({
     },
 });
 
-export const archiveCardFailureAction = (error, cardId) => ({
+export const archiveCardFailureAction = error => ({
     type: ARCHIVE_CARD_FAILURE,
     payload: {
-        cardId,
         error,
     },
 });
@@ -205,7 +203,7 @@ export const archiveCard = cardId => (dispatch) => {
             dispatch(displaySuccessMessage('Card archived'));
         })
         .catch((error) => {
-            dispatch(archiveCardFailureAction(error, cardId));
+            dispatch(archiveCardFailureAction(error));
             dispatch(displayErrorMessage(error));
         })
         .finally(() => {

@@ -13,7 +13,7 @@ export default function currentBoardReducer(state = initialState, action) {
         let newLists;
 
         switch (action.type) {
-        // ===== Board Actions ===== //
+        // ===== BOARD ACTIONS ===== //
         case actions.FETCH_BOARD_SUCCESS:
             return {
                 ...state,
@@ -45,7 +45,7 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
-            // ===== List Actions ===== //
+        // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
                 ...state,
@@ -55,13 +55,8 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
-        case listActions.CREATE_LIST_FAILURE:
-            return {
-                ...state,
-            };
-
-            // With started: action.payload.lists is the new lists.
-            // With failure: action.payload.lists is the old lists.
+        // With started: action.payload.lists is the new lists.
+        // With failure: action.payload.lists is the old lists.
         case listActions.MOVE_CARD_STARTED:
         case listActions.MOVE_CARD_FAILURE:
             return {
@@ -72,16 +67,10 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
-        case listActions.MOVE_CARD_SUCCESS:
-            return {
-                ...state,
-            };
-
-            // ===== Card Actions ===== //
-
-            // ===== Description ===== //
-            // With started: action.payload.description is the new description.
-            // With failure: action.payload.description is the old description.
+        // ===== CARDS ACTIONS ===== //
+        // ===== Description ===== //
+        // With started: action.payload.description is the new description.
+        // With failure: action.payload.description is the old description.
         case cardActions.EDIT_CARD_DESCRIPTION_STARTED:
         case cardActions.EDIT_CARD_DESCRIPTION_FAILURE:
             return {
@@ -104,12 +93,8 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
-        case cardActions.EDIT_CARD_DESCRIPTION_SUCCESS:
-            return {
-                ...state,
-            };
 
-            // ===== Add label ===== //
+        // ===== Add label ===== //
         case cardActions.ADD_LABEL_STARTED:
             newLabel = state.board.labels.find(lab => lab._id === action.payload.labelId);
 
@@ -167,12 +152,7 @@ export default function currentBoardReducer(state = initialState, action) {
             };
 
 
-        case cardActions.ADD_LABEL_SUCCESS:
-            return {
-                ...state,
-            };
-
-            // ===== Delete label ===== //
+        // ===== Delete label ===== //
         case cardActions.DELETE_LABEL_STARTED:
             newLabel = state.board.labels.find(lab => lab._id === action.payload.labelId);
 
@@ -230,25 +210,7 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
-
-        case cardActions.DELETE_LABEL_SUCCESS:
-            return {
-                ...state,
-            };
-
-
-            // ===== Archive Card ===== //
-        case cardActions.ARCHIVE_CARD_STARTED:
-            return {
-                ...state,
-            };
-
-        case cardActions.ARCHIVE_CARD_FAILURE:
-            return {
-                ...state,
-            };
-
-
+        // ===== Archive Card ===== //
         case cardActions.ARCHIVE_CARD_SUCCESS:
             newLists = state.board.lists.map(list => ({
                 ...list,
