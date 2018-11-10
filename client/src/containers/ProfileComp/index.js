@@ -9,7 +9,9 @@ import { connect } from 'react-redux';
 import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
-import { getUserInformation, updateUserInformation, updatePassword, deleteUser } from '../../actions/user';
+import {
+    getUserInformation, updateUserInformation, updatePassword, deleteUser,
+} from '../../actions/user';
 
 // ===== Others
 import './style.css';
@@ -41,7 +43,7 @@ class ProfileComp extends React.Component {
 
     handleUpdateInformation(event) {
         event.preventDefault();
-        this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.bio.value);
+        this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.biography.value);
         this.setState({ isUpdateVisible: false });
     }
 

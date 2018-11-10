@@ -17,10 +17,10 @@ const InformationForm = props => (
                     Biography (optional)
                     <Textarea
                         className="form-control"
-                        name="Bio"
+                        name="biography"
                         defaultValue={props.user.biography ? props.user.biography : ''}
                         type="text"
-                        id="bio"
+                        id="biography"
                     />
                     <br />
                     Full name

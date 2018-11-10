@@ -7,7 +7,7 @@ export const initialState = {
 
 export default function usersReducer(state = initialState, action) {
     switch (action.type) {
-    case actions.USER_INFORMATION_SUCCESS:
+    case actions.GET_USER_INFORMATION_SUCCESS:
         const userObject = new User(action.payload.profile);
         return {
             ...state,
@@ -20,7 +20,7 @@ export default function usersReducer(state = initialState, action) {
             user: {
                 ...state.user,
                 fullName: action.payload.fullname,
-                bio: action.payload.bio,
+                biography: action.payload.biography,
                 initials: action.payload.initials,
             },
         };

@@ -4,17 +4,16 @@ import {
     displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage, displayErrorMessageAction,
 } from './modal';
 
+// ==========
 export const GET_USER_INFORMATION = 'user/GET_USER_INFORMATION';
-export const USER_INFORMATION_SUCCESS = 'user/USER_INFORMATION_SUCCESS';
+export const GET_USER_INFORMATION_SUCCESS = 'user/GET_USER_INFORMATION_SUCCESS';
 
 export const UPDATE_USER_INFORMATION = 'user/UPDATE_USER_INFORMATION';
 export const UPDATE_USER_INFORMATION_SUCCESS = 'user/UPDATE_USER_INFORMATION_SUCCESS';
-
-
 // ==========
 
-export const userInformationSuccess = profile => ({
-    type: USER_INFORMATION_SUCCESS,
+export const getUserInformationSuccess = profile => ({
+    type: GET_USER_INFORMATION_SUCCESS,
     payload: {
         profile,
     },
@@ -22,10 +21,9 @@ export const userInformationSuccess = profile => ({
 
 export const getUserInformation = () => (dispatch) => {
     dispatch(displayLoadingModal());
-    APIFetch.fetchPrelloAPI('profile', {
-    }, APIFetch.GET)
+    APIFetch.fetchPrelloAPI('profile', {}, APIFetch.GET)
         .then((res) => {
-            dispatch(userInformationSuccess(res.data.profile));
+            dispatch(getUserInformationSuccess(res.data.profile));
         })
         .catch((error) => {
             dispatch(displayErrorMessageAction(error.message));
@@ -35,12 +33,12 @@ export const getUserInformation = () => (dispatch) => {
         });
 };
 
-export const updateUserInformationSuccess = (fullname, initials, bio) => ({
+export const updateUserInformationSuccess = (fullname, initials, biography) => ({
     type: UPDATE_USER_INFORMATION_SUCCESS,
     payload: {
         fullname,
         initials,
-        bio,
+        biography,
     },
 });
 
