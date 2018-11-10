@@ -19,8 +19,9 @@ const BoardView = props => (
         <div className="row">
             <div className="col-sm-12 boardSettingsBar">
                 <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
-                <i className="far fa-star boardSettingsBtn starBtn" />
-
+                {' | '}
+                <i className="fas fa-users" />
+                {' '}
                 {props.board.members.map(member => (
                     <MemberPill key={member._id} member={member} />
                 ))}

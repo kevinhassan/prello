@@ -1,22 +1,42 @@
 [
-  {
-      "_id": "u00000000001",
-      "fullName": "Anthony Dupont",
-      "initials": "AD",
-      "username": "anthonydupont1",
-      "email": "test@test.fr",
-      "password": "password",
-      "boards": ["b00000000001", "b00000000002"],
-      "teams": ["t00000000001", "t00000000002"]
-  },
-  {
-      "_id": "u00000000002",
-      "fullName": "Julien Martin",
-      "initials": "JT2",
-      "username": "julienmartin1",
-      "email": "test2@test2.fr",
-      "password": "password2",
-      "boards": ["b00000000001", "b00000000002"],
-      "teams": ["t00000000001"]
-  }
+    {
+        "_id": "u00000000001",
+        "fullName": "Anthony Dupont",
+        "initials": "AD",
+        "username": "anthonydupont1",
+        "email": "test@test.fr",
+        "password": "password",
+        "boards": ["b00000000001", "b00000000002"],
+        "teams": ["t00000000001", "t00000000002"]
+    },
+    {
+        "_id": "u00000000002",
+        "fullName": "Julien Martin",
+        "initials": "JT2",
+        "username": "julienmartin1",
+        "email": "test2@test2.fr",
+        "password": "password",
+        "boards": ["b00000000001", "b00000000002"],
+        "teams": ["t00000000001"]
+    },
+    {
+        "_id": "u00000000003",
+        "fullName": "Tony Rozio",
+        "initials": "TR",
+        "username": "tonyrozio1",
+        "email": "tony@rozio.fr",
+        "password": "password",
+        "boards": ["b00000000002"],
+        "teams": ["t00000000002"]
+    },
+    {
+        "_id": "u00000000004",
+        "fullName": "Bénédicte Yacor",
+        "initials": "BY9",
+        "username": "benedicteyacor",
+        "email": "bene@gmail.fr",
+        "password": "password",
+        "boards": ["b00000000001"],
+        "teams": []
+    }
 ]
