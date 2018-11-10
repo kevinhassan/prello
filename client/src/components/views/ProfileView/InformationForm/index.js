@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Textarea from 'react-textarea-autosize';
 
 // ===== Others
 import './style.css';
@@ -13,6 +14,15 @@ const InformationForm = props => (
 
             <div className="informationForm">
                 <form onSubmit={props.handleUpdateInformation}>
+                    Biography (optional)
+                    <Textarea
+                        className="form-control"
+                        name="Bio"
+                        defaultValue={props.user.biography ? props.user.biography : ''}
+                        type="text"
+                        id="bio"
+                    />
+                    <br />
                     Full name
                     <input
                         className="form-control"
@@ -31,16 +41,6 @@ const InformationForm = props => (
                         id="initials"
                     />
                     <br />
-                    Bio (optional)
-                    <textarea
-                        className="form-control"
-                        rows="5"
-                        name="Bio"
-                        defaultValue={props.user.bio ? props.user.bio : ''}
-                        type="text"
-                        id="bio"
-                    />
-                    <br />
                     <button className="btn btn-success updateInformation-btn" type="submit">
                         Update
                     </button>
@@ -56,20 +56,20 @@ const InformationForm = props => (
 
         ) : (
             <div className="informationDisplay">
-                <button
-                    className="btn btn-secondary btnUpdate"
-                    type="button"
-                    onClick={() => props.displayUpdateForm(true)}
-                >
-                    <i className="fas fa-pen updateIcon" />
-                </button>
-                <div>
-                    <h5>Bio</h5>
-                    <p>{props.user.bio ? props.user.bio : 'Unfilled'}</p>
-                    <br />
-                    <h5>Email</h5>
-                    <p>{props.user.email}</p>
+                <div className="informationDisplay-header">
+                    <h5>Biography</h5>
+                    <button
+                        className="btn btn-secondary btnUpdate"
+                        type="button"
+                        onClick={() => props.displayUpdateForm(true)}
+                    >
+                        <i className="fas fa-pen updateIcon" />
+                    </button>
                 </div>
+                <p>{props.user.biography ? props.user.biography : (<i style={{ color: '#999' }}>No biography</i>)}</p>
+                <br />
+                <h5>Email</h5>
+                <p>{props.user.email}</p>
             </div>
         )}
     </span>

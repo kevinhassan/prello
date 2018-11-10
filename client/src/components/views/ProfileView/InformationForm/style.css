@@ -1,8 +1,7 @@
-.btnUpdate{
-    float: right;
-}
-
-.bio{
+.informationDisplay .btnUpdate {
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
 
 .cancelUpdate-btn{
@@ -10,13 +9,19 @@
 }
 
 .informationForm{
-    background-color: #ddd;
+    background-color: #eee;
     padding: 10px;
     border-radius: 0.25rem;
 }
 
-.informationDisplay{
-    background-color: #ddd;
-    padding: 10px;
+.informationDisplay {
+    background-color: #eee;
     border-radius: 0.25rem;
+    padding: 10px;
+    position: relative;
+}
+
+.informationDisplay h5 {
+    font-weight: bold;
+    text-align: center;
 }
