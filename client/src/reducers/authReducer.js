@@ -1,10 +1,19 @@
 import * as actions from '../actions/auth';
 import { DELETE_USER_SUCCESS } from '../actions/user';
 
+const getToken = async () => {
+    try {
+        const token = await localStorage.getItem('prello_token');
+        return token;
+    } catch (e) {
+        return null;
+    }
+};
+
 export const initialState = {
     errorSignInMessage: '',
     errorRegisterMessage: '',
-    isLoggedIn: localStorage.getItem('prello_token') !== null,
+    isLoggedIn: getToken() !== null,
 };
 
 export default function authReducer(state = initialState, action) {

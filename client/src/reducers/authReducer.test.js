@@ -41,7 +41,7 @@ describe(actions.CLASSIC_REGISTER_SUCCESS, () => {
 describe(actions.CLASSIC_REGISTER_FAILURE, () => {
     it('should return an errorRegisterMessage', () => {
         const registerErrorAction = actions.classicRegisterFailureAction('error when registering');
-        const finalState = authReducer({}, registerErrorAction);
+        const finalState = await authReducer({}, registerErrorAction);
 
         expect(finalState.errorRegisterMessage).toEqual('error when registering');
     });
