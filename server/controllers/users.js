@@ -146,7 +146,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
             throw new MyError(403, 'Invalid credentials.');
         }
         const isMatch = await userCheck.comparePassword(oldPassword);
-        
+
         if (!isMatch) {
             throw new MyError(403, 'Invalid password.');
         }
@@ -168,9 +168,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
 exports.getProfile = async (userId) => {
     try {
     // return plain json object with lean
-        const userProfile = await User.findById(userId).select({
-            fullName: 1, username: 1, biography: 1, initials: 1, email: 1, _id: 0
-        });
+        const userProfile = await User.findById(userId).select('-password').populate('teams');
         return userProfile;
     } catch (err) {
         throw new MyError(500, 'Internal server error');
@@ -258,10 +256,11 @@ exports.deleteAccount = async (user, username) => {
             throw new MyError(402, 'Not existing user');
         }
         if (username !== userToDelete.username) {
-            throw new MyError(403, 'Invalid username input');
+            throw new MyError(403, 'Invalid username confirmation');
         }
         await User.deleteOne({ _id: user._id });
     } catch (err) {
+        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
     }

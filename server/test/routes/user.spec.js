@@ -101,7 +101,7 @@ describe('GET /profile', () => {
                 assert(res.body.profile.biography, data.biography);
                 expect(res.body.profile.initials).to.not.be.empty;
                 expect(res.body.profile.username).to.not.be.empty;
-                // add processing data
+                // add processed data
                 data.username = res.body.profile.username;
                 data.initials = res.body.profile.initials;
                 done();
@@ -216,16 +216,36 @@ describe('PUT /account', () => {
             .expect(204, done);
     });
 });
+
 describe('DELETE /account', () => {
+    const newUser = {
+        fullName: 'Anthony Test',
+        email: 'newUser@test.fr',
+        password: 'passTest',
+        biography: 'biography'
+    };
     let token = null;
 
     before((done) => {
         request(app)
-            .post('/login')
-            .send({ email: 'test1@test.fr', password: data.password })
-            .end((err, res) => {
-                token = res.body.token;
-                done();
+            .post('/register')
+            .send(newUser)
+            .end(() => {
+                request(app)
+                    .post('/login')
+                    .send({ email: newUser.email, password: newUser.password })
+                    .end((err, res) => {
+                        token = res.body.token;
+
+                        request(app)
+                            .get('/profile')
+                            .set('Authorization', `Bearer ${token}`)
+                            .send({ email: newUser.email, password: newUser.password })
+                            .end((err, res) => {
+                                newUser.username = res.body.profile.username;
+                                done();
+                            });
+                    });
             });
     });
     it('should return 401 ERROR', (done) => {
@@ -236,12 +256,14 @@ describe('DELETE /account', () => {
     it('should return 204 OK', (done) => {
         request(app)
             .delete('/account')
+            .send({ username: newUser.username })
             .set('Authorization', `Bearer ${token}`)
             .expect(204, done);
     });
     it('should return 401 ERROR', (done) => {
         request(app)
             .delete('/account')
+            .send({ username: newUser.username })
             .set('Authorization', `Bearer ${token}`)
             .expect(401, done);
     });

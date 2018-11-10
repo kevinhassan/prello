@@ -6,7 +6,8 @@
       "username": "test",
       "email": "test@test.fr",
       "password": "password",
-      "boards": ["b00000000001", "b00000000002"]
+      "boards": ["b00000000001", "b00000000002"],
+      "teams": ["t00000000001"]
   },
   {
       "_id": "u00000000002",
@@ -15,6 +16,7 @@
       "username": "test2",
       "email": "test2@test2.fr",
       "password": "password2",
-      "boards": ["b00000000001", "b00000000002"]
+      "boards": ["b00000000001", "b00000000002"],
+      "teams": ["t00000000001"]
   }
 ]
