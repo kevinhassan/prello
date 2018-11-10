@@ -3,6 +3,37 @@ import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
 import * as cardActions from '../actions/cards';
 
+const card1 = {
+    _id: 'c1',
+    name: 'card1',
+    labels: [
+        {
+            _id: 'lab1',
+            name: 'label1',
+        },
+        {
+            _id: 'lab2',
+            name: 'label2',
+        },
+    ],
+    list: { _id: 'l1' },
+};
+const card2 = {
+    _id: 'c2',
+    name: 'card2',
+    labels: [
+        {
+            _id: 'lab1',
+            name: 'label1',
+        },
+    ],
+};
+const card3 = {
+    _id: 'c3',
+    name: 'card3',
+    labels: [],
+    list: { _id: 'l3' },
+};
 const state = {
     board: {
         _id: 'b1',
@@ -16,24 +47,15 @@ const state = {
         lists: [
             {
                 _id: 'l1',
-                cards: [{
-                    _id: 'c0',
-                },
-                {
-                    _id: 'c1',
-                }],
+                cards: [card1, card2],
             },
             {
                 _id: 'l2',
-                cards: [{
-                    _id: 'c2',
-                }],
+                cards: [],
             },
             {
                 _id: 'l3',
-                cards: [{
-                    _id: 'c3',
-                }],
+                cards: [card3],
             },
         ],
         admins: [
@@ -66,36 +88,28 @@ describe('Action not referenced', () => {
 
 describe(actions.UPDATE_LISTS_INDEXES_STARTED, () => {
     it('should correctly change the lists order to the new one', () => {
-        const newLists = [
-            { _id: 'l2' },
-            { _id: 'l3' },
-            { _id: 'l1' },
-        ];
-        const action = actions.updateListsIndexesStartedAction(newLists);
+        const newListsOrder = state.board.lists.reverse();
+        const action = actions.updateListsIndexesStartedAction(newListsOrder);
         const finalState = currentBoardReducer(state, action);
 
-        expect(finalState.board.lists).toEqual(newLists);
+        expect(finalState.board.lists).toEqual(newListsOrder);
     });
 });
 
 describe(actions.UPDATE_LISTS_INDEXES_FAILURE, () => {
     it('should correctly change the lists order to the old one', () => {
-        const initialLists = [
-            { _id: 'l2' },
-            { _id: 'l3' },
-            { _id: 'l1' },
-        ];
-        const action = actions.updateListsIndexesFailureAction('error', initialLists);
+        const newListsOrder = state.board.lists.reverse();
+        const action = actions.updateListsIndexesFailureAction('error', newListsOrder);
         const finalState = currentBoardReducer(state, action);
 
-        expect(finalState.board.lists).toEqual(initialLists);
+        expect(finalState.board.lists).toEqual(state.board.lists);
     });
 });
 
 // ===== LISTS ACTIONS ===== //
 
 describe(listActions.CREATE_LIST_STARTED, () => {
-    it('should add a list to the bcreateListStartedActionoard', () => {
+    it('should add a list to the board', () => {
         const newList = {
             name: 'My New List',
         };
@@ -108,21 +122,40 @@ describe(listActions.CREATE_LIST_STARTED, () => {
 });
 
 // ===== CARDS ACTIONS ===== //
-
-describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
-    it('should set the card as "archived"', () => {
-        const cardtoArchive = {
-            _id: 'c1',
-            list: {
-                _id: 'l1',
-            },
-        };
-        const action = cardActions.archiveCardSuccessAction(cardtoArchive);
+describe(cardActions.DELETE_LABEL_STARTED, () => {
+    it('should remove the label sent to the current ones', () => {
+        const labelToRemove = card1.labels.pop();
+        const action = cardActions.deleteLabelStartedAction('an error occured', card1._id, labelToRemove);
         const finalState = currentBoardReducer(state, action);
 
         expect(
-            finalState.board.lists.find(l => l._id === cardtoArchive.list._id)
-                .cards.find(c => c._id === cardtoArchive._id).isArchived,
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).labels,
+        ).toEqual(card1.labels);
+    });
+});
+
+describe(cardActions.DELETE_LABEL_FAILURE, () => {
+    it('should append the label sent to the current ones', () => {
+        const newLabel = state.board.labels[3];
+        const action = cardActions.deleteLabelFailureAction('an error occured', card1._id, newLabel);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).labels,
+        ).toEqual(card1.labels.concat(newLabel));
+    });
+});
+
+describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
+    it('should set the card as "archived"', () => {
+        const action = cardActions.archiveCardSuccessAction(card3);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card3.list._id)
+                .cards.find(c => c._id === card3._id).isArchived,
         ).toEqual(true);
     });
 });
