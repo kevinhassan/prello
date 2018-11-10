@@ -1,11 +1,13 @@
 import * as actions from '../actions/auth';
-import { DELETE_USER_SUCCESS } from '../actions/user';
 
-const getToken = async () => {
+export const getToken = async () => {
     try {
         const token = await localStorage.getItem('prello_token');
         return token;
     } catch (e) {
+        // The next comment ignore the return null in jest code coverage
+        // (don't know how to test an error on localStorage.getItem())
+        /* istanbul ignore next */
         return null;
     }
 };

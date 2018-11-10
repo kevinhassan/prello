@@ -1,4 +1,4 @@
-import authReducer, { initialState } from './authReducer';
+import authReducer, { initialState, getToken } from './authReducer';
 import * as actions from '../actions/auth';
 
 describe('Action not referenced', () => {
@@ -7,6 +7,22 @@ describe('Action not referenced', () => {
         expect(finalState).toEqual(initialState);
         const finalState2 = authReducer(initialState, { type: 'notReferencedAction ' });
         expect(finalState2).toEqual(initialState);
+    });
+});
+
+describe('Testing getToken function', () => {
+    it('should return the token from the local storage', () => {
+        const token = 'aRandomToken';
+        localStorage.setItem('prello_token', token);
+        getToken().then((res) => {
+            expect(res).toEqual(token);
+        });
+    });
+    it('should return {} if token not found', () => {
+        localStorage.removeItem('prello_token');
+        getToken().then((res) => {
+            expect(res).toEqual(null);
+        });
     });
 });
 
