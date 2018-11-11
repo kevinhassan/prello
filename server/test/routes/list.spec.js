@@ -157,3 +157,27 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
             .expect(200, done);
     });
 });
+
+describe('PUT /lists/:listId/isArchived', () => {
+    it('should return 200 OK', (done) => {
+        request(app)
+            .put(`/lists/${listData.id}/isArchived`)
+            .send({ isArchived: true })
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(204, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .put(`/lists/${listData.id}/isArchived`)
+            .send({ isArchived: 'incorrect value' })
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(422, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .put('/cards/123456/isArchived/')
+            .send({ isArchived: true })
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(404, done);
+    });
+});

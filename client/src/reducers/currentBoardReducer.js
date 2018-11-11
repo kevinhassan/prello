@@ -67,6 +67,24 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+
+        // ===== Archive List ===== //
+        case listActions.ARCHIVE_LIST_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.list._id
+                            ? l
+                            : {
+                                ...l,
+                                isArchived: true,
+                            }
+                    )),
+                },
+            };
+
         // ===== CARDS ACTIONS ===== //
         // ===== Description ===== //
         // With started: action.payload.description is the new description.

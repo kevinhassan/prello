@@ -85,3 +85,38 @@ export const moveCard = (sourceListId, destinationListId, cardId, destinationInd
             dispatch(displayErrorMessage(error.response.data.error));
         });
 };
+
+
+// ===== ARCHIVE LIST ===== //
+export const ARCHIVE_LIST_SUCCESS = 'lists/ARCHIVE_LIST_SUCCESS';
+export const ARCHIVE_LIST_STARTED = 'lists/ARCHIVE_LIST_STARTED';
+export const ARCHIVE_LIST_FAILURE = 'lists/ARCHIVE_LIST_FAILURE';
+
+export const archiveListStartedAction = () => ({ type: ARCHIVE_LIST_STARTED });
+
+export const archiveListSuccessAction = list => ({
+    type: ARCHIVE_LIST_SUCCESS,
+    payload: {
+        list,
+    },
+});
+
+export const archiveListFailureAction = () => ({ type: ARCHIVE_LIST_FAILURE });
+
+export const archiveList = (list, isArchived) => (dispatch) => {
+    dispatch(archiveListStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `lists/${list._id}/isArchived`;
+    APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
+        .then(() => {
+            dispatch(archiveListSuccessAction(list));
+            dispatch(displaySuccessMessage('List archived'));
+        })
+        .catch((error) => {
+            dispatch(archiveListFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

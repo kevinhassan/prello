@@ -14,6 +14,10 @@ const { Auth, List } = require('../middlewares');
 *       properties:
 *           name:
 *               type: string
+*   ArchivedForm:
+*       properties:
+*           isArchived:
+*               type: boolean
 *
 * /lists/{listId}/cards:
 *   post:
@@ -88,7 +92,36 @@ const { Auth, List } = require('../middlewares');
 *               description: Invalid form data
 *           500:
 *               description: Internal server error
-*
+* /lists/{listId}/isArchived:
+*   put:
+*       tags:
+*           - List
+*       description: Put list isArchived
+*       summary: Put list isArchived
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: listId
+*             schema:
+*               type: string
+*             required: true
+*             description: List Id
+*           - in: body
+*             name: isArchivedValue
+*             description: isArchived new value
+*             required: true
+*             schema:
+*               $ref: '#/definitions/ArchivedForm'
+*       responses:
+*           204:
+*               description: List isArchived updated
+*           404:
+*               description: List not found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -106,7 +139,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/lists/:listId/cards/:cardId', Auth.isAuthenticated, listValidator.moveCard, async (req, res) => {
+        .put('/lists/:listId/cards/:cardId', Auth.isAuthenticated, List.canEdit, listValidator.moveCard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -136,6 +169,19 @@ module.exports = (router) => {
                 socket.updateClientsOnBoard(listUpdated.board._id);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
+            }
+        })
+
+        .put('/lists/:listId/isArchived', Auth.isAuthenticated, List.canEdit, listValidator.archiveCard, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await listController.archiveList(req.params.listId, req.body.isArchived);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
             }
         });
 };

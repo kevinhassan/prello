@@ -160,6 +160,33 @@ describe(listActions.MOVE_CARD_FAILURE, () => {
     });
 });
 
+
+// Archive list
+describe(listActions.ARCHIVE_LIST_SUCCESS, () => {
+    it('should set the list as "archived"', () => {
+        const action = listActions.archiveListSuccessAction(state.board.lists[0]);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists[0].isArchived,
+        ).toEqual(true);
+    });
+});
+
+describe(`${listActions.ARCHIVE_LIST_SUCCESS}: inexistant list given`, () => {
+    it('should send the previous state (nothing changed)', () => {
+        const inexistantList = {
+            _id: 'invalidListId',
+            name: 'random list',
+        };
+        const action = listActions.archiveListSuccessAction(inexistantList);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState).toEqual(state);
+    });
+});
+
+
 // ===== CARDS ACTIONS ===== //
 // Edit description
 describe(cardActions.EDIT_CARD_DESCRIPTION_STARTED, () => {

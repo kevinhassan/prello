@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { createCard } from '../../actions/cards';
+import { archiveList } from '../../actions/lists';
 
 // ===== Models
 import Card from '../../models/Card';
@@ -20,6 +21,7 @@ class ListComp extends React.Component {
         };
         this.handleAddCard = this.handleAddCard.bind(this);
         this.handleCardAdded = this.handleCardAdded.bind(this);
+        this.handleArchiveList = this.handleArchiveList.bind(this);
     }
 
     handleAddCard(value) {
@@ -36,6 +38,11 @@ class ListComp extends React.Component {
         this.setState({ isInputVisible: false });
     }
 
+    /* ===== ARCHIVE ===== */
+    handleArchiveList() {
+        this.props.archiveList(this.props.list, true);
+    }
+
     render() {
         const { boardLabels, list, isBeingDragged } = this.props;
         return (
@@ -46,6 +53,7 @@ class ListComp extends React.Component {
                 displayAddCardForm={this.handleAddCard}
                 list={list}
                 onCardAdded={this.handleCardAdded}
+                archiveList={this.handleArchiveList}
             />
         );
     }
@@ -56,6 +64,7 @@ ListComp.propTypes = {
     isBeingDragged: PropTypes.bool,
     listId: PropTypes.string.isRequired,
     list: PropTypes.object.isRequired,
+    archiveList: PropTypes.func.isRequired,
 };
 ListComp.defaultProps = {
     isBeingDragged: false,
@@ -71,6 +80,7 @@ const mapStateToProps = ({ currentBoard }, props) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         createCard,
+        archiveList,
     }, dispatch,
 );
 

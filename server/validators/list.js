@@ -14,13 +14,22 @@ const addList = [
         .not().isEmpty()
         .isString()
 ];
+
 const addCard = [
     check('name')
         .not().isEmpty()
         .isString()
 ];
+
+const archiveCard = [
+    check('isArchived')
+        .not().isEmpty()
+        .isBoolean()
+];
+
 module.exports = {
     moveCard,
     addList,
-    addCard
+    addCard,
+    archiveCard
 };

@@ -115,3 +115,28 @@ exports.getList = async (listId) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+
+/**
+ * Set list archived
+ */
+exports.archiveList = async (listId, isArchived) => {
+    try {
+        const list = await List.findById(listId);
+        if (!list) throw new MyError(404, 'List not found.');
+
+        list.isArchived = isArchived;
+        await list.save();
+
+        return list;
+    } catch (err) {
+        if (err.status) throw err;
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query.');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'List not found.');
+        }
+        throw new MyError(500, 'Internal server error.');
+    }
+};

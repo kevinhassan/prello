@@ -54,3 +54,16 @@
     color: #ac1212;
     cursor: pointer;
 }
+
+.archiveIcon {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    transition: 0.2s;
+}
+
+.archiveIcon:hover {
+    color: #ac1212;
+    cursor: pointer;
+    transition: 0.2s;
+}
