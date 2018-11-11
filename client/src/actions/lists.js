@@ -101,12 +101,7 @@ export const archiveListSuccessAction = list => ({
     },
 });
 
-export const archiveListFailureAction = error => ({
-    type: ARCHIVE_LIST_FAILURE,
-    payload: {
-        error,
-    },
-});
+export const archiveListFailureAction = () => ({ type: ARCHIVE_LIST_FAILURE });
 
 export const archiveList = list => (dispatch) => {
     dispatch(archiveListStartedAction());
@@ -118,7 +113,7 @@ export const archiveList = list => (dispatch) => {
             dispatch(displaySuccessMessage('List archived'));
         })
         .catch((error) => {
-            dispatch(archiveListFailureAction(error.response.data.error));
+            dispatch(archiveListFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
