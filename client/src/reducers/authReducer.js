@@ -1,8 +1,8 @@
 import * as actions from '../actions/auth';
 
-export const getToken = async () => {
+export const getToken = () => {
     try {
-        const token = await localStorage.getItem('prello_token');
+        const token = localStorage.getItem('prello_token');
         return token;
     } catch (e) {
         // The next comment ignore the return null in jest code coverage
