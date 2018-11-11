@@ -1,9 +1,12 @@
 import { push } from 'connected-react-router';
-import { displayLoadingModal, hideLoadingModal, displayErrorMessage } from './modal';
+import {
+    displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage,
+} from './modal';
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
 
 // ========================
+const DELAY_BEFORE_REDIRECTION = 1500;
 
 // ===== Fetch boards =====
 export const FETCH_BOARDS_STARTED = 'boards/FETCH_BOARDS_STARTED';
@@ -115,14 +118,16 @@ export const createBoard = (name, visibility) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { name, visibility }, APIFetch.POST)
         .then((res) => {
             const boardCreated = res.data.board;
+            dispatch(displaySuccessMessage(`${res.data.message}\nRedirecting...`));
             dispatch(createBoardSuccessAction(boardCreated));
-            dispatch(push(`/boards/${boardCreated._id}`));
+            setTimeout(() => {
+                dispatch(push(`/boards/${boardCreated._id}`));
+                dispatch(hideLoadingModal());
+            }, DELAY_BEFORE_REDIRECTION);
         })
         .catch((error) => {
             dispatch(createBoardFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
-        })
-        .finally(() => {
             dispatch(hideLoadingModal());
         });
 };

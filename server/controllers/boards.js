@@ -202,7 +202,10 @@ exports.postBoard = async (owner, data) => {
         board.owner = owner;
         await userController.putBoard({ userId: owner._id, board });
         await board.save();
-        return board;
+
+        const boardCreated = this.getBoard(board._id);
+
+        return boardCreated;
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
