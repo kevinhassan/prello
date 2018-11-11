@@ -173,7 +173,7 @@ describe(listActions.ARCHIVE_LIST_SUCCESS, () => {
     });
 });
 
-describe(`${cardActions.ARCHIVE_LIST_SUCCESS}: inexistant list given`, () => {
+describe(`${listActions.ARCHIVE_LIST_SUCCESS}: inexistant list given`, () => {
     it('should send the previous state (nothing changed)', () => {
         const inexistantList = {
             _id: 'invalidListId',
