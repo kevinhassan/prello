@@ -109,7 +109,7 @@ describe('POST /boards', () => {
             .expect('Content-Type', /json/)
             .expect(201, (err, res) => {
                 expect(res.body.board).to.not.be.undefined;
-                boardData.id = res.body.board;
+                boardData.id = res.body.board._id;
                 done();
             });
     });

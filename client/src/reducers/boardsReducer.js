@@ -27,6 +27,12 @@ export default function boardsReducer(state = initialState, action) {
                 }),
             };
 
+        case actions.CREATE_BOARD_SUCCESS:
+            return {
+                ...state,
+                userBoards: state.userBoards.concat(action.payload.board),
+            };
+
         default:
             return state;
         }

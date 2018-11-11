@@ -67,3 +67,19 @@ describe(`${actions.UPDATE_IS_ARCHIVED_SUCCESS}: inexisting board`, () => {
         expect(finalState.userBoards[0].isArchived).toEqual(false);
     });
 });
+
+describe(actions.CREATE_BOARD_SUCCESS, () => {
+    it('should add the board to the state', () => {
+        const newBoard = {
+            isArchived: false,
+            name: 'new board',
+            visibility: 'team',
+            labels: [],
+            lists: [],
+        };
+        const action = actions.createBoardSuccessAction(newBoard);
+        const finalState = boardsReducer({ userBoards: [{ _id: 'b1', isArchived: false }] }, action);
+
+        expect(finalState.userBoards.length).toEqual(2);
+    });
+});

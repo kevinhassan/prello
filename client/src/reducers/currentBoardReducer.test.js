@@ -116,7 +116,7 @@ describe(actions.UPDATE_LISTS_INDEXES_STARTED, () => {
 describe(actions.UPDATE_LISTS_INDEXES_FAILURE, () => {
     it('should correctly change the lists order to the old one', () => {
         const newListsOrder = state.board.lists.reverse();
-        const action = actions.updateListsIndexesFailureAction('error', newListsOrder);
+        const action = actions.updateListsIndexesFailureAction(newListsOrder);
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board.lists).toEqual(state.board.lists);

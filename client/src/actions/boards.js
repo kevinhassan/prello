@@ -100,17 +100,11 @@ export const CREATE_BOARD_FAILURE = 'board/CREATE_BOARD_FAILURE';
 export const CREATE_BOARD_SUCCESS = 'board/CREATE_BOARD_SUCCESS';
 
 export const createBoardStartedAction = () => ({ type: CREATE_BOARD_STARTED });
-export const createBoardFailureAction = error => ({
-    type: CREATE_BOARD_FAILURE,
-    payload: {
-        error,
-    },
-});
-export const createBoardSuccessAction = (name, visibility) => ({
+export const createBoardFailureAction = () => ({ type: CREATE_BOARD_FAILURE });
+export const createBoardSuccessAction = board => ({
     type: CREATE_BOARD_SUCCESS,
     payload: {
-        name,
-        visibility,
+        board,
     },
 });
 
@@ -120,12 +114,12 @@ export const createBoard = (name, visibility) => (dispatch) => {
     const resource = 'boards/';
     APIFetch.fetchPrelloAPI(resource, { name, visibility }, APIFetch.POST)
         .then((res) => {
-            dispatch(createBoardSuccessAction());
             const boardCreated = res.data.board;
+            dispatch(createBoardSuccessAction(boardCreated));
             dispatch(push(`/boards/${boardCreated._id}`));
         })
         .catch((error) => {
-            dispatch(createBoardFailureAction(error.response.data.error));
+            dispatch(createBoardFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -138,11 +132,10 @@ export const UPDATE_LISTS_INDEXES_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED'
 export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE';
 export const UPDATE_LISTS_INDEXES_SUCCESS = 'board/UPDATE_LISTS_INDEXES_SUCCESS';
 
-export const updateListsIndexesFailureAction = (error, initialLists) => ({
+export const updateListsIndexesFailureAction = initialLists => ({
     type: UPDATE_LISTS_INDEXES_FAILURE,
     payload: {
         lists: initialLists,
-        error,
     },
 });
 export const updateListsIndexesStartedAction = newLists => ({
@@ -162,7 +155,7 @@ export const updateListsIndexes = (boardId, newLists, initialLists) => (dispatch
             dispatch(updateListsIndexesSuccessAction());
         })
         .catch((error) => {
-            dispatch(updateListsIndexesFailureAction(error.response.data.error, initialLists));
+            dispatch(updateListsIndexesFailureAction(initialLists));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
