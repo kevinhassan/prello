@@ -153,7 +153,7 @@ describe(listActions.MOVE_CARD_STARTED, () => {
 describe(listActions.MOVE_CARD_FAILURE, () => {
     it('should replace the state lists with the lists (and cards) given', () => {
         const lists = state.board.lists.reverse();
-        const action = listActions.moveCardFailureAction('error', lists);
+        const action = listActions.moveCardFailureAction(lists);
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board.lists).toEqual(lists);
@@ -205,7 +205,7 @@ describe(cardActions.EDIT_CARD_DESCRIPTION_STARTED, () => {
 describe(cardActions.EDIT_CARD_DESCRIPTION_FAILURE, () => {
     it('should update the description with the given one', () => {
         const oldDescription = 'this is a the old description';
-        const action = cardActions.editCardDescriptionStartedAction(card1, oldDescription);
+        const action = cardActions.editCardDescriptionFailureAction(card1, oldDescription);
         const finalState = currentBoardReducer(state, action);
 
         expect(
@@ -233,7 +233,7 @@ describe(cardActions.ADD_LABEL_STARTED, () => {
 describe(cardActions.ADD_LABEL_FAILURE, () => {
     it('should remove the label sent to the current ones', () => {
         const labelAddFailed = card1.labels[1];
-        const action = cardActions.addLabelFailureAction('An error occured', card1._id, labelAddFailed._id);
+        const action = cardActions.addLabelFailureAction(card1._id, labelAddFailed._id);
         const finalState = currentBoardReducer(state, action);
 
         expect(
@@ -279,7 +279,7 @@ describe(`${cardActions.DELETE_LABEL_STARTED}: cardId given incorrect`, () => {
 describe(cardActions.DELETE_LABEL_FAILURE, () => {
     it('should append the label sent to the current ones', () => {
         const newLabel = state.board.labels[2];
-        const action = cardActions.deleteLabelFailureAction('an error occured', card1._id, newLabel._id);
+        const action = cardActions.deleteLabelFailureAction(card1._id, newLabel._id);
         const finalState = currentBoardReducer(state, action);
 
         expect(

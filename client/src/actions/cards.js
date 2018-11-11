@@ -10,17 +10,8 @@ export const CREATE_CARD_STARTED = 'card/CREATE_CARD_STARTED';
 export const CREATE_CARD_FAILURE = 'card/CREATE_CARD_FAILURE';
 export const CREATE_CARD_SUCCESS = 'card/CREATE_CARD_SUCCESS';
 
-export const createCardStartedAction = () => ({
-    type: CREATE_CARD_STARTED,
-});
-
-export const createCardFailureAction = error => ({
-    type: CREATE_CARD_FAILURE,
-    payload: {
-        error,
-    },
-});
-
+export const createCardStartedAction = () => ({ type: CREATE_CARD_STARTED });
+export const createCardFailureAction = () => ({ type: CREATE_CARD_FAILURE });
 export const createCardSuccessAction = card => ({
     type: CREATE_CARD_SUCCESS,
     payload: {
@@ -39,7 +30,7 @@ export const createCard = card => (dispatch) => {
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(createCardFailureAction(error.response.data.error));
+            dispatch(createCardFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -61,12 +52,11 @@ export const editCardDescriptionStartedAction = (card, description) => ({
     },
 });
 
-export const editCardDescriptionFailureAction = (error, card, initialDescription) => ({
+export const editCardDescriptionFailureAction = (card, initialDescription) => ({
     type: EDIT_CARD_DESCRIPTION_FAILURE,
     payload: {
         card,
         description: initialDescription,
-        error,
     },
 });
 export const editCardDescriptionSuccessAction = () => ({ type: EDIT_CARD_DESCRIPTION_SUCCESS });
@@ -82,7 +72,7 @@ export const editCardDescription = (card, description, initialDescription) => (d
             dispatch(displaySuccessMessage('Description updated'));
         })
         .catch((error) => {
-            dispatch(editCardDescriptionFailureAction(error.response.data.error, card, initialDescription));
+            dispatch(editCardDescriptionFailureAction(card, initialDescription));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -102,12 +92,11 @@ export const addLabelStartedAction = (cardId, labelId) => ({
         labelId,
     },
 });
-export const addLabelFailureAction = (error, cardId, labelId) => ({
+export const addLabelFailureAction = (cardId, labelId) => ({
     type: ADD_LABEL_FAILURE,
     payload: {
         cardId,
         labelId,
-        error,
     },
 });
 export const addLabelSuccessAction = () => ({ type: ADD_LABEL_SUCCESS });
@@ -122,7 +111,7 @@ export const addLabel = (cardId, labelId) => (dispatch) => {
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(addLabelFailureAction(error.response.data.error, cardId, labelId));
+            dispatch(addLabelFailureAction(cardId, labelId));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -143,12 +132,11 @@ export const deleteLabelStartedAction = (cardId, labelId) => ({
     },
 });
 
-export const deleteLabelFailureAction = (error, cardId, labelId) => ({
+export const deleteLabelFailureAction = (cardId, labelId) => ({
     type: DELETE_LABEL_FAILURE,
     payload: {
         cardId,
         labelId,
-        error,
     },
 });
 export const deleteLabelSuccessAction = () => ({ type: DELETE_LABEL_SUCCESS });
@@ -163,7 +151,7 @@ export const deleteLabel = (cardId, labelId) => (dispatch) => {
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(deleteLabelFailureAction(error.response.data.error, cardId, labelId));
+            dispatch(deleteLabelFailureAction(cardId, labelId));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -186,12 +174,7 @@ export const archiveCardSuccessAction = card => ({
     },
 });
 
-export const archiveCardFailureAction = error => ({
-    type: ARCHIVE_CARD_FAILURE,
-    payload: {
-        error,
-    },
-});
+export const archiveCardFailureAction = () => ({ type: ARCHIVE_CARD_FAILURE });
 
 export const archiveCard = card => (dispatch) => {
     dispatch(archiveCardStartedAction());
@@ -203,7 +186,7 @@ export const archiveCard = card => (dispatch) => {
             dispatch(displaySuccessMessage('Card archived'));
         })
         .catch((error) => {
-            dispatch(archiveCardFailureAction(error.response.data.error));
+            dispatch(archiveCardFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {

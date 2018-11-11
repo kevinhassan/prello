@@ -14,12 +14,7 @@ export const FETCH_BOARDS_FAILURE = 'boards/FETCH_BOARDS_FAILURE';
 export const FETCH_BOARDS_SUCCESS = 'boards/FETCH_BOARDS_SUCCESS';
 
 export const fetchBoardsStartedAction = () => ({ type: FETCH_BOARDS_STARTED });
-export const fetchBoardsFailureAction = error => ({
-    type: FETCH_BOARDS_FAILURE,
-    payload: {
-        error,
-    },
-});
+export const fetchBoardsFailureAction = () => ({ type: FETCH_BOARDS_FAILURE });
 export const fetchBoardsSuccessAction = boards => ({
     type: FETCH_BOARDS_SUCCESS,
     payload: {
@@ -33,10 +28,12 @@ export const fetchBoards = () => (dispatch) => {
     APIFetch.fetchPrelloAPI('boards')
         .then((res) => {
             dispatch(fetchBoardsSuccessAction(res.data.boards));
-            dispatch(hideLoadingModal());
         })
         .catch((error) => {
-            dispatch(fetchBoardsFailureAction(error.response.data.error));
+            dispatch(fetchBoardsFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
             dispatch(hideLoadingModal());
         });
 };
@@ -47,13 +44,7 @@ export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
-export const fetchBoardFailureAction = (boardId, error) => ({
-    type: FETCH_BOARD_FAILURE,
-    payload: {
-        id: boardId,
-        error,
-    },
-});
+export const fetchBoardFailureAction = () => ({ type: FETCH_BOARD_FAILURE });
 export const fetchBoardSuccessAction = board => ({
     type: FETCH_BOARD_SUCCESS,
     payload: {
@@ -66,7 +57,8 @@ export const fetchBoard = boardId => (dispatch) => {
     dispatch(displayLoadingModal());
     APISocket.subscribeToBoard(boardId, (res) => {
         if (res.error) {
-            dispatch(fetchBoardFailureAction(res.error));
+            dispatch(fetchBoardFailureAction());
+            dispatch(displayErrorMessage(res.error));
         } else {
             dispatch(fetchBoardSuccessAction(res.board));
         }
@@ -80,12 +72,7 @@ export const REMOVE_BOARD_FETCH_FAILURE = 'board/REMOVE_BOARD_FETCH_FAILURE';
 export const REMOVE_BOARD_FETCH_SUCCESS = 'board/REMOVE_BOARD_FETCH_SUCCESS';
 
 export const removeBoardFetchStartedAction = () => ({ type: REMOVE_BOARD_FETCH_STARTED });
-export const removeBoardFetchFailureAction = error => ({
-    type: REMOVE_BOARD_FETCH_FAILURE,
-    payload: {
-        error,
-    },
-});
+export const removeBoardFetchFailureAction = () => ({ type: REMOVE_BOARD_FETCH_FAILURE });
 export const removeBoardFetchSuccessAction = () => ({
     type: REMOVE_BOARD_FETCH_SUCCESS,
 });

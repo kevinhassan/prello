@@ -14,12 +14,7 @@ export const createListStartedAction = () => ({
     type: CREATE_LIST_STARTED,
 });
 
-export const createListFailureAction = error => ({
-    type: CREATE_LIST_FAILURE,
-    payload: {
-        error,
-    },
-});
+export const createListFailureAction = () => ({ type: CREATE_LIST_FAILURE });
 
 export const createListSuccessAction = list => ({
     type: CREATE_LIST_SUCCESS,
@@ -39,7 +34,7 @@ export const createList = list => (dispatch) => {
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(createListFailureAction(error.response.data.error));
+            dispatch(createListFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -59,11 +54,10 @@ export const moveCardStartedAction = lists => ({
     },
 });
 
-export const moveCardFailureAction = (error, initialLists) => ({
+export const moveCardFailureAction = initialLists => ({
     type: MOVE_CARD_FAILURE,
     payload: {
         lists: initialLists,
-        error,
     },
 });
 
@@ -81,7 +75,7 @@ export const moveCard = (sourceListId, destinationListId, cardId, destinationInd
             // dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
-            dispatch(moveCardFailureAction(error.response.data.error, initialLists));
+            dispatch(moveCardFailureAction(initialLists));
             dispatch(displayErrorMessage(error.response.data.error));
         });
 };
