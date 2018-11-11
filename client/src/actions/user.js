@@ -35,6 +35,37 @@ export const getProfile = () => (dispatch) => {
         });
 };
 
+// ===== Get user info ===== //
+export const GET_USER_INFORMATION_STARTED = 'user/GET_USER_INFORMATION_STARTED';
+export const GET_USER_INFORMATION_FAILURE = 'user/GET_USER_INFORMATION_FAILURE';
+export const GET_USER_INFORMATION_SUCCESS = 'user/GET_USER_INFORMATION_SUCCESS';
+
+export const getUserInformationStartedAction = () => ({ type: GET_USER_INFORMATION_STARTED });
+export const getUserInformationFailureAction = () => ({ type: GET_USER_INFORMATION_FAILURE });
+export const getUserInformationSuccessAction = user => ({
+    type: GET_USER_INFORMATION_SUCCESS,
+    payload: {
+        user,
+    },
+});
+
+export const getUserInformation = userId => (dispatch) => {
+    dispatch(displayLoadingModal());
+    dispatch(getUserInformationStartedAction());
+    const resource = `users/${userId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.GET)
+        .then((res) => {
+            dispatch(getUserInformationSuccessAction(res.data.user));
+        })
+        .catch((error) => {
+            dispatch(getUserInformationFailureAction());
+            dispatch(displayErrorMessageAction(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
 
 // ===== Update user info ===== //
 export const UPDATE_USER_INFORMATION_STARTED = 'user/UPDATE_USER_INFORMATION_STARTED';

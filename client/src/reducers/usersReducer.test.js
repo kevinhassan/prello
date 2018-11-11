@@ -22,7 +22,7 @@ describe(actions.GET_PROFILE_SUCCESS, () => {
         const action = actions.getProfileSuccessAction(profile);
         const finalState = usersReducer({}, action);
 
-        expect(finalState.user).toEqual(profile);
+        expect(finalState.profile).toEqual(profile);
     });
 });
 
@@ -36,7 +36,7 @@ describe(actions.UPDATE_USER_INFORMATION_STARTED, () => {
         const action = actions.updateUserInformationStartedAction(profile.fullName, profile.initials, profile.biography);
         const finalState = usersReducer({}, action);
 
-        expect(finalState.user).toEqual(profile);
+        expect(finalState.profile).toEqual(profile);
     });
 });
 
@@ -50,6 +50,20 @@ describe(actions.UPDATE_USER_INFORMATION_FAILURE, () => {
         const action = actions.updateUserInformationFailureAction(profile.fullName, profile.initials, profile.biography);
         const finalState = usersReducer({}, action);
 
-        expect(finalState.user).toEqual(profile);
+        expect(finalState.profile).toEqual(profile);
+    });
+});
+
+describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
+    it('should update the user with the profile provided', () => {
+        const user = {
+            biography: 'A random student',
+            fullName: 'Kévin Test',
+            initials: 'KT',
+        };
+        const action = actions.getUserInformationSuccessAction(user);
+        const finalState = usersReducer({}, action);
+
+        expect(finalState.user).toEqual(user);
     });
 });

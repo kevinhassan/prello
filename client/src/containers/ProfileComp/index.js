@@ -68,14 +68,14 @@ class ProfileComp extends React.Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { profile } = this.props;
 
         if (!this.state.errorMessage) {
-            if (user) {
+            if (profile) {
                 const element = (
                     <div className="usersPanel">
                         <ProfileView
-                            user={user}
+                            user={profile}
                             handleUpdateInformation={this.handleUpdateInformation}
                             handleUpdateDisplay={this.handleUpdateDisplay}
                             isUpdateVisible={this.state.isUpdateVisible}
@@ -106,17 +106,17 @@ ProfileComp.propTypes = {
     updateUserInformation: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
     updatePassword: PropTypes.func.isRequired,
-    user: PropTypes.object,
+    profile: PropTypes.object,
 };
 
 ProfileComp.defaultProps = {
-    user: undefined,
+    profile: undefined,
     errorMessage: undefined,
 };
 
 // Put info from the store state in props
 const mapStateToProps = ({ users }) => ({
-    user: users.user,
+    profile: users.profile,
     errorMessage: users.errorMessage,
 });
 
