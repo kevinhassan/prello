@@ -460,7 +460,7 @@ const { Auth, Board } = require('../middlewares');
 *             required: true
 *             description: Board Id
 *           - in: body
-*             name: isArchivedValue
+*             name: isArchived
 *             description: isArchived new value
 *             required: true
 *             schema:
@@ -537,7 +537,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/isArchived', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeIsArchived, async (req, res) => {
+        .put('/boards/:boardId/isArchived', Auth.isAuthenticated, Board.isMember, boardValidator.changeIsArchived, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
