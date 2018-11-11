@@ -5,29 +5,29 @@ import {
 } from './modal';
 
 
-// ===== Get user info ===== //
-export const GET_USER_INFORMATION_STARTED = 'user/GET_USER_INFORMATION_STARTED';
-export const GET_USER_INFORMATION_FAILURE = 'user/GET_USER_INFORMATION_FAILURE';
-export const GET_USER_INFORMATION_SUCCESS = 'user/GET_USER_INFORMATION_SUCCESS';
+// ===== Get profile ===== //
+export const GET_PROFILE_STARTED = 'user/GET_PROFILE_STARTED';
+export const GET_PROFILE_FAILURE = 'user/GET_PROFILE_FAILURE';
+export const GET_PROFILE_SUCCESS = 'user/GET_PROFILE_SUCCESS';
 
-export const getUserInformationStartedAction = () => ({ type: GET_USER_INFORMATION_STARTED });
-export const getUserInformationFailureAction = () => ({ type: GET_USER_INFORMATION_FAILURE });
-export const getUserInformationSuccessAction = profile => ({
-    type: GET_USER_INFORMATION_SUCCESS,
+export const getProfileStartedAction = () => ({ type: GET_PROFILE_STARTED });
+export const getProfileFailureAction = () => ({ type: GET_PROFILE_FAILURE });
+export const getProfileSuccessAction = profile => ({
+    type: GET_PROFILE_SUCCESS,
     payload: {
         profile,
     },
 });
 
-export const getUserInformation = () => (dispatch) => {
+export const getProfile = () => (dispatch) => {
     dispatch(displayLoadingModal());
-    dispatch(getUserInformationStartedAction());
+    dispatch(getProfileStartedAction());
     APIFetch.fetchPrelloAPI('profile', {}, APIFetch.GET)
         .then((res) => {
-            dispatch(getUserInformationSuccessAction(res.data.profile));
+            dispatch(getProfileSuccessAction(res.data.profile));
         })
         .catch((error) => {
-            dispatch(getUserInformationFailureAction());
+            dispatch(getProfileFailureAction());
             dispatch(displayErrorMessageAction(error.response.data.error));
         })
         .finally(() => {

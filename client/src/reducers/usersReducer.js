@@ -7,7 +7,7 @@ export const initialState = {
 export default function usersReducer(state = initialState, action) {
     if (action) {
         switch (action.type) {
-        case actions.GET_USER_INFORMATION_SUCCESS:
+        case actions.GET_PROFILE_SUCCESS:
             return {
                 ...state,
                 user: action.payload.profile,

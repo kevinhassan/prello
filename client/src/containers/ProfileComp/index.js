@@ -10,7 +10,7 @@ import ProfileView from '../../components/views/ProfileView';
 
 // ===== Actions
 import {
-    getUserInformation, updateUserInformation, updatePassword, deleteUser,
+    getProfile, updateUserInformation, updatePassword, deleteUser,
 } from '../../actions/user';
 
 // ===== Others
@@ -34,7 +34,7 @@ class ProfileComp extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getUserInformation();
+        this.props.getProfile();
     }
 
     handleUpdateDisplay(value) {
@@ -102,7 +102,7 @@ class ProfileComp extends React.Component {
 
 ProfileComp.propTypes = {
     errorMessage: PropTypes.object,
-    getUserInformation: PropTypes.func.isRequired,
+    getProfile: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
     updatePassword: PropTypes.func.isRequired,
@@ -123,7 +123,7 @@ const mapStateToProps = ({ users }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        getUserInformation,
+        getProfile,
         updateUserInformation,
         updatePassword,
         deleteUser,

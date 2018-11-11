@@ -10,7 +10,7 @@ describe('Action not referenced', () => {
     });
 });
 
-describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
+describe(actions.GET_PROFILE_SUCCESS, () => {
     it('should update the state with the profile provided', () => {
         const profile = {
             biograhy: 'A random student',
@@ -19,7 +19,7 @@ describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
             initial: 'KT',
             username: 'kevintest1',
         };
-        const action = actions.getUserInformationSuccessAction(profile);
+        const action = actions.getProfileSuccessAction(profile);
         const finalState = usersReducer({}, action);
 
         expect(finalState.user).toEqual(profile);
