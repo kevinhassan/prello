@@ -120,19 +120,17 @@ exports.getList = async (listId) => {
 /**
  * Set list archived
  */
-exports.archiveList = async (data) => {
+exports.archiveList = async (listId, isArchived) => {
     try {
-        const list = await List.findById(data);
+        const list = await List.findById(listId);
         if (!list) throw new MyError(404, 'List not found.');
 
-        list.isArchived = true;
+        list.isArchived = isArchived;
         await list.save();
 
         return list;
     } catch (err) {
-        if (err.status === 404) {
-            throw err;
-        }
+        if (err.status) throw err;
         if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query.');
         }

@@ -40,7 +40,7 @@ class ListComp extends React.Component {
 
     /* ===== ARCHIVE ===== */
     handleArchiveList() {
-        this.props.archiveList(this.props.list);
+        this.props.archiveList(this.props.list, true);
     }
 
     render() {

@@ -103,11 +103,11 @@ export const archiveListSuccessAction = list => ({
 
 export const archiveListFailureAction = () => ({ type: ARCHIVE_LIST_FAILURE });
 
-export const archiveList = list => (dispatch) => {
+export const archiveList = (list, isArchived) => (dispatch) => {
     dispatch(archiveListStartedAction());
     dispatch(displayLoadingModal());
-    const resource = `lists/${list._id}/archive`;
-    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.PUT)
+    const resource = `lists/${list._id}/isArchived`;
+    APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
         .then(() => {
             dispatch(archiveListSuccessAction(list));
             dispatch(displaySuccessMessage('List archived'));
