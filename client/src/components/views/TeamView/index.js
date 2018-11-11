@@ -13,8 +13,23 @@ const TeamView = props => (
     <div className="teamContent container-fluid">
         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
 
-        <h2>Visibility</h2>
-        {props.team.isVisible ? 'public' : 'private'}
+
+        {props.team.isVisible
+            ? (
+                <div>
+                    Public
+                    {' '}
+                    <i className="fas fa-eye" />
+                </div>
+            )
+            : (
+                <div>
+                    Private
+                    {' '}
+                    <i className="fas fa-eye-slash" />
+                </div>
+            )
+        }
         <h2>Admins</h2>
         <ul>
             {props.team.admins.map(admin => (
@@ -51,8 +66,9 @@ const TeamView = props => (
                     <BoardItem
                         board={board}
                         lightCSS
-                        onBoardClick={() => props.onBoardClick(board._id)}
+                        onBoardClick={props.onBoardClick}
                         readOnlyBoard
+                        onTeamClick={props.onTeamClick}
                     />
                 </li>
             ))}
@@ -63,6 +79,7 @@ TeamView.propTypes = {
     team: PropTypes.object.isRequired,
     onBoardClick: PropTypes.func.isRequired,
     onMemberClick: PropTypes.func.isRequired,
+    onTeamClick: PropTypes.func.isRequired,
 };
 
 export default TeamView;
