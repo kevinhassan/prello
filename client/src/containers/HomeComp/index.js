@@ -15,7 +15,7 @@ class HomeComp extends React.Component {
         const element = (
             <div className="container-fluid" style={{ height: '100%' }}>
                 <div className="row" style={{ height: '100%' }}>
-                    <div className="text-center col-sm-12" style={{ backgroundColor: '#eee', height: '100%' }}>
+                    <div className="text-center col-sm-12" style={{ backgroundColor: 'rgba(0, 140, 220, 0.1)', height: '100%' }}>
 
                         <h1 style={{ marginTop: '0', paddingTop: '20px' }}>Welcome!</h1>
                         <h3>Prello is a managing project tool created for and by Polytech Montpellier.</h3>
