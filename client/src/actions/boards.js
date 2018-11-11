@@ -94,6 +94,43 @@ export const removeBoardFetch = () => (dispatch) => {
     });
 };
 
+// ====== Create Board ======
+export const CREATE_BOARD_STARTED = 'board/CREATE_BOARD_STARTED';
+export const CREATE_BOARD_FAILURE = 'board/CREATE_BOARD_FAILURE';
+export const CREATE_BOARD_SUCCESS = 'board/CREATE_BOARD_SUCCESS';
+
+export const createBoardStartedAction = () => ({ type: CREATE_BOARD_STARTED });
+export const createBoardFailureAction = error => ({
+    type: CREATE_BOARD_FAILURE,
+    payload: {
+        error,
+    },
+});
+export const createBoardSuccessAction = (name, visibility) => ({
+    type: CREATE_BOARD_SUCCESS,
+    payload: {
+        name,
+        visibility,
+    },
+});
+
+export const createBoard = (name, visibility) => (dispatch) => {
+    dispatch(createBoardStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'boards/';
+    APIFetch.fetchPrelloAPI(resource, { name, visibility }, APIFetch.POST)
+        .then(() => {
+            dispatch(createBoardSuccessAction());
+        })
+        .catch((error) => {
+            dispatch(createBoardFailureAction(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
 // ===== Update lists ======
 export const UPDATE_LISTS_INDEXES_STARTED = 'board/UPDATE_LISTS_INDEXES_STARTED';
 export const UPDATE_LISTS_INDEXES_FAILURE = 'board/UPDATE_LISTS_INDEXES_FAILURE';

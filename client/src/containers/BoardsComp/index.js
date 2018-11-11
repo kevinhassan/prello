@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
 // ===== Actions
-import { fetchBoards, updateIsArchived } from '../../actions/boards';
+import { fetchBoards, updateIsArchived, createBoard } from '../../actions/boards';
 
 // ===== Components / Containers
 import BoardsView from '../../components/views/BoardsView';
@@ -15,6 +15,9 @@ import BoardsView from '../../components/views/BoardsView';
 class BoardsComp extends React.Component {
     constructor(props) {
         super(props);
+        this.state = { isCreateBoardFormVisible: false };
+        this.displayCreateBoardForm = this.displayCreateBoardForm.bind(this);
+        this.handleCreateBoard = this.handleCreateBoard.bind(this);
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
         this.handleUpdateIsArchived = this.handleUpdateIsArchived.bind(this);
@@ -22,6 +25,15 @@ class BoardsComp extends React.Component {
 
     componentWillMount() {
         this.props.fetchBoards();
+    }
+
+    displayCreateBoardForm(value) {
+        this.setState({ isCreateBoardFormVisible: value });
+    }
+
+    handleCreateBoard(event) {
+        event.preventDefault();
+        this.props.createBoard(event.target.name.value, event.target.visibility.value);
     }
 
     handleUpdateIsArchived(event, boardId, isArchived) {
@@ -44,6 +56,9 @@ class BoardsComp extends React.Component {
             return (
                 <BoardsView
                     boards={boards}
+                    createBoard={this.handleCreateBoard}
+                    displayCreateBoardForm={this.displayCreateBoardForm}
+                    isCreateBoardFormVisible={this.state.isCreateBoardFormVisible}
                     onBoardClick={this.handleOnBoardClick}
                     onTeamClick={this.handleOnTeamClick}
                     updateIsArchived={this.handleUpdateIsArchived}
@@ -55,6 +70,7 @@ class BoardsComp extends React.Component {
 }
 BoardsComp.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object),
+    createBoard: PropTypes.func.isRequired,
     fetchBoards: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
@@ -72,6 +88,7 @@ const mapStateToProps = ({ boards }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        createBoard,
         fetchBoards,
         updateIsArchived,
         goToBoard: boardId => push(`/boards/${boardId}`),

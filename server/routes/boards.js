@@ -81,7 +81,7 @@ const { Auth, Board } = require('../middlewares');
 *           - application/json
 *       parameters:
 *           - name: body
-*             description: The information of the new boar
+*             description: The new board information
 *             in: body
 *             required: true
 *             schema:

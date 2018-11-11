@@ -1,7 +1,7 @@
 .boardsPanel {
     background-color: rgba(0, 140, 220, 0.1);
     height: 100%;
-    padding: 10px;
+    padding: 20px;
 }
 
 .boards-h1 {
@@ -9,8 +9,19 @@
     margin-top: 0;
 }
 
+
+.btn-createBoard {
+    box-shadow: 1px 1px 2px black;
+    border-radius: 0.25rem;
+    height: 50px;
+    margin-right: 10px;
+    padding: 5px 10px;
+    position: relative;
+    transition: 0.2s;
+}
+
 .boardsContent {
-    padding: 10px;
+    margin-top: 10px;
 }
 
 .boards-ul {

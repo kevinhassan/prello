@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // ===== Components
 import MemberPill from '../../MemberPill';
+import CreateBoard from './CreateBoard';
 
 // ===== Containers
 
@@ -16,10 +17,14 @@ const BoardsView = props => (
         <h1 className="boards-h1">
             Boards
             {' '}
-            <button type="button" className="btn btn-success addBoard-miniBtn">
-                <i className="fas fa-plus" />
-            </button>
         </h1>
+
+        <CreateBoard
+            createBoard={props.createBoard}
+            isCreateBoardFormVisible={props.isCreateBoardFormVisible}
+            displayCreateBoardForm={props.displayCreateBoardForm}
+        />
+
         {props.boards.length > 0
             ? (
                 <div className="boardsContent">
@@ -97,11 +102,6 @@ const BoardsView = props => (
                             );
                         })}
                     </ul>
-                    <button type="button" className="btn btn-success">
-                        <i className="fas fa-plus" />
-                        {' '}
-                        Create board
-                    </button>
                 </div>
             )
             : (
@@ -124,6 +124,9 @@ const BoardsView = props => (
 );
 BoardsView.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object).isRequired,
+    createBoard: PropTypes.func.isRequired,
+    displayCreateBoardForm: PropTypes.func.isRequired,
+    isCreateBoardFormVisible: PropTypes.bool.isRequired,
     onBoardClick: PropTypes.func.isRequired,
     onTeamClick: PropTypes.func.isRequired,
     updateIsArchived: PropTypes.func.isRequired,
