@@ -38,6 +38,7 @@ const BoardsView = props => (
                                         onClick={() => props.onBoardClick(board._id)}
                                         onKeyDown={() => props.onBoardClick(board._id)}
                                     >
+                                        <i className="archiveBoardIcon fas fa-archive float-right" />
                                         <p className="boardName">{board.name}</p>
                                         <p className="boardInfo">
                                             <b>{`${board.lists.length}`}</b>
@@ -45,6 +46,10 @@ const BoardsView = props => (
                                             {' '}
                                             <b style={{ marginLeft: '5px' }}>{board.lists.reduce((sum, list) => sum + list.cards.length, 0)}</b>
                                             {` card${board.lists.reduce((sum, list) => sum + list.cards.length, 0) > 1 ? 's' : ''}`}
+                                            {' '}
+                                            {board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
+                                            {board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
+                                            {board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
                                         </p>
                                         <div>
                                             { board.teams.length === 0

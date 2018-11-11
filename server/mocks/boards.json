@@ -15,7 +15,7 @@
                 "_id": "l00000000003"
             }
         ],
-        "privacy": "public",
+        "visibility": "public",
         "owner": "b00000000001",
         "members": ["u00000000001","u00000000002", "u00000000003", "u00000000004"],
         "admins": ["u00000000001"],
@@ -27,10 +27,22 @@
         "name": "Facebook",
         "labels": ["la0000000001", "la0000000002", "la0000000003", "la0000000004", "la0000000005"],
         "lists": [],
-        "privacy": "public",
+        "visibility": "private",
         "owner": "b00000000001",
         "members": ["u00000000001","u00000000002","u00000000004"],
         "admins": ["u00000000001"],
         "teams": ["t00000000001"]
+    },
+    {
+        "_id": "b00000000003",
+        "isArchived": false,
+        "name": "Data science",
+        "labels": ["la0000000001", "la0000000002", "la0000000003", "la0000000004", "la0000000005"],
+        "lists": [],
+        "visibility": "team",
+        "owner": "b00000000001",
+        "members": ["u00000000001","u00000000002"],
+        "admins": ["u00000000001"],
+        "teams": []
     }
 ]

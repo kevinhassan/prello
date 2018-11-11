@@ -21,7 +21,6 @@ const ListView = props => (
             <h3 className="listName">
                 {props.list.name}
             </h3>
-            <i className="archiveCardIcon fas fa-archive float-right" />
         </div>
 
         <Droppable droppableId={String(props.list._id)} type="CARD">

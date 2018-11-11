@@ -20,6 +20,12 @@ const BoardView = props => (
             <div className="col-sm-12 boardSettingsBar">
                 <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
                 {' | '}
+                {props.board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
+                {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
+                {props.board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
+                {' '}
+                {props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}
+                {' | '}
                 <i className="fas fa-users" />
                 {' '}
                 {props.board.members.map(member => (

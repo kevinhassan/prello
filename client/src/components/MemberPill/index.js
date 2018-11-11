@@ -8,7 +8,6 @@ import './style.css';
 // Source: https://stackoverflow.com/a/3943023
 // Following the W3C recommendation: https://www.w3.org/TR/WCAG20/#relativeluminancedef
 const determineTextColorFromBackground = (backgroundColor) => {
-    console.log(backgroundColor);
     // Cast hexa to rgb value %
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(backgroundColor);
     const colors = result ? [
@@ -35,7 +34,6 @@ const determineTextColorFromBackground = (backgroundColor) => {
 };
 
 const stringToRandomInt = (member) => {
-    console.log(member);
     let result = ([].concat(member.initials)).reduce((accu, i) => accu * i.charCodeAt(), 1);
     result *= ([].concat(member._id)).reduce((accu, i) => accu * i.charCodeAt(), 1);
     return randomColor({
