@@ -76,9 +76,13 @@ h1, h2, h3 {
     padding: 0;
 }
 
+/* "!important" beacause I can't find what is overriding the h1 properties... 
+Maybe something in the /node_modules */
 h1 {
     color: #004a75;
-    font-size: 3.5em;
+    font-size: 2.8em !important;
+    margin-bottom: 5px !important;
+    margin-top: 0 !important;
 }
 
 h2 {

@@ -1,13 +1,20 @@
 .boardSettingsBar {
     background-color: rgba(255,255,255, 0.7);
     flex: none;
+    height: 40px;
+    line-height: 40px;
     margin-bottom: 10px;
 }
 
-.boardName {
+.boardSettingsBar > * {
+    vertical-align: middle;
+}
+
+h1.boardName {
     display: inline-block;
-    font-size: 1.5rem;
-    margin: 10px;
+    font-size: 1.5rem !important;
+    margin: 0 !important;
+    margin-right: 10px;
 }
 
 .boardSettingsBtn {

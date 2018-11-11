@@ -24,7 +24,7 @@ const BoardView = props => (
                 {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
                 {props.board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
                 {' '}
-                {props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}
+                <span style={{ verticalAlign: 'sub' }}>{props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}</span>
                 {' | '}
                 <i className="fas fa-users" />
                 {' '}
