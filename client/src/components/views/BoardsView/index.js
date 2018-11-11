@@ -44,7 +44,7 @@ const BoardsView = props => (
                                         onKeyDown={() => props.onBoardClick(board._id)}
                                     >
                                         <i
-                                            className="archiveBoardIcon fas fa-archive float-right"
+                                            className="archiveIcon fas fa-archive float-right"
                                             onClick={event => props.updateIsArchived(event, board._id, true)}
                                             onKeyDown={event => props.updateIsArchived(event, board._id, true)}
                                         />

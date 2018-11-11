@@ -190,6 +190,7 @@ export const updateIsArchived = (boardId, isArchived) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
         .then(() => {
             dispatch(updateIsArchivedSuccessAction(boardId, isArchived));
+            dispatch(displaySuccessMessage('Board archived'));
             dispatch(push('./boards'));
         })
         .catch((error) => {
