@@ -14,11 +14,11 @@ describe('Testing getToken function', () => {
     it('should return the token from the local storage', () => {
         const token = 'aRandomToken';
         localStorage.setItem('prello_token', token);
-        expect(localStorage.getItem('prello_token')).toEqual(token);
+        expect(getToken()).toEqual(token);
     });
     it('should return {} if token not found', () => {
         localStorage.removeItem('prello_token');
-        expect(localStorage.getItem('prello_token')).toEqual(null);
+        expect(getToken()).toEqual(null);
     });
 });
 
