@@ -17,6 +17,12 @@ class MemberComp extends React.Component {
         this.props.getUserInformation(this.props.match.params.memberId);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.memberId !== this.props.match.params.memberId) {
+            this.props.getUserInformation(this.props.match.params.memberId);
+        }
+    }
+
     render() {
         const { member } = this.props;
 
