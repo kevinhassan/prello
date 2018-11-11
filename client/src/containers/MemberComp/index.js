@@ -24,6 +24,9 @@ class MemberComp extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        if (this.props.clientId === this.props.match.params.memberId) {
+            this.props.goToProfile();
+        }
         if (prevProps.match.params.memberId !== this.props.match.params.memberId) {
             this.props.getUserInformation(this.props.match.params.memberId);
         }

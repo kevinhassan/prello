@@ -40,7 +40,7 @@ const BoardsView = props => (
                                 >
                                     <BoardItemComp
                                         board={board}
-                                        isReadOnly={false}
+                                        readOnlyBoard={false}
                                         lightCSS
                                     />
                                 </li>
