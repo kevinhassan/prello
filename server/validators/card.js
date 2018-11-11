@@ -32,9 +32,17 @@ const updateCardDescription = [
         .isString(),
 ];
 
+const updateCardName = [
+    check('name')
+        .isString()
+        .trim()
+        .isLength({ min: 1 }),
+];
+
 module.exports = {
     addCard,
     addLabel,
     deleteLabel,
-    updateCardDescription
+    updateCardDescription,
+    updateCardName
 };

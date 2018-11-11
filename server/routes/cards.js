@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator/check');
 const cardController = require('../controllers/cards');
+const listController = require('../controllers/lists');
 const CardModel = require('../models/Card');
 const List = require('../models/List');
 const socket = require('../socket');
@@ -13,7 +14,9 @@ const { Auth, Card } = require('../middlewares');
 *       properties:
 *           description:
 *               type: string
-*           list:
+*   NewName:
+*       properties:
+*           name:
 *               type: string
 * /cards:
 *   post:
@@ -134,6 +137,37 @@ const { Auth, Card } = require('../middlewares');
 *               description: Incorrect query, data provided invalid
 *           500:
 *               description: Internal server error
+*
+* /cards/{cardId}/name:
+*   put:
+*       tags:
+*           - Card
+*       description: Update the name of the specified card.
+*       summary: Update name
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: cardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Card ID
+*           - in: body
+*             name: name
+*             description: new name, must be at least 1 character long.
+*             required: false
+*             schema:
+*               $ref: '#/definitions/NewName'
+*       responses:
+*           204:
+*               description: Card name updated
+*           404:
+*               description: Card not found
+*           422:
+*               description: Incorrect query, data provided invalid
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -200,8 +234,25 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.putDescription(req.params.cardId, req.body.description);
+                const card = await cardController.putDescription(req.params.cardId, req.body.description);
+                const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
+                socket.updateClientsOnBoard(list.board._id);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+
+        .put('/cards/:cardId/name', Auth.isAuthenticated, Card.canEdit, cardValidator.updateCardName, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            try {
+                const card = await cardController.putName(req.params.cardId, req.body.name);
+                const list = await listController.getList(card.list._id);
+                res.sendStatus(204);
+                socket.updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

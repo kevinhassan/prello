@@ -4,8 +4,6 @@ const socket = require('../socket');
 const Card = require('../models/Card');
 const List = require('../models/List');
 
-const listController = require('../controllers/lists');
-
 // ============================ //
 // ===== Delete functions ===== //
 // ============================ //
@@ -121,10 +119,28 @@ exports.putDescription = async (cardId, description) => {
 
         card.description = description;
         await card.save();
+        return card;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query.');
+        } else if (err.name === 'CastError') {
+            throw new MyError(404, 'Card not found.');
+        }
+        throw new MyError(500, 'Internal server error.');
+    }
+};
 
-        const newList = await listController.getList(card.list._id);
-        // update board via socket
-        socket.updateClientsOnBoard(newList.board._id);
+/**
+ * Change card name
+ */
+exports.putName = async (cardId, name) => {
+    try {
+        const card = await Card.findById(cardId);
+        if (!card) throw new MyError(404, 'Card not found.');
+
+        card.name = name;
+        await card.save();
 
         return card;
     } catch (err) {
