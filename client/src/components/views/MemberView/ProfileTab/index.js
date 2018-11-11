@@ -12,7 +12,8 @@ const ProfileTab = props => (
 
             <h4 className="teams">
                 <i className="fas fa-users teamIcon" />
-                    My teams
+                {' '}
+                Teams
             </h4>
             {props.teams.length !== 0
                 ? (
@@ -26,7 +27,7 @@ const ProfileTab = props => (
                         ))}
                     </ul>
                 ) : (
-                    'You have no teams yet.'
+                    'No teams yet.'
                 )
             }
         </div>

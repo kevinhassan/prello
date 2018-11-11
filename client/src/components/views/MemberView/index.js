@@ -6,8 +6,9 @@ import {
 import 'react-tabs/style/react-tabs.css';
 
 // ===== Components
-import InformationForm from './InformationForm';
+import BoardsTab from './BoardsTab';
 import ProfileTab from './ProfileTab';
+import UserProfile from './UserProfile';
 
 // ===== Others
 import './style.css';
@@ -32,8 +33,7 @@ const MemberView = props => (
                 </div>
             </div>
             <div className="userData">
-                <InformationForm
-                    isVisible={false}
+                <UserProfile
                     user={props.member}
                 />
             </div>
@@ -48,11 +48,23 @@ const MemberView = props => (
                         Profile
                     </h4>
                 </Tab>
+                <Tab className="profileTab react-tabs__tab">
+                    <h4>
+                        <i className="fas fa-chalkboard" />
+                        {' '}
+                        Boards
+                    </h4>
+                </Tab>
             </TabList>
 
             <TabPanel>
                 <ProfileTab
                     teams={props.member.teams}
+                />
+            </TabPanel>
+            <TabPanel>
+                <BoardsTab
+                    boards={props.member.boards}
                 />
             </TabPanel>
         </Tabs>

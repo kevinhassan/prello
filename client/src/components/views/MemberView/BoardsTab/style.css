@@ -1,0 +1,7 @@
+.board-li-content-override {
+    background-color: rgba(0, 140, 220, 0.1);
+}
+
+.board-li-content-override:hover {
+    background-color: #eee;
+}

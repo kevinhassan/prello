@@ -196,7 +196,23 @@ exports.getUser = async (userId) => {
             match: { isVisible: true }
         }, {
             path: 'boards',
-            match: { $and: [{ visibility: 'public' }, { isArchived: false }] }
+            match: { $and: [{ visibility: 'public' }, { isArchived: false }] },
+            populate: [
+                {
+                    path: 'lists',
+                    select: '_id',
+                    populate: {
+                        path: 'cards',
+                        select: '_id'
+                    }
+                }, {
+                    path: 'teams',
+                    math: { isVisible: true },
+                }, {
+                    path: 'members',
+                    select: 'initials _id'
+                }
+            ]
         }]);
         if (!user) throw new MyError(404, 'User not found');
         return user;

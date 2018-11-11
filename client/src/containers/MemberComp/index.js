@@ -3,18 +3,18 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// ===== Models
+// ===== Actions
+import { getUserInformation } from '../../actions/user';
 
 // ===== Components / Containers
 import MemberView from '../../components/views/MemberView';
 
-// ===== Actions
 
 // ===== Others
 
 class MemberComp extends React.Component {
     componentWillMount() {
-        this.props.getMember(this.props.match.params.memberId);
+        this.props.getUserInformation(this.props.match.params.memberId);
     }
 
     render() {
@@ -34,7 +34,7 @@ class MemberComp extends React.Component {
 }
 
 MemberComp.propTypes = {
-    getMember: PropTypes.func.isRequired,
+    getUserInformation: PropTypes.func.isRequired,
     member: PropTypes.object,
     match: PropTypes.shape({
         params: PropTypes.shape({
@@ -48,13 +48,14 @@ MemberComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = () => ({
-
+const mapStateToProps = ({ users }) => ({
+    member: users.user,
 });
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        getUserInformation,
     }, dispatch,
 );
 
