@@ -10,26 +10,39 @@ const boardController = require('../controllers/boards');
 // ===== Get functions ==== //
 // ======================== //
 exports.getTeam = async (teamId) => {
-  try {
-    const team = await Team.findById(teamId).populate([{
-      path: 'boards',
-      select: ['name', 'isVisible', 'description', 'avatarUrl'],
-    },{
-      path: 'members',
-      select: 'username'
-    },
-      {
-        path: 'admins',
-        select: 'username'
-      }]);
-    return team;
-  } catch (err) {
-    if (err.status) throw err;
-    else if (err.name === 'ValidationError') {
-      throw new MyError(422, 'Incorrect query');
+    try {
+        const team = await Team.findById(teamId).populate([{
+            path: 'boards',
+            select: ['name', 'isVisible', 'description', 'avatarUrl'],
+            populate: [{
+                path: 'lists',
+                select: '_id cards',
+                populate: {
+                    path: 'cards',
+                    select: '_id'
+                }
+            }, {
+                path: 'teams',
+                select: 'name'
+            }, {
+                path: 'members',
+                select: 'initials'
+            }]
+        }, {
+            path: 'members',
+            select: 'username initials'
+        }, {
+            path: 'admins',
+            select: 'username'
+        }]);
+        return team;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
     }
-    throw new MyError(500, 'Internal server error');
-  }
 };
 
 // ======================== //

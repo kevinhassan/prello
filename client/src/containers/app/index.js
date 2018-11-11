@@ -38,7 +38,7 @@ const App = () => (
                 <PrivateRoute authed={isAuthenticated()} exact path="/teams/:teamId" component={TeamComp} />
 
                 <Route component={Page404} />
-            </Switch>      
+            </Switch>
         </main>
     </div>
 );
