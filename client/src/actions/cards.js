@@ -47,6 +47,46 @@ export const createCard = card => (dispatch) => {
         });
 };
 
+// ===== Edit name ===== //
+export const EDIT_CARD_NAME_STARTED = 'cards/EDIT_CARD_NAME_STARTED';
+export const EDIT_CARD_NAME_FAILURE = 'cards/EDIT_CARD_NAME_FAILURE';
+export const EDIT_CARD_NAME_SUCCESS = 'cards/EDIT_CARD_NAME_SUCCESS';
+
+export const editCardNameStartedAction = (card, name) => ({
+    type: EDIT_CARD_NAME_STARTED,
+    payload: {
+        card,
+        name,
+    },
+});
+
+export const editCardNameFailureAction = (card, initialName) => ({
+    type: EDIT_CARD_NAME_FAILURE,
+    payload: {
+        card,
+        name: initialName,
+    },
+});
+export const editCardNameSuccessAction = () => ({ type: EDIT_CARD_NAME_SUCCESS });
+
+export const editCardName = (card, name, initialName) => (dispatch) => {
+    dispatch(editCardNameStartedAction(card, name));
+    dispatch(displayLoadingModal());
+    const resource = 'cards/'.concat(card._id).concat('/name/');
+    APIFetch.fetchPrelloAPI(resource, { name }, APIFetch.PUT)
+        .then(() => {
+            // API doesn't need to return the card: use directly the new name
+            dispatch(editCardNameSuccessAction());
+            dispatch(displaySuccessMessage('Description updated'));
+        })
+        .catch((error) => {
+            dispatch(editCardNameFailureAction(card, initialName));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
 
 // ===== Edit description ===== //
 export const EDIT_CARD_DESCRIPTION_STARTED = 'cards/EDIT_DESCRIPTION_STARTED';

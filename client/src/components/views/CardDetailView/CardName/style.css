@@ -1,0 +1,16 @@
+h2.cardDetailName {
+    font-size: 1.6rem;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.editCardNameBtn {
+    transition: 0.2s;
+    width: 93%;
+}
+
+.editCardNameBtn:hover {
+    cursor: pointer;
+    opacity: 0.8;
+    transition: 0.2s;
+}

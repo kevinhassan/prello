@@ -4,7 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { editCardDescription, deleteLabel, archiveCard } from '../../actions/cards';
+import {
+    editCardDescription, editCardName, deleteLabel, archiveCard,
+} from '../../actions/cards';
 
 // ===== View
 import CardView from '../../components/views/CardView';
@@ -17,6 +19,7 @@ class CardComp extends React.Component {
             displayCardDetail: false,
             isEditingDescription: false,
             isEditingLabels: false,
+            isEditingName: false,
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -24,6 +27,9 @@ class CardComp extends React.Component {
 
         this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleEditDescription = this.handleEditDescription.bind(this);
+
+        this.changeIsEditingName = this.changeIsEditingName.bind(this);
+        this.handleEditName = this.handleEditName.bind(this);
 
         this.changeIsEditingLabels = this.changeIsEditingLabels.bind(this);
         this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
@@ -44,6 +50,18 @@ class CardComp extends React.Component {
         ) {
             this.setState({ displayCardDetail: false });
         }
+    }
+
+    /* ===== NAME ===== */
+    changeIsEditingName(value) {
+        this.setState({ isEditingName: value });
+    }
+
+    handleEditName(event) {
+        event.preventDefault();
+        const name = event.target.name.value;
+        this.props.editCardName(this.props.card, name, this.props.card.name);
+        this.setState({ isEditingName: false });
     }
 
     /* ===== DESCRIPTION ===== */
@@ -91,6 +109,10 @@ class CardComp extends React.Component {
                             editDescription={this.handleEditDescription}
                             isEditingDescription={this.state.isEditingDescription}
 
+                            changeIsEditingName={this.changeIsEditingName}
+                            editName={this.handleEditName}
+                            isEditingName={this.state.isEditingName}
+
                             changeIsEditingLabels={this.changeIsEditingLabels}
                             deleteLabel={this.handleDeleteLabel}
                             isEditingLabels={this.state.isEditingLabels}
@@ -109,6 +131,7 @@ CardComp.propTypes = {
     card: PropTypes.object.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     editCardDescription: PropTypes.func.isRequired,
+    editCardName: PropTypes.func.isRequired,
     archiveCard: PropTypes.func.isRequired,
 };
 
@@ -121,6 +144,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         deleteLabel,
         editCardDescription,
+        editCardName,
         archiveCard,
     }, dispatch,
 );

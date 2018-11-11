@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 // ===== Card Detail Components
 import Description from './Description';
 import Labels from './Labels';
+import CardName from './CardName';
 
 import './style.css';
 
@@ -16,9 +17,14 @@ const CardDetailView = props => (
             <div className="row">
                 <div className="col-sm-12">
                     <i className="fas fa-times closeCardDetailIcon" onClick={props.closeCardDetail} onKeyDown={props.closeCardDetail} />
-                    <h2 className="cardDetail-h2 cardDetailTitle">
-                        {props.card.name}
-                    </h2>
+
+                    <CardName
+                        name={props.card.name}
+                        editName={props.editName}
+                        isEditingName={props.isEditingName}
+                        changeIsEditingName={props.changeIsEditingName}
+                    />
+
                 </div>
             </div>
             <div className="row">
@@ -107,6 +113,10 @@ CardDetailView.propTypes = {
     card: PropTypes.object.isRequired,
     closeCardDetail: PropTypes.func.isRequired,
 
+    editName: PropTypes.func.isRequired,
+    isEditingName: PropTypes.bool,
+    changeIsEditingName: PropTypes.func.isRequired,
+
     changeIsEditingDescription: PropTypes.func.isRequired,
     editDescription: PropTypes.func.isRequired,
     isEditingDescription: PropTypes.bool,
@@ -120,6 +130,7 @@ CardDetailView.propTypes = {
 CardDetailView.defaultProps = {
     isEditingDescription: false,
     isEditingLabels: false,
+    isEditingName: false,
 };
 
 // Put info from the store state in props (None)
