@@ -30,7 +30,7 @@ exports.getTeam = async (teamId) => {
             }]
         }, {
             path: 'members',
-            select: 'username initials'
+            select: 'username initials fullName'
         }, {
             path: 'admins',
             select: 'username'

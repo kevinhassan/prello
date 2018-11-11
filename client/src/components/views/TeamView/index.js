@@ -30,49 +30,63 @@ const TeamView = props => (
                 </div>
             )
         }
-        <h2>Admins</h2>
-        <ul>
-            {props.team.admins.map(admin => (
-                <li key={admin._id}>
-                    <span
-                        onClick={event => props.onMemberClick(event, admin._id)}
-                        onKeyDown={event => props.onMemberClick(event, admin._id)}
-                    >
-                        {admin.username}
-                    </span>
-                </li>
-            ))}
-        </ul>
-        <h2>Members</h2>
-        <ul>
-            {props.team.members.map(member => (
-                <li key={member._id}>
-                    <span
-                        onClick={event => props.onMemberClick(event, member._id)}
-                        onKeyDown={event => props.onMemberClick(event, member._id)}
-                    >
-                        {member.username}
-                    </span>
-                </li>
-            ))}
-        </ul>
-        <h2>Boards</h2>
-        <ul className="boards-ul">
-            {props.team.boards.map(board => (
-                <li
-                    className="board-li"
-                    key={board._id}
-                >
-                    <BoardItem
-                        board={board}
-                        lightCSS
-                        onBoardClick={props.onBoardClick}
-                        readOnlyBoard
-                        onTeamClick={props.onTeamClick}
-                    />
-                </li>
-            ))}
-        </ul>
+        <div className="row">
+            <div className="col-sm-5">
+                <h2 className="text-center">Members</h2>
+                <ul>
+                    {props.team.members.sort((a, b) => a.fullName > b.fullName).map(member => (
+                        <div>
+                            <li key={member._id} className="memberRow">
+                                <span
+                                    onClick={event => props.onMemberClick(event, member._id)}
+                                    onKeyDown={event => props.onMemberClick(event, member._id)}
+                                >
+                                    <p style={{ margin: 0 }}>
+                                        <b>{member.fullName}</b>
+                                        {props.team.admins.map((admin) => {
+                                            if (admin._id === member._id) {
+                                                return (
+                                                    <span className="float-right">Admin</span>
+                                                );
+                                            }
+                                            return (
+                                                <span className="float-right">Member</span>
+                                            );
+                                        })}
+                                        <p className="text-secondary" style={{ margin: 0 }}>
+                                        @
+                                            {member.username}
+                                        </p>
+                                    </p>
+                                </span>
+
+                            </li>
+                            <hr style={{ margin: 0 }} />
+                        </div>
+                    ))}
+                </ul>
+            </div>
+            <div className="col-sm-7">
+                <h2 className="text-center">Boards</h2>
+                <ul className="boards-ul">
+                    {props.team.boards.map(board => (
+                        <li
+                            className="board-li"
+                            key={board._id}
+                            style={{ width: '33%' }}
+                        >
+                            <BoardItem
+                                board={board}
+                                lightCSS
+                                onBoardClick={props.onBoardClick}
+                                readOnlyBoard
+                                onTeamClick={props.onTeamClick}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
     </div>
 );
 TeamView.propTypes = {

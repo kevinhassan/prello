@@ -17,7 +17,8 @@
 }
 
 .board-li-content:hover, .board-li-content-light:hover {
-    background-color: #eee;
+    background-color: #eef;
+    box-shadow: 1px 1px 5px black;
     cursor: pointer;
     transition: 0.2s;
 }
