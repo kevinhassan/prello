@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import GraphicalCharter from '../GraphicalCharter';
 import BoardComp from '../BoardComp';
@@ -12,6 +12,7 @@ import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
 
 import PrivateRoute from '../../components/PrivateRoute';
+import Page404 from '../../components/Page404';
 
 import './style.css';
 
@@ -22,15 +23,18 @@ const App = () => (
         <Header />
         <Modal />
         <main>
-            <Route exact path="/" component={HomeComp} />
-            <Route exact path="/graphical-charter" component={GraphicalCharter} />
-            <Route exact path="/register" component={RegisterComp} />
-            <Route exact path="/signin" component={SignInComp} />
+            <Switch>
+                <Route exact path="/" component={HomeComp} />
+                <Route exact path="/graphical-charter" component={GraphicalCharter} />
+                <Route exact path="/register" component={RegisterComp} />
+                <Route exact path="/signin" component={SignInComp} />
 
+                <PrivateRoute authed={isAuthenticated()} exact path="/boards/:boardId" component={BoardComp} />
+                <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
+                <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
 
-            <PrivateRoute authed={isAuthenticated()} exact path="/boards/:boardId" component={BoardComp} />
-            <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
-            <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
+                <Route component={Page404} />
+            </Switch>
         </main>
     </div>
 );
