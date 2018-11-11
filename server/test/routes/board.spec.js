@@ -63,12 +63,12 @@ describe('POST /boards', () => {
 
                     // the owner of the team won't be the owner of the board (for tests)
                     dataTeam.members.push({ _id: userNotAdmin._id });
-                    tokenAdmin = await userController.login(userData.userAdmin.email,
-                        userData.userAdmin.password);
-                    tokenNotAdmin = await userController.login(userData.userNotAdmin.email,
-                        userData.userNotAdmin.password);
-                    tokenNotMember = await userController.login(userData.userNotMember.email,
-                        userData.userNotMember.password);
+                    tokenAdmin = (await userController.login(userData.userAdmin.email,
+                        userData.userAdmin.password)).token;
+                    tokenNotAdmin = (await userController.login(userData.userNotAdmin.email,
+                        userData.userNotAdmin.password)).token;
+                    tokenNotMember = (await userController.login(userData.userNotMember.email,
+                        userData.userNotMember.password)).token;
 
                     // create the team and add the admin
                     team = new Team();

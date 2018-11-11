@@ -16,6 +16,7 @@ export const initialState = {
     errorSignInMessage: '',
     errorRegisterMessage: '',
     isLoggedIn: getToken() !== null,
+    clientId: '',
 };
 
 export default function authReducer(state = initialState, action) {
@@ -26,6 +27,7 @@ export default function authReducer(state = initialState, action) {
                 ...state,
                 isLoggedIn: true,
                 errorSignInMessage: '',
+                clientId: action.payload.clientId,
             };
 
         case actions.CLASSIC_SIGN_IN_FAILURE:

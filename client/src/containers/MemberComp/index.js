@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 
 // ===== Actions
 import { getUserInformation } from '../../actions/user';
@@ -14,7 +15,12 @@ import MemberView from '../../components/views/MemberView';
 
 class MemberComp extends React.Component {
     componentWillMount() {
-        this.props.getUserInformation(this.props.match.params.memberId);
+        // Redirect user to his profile if he is looking for him.
+        if (this.props.clientId === this.props.match.params.memberId) {
+            this.props.goToProfile();
+        } else {
+            this.props.getUserInformation(this.props.match.params.memberId);
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -40,7 +46,9 @@ class MemberComp extends React.Component {
 }
 
 MemberComp.propTypes = {
+    clientId: PropTypes.string.isRequired,
     getUserInformation: PropTypes.func.isRequired,
+    goToProfile: PropTypes.func.isRequired,
     member: PropTypes.object,
     match: PropTypes.shape({
         params: PropTypes.shape({
@@ -54,7 +62,8 @@ MemberComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ users }) => ({
+const mapStateToProps = ({ users, auth }) => ({
+    clientId: auth.clientId,
     member: users.user,
 });
 
@@ -62,6 +71,7 @@ const mapStateToProps = ({ users }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getUserInformation,
+        goToProfile: () => push('/profile'),
     }, dispatch,
 );
 

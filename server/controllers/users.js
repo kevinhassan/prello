@@ -32,7 +32,7 @@ exports.postBoard = async (userId, boardId) => {
  */
 exports.login = async (email, password) => {
     try {
-        const user = await User.findOne({ email }).select('password');
+        const user = await User.findOne({ email }).select('password _id');
         if (!user) {
             throw new MyError(403, 'Invalid credentials.');
         }
@@ -43,8 +43,8 @@ exports.login = async (email, password) => {
             throw new MyError(403, 'Invalid credentials.');
         }
 
-        // return token to the user
-        return Auth.generateToken(user);
+        // return token + id to the user
+        return { token: Auth.generateToken(user), userId: user._id };
     } catch (err) {
         if (!err.status) {
             throw new MyError(500, 'Internal server error.');
@@ -217,7 +217,6 @@ exports.getUser = async (userId) => {
         if (!user) throw new MyError(404, 'User not found');
         return user;
     } catch (err) {
-        console.log(err);
         if (err.status) throw err;
         else if (err.name === 'CastError') {
             throw new MyError(404, 'User not found');
@@ -314,7 +313,6 @@ exports.deleteAccount = async (user, username) => {
         }
         await User.deleteOne({ _id: user._id });
     } catch (err) {
-        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
     }

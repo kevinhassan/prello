@@ -1,6 +1,8 @@
 import { push } from 'connected-react-router';
 import * as APIFetch from '../helpers/APIFetch';
-import { displayLoadingModal, hideLoadingModal, displaySuccessMessage } from './modal';
+import {
+    displayLoadingModal, hideLoadingModal, displaySuccessMessage, displayErrorMessage,
+} from './modal';
 
 // ===== Classic sign in ===== //
 export const CLASSIC_SIGN_IN_STARTED = 'auth/CLASSIC_SIGN_IN_STARTED';
@@ -14,10 +16,10 @@ export const classicSignInFailureAction = error => ({
         error,
     },
 });
-export const classicSignInSuccessAction = token => ({
+export const classicSignInSuccessAction = clientId => ({
     type: CLASSIC_SIGN_IN_SUCCESS,
     payload: {
-        token,
+        clientId,
     },
 });
 
@@ -27,11 +29,14 @@ export const classicSignIn = (email, password) => (dispatch) => {
     APIFetch.fetchPrelloAPI('login', { email, password }, APIFetch.POST)
         .then((res) => {
             localStorage.setItem('prello_token', res.data.token);
-            dispatch(classicSignInSuccessAction());
-            dispatch(hideLoadingModal());
+            dispatch(displaySuccessMessage(res.data.message));
+            dispatch(classicSignInSuccessAction(res.data.userId));
         })
         .catch((error) => {
+            dispatch(displayErrorMessage(error.response.data.error));
             dispatch(classicSignInFailureAction(error.response.data.error));
+        })
+        .finally(() => {
             dispatch(hideLoadingModal());
         });
 };

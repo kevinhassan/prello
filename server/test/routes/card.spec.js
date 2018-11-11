@@ -57,10 +57,10 @@ describe('POST /cards', () => {
             try {
                 userMember = await userController.signUp(userData.userMember);
                 userNotMember = await userController.signUp(userData.userNotMember);
-                tokenMember = await userController.login(userData.userMember.email,
-                    userData.userMember.password);
-                tokenNotMember = await userController.login(userData.userNotMember.email,
-                    userData.userNotMember.password);
+                tokenMember = (await userController.login(userData.userMember.email,
+                    userData.userMember.password)).token;
+                tokenNotMember = (await userController.login(userData.userNotMember.email,
+                    userData.userNotMember.password)).token;
 
                 const board = await boardController.postBoard(userMember._id, { name: 'Test board', visibility: 'public' });
                 const list = await listController.createList(board._id, listData.name);

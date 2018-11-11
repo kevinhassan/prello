@@ -324,8 +324,8 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                const authToken = await userController.login(req.body.email, req.body.password);
-                res.status(200).send({ message: 'Connected.', token: authToken });
+                const userInfo = await userController.login(req.body.email, req.body.password);
+                res.status(200).send({ message: 'Connected.', token: userInfo.token, userId: userInfo.userId });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

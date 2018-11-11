@@ -37,9 +37,9 @@ describe('POST /team', () => {
         Promise.all([Team.deleteMany({}), User.deleteMany({})]).then(async () => {
             try {
                 userAdmin = await UserController.signUp(userData.userAdmin);
-                tokenAdmin = await UserController.login(userData.userAdmin.email, userData.userAdmin.password);
+                tokenAdmin = (await UserController.login(userData.userAdmin.email, userData.userAdmin.password)).token;
                 userNotAdmin = await UserController.signUp(userData.userNotAdmin);
-                tokenNotAdmin = await UserController.login(userData.userNotAdmin.email, userData.userNotAdmin.password);
+                tokenNotAdmin = (await UserController.login(userData.userNotAdmin.email, userData.userNotAdmin.password)).token;
                 done();
             } catch (e) {
                 console.log('Error happened : ', e);

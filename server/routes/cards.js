@@ -212,8 +212,6 @@ module.exports = (router) => {
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
-            console.log(req.params.cardId);
-
             try {
                 await cardController.archiveCard(req.params.cardId);
                 res.sendStatus(204);
