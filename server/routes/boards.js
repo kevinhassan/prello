@@ -491,7 +491,7 @@ module.exports = (router) => {
             }
             try {
                 const boardCreated = await boardController.postBoard(req.user._id, req.body);
-                res.status(201).send({ message: 'Board successfully created', board: boardCreated._id });
+                res.status(201).send({ message: 'Board successfully created', board: boardCreated });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

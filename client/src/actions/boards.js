@@ -119,8 +119,10 @@ export const createBoard = (name, visibility) => (dispatch) => {
     dispatch(displayLoadingModal());
     const resource = 'boards/';
     APIFetch.fetchPrelloAPI(resource, { name, visibility }, APIFetch.POST)
-        .then(() => {
+        .then((res) => {
             dispatch(createBoardSuccessAction());
+            const boardCreated = res.data.board;
+            dispatch(push(`/boards/${boardCreated._id}`));
         })
         .catch((error) => {
             dispatch(createBoardFailureAction(error.response.data.error));
