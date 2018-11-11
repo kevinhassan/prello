@@ -13,6 +13,20 @@ export default function boardsReducer(state = initialState, action) {
                 userBoards: action.payload.boards,
             };
 
+        case actions.UPDATE_IS_ARCHIVED_SUCCESS:
+            return {
+                ...state,
+                userBoards: state.userBoards.map((board) => {
+                    if (board._id === action.payload.boardId) {
+                        return {
+                            ...board,
+                            isArchived: action.payload.isArchived,
+                        };
+                    }
+                    return board;
+                }),
+            };
+
         default:
             return state;
         }

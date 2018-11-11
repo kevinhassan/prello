@@ -51,3 +51,19 @@ describe(actions.FETCH_BOARDS_FAILURE, () => {
         expect(finalState).toEqual({ userBoards: boards });
     });
 });
+
+describe(actions.UPDATE_IS_ARCHIVED_SUCCESS, () => {
+    it('should update the board isArchived property', () => {
+        const action = actions.updateIsArchivedSuccessAction('b1', true);
+        const finalState = boardsReducer({ userBoards: [{ _id: 'b1', isArchived: false }] }, action);
+        expect(finalState.userBoards[0].isArchived).toEqual(true);
+    });
+});
+
+describe(`${actions.UPDATE_IS_ARCHIVED_SUCCESS}: inexisting board`, () => {
+    it('should return the previous state (nothing changed)', () => {
+        const action = actions.updateIsArchivedSuccessAction('falseBoardId123', true);
+        const finalState = boardsReducer({ userBoards: [{ _id: 'b1', isArchived: false }] }, action);
+        expect(finalState.userBoards[0].isArchived).toEqual(false);
+    });
+});

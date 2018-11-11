@@ -170,6 +170,21 @@ exports.putVisibility = async (boardId, visibility) => {
     }
 };
 
+/**
+ * Change the isArchived value of the board
+ */
+exports.putIsArchived = async (boardId, isArchivedValue) => {
+    try {
+        await Board.updateOne({ _id: boardId }, { isArchived: isArchivedValue });
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect Query');
+        }
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
+
 // ========================== //
 // ===== Post functions ===== //
 // ========================== //

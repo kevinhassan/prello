@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
 // ===== Actions
-import { fetchBoards } from '../../actions/boards';
+import { fetchBoards, updateIsArchived } from '../../actions/boards';
 
 // ===== Components / Containers
 import BoardsView from '../../components/views/BoardsView';
@@ -17,10 +17,16 @@ class BoardsComp extends React.Component {
         super(props);
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
+        this.handleUpdateIsArchived = this.handleUpdateIsArchived.bind(this);
     }
 
     componentWillMount() {
         this.props.fetchBoards();
+    }
+
+    handleUpdateIsArchived(event, boardId, isArchived) {
+        event.stopPropagation();
+        this.props.updateIsArchived(boardId, isArchived);
     }
 
     handleOnBoardClick(boardId) {
@@ -40,6 +46,7 @@ class BoardsComp extends React.Component {
                     boards={boards}
                     onBoardClick={this.handleOnBoardClick}
                     onTeamClick={this.handleOnTeamClick}
+                    updateIsArchived={this.handleUpdateIsArchived}
                 />
             );
         }
@@ -51,6 +58,7 @@ BoardsComp.propTypes = {
     fetchBoards: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
+    updateIsArchived: PropTypes.func.isRequired,
 };
 BoardsComp.defaultProps = {
     boards: undefined,
@@ -65,6 +73,7 @@ const mapStateToProps = ({ boards }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         fetchBoards,
+        updateIsArchived,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
     }, dispatch,

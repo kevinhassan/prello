@@ -218,6 +218,47 @@ describe('PUT /boards/:id/visibility', () => {
     });
 });
 
+describe('PUT /boards/:id/isArchived', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/isArchived`)
+            .send({ isArchived: false })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/isArchived`)
+            .send({ isArchived: false })
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/isArchived`)
+            .send({ isArchived: 'somethingWrong' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 404 OK', (done) => {
+        request(app)
+            .put('/boards/1234BoardId48/isArchived')
+            .send({ isArchived: 'somethingWrong' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/isArchived`)
+            .send({ isArchived: true })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
+
 describe('POST /boards/:id/members', () => {
     it('should return 401 ERROR', (done) => {
         request(app)

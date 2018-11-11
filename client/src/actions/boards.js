@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import { displayLoadingModal, hideLoadingModal, displayErrorMessage } from './modal';
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
@@ -123,6 +124,39 @@ export const updateListsIndexes = (boardId, newLists, initialLists) => (dispatch
         })
         .catch((error) => {
             dispatch(updateListsIndexesFailureAction(error.response.data.error, initialLists));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
+// ===== Update isArchived ======
+export const UPDATE_IS_ARCHIVED_STARTED = 'board/UPDATE_IS_ARCHIVED_STARTED';
+export const UPDATE_IS_ARCHIVED_FAILURE = 'board/UPDATE_IS_ARCHIVED_FAILURE';
+export const UPDATE_IS_ARCHIVED_SUCCESS = 'board/UPDATE_IS_ARCHIVED_SUCCESS';
+
+export const updateIsArchivedStartedAction = () => ({ type: UPDATE_IS_ARCHIVED_STARTED });
+export const updateIsArchivedFailureAction = () => ({ type: UPDATE_IS_ARCHIVED_FAILURE });
+export const updateIsArchivedSuccessAction = (boardId, isArchived) => ({
+    type: UPDATE_IS_ARCHIVED_SUCCESS,
+    payload: {
+        boardId,
+        isArchived,
+    },
+});
+
+export const updateIsArchived = (boardId, isArchived) => (dispatch) => {
+    dispatch(updateIsArchivedStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'boards/'.concat(boardId).concat('/isArchived');
+    APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
+        .then(() => {
+            dispatch(updateIsArchivedSuccessAction(boardId, isArchived));
+            dispatch(push('./boards'));
+        })
+        .catch((error) => {
+            dispatch(updateIsArchivedFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {

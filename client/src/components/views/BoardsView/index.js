@@ -38,7 +38,11 @@ const BoardsView = props => (
                                         onClick={() => props.onBoardClick(board._id)}
                                         onKeyDown={() => props.onBoardClick(board._id)}
                                     >
-                                        <i className="archiveBoardIcon fas fa-archive float-right" />
+                                        <i
+                                            className="archiveBoardIcon fas fa-archive float-right"
+                                            onClick={event => props.updateIsArchived(event, board._id, true)}
+                                            onKeyDown={event => props.updateIsArchived(event, board._id, true)}
+                                        />
                                         <p className="boardName">{board.name}</p>
                                         <p className="boardInfo">
                                             <b>{`${board.lists.length}`}</b>
@@ -122,6 +126,7 @@ BoardsView.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.object).isRequired,
     onBoardClick: PropTypes.func.isRequired,
     onTeamClick: PropTypes.func.isRequired,
+    updateIsArchived: PropTypes.func.isRequired,
 };
 
 export default BoardsView;

@@ -11,6 +11,7 @@ const { Auth, Board } = require('../middlewares');
 *               type: string
 *           visibility:
 *               type: string
+*
 *   NewLabel:
 *       properties:
 *           name:
@@ -19,10 +20,17 @@ const { Auth, Board } = require('../middlewares');
 *               type: string
 *           boardId:
 *               type: string
+*
 *   VisibilityForm:
 *       properties:
 *           visibility:
 *               type: string
+*
+*   ArchivedForm:
+*       properties:
+*           isArchived:
+*               type: boolean
+*
 *   AddMemberForm:
 *       properties:
 *           email:
@@ -435,6 +443,35 @@ const { Auth, Board } = require('../middlewares');
 *               description: Invalid form data
 *           500:
 *               description: Internal server error
+*
+* /boards/{boardId}/isArchived:
+*   put:
+*       tags:
+*           - Board
+*       description: Put board isArchived
+*       summary: Put board isArchived
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board Id
+*           - in: body
+*             name: isArchivedValue
+*             description: isArchived new value
+*             required: true
+*             schema:
+*               $ref: '#/definitions/ArchivedForm'
+*       responses:
+*           204:
+*               description: Board isArchived updated
+*           404:
+*               description: Board not found
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -495,6 +532,18 @@ module.exports = (router) => {
             }
             try {
                 await boardController.putVisibility(req.params.boardId, req.body.visibility);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/boards/:boardId/isArchived', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeIsArchived, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await boardController.putIsArchived(req.params.boardId, req.body.isArchived);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

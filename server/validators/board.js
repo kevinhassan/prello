@@ -26,8 +26,14 @@ const changeVisibility = [
         .trim()
         .escape()
         .isIn(['public', 'private', 'team'])
-
 ];
+
+const changeIsArchived = [
+    check('isArchived')
+        .not().isEmpty()
+        .isBoolean()
+];
+
 const addMember = [
     check('email')
         .not().isEmpty()
@@ -68,6 +74,7 @@ module.exports = {
     addMember,
     addTeam,
     changeAccess,
+    changeIsArchived,
     changeVisibility,
     createLabel,
     updateBoardLists,
