@@ -211,6 +211,7 @@ exports.putProfile = async (user, data) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
 /**
  * Update account page (mail, password)
  */
@@ -237,6 +238,24 @@ exports.putAccount = async (user, data) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+/**
+ * Add a board
+ */
+exports.putBoard = async (data) => {
+    try {
+        const user = await User.findById(data.userId);
+        user.boards.push(data.board);
+        user.save();
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'MongoError' && err.code === 11000) {
+            throw new MyError(400, 'Update user boards failed');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 // ======================== //
 // === Delete functions === //
 // ======================== //

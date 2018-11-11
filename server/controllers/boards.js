@@ -198,8 +198,9 @@ exports.postBoard = async (owner, data) => {
         const board = new Board();
         board.name = data.name;
         board.visibility = data.visibility;
+        // Owner is also member of the board
         board.owner = owner;
-        // Owner is also the member of the board
+        await userController.putBoard({ userId: owner._id, board });
         await board.save();
         return board;
     } catch (err) {
