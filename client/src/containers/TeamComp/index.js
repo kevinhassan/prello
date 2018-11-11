@@ -24,6 +24,12 @@ class TeamComp extends React.Component {
         this.props.fetchTeam(this.props.match.params.teamId);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.teamId !== this.props.match.params.teamId) {
+            this.props.fetchTeam(this.props.match.params.teamId);
+        }
+    }
+
     handleOnBoardClick(boardId) {
         this.props.goToBoard(boardId);
     }
