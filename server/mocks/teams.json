@@ -9,6 +9,7 @@
     {
         "_id": "t00000000002",
         "name": "Football club",
+        "isVisible": true,
         "members": ["u00000000001", "u00000000003"],
         "admins": ["u00000000001"],
         "boards": ["b00000000001", "b00000000002"]

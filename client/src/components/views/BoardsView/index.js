@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
-import MemberPill from '../../MemberPill';
 import CreateBoard from './CreateBoard';
+import BoardItemComp from '../../../containers/BoardItemComp';
 
 // ===== Containers
 
@@ -38,66 +38,11 @@ const BoardsView = props => (
                                     className="board-li"
                                     key={board._id}
                                 >
-                                    <div
-                                        className="board-li-content"
-                                        onClick={() => props.onBoardClick(board._id)}
-                                        onKeyDown={() => props.onBoardClick(board._id)}
-                                    >
-                                        <i
-                                            className="archiveIcon fas fa-archive float-right"
-                                            onClick={event => props.updateIsArchived(event, board._id, true)}
-                                            onKeyDown={event => props.updateIsArchived(event, board._id, true)}
-                                        />
-                                        <p className="boardName">{board.name}</p>
-                                        <p className="boardInfo">
-                                            <b>{`${board.lists.length}`}</b>
-                                            {` list${board.lists.length > 1 ? 's' : ''}`}
-                                            {' '}
-                                            <b style={{ marginLeft: '5px' }}>{board.lists.reduce((sum, list) => sum + list.cards.length, 0)}</b>
-                                            {` card${board.lists.reduce((sum, list) => sum + list.cards.length, 0) > 1 ? 's' : ''}`}
-                                            {' '}
-                                            {board.visibility === 'public' ? <i style={{ marginLeft: '5px' }} className="fas fa-globe" /> : ''}
-                                            {board.visibility === 'private' ? <i style={{ marginLeft: '5px' }} className="fas fa-lock" /> : ''}
-                                            {board.visibility === 'team' ? <i style={{ marginLeft: '5px' }} className="fas fa-user-friends" /> : ''}
-                                        </p>
-                                        <div>
-                                            { board.teams.length === 0
-                                                ? (
-                                                    <p className="boardInfo">
-                                                        <i>No team assigned yet.</i>
-                                                    </p>
-                                                ) : (
-                                                    <p className="boardInfo teamsList">
-                                                        <i className="fas fa-users" />
-                                                        {' '}
-                                                        {board.teams.map(team => (
-                                                            <span
-                                                                key={team._id}
-                                                                className="teamLink"
-                                                                onClick={event => props.onTeamClick(event, team._id)}
-                                                                onKeyDown={event => props.onTeamClick(event, team._id)}
-                                                            >
-                                                                {team.name}
-                                                            </span>
-                                                        ))}
-                                                    </p>
-                                                )
-                                            }
-                                        </div>
-                                        <div>
-                                            <p className="boardInfo">
-                                                <b>{` ${board.members.length}`}</b>
-                                                {` member${board.members.length > 1 ? 's' : ''}: `}
-                                            </p>
-                                            <ul className="membersInitialsList">
-                                                {board.members.map(member => (
-                                                    <li key={member._id}>
-                                                        <MemberPill member={member} />
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    <BoardItemComp
+                                        board={board}
+                                        readOnlyBoard={false}
+                                        lightCSS
+                                    />
                                 </li>
                             );
                         })}
@@ -127,9 +72,6 @@ BoardsView.propTypes = {
     createBoard: PropTypes.func.isRequired,
     displayCreateBoardForm: PropTypes.func.isRequired,
     isCreateBoardFormVisible: PropTypes.bool.isRequired,
-    onBoardClick: PropTypes.func.isRequired,
-    onTeamClick: PropTypes.func.isRequired,
-    updateIsArchived: PropTypes.func.isRequired,
 };
 
 export default BoardsView;

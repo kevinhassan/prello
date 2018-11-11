@@ -1,0 +1,23 @@
+.informationDisplay .btnUpdate {
+    font-size: 0.8rem;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.cancelUpdate-btn{
+    float: right;
+}
+
+.informationDisplay {
+    background-color: rgba(255,255,255,0.7);
+    box-shadow: 1px 1px 2px black;
+    border-radius: 0.25rem;
+    padding: 10px;
+    position: relative;
+}
+
+.informationDisplay h5 {
+    font-weight: bold;
+    text-align: center;
+}

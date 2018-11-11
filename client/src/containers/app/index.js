@@ -7,6 +7,7 @@ import BoardsComp from '../BoardsComp';
 import HomeComp from '../HomeComp';
 import Modal from '../../components/modal';
 import Header from '../header';
+import MemberComp from '../MemberComp';
 import ProfileComp from '../ProfileComp';
 import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
@@ -26,6 +27,7 @@ const App = () => (
             <Switch>
                 <Route exact path="/" component={HomeComp} />
                 <Route exact path="/graphical-charter" component={GraphicalCharter} />
+                <Route exact path="/members/:memberId" component={MemberComp} />
                 <Route exact path="/register" component={RegisterComp} />
                 <Route exact path="/signin" component={SignInComp} />
 

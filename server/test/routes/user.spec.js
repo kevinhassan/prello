@@ -157,6 +157,35 @@ describe('POST /forgot', () => {
     });
 });
 
+describe('GET /users/:userId', () => {
+    const newUser = {
+        fullName: 'Anthony Test',
+        email: 'newUser43@test.fr',
+        password: 'passTest',
+        biography: 'biography'
+    };
+    before((done) => {
+        request(app)
+            .post('/register')
+            .send(newUser)
+            .end((err, res) => {
+                newUser._id = res.body.user._id;
+                done();
+            });
+    });
+
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .get('/users/inexistantID123')
+            .expect(404, done);
+    });
+    it('should return 200 OK', (done) => {
+        request(app)
+            .get(`/users/${newUser._id}`)
+            .expect(200, done);
+    });
+});
+
 describe('GET /account', () => {
     let token = null;
 
