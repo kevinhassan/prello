@@ -279,6 +279,29 @@ const {
 *               description: Invalid form data
 *           500:
 *               description: Internal server error
+*
+* /users/{userId}:
+*   get:
+*       tags:
+*           - User
+*       description: Get a user (public profile, seen by anybody)
+*       summary: Get a user
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: userId
+*             schema:
+*               type: string
+*             required: true
+*             description: User ID
+*       responses:
+*           200:
+*               description: User found
+*           404:
+*               description: User not found
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -289,8 +312,8 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await userController.signUp(req.body);
-                res.status(201).send({ message: 'User successfully created.' });
+                const user = await userController.signUp(req.body);
+                res.status(201).send({ message: 'User successfully created.', user });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -389,6 +412,14 @@ module.exports = (router) => {
             try {
                 await userController.resetPassword(req.params.token, req.body.password);
                 res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .get('/users/:userId', async (req, res) => {
+            try {
+                const user = await userController.getUser(req.params.userId);
+                res.status(200).send({ user });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

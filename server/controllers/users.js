@@ -163,7 +163,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
 // ======================== //
 
 /**
- * Profile page.
+ * User authenticated profile.
  */
 exports.getProfile = async (userId) => {
     try {
@@ -185,6 +185,31 @@ exports.getAccount = async (user) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+/**
+ * Member (seen from anybody)
+ */
+exports.getUser = async (userId) => {
+    try {
+        const user = await User.findById(userId).select('-password -passwordResetExpires -passwordResetToken').populate([{
+            path: 'teams',
+            match: { isVisible: true }
+        }, {
+            path: 'boards',
+            match: { $and: [{ visibility: 'public' }, { isArchived: false }] }
+        }]);
+        if (!user) throw new MyError(404, 'User not found');
+        return user;
+    } catch (err) {
+        console.log(err);
+        if (err.status) throw err;
+        else if (err.name === 'CastError') {
+            throw new MyError(404, 'User not found');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 
 // ======================== //
 // ===== Put functions ==== //
