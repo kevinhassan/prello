@@ -21,7 +21,11 @@ const ListView = props => (
             <h3 className="listName">
                 {props.list.name}
             </h3>
-            <i className="fas fa-archive archiveIcon" />
+            <i
+                className="archiveIcon fas fa-archive float-right"
+                onClick={props.archiveList}
+                onKeyDown={props.archiveList}
+            />
         </div>
 
         <Droppable droppableId={String(props.list._id)} type="CARD">
@@ -71,6 +75,7 @@ ListView.propTypes = {
     isBeingDragged: PropTypes.bool,
     displayAddCardForm: PropTypes.func.isRequired,
     onCardAdded: PropTypes.func.isRequired,
+    archiveList: PropTypes.func.isRequired,
 };
 ListView.defaultProps = {
     isBeingDragged: false,

@@ -137,5 +137,20 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
+        })
+
+        .put('/lists/:listId/archive', Auth.isAuthenticated, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            console.log(req.params.listId);
+
+            try {
+                await listController.archiveList(req.params.listId);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };
