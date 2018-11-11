@@ -56,9 +56,9 @@ const BoardsView = props => (
                                             <b style={{ marginLeft: '5px' }}>{board.lists.reduce((sum, list) => sum + list.cards.length, 0)}</b>
                                             {` card${board.lists.reduce((sum, list) => sum + list.cards.length, 0) > 1 ? 's' : ''}`}
                                             {' '}
-                                            {board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
-                                            {board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
-                                            {board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
+                                            {board.visibility === 'public' ? <i style={{ marginLeft: '5px' }} className="fas fa-globe" /> : ''}
+                                            {board.visibility === 'private' ? <i style={{ marginLeft: '5px' }} className="fas fa-lock" /> : ''}
+                                            {board.visibility === 'team' ? <i style={{ marginLeft: '5px' }} className="fas fa-user-friends" /> : ''}
                                         </p>
                                         <div>
                                             { board.teams.length === 0

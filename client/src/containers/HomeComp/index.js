@@ -41,10 +41,18 @@ class HomeComp extends React.Component {
                         </p>
                         <div className="row text-center">
                             <div className="col-sm-6">
-                                <img src="http://www.sietmanagement.fr/wp-content/uploads/2016/05/Polytech-Montpellier.png" width="200" alt="Logo Polytech Montpellier" />
+                                <img
+                                    src="http://www.sietmanagement.fr/wp-content/uploads/2016/05/Polytech-Montpellier.png"
+                                    width="200"
+                                    alt="Logo Polytech Montpellier"
+                                />
                             </div>
                             <div className="col-sm-6">
-                                <img src="http://asa.polytech.univ-montp2.fr/polymap/files/picto/IG.png" width="100" alt="Informatique et Gestion logo" />
+                                <img
+                                    src="http://asa.polytech.univ-montp2.fr/polymap/files/picto/IG.png"
+                                    width="100"
+                                    alt="Informatique et Gestion logo"
+                                />
                             </div>
                         </div>
                         <footer className="text-center">
