@@ -11,7 +11,8 @@ const CardName = props => (
         {props.isEditingName
             ? (
                 <form onSubmit={props.editName}>
-                    <label className="sr-only" htmlFor="name">Username</label>
+                    <p className="cardNameFormat text-danger">1 char. min (must not be a space or tab)</p>
+                    <label className="sr-only" htmlFor="name">Name</label>
                     <div className="input-group mb-2 mr-sm-2">
                         <div className="input-group-prepend">
                             <button
@@ -28,6 +29,8 @@ const CardName = props => (
                             defaultValue={props.name}
                             type="text"
                             id="name"
+                            pattern="\s*(\S\s*){1,}"
+                            required
                         />
                         <div className="input-group-prepend">
                             <button

@@ -14,3 +14,9 @@ h2.cardDetailName {
     opacity: 0.8;
     transition: 0.2s;
 }
+
+.cardNameFormat {
+    margin: 0;
+    font-style: italic;
+    height: 1.3rem;
+}
