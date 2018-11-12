@@ -24,6 +24,11 @@ const listData = {
 const newDescription = {
     description: 'Another valid description',
 };
+
+const newName = {
+    name: 'a new name'
+};
+
 const userData = {
     userMember: {
         fullName: 'nameTest',
@@ -51,7 +56,7 @@ const newLabel = {
     color: '#123456',
 };
 
-describe('POST /cards', () => {
+describe('PUT /cards/:cardId/description', () => {
     before((done) => {
         Promise.all([Card.deleteMany({}), Board.deleteMany({}), User.deleteMany({}), List.deleteMany({}), Card.deleteMany({})]).then(async () => {
             try {
@@ -115,6 +120,50 @@ describe('POST /cards', () => {
         request(app)
             .put(`/cards/${cardData.id}/description`)
             .send(newDescription)
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(204, done);
+    });
+});
+
+describe('PUT /cards/:cardId/name', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/name`)
+            .send(newName)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        const wrongName = {
+            name: ''
+        };
+        request(app)
+            .put(`/cards/${cardData.id}/name`)
+            .send(wrongName)
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect('Content-Type', /json/)
+            .expect(422, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/name`)
+            .send(newName)
+            .set('Authorization', `Bearer ${tokenNotMember}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .post('/cards/unknownCardId/name')
+            .send(newName)
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/name`)
+            .send(newName)
             .set('Authorization', `Bearer ${tokenMember}`)
             .expect(204, done);
     });

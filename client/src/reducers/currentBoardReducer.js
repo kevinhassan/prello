@@ -111,6 +111,30 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        // ===== Edit name ===== //
+        // With started: action.payload.name is the new name.
+        // With failure: action.payload.name is the old name.
+        case cardActions.EDIT_CARD_NAME_STARTED:
+        case cardActions.EDIT_CARD_NAME_FAILURE:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.map(card => (card._id === action.payload.card._id
+                                    ? {
+                                        ...card,
+                                        name: action.payload.name,
+                                    }
+                                    : card)),
+                            }
+                    )),
+                },
+            };
 
         // ===== Add label ===== //
         case cardActions.ADD_LABEL_STARTED:

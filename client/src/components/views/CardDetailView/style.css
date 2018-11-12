@@ -37,12 +37,6 @@
     font-size: 1.4rem;
 }
 
-h2.cardDetailTitle {
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-align: left;
-}
-
 .descriptionContent {
     line-height: 20px;
     white-space: pre-line;

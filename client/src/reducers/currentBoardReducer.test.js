@@ -188,6 +188,34 @@ describe(`${listActions.ARCHIVE_LIST_SUCCESS}: inexistant list given`, () => {
 
 
 // ===== CARDS ACTIONS ===== //
+
+// Edit name
+describe(cardActions.EDIT_CARD_NAME_STARTED, () => {
+    it('should update the name with the given one', () => {
+        const newName = 'this is a new name';
+        const action = cardActions.editCardNameStartedAction(card1, newName);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).name,
+        ).toEqual(newName);
+    });
+});
+
+describe(cardActions.EDIT_CARD_NAME_FAILURE, () => {
+    it('should update the name with the given one', () => {
+        const oldName = 'this is a the old name';
+        const action = cardActions.editCardNameFailureAction(card1, oldName);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).name,
+        ).toEqual(oldName);
+    });
+});
+
 // Edit description
 describe(cardActions.EDIT_CARD_DESCRIPTION_STARTED, () => {
     it('should update the description with the given one', () => {
