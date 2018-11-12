@@ -30,7 +30,7 @@ class ListComp extends React.Component {
 
     handleCardAdded(event) {
         event.preventDefault();
-        const name = event.target.cardName.value;
+        const name = String.trim(event.target.cardName.value);
         const newCard = new Card({
             name, list: this.props.listId,
         });

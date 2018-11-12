@@ -16,6 +16,7 @@ const AddCardForm = props => (
                         id="cardName"
                         name="cardName"
                         placeholder="Enter card name"
+                        pattern="\s*(\S\s*){1,}"
                         required
                         type="text"
                     />

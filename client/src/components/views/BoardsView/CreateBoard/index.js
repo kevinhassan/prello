@@ -22,6 +22,7 @@ const CreateBoard = props => (
                             id="name"
                             name="name"
                             placeholder="Enter board name"
+                            pattern="\s*(\S\s*){1,}"
                             required
                             type="text"
                         />
