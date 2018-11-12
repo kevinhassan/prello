@@ -13,6 +13,8 @@ import {
     getProfile, updateUserInformation, updatePassword, deleteUser,
 } from '../../actions/user';
 
+import { createTeam } from '../../actions/teams';
+
 // ===== Others
 import './style.css';
 
@@ -28,10 +30,10 @@ class ProfileComp extends React.Component {
         };
         this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
-        
+
         this.handlePasswordModifyDisplay = this.handlePasswordModifyDisplay.bind(this);
         this.handleModifyingPassword = this.handleModifyingPassword.bind(this);
-        
+
         this.handleDeleteAccountDisplay = this.handleDeleteAccountDisplay.bind(this);
         this.handleDeletingAccount = this.handleDeletingAccount.bind(this);
 
@@ -45,8 +47,7 @@ class ProfileComp extends React.Component {
 
     handleCreateTeam(event) {
         event.preventDefault();
-        // TODO: action
-        // this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.biography.value, this.props.profile);
+        this.props.createTeam(event.target.name.value, event.target.isPublic.checked);
         this.setState({ isCreateTeamFormVisible: false });
     }
 
@@ -126,6 +127,7 @@ class ProfileComp extends React.Component {
 
 ProfileComp.propTypes = {
     errorMessage: PropTypes.object,
+    createTeam: PropTypes.func.isRequired,
     getProfile: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
@@ -147,6 +149,7 @@ const mapStateToProps = ({ users }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        createTeam,
         getProfile,
         updateUserInformation,
         updatePassword,

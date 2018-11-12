@@ -25,15 +25,21 @@ const CreateTeamForm = props => (
                             required
                             type="text"
                         />
-                        <select defaultValue="" className="custom-select my-1 mr-sm-2" id="visibility" required style={{ marginLeft: '5px' }}>
-                            <option value="" disabled>Visibility</option>
-                            <option value="public">
+                        <div className="form-check" style={{ margin: '0 10px' }}>
+                            <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="isPublic"
+                                name="isPublic"
+                            />
+                            <label
+                                className="form-check-label"
+                                htmlFor="isPublic"
+                            >
                                 Public
-                            </option>
-                            <option value="private">
-                                Private
-                            </option>
-                        </select>
+                            </label>
+                        </div>
                         <button className="btn btn-success" type="submit" style={{ margin: 0 }}>
                             Create
                         </button>

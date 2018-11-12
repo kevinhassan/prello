@@ -5,7 +5,7 @@ import {
 
 // ========================
 
-// ===== Create team ===== //
+// ===== Fetch team ===== //
 export const FETCH_TEAM_STARTED = 'teams/FETCH_TEAM_STARTED';
 export const FETCH_TEAM_FAILURE = 'teams/FETCH_TEAM_FAILURE';
 export const FETCH_TEAM_SUCCESS = 'teams/FETCH_TEAM_SUCCESS';
@@ -64,6 +64,39 @@ export const addMemberToTeam = (teamId, username) => (dispatch) => {
         })
         .catch((error) => {
             dispatch(addMemberToTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
+// ===== Create team ===== //
+export const CREATE_TEAM_STARTED = 'teams/CREATE_TEAM_STARTED';
+export const CREATE_TEAM_FAILURE = 'teams/CREATE_TEAM_FAILURE';
+export const CREATE_TEAM_SUCCESS = 'teams/CREATE_TEAM_SUCCESS';
+
+export const createTeamStartedAction = () => ({ type: CREATE_TEAM_STARTED });
+
+export const createTeamFailureAction = () => ({ type: CREATE_TEAM_FAILURE });
+
+export const createTeamSuccessAction = team => ({
+    type: CREATE_TEAM_SUCCESS,
+    payload: {
+        team,
+    },
+});
+
+export const createTeam = (name, isPublic) => (dispatch) => {
+    dispatch(createTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'teams';
+    APIFetch.fetchPrelloAPI(resource, { name, isVisible: isPublic }, APIFetch.POST)
+        .then((res) => {
+            dispatch(createTeamSuccessAction(res.data.team));
+        })
+        .catch((error) => {
+            dispatch(createTeamFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
