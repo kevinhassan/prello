@@ -58,55 +58,6 @@ const SettingsTab = props => (
                     </div>
                 ))
         )
-
-            /**
-
-            props.isUpdateVisible ? (
-
-            <div className="settings">
-                <div className="changePassword">
-                    <div>
-                        <button className="btn btn-primary closeForm" type="button" onClick={() => props.displayPasswordForm(false)}>X</button>
-                        <NewPasswordForm handleUpdatePassword={props.handleModifyingPassword} />
-                    </div>
-                </div>
-            </div>
-
-
-        ) : (
-            props.isDeleteVisible ? (
-                <div className="settings">
-                    <div className="changePassword">
-                        <h5>Delete</h5>
-                        <button className="btn btn-primary" type="button" onClick={() => props.displayDeleteForm(true)}>Close</button>
-
-                        <button className="btn btn-danger" type="button" onClick={() => props.handleDeletingAccount(true)}>Delete</button>
-                    </div>
-                </div>
-            ) : (
-                <div className="settings">
-                    <div className="changePassword">
-                        <h5>Change your password</h5>
-                        <button className="btn btn-primary" type="button" onClick={() => props.displayPasswordForm(false)}>Change</button>
-                    </div>
-
-                    <br />
-                    <hr />
-                    <br />
-
-                    <div className="deleteAccount">
-                        <div>
-                            <h5>Delete your account</h5>
-                            <p>(Careful, this is definitive)</p>
-                        </div>
-
-                        <button className="btn btn-danger" type="button" onClick={() => props.displayDeleteForm(false)}>Delete</button>
-                    </div>
-                </div>
-            )
-            */
-
-
         }
     </div>
 );
