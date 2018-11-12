@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Description from './Description';
 import Labels from './Labels';
 import CardName from './CardName';
+import DueDate from './DueDate';
 
 import './style.css';
 
