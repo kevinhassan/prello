@@ -21,6 +21,14 @@ const listData = {
     id: ''
 };
 
+const newDueDate = {
+    dueDate: '2019-02-06',
+};
+
+const newInvalidDate = {
+    dueDate: '',
+};
+
 const newDescription = {
     description: 'Another valid description',
 };
@@ -218,13 +226,22 @@ describe('PUT /cards/:cardId/dueDate', () => {
     it('should return 200 OK', (done) => {
         request(app)
             .put(`/cards/${cardData.id}/dueDate`)
+            .send(newDueDate)
             .set('Authorization', `Bearer ${tokenMember}`)
             .expect(204, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
             .put('/cards/123456/dueDate/')
+            .send(newDueDate)
             .set('Authorization', `Bearer ${tokenMember}`)
             .expect(404, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .put(`/cards/${cardData.id}/dueDate`)
+            .send(newInvalidDate)
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(422, done);
     });
 });

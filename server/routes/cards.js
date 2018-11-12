@@ -273,7 +273,7 @@ module.exports = (router) => {
             }
         })
 
-        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, async (req, res) => {
+        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, cardValidator.editDate, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
