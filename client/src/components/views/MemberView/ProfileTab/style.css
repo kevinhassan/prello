@@ -13,8 +13,16 @@
     background-color: #eeeeee;
     box-shadow: 0px 0px 1px;
     border-radius: 0.25rem;
-    flex-basis: 25%;
-    margin: 2px;
-    padding: 5px;
+    margin: 5px;
+    padding: 10px;
     text-align: center;
+}
+
+.visibleIcon {
+    margin-right: 15px;
+}
+
+.teamsList li.team {
+    display: flex;
+    justify-content: space-between;
 }

@@ -27,8 +27,20 @@ const ProfileTab = props => (
             {props.teams.length !== 0
                 ? (
                     <ul className="teamsList">
-                        {props.teams.sort((t1, t2) => t1.name > t2.name).map(team => (
+                        {props.teams.sort((t1, t2) => {
+                            if (t1.isVisible && !t2.isVisible) {
+                                return -1;
+                            }
+                            if (t2.isVisible && !t1.isVisible) {
+                                return 1;
+                            }
+                            return t1.name.toLowerCase() > t2.name.toLowerCase();
+                        }).map(team => (
                             <li className="team" key={team._id}>
+                                <span className="visibleIcon">
+                                    {team.isVisible ? <i className="fas fa-eye" /> : <i className="fas fa-eye-slash" />}
+                                    {' '}
+                                </span>
                                 <Link to={`teams/${team._id}`}>
                                     {team.name}
                                 </Link>
