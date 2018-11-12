@@ -50,7 +50,6 @@ module.exports = {
     addLabel,
     deleteLabel,
     updateCardDescription,
-    updateCardName
-    updateCardDescription,
+    updateCardName,
     editDate,
 };
