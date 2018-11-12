@@ -233,3 +233,38 @@ export const archiveCard = card => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== EDIT DATE ===== //
+export const EDIT_DATE_SUCCESS = 'cards/EDIT_DATE_SUCCESS';
+export const EDIT_DATE_STARTED = 'cards/EDIT_DATE_STARTED';
+export const EDIT_DATE_FAILURE = 'cards/EDIT_DATE_FAILURE';
+
+
+export const editDateStartedAction = () => ({ type: EDIT_DATE_STARTED });
+
+export const editDateSuccessAction = card => ({
+    type: EDIT_DATE_SUCCESS,
+    payload: {
+        card,
+    },
+});
+
+export const editDateFailureAction = () => ({ type: EDIT_DATE_FAILURE });
+
+export const editDate = (card, dueDate) => (dispatch) => {
+    dispatch(editDateStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `cards/${card._id}/dueDate`;
+    APIFetch.fetchPrelloAPI(resource, { dueDate }, APIFetch.PUT)
+        .then(() => {
+            dispatch(editDateSuccessAction(card));
+            dispatch(displaySuccessMessage('Due date updated'));
+        })
+        .catch((error) => {
+            dispatch(editDateFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
