@@ -139,22 +139,29 @@ export const updatePassword = (oldPassword, newPassword) => (dispatch) => {
 
 // ===== Delete account ===== //
 
-export const DELETE_USER_SUCCESS = 'user/DELETE_USER';
+export const DELETE_USER_STARTED = 'user/DELETE_USER_STARTED';
+export const DELETE_USER_FAILURE = 'user/DELETE_USER_FAILURE';
+export const DELETE_USER_SUCCESS = 'user/DELETE_USER_SUCCESS';
 
+export const deleteUserStartedAction = () => ({ type: DELETE_USER_STARTED });
+export const deleteUserFailureAction = () => ({ type: DELETE_USER_FAILURE });
 export const deleteUserSuccessAction = () => ({ type: DELETE_USER_SUCCESS });
 
 export const deleteUser = username => (dispatch) => {
+    dispatch(deleteUserStartedAction());
     dispatch(displayLoadingModal());
     APIFetch.fetchPrelloAPI('account', {
         username,
     }, APIFetch.DELETE)
         .then(() => {
-            dispatch(displaySuccessMessage('User deleted'));
-            localStorage.removeItem('prello_token');
             dispatch(deleteUserSuccessAction());
+            dispatch(displaySuccessMessage('User deleted'));
+            dispatch(signOut());
+            dispatch(hideLoadingModal());
             dispatch(push('/'));
         })
         .catch((error) => {
+            dispatch(deleteUserFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
