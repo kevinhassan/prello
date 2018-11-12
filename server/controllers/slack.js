@@ -1,5 +1,7 @@
 const MyError = require('../util/error');
 const BoardController = require('./boards');
+const ListController = require('./lists');
+const CardController = require('./cards');
 
 function parse(stringToParse) {
     const retour = {
@@ -26,6 +28,8 @@ function parse(stringToParse) {
  */
 exports.slackAction = async (stringToParse) => {
     try {
+        const board = await BoardController.getBoard('b00000000001');
+        const list = board.lists[0];
         const params = parse(stringToParse);
         const message = (params) => {
             if (params.keyword === 'add') {
@@ -33,7 +37,10 @@ exports.slackAction = async (stringToParse) => {
                     return `you have add ${params.users.toString()} to ${params.cards.toString()}`;
                 }
                 if (params.cards.length !== 0) {
-                    return `you have add the cards ${params.cards.toString()}`;
+                    params.cards.forEach(async (card) => {
+                        CardController.postCard({name:card, list:list.id});
+                    });
+                    return `you have add the cards ${params.cards.toString()} to ${list.name}`;
                 }
                 return 'you have to choose a user';
             }
