@@ -27,7 +27,7 @@ const ProfileTab = props => (
             {props.teams.length !== 0
                 ? (
                     <ul className="teamsList">
-                        {props.teams.map(team => (
+                        {props.teams.sort((t1, t2) => t1.name > t2.name).map(team => (
                             <li className="team" key={team._id}>
                                 <Link to={`teams/${team._id}`}>
                                     {team.name}
