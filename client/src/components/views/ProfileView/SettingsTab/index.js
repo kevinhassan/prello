@@ -19,7 +19,7 @@ const settingsDisplay = (isDeleteVisible, visible, hidden) => {
 
 const SettingsTab = props => (
     <div className="settingsPanel">
-        {(props.isUpdateVisible) ? (
+        {(props.isPasswordVisible) ? (
             <div className="settings">
                 <div className="changePassword">
                     <div>
@@ -113,11 +113,12 @@ const SettingsTab = props => (
 
 SettingsTab.propTypes = {
     isDeleteVisible: PropTypes.bool.isRequired,
-    isUpdateVisible: PropTypes.bool.isRequired,
     displayDeleteForm: PropTypes.func.isRequired,
+    handleDeletingAccount: PropTypes.func.isRequired,
+
+    isPasswordVisible: PropTypes.bool.isRequired,
     displayPasswordForm: PropTypes.func.isRequired,
     handleModifyingPassword: PropTypes.func.isRequired,
-    handleDeletingAccount: PropTypes.func.isRequired,
 };
 SettingsTab.defaultProps = {
 };

@@ -64,17 +64,20 @@ const ProfileView = props => (
             <TabPanel>
                 <ProfileTab
                     teams={props.user.teams}
+                    createTeam={props.createTeam}
+                    isCreateTeamFormVisible={props.isCreateTeamFormVisible}
+                    displayCreateTeamForm={props.displayCreateTeamForm}
                 />
             </TabPanel>
             <TabPanel>
                 <SettingsTab
-                    isUpdateVisible={props.isPasswordVisible}
-                    isDeleteVisible={props.isDeleteVisible}
+                    isPasswordVisible={props.isPasswordVisible}
                     displayPasswordForm={props.handlePasswordModifyDisplay}
                     handleModifyingPassword={props.handleModifyingPassword}
+
+                    isDeleteVisible={props.isDeleteVisible}
                     displayDeleteForm={props.handleDeleteAccountDisplay}
                     handleDeletingAccount={props.handleDeletingAccount}
-
                 />
             </TabPanel>
         </Tabs>
@@ -84,16 +87,24 @@ const ProfileView = props => (
 
 ProfileView.propTypes = {
     user: PropTypes.object.isRequired,
+
     isUpdateVisible: PropTypes.bool.isRequired,
-    isDeleteVisible: PropTypes.bool.isRequired,
-    isPasswordVisible: PropTypes.bool.isRequired,
-    handleUpdateInformation: PropTypes.func.isRequired,
     handleUpdateDisplay: PropTypes.func.isRequired,
+    handleUpdateInformation: PropTypes.func.isRequired,
+
+    isPasswordVisible: PropTypes.bool.isRequired,
     handlePasswordModifyDisplay: PropTypes.func.isRequired,
     handleModifyingPassword: PropTypes.func.isRequired,
+
+    isDeleteVisible: PropTypes.bool.isRequired,
     handleDeleteAccountDisplay: PropTypes.func.isRequired,
     handleDeletingAccount: PropTypes.func.isRequired,
+
+    isCreateTeamFormVisible: PropTypes.bool.isRequired,
+    createTeam: PropTypes.func.isRequired,
+    displayCreateTeamForm: PropTypes.func.isRequired,
 };
+
 ProfileView.defaultProps = {
 };
 

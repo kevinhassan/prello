@@ -23,18 +23,35 @@ class ProfileComp extends React.Component {
             isUpdateVisible: false,
             isPasswordVisible: false,
             isDeleteVisible: false,
+            isCreateTeamFormVisible: false,
             errorMessage: '',
         };
         this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
+        
         this.handlePasswordModifyDisplay = this.handlePasswordModifyDisplay.bind(this);
         this.handleModifyingPassword = this.handleModifyingPassword.bind(this);
+        
         this.handleDeleteAccountDisplay = this.handleDeleteAccountDisplay.bind(this);
         this.handleDeletingAccount = this.handleDeletingAccount.bind(this);
+
+        this.handleDisplayCreateTeamForm = this.handleDisplayCreateTeamForm.bind(this);
+        this.handleCreateTeam = this.handleCreateTeam.bind(this);
     }
 
     componentWillMount() {
         this.props.getProfile();
+    }
+
+    handleCreateTeam(event) {
+        event.preventDefault();
+        // TODO: action
+        // this.props.updateUserInformation(event.target.fullname.value, event.target.initials.value, event.target.biography.value, this.props.profile);
+        this.setState({ isCreateTeamFormVisible: false });
+    }
+
+    handleDisplayCreateTeamForm(value) {
+        this.setState({ isCreateTeamFormVisible: value });
     }
 
     handleUpdateDisplay(value) {
@@ -76,15 +93,22 @@ class ProfileComp extends React.Component {
                     <div className="usersPanel">
                         <ProfileView
                             user={profile}
+
                             handleUpdateInformation={this.handleUpdateInformation}
                             handleUpdateDisplay={this.handleUpdateDisplay}
                             isUpdateVisible={this.state.isUpdateVisible}
+
                             handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
                             handleModifyingPassword={this.handleModifyingPassword}
+                            isPasswordVisible={this.state.isPasswordVisible}
+
                             handleDeleteAccountDisplay={this.handleDeleteAccountDisplay}
                             handleDeletingAccount={this.handleDeletingAccount}
-                            isPasswordVisible={this.state.isPasswordVisible}
                             isDeleteVisible={this.state.isDeleteVisible}
+
+                            displayCreateTeamForm={this.handleDisplayCreateTeamForm}
+                            createTeam={this.handleCreateTeam}
+                            isCreateTeamFormVisible={this.state.isCreateTeamFormVisible}
                         />
                     </div>
                 );
