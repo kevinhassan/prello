@@ -7,9 +7,6 @@ import { connect } from 'react-redux';
 import {
     editCardDescription, editCardName, deleteLabel, archiveCard, editDate,
 } from '../../actions/cards';
-import {
-    editCardDescription, deleteLabel, archiveCard, editDate,
-} from '../../actions/cards';
 
 // ===== View
 import CardView from '../../components/views/CardView';
