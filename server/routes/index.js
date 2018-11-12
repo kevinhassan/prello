@@ -8,5 +8,6 @@ require('./lists')(router);
 require('./users')(router);
 require('./teams')(router);
 require('./users')(router);
+require('./search')(router);
 
 module.exports = router;

@@ -80,12 +80,12 @@ describe('POST /team/:id/members', () => {
     it('should return 401 OK', (done) => {
         request(app)
             .post(`/teams/${newTeam.id}/members`)
-            .send({ email: userNotAdmin.email })
+            .send({ username: userNotAdmin.username })
             .expect('Content-Type', /json/)
             .expect(401, done);
     });
     it('should return 422 ERROR', (done) => {
-        const wrongData = { email: '' };
+        const wrongData = { username: '' };
         request(app)
             .post(`/teams/${newTeam.id}/members`)
             .send(wrongData)
@@ -96,7 +96,7 @@ describe('POST /team/:id/members', () => {
     it('should return 403 ERROR', (done) => {
         request(app)
             .post(`/teams/${newTeam.id}/members`)
-            .send({ email: userNotAdmin.email })
+            .send({ username: userNotAdmin.username })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
             .expect(403, done);
@@ -104,7 +104,7 @@ describe('POST /team/:id/members', () => {
     it('should return 404 ERROR', (done) => {
         request(app)
             .post('/teams/unknown/members')
-            .send({ email: userNotAdmin.email })
+            .send({ username: userNotAdmin.username })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404, done);
@@ -112,7 +112,7 @@ describe('POST /team/:id/members', () => {
     it('should return 201 OK', (done) => {
         request(app)
             .post(`/teams/${newTeam.id}/members`)
-            .send({ email: userNotAdmin.email })
+            .send({ username: userNotAdmin.username })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(201, done);

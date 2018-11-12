@@ -1,17 +1,19 @@
 [
     {
         "_id": "t00000000001",
-        "name": "Polytech Group 2.2",
+        "description": "Team 2 of the IG group 2 of Polytech Montpellier.",
+        "name": "Polytech 2.2",
         "members": ["u00000000001", "u00000000002"],
         "admins": ["u00000000001"],
-        "boards": ["b00000000001"]
+        "boards": ["b00000000001", "b00000000002"]
     },
     {
         "_id": "t00000000002",
+        "description": "Football Club of Montpellier, world champions twice.",
         "name": "Football club",
         "isVisible": true,
         "members": ["u00000000001", "u00000000003"],
         "admins": ["u00000000001"],
-        "boards": ["b00000000001", "b00000000002"]
+        "boards": ["b00000000001", "b00000000003"]
     }
 ]

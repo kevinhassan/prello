@@ -87,7 +87,10 @@ BoardItem.propTypes = {
     onBoardClick: PropTypes.func.isRequired,
     onTeamClick: PropTypes.func.isRequired,
     readOnlyBoard: PropTypes.bool.isRequired,
-    updateIsArchived: PropTypes.func.isRequired,
+    updateIsArchived: PropTypes.func,
+};
+BoardItem.defaultProps = {
+    updateIsArchived: () => {},
 };
 
 export default BoardItem;

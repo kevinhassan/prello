@@ -1,10 +1,50 @@
 const MyError = require('../util/error');
 
 const Team = require('../models/Team');
-const User = require('../models/Team');
+const User = require('../models/User');
 
 const userController = require('../controllers/users');
 const boardController = require('../controllers/boards');
+
+// ======================== //
+// ===== Get functions ==== //
+// ======================== //
+exports.getTeam = async (teamId) => {
+    try {
+        const team = await Team.findById(teamId).populate([{
+            path: 'boards',
+            select: ['name', 'isVisible', 'description', 'avatarUrl'],
+            populate: [{
+                path: 'lists',
+                select: '_id cards',
+                populate: {
+                    path: 'cards',
+                    select: '_id'
+                }
+            }, {
+                path: 'teams',
+                select: 'name'
+            }, {
+                path: 'members',
+                select: 'initials'
+            }]
+        }, {
+            path: 'members',
+            select: 'username initials fullName'
+        }, {
+            path: 'admins',
+            select: 'username'
+        }]);
+        if (!team) throw new MyError(404, 'Team not found');
+        return team;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect team id');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
 
 // ======================== //
 // ===== Put functions ==== //
@@ -73,6 +113,25 @@ exports.postTeam = async (userId, data) => {
     }
 };
 
+exports.postMember = async (teamId, username) => {
+    try {
+        const user = await User.findOne({ username });
+        if (!user) throw new MyError(404, 'User not found');
+        const team = await this.getTeam(teamId);
+        if (team.members.some(m => m._id.toString() === user._id.toString())) {
+            throw new MyError(409, 'User already in the team');
+        }
+
+        team.members.push(user);
+        await team.save();
+        return this.getTeam(teamId);
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+
 // ======================== //
 // === Delete functions === //
 // ======================== //
@@ -120,17 +179,6 @@ exports.addBoard = async (teamId, boardId) => {
         await Team.updateOne({ _id: teamId },
             { $addToSet: { boards: { _id: boardId } } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal server error');
-    }
-};
-exports.addMemberWithEmail = async (teamId, email) => {
-    try {
-        const user = await userController.findMemberWithMail(email);
-        const team = await Team.findByIdAndUpdate(teamId, { $addToSet: { members: user._id } });
-        await userController.joinTeam(user._id, team._id);
-        return team;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');

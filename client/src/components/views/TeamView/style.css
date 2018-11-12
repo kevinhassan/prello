@@ -1,0 +1,21 @@
+.teamContent{
+    background-color: rgba(0, 140, 220, 0.1);
+    padding: 20px;
+    height: 100%;
+}
+
+.memberRow {
+    padding: 5px;
+    transition: 0.2s;
+}
+
+.memberRow:hover {
+    background-color: white;
+    box-shadow: 0 1px 2px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.memberMe {
+    background-color: #b1d3ff;
+}

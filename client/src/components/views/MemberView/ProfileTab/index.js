@@ -20,6 +20,10 @@ const ProfileTab = props => (
                     <ul className="teamsList">
                         {props.teams.map(team => (
                             <li className="team" key={team._id}>
+                                <span className="visibleIcon">
+                                    {team.isVisible ? <i className="fas fa-eye" /> : <i className="fas fa-eye-slash" />}
+                                    {' '}
+                                </span>
                                 <Link to={`teams/${team._id}`}>
                                     {team.name}
                                 </Link>

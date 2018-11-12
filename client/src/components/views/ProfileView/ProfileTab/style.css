@@ -13,8 +13,13 @@
     background-color: #eeeeee;
     box-shadow: 0px 0px 1px;
     border-radius: 0.25rem;
-    flex-basis: 25%;
     margin: 2px;
+    margin-bottom: 8px;
     padding: 5px;
     text-align: center;
+}
+
+.teamsTitle {
+    margin: 0;
+    margin-right: 10px;
 }

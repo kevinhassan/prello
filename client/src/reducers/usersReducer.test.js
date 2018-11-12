@@ -1,5 +1,6 @@
 import usersReducer, { initialState } from './usersReducer';
 import * as actions from '../actions/user';
+import * as teamActions from '../actions/teams';
 
 describe('Action not referenced', () => {
     it('should return the current state', () => {
@@ -65,5 +66,25 @@ describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
         const finalState = usersReducer({}, action);
 
         expect(finalState.user).toEqual(user);
+    });
+});
+
+describe(teamActions.CREATE_TEAM_SUCCESS, () => {
+    it('should append the team to the current ones', () => {
+        const team = {
+            name: 'A test team',
+            isVisible: true,
+        };
+        const initState = {
+            profile: {
+                teams: [{
+                    _id: 't1',
+                    name: 'Team number one',
+                }],
+            },
+        };
+        const action = teamActions.createTeamSuccessAction(team);
+        const finalState = usersReducer(initState, action);
+        expect(finalState.profile.teams).toEqual(initState.profile.teams.concat(team));
     });
 });

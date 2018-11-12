@@ -29,7 +29,7 @@ const BoardsView = props => (
             ? (
                 <div className="boardsContent">
                     <ul className="boards-ul">
-                        {props.boards.map((board) => {
+                        {props.boards.sort((b1, b2) => b1.name > b2.name).map((board) => {
                             if (board.isArchived) {
                                 return ('');
                             }

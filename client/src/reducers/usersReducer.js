@@ -1,4 +1,5 @@
 import * as actions from '../actions/user';
+import * as teamActions from '../actions/teams';
 
 export const initialState = {
     profile: undefined,
@@ -30,6 +31,16 @@ export default function usersReducer(state = initialState, action) {
             return {
                 ...state,
                 user: action.payload.user,
+            };
+        }
+
+        case teamActions.CREATE_TEAM_SUCCESS: {
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    teams: state.profile.teams.concat(action.payload.team),
+                },
             };
         }
 

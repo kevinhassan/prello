@@ -13,6 +13,8 @@ import {
     getProfile, updateUserInformation, updatePassword, deleteUser,
 } from '../../actions/user';
 
+import { createTeam } from '../../actions/teams';
+
 // ===== Others
 import './style.css';
 
@@ -23,18 +25,34 @@ class ProfileComp extends React.Component {
             isUpdateVisible: false,
             isPasswordVisible: false,
             isDeleteVisible: false,
+            isCreateTeamFormVisible: false,
             errorMessage: '',
         };
         this.handleUpdateInformation = this.handleUpdateInformation.bind(this);
         this.handleUpdateDisplay = this.handleUpdateDisplay.bind(this);
+
         this.handlePasswordModifyDisplay = this.handlePasswordModifyDisplay.bind(this);
         this.handleModifyingPassword = this.handleModifyingPassword.bind(this);
+
         this.handleDeleteAccountDisplay = this.handleDeleteAccountDisplay.bind(this);
         this.handleDeletingAccount = this.handleDeletingAccount.bind(this);
+
+        this.handleDisplayCreateTeamForm = this.handleDisplayCreateTeamForm.bind(this);
+        this.handleCreateTeam = this.handleCreateTeam.bind(this);
     }
 
     componentWillMount() {
         this.props.getProfile();
+    }
+
+    handleCreateTeam(event) {
+        event.preventDefault();
+        this.props.createTeam(event.target.name.value, event.target.isPublic.checked);
+        this.setState({ isCreateTeamFormVisible: false });
+    }
+
+    handleDisplayCreateTeamForm(value) {
+        this.setState({ isCreateTeamFormVisible: value });
     }
 
     handleUpdateDisplay(value) {
@@ -76,15 +94,22 @@ class ProfileComp extends React.Component {
                     <div className="usersPanel">
                         <ProfileView
                             user={profile}
+
                             handleUpdateInformation={this.handleUpdateInformation}
                             handleUpdateDisplay={this.handleUpdateDisplay}
                             isUpdateVisible={this.state.isUpdateVisible}
+
                             handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
                             handleModifyingPassword={this.handleModifyingPassword}
+                            isPasswordVisible={this.state.isPasswordVisible}
+
                             handleDeleteAccountDisplay={this.handleDeleteAccountDisplay}
                             handleDeletingAccount={this.handleDeletingAccount}
-                            isPasswordVisible={this.state.isPasswordVisible}
                             isDeleteVisible={this.state.isDeleteVisible}
+
+                            displayCreateTeamForm={this.handleDisplayCreateTeamForm}
+                            createTeam={this.handleCreateTeam}
+                            isCreateTeamFormVisible={this.state.isCreateTeamFormVisible}
                         />
                     </div>
                 );
@@ -102,6 +127,7 @@ class ProfileComp extends React.Component {
 
 ProfileComp.propTypes = {
     errorMessage: PropTypes.object,
+    createTeam: PropTypes.func.isRequired,
     getProfile: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
@@ -123,6 +149,7 @@ const mapStateToProps = ({ users }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        createTeam,
         getProfile,
         updateUserInformation,
         updatePassword,
