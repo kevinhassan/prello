@@ -7,6 +7,9 @@ import { connect } from 'react-redux';
 import {
     editCardDescription, editCardName, deleteLabel, archiveCard,
 } from '../../actions/cards';
+import {
+    editCardDescription, deleteLabel, archiveCard, editDate,
+} from '../../actions/cards';
 
 // ===== View
 import CardView from '../../components/views/CardView';
@@ -20,6 +23,7 @@ class CardComp extends React.Component {
             isEditingDescription: false,
             isEditingLabels: false,
             isEditingName: false,
+            isEditingDueDate: false,
         };
 
         this.handleCardClick = this.handleCardClick.bind(this);
@@ -35,6 +39,9 @@ class CardComp extends React.Component {
         this.handleDeleteLabel = this.handleDeleteLabel.bind(this);
 
         this.handleArchiveCard = this.handleArchiveCard.bind(this);
+
+        this.changeIsEditingDueDate = this.changeIsEditingDueDate.bind(this);
+        this.handleEditDate = this.handleEditDate.bind(this);
     }
 
     handleCardClick(event) {
@@ -90,6 +97,18 @@ class CardComp extends React.Component {
         this.props.archiveCard(this.props.card);
     }
 
+    /* ===== DUE DATE ===== */
+    changeIsEditingDueDate(value) {
+        this.setState({ isEditingDueDate: value });
+    }
+
+    handleEditDate(event) {
+        event.preventDefault();
+        const date = event.target.duedate.value;
+        this.props.editDate(this.props.card, date);
+        this.changeIsEditingDueDate(false);
+    }
+
     render() {
         const { boardLabels, card } = this.props;
         return (
@@ -118,6 +137,10 @@ class CardComp extends React.Component {
                             isEditingLabels={this.state.isEditingLabels}
 
                             archiveCard={this.handleArchiveCard}
+
+                            isEditingDueDate={this.state.isEditingDueDate}
+                            changeIsEditingDueDate={this.changeIsEditingDueDate}
+                            editDate={this.handleEditDate}
                         />
                     )
                     : ''
@@ -133,6 +156,7 @@ CardComp.propTypes = {
     editCardDescription: PropTypes.func.isRequired,
     editCardName: PropTypes.func.isRequired,
     archiveCard: PropTypes.func.isRequired,
+    editDate: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props (None)
@@ -146,6 +170,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         editCardDescription,
         editCardName,
         archiveCard,
+        editDate,
     }, dispatch,
 );
 
