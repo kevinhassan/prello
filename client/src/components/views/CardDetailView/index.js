@@ -62,31 +62,29 @@ const CardDetailView = props => (
                             Due date
                     </h2>
 
-                    <div className="cardElementContent">
-                        {props.card.dueDate && !(props.isEditingDueDate)
-                            ? (
-                                <p
-                                    className="cardDetailDate"
+                    {props.card.dueDate && !(props.isEditingDueDate)
+                        ? (
+                            <p
+                                className="cardDetailDate"
+                            >
+                                <button
+                                    className="btn btn-link btn-addElement"
+                                    type="button"
+                                    onClick={() => props.changeIsEditingDueDate(true)}
                                 >
-                                    <button
-                                        className="btn btn-link btn-addElement"
-                                        type="button"
-                                        onClick={() => props.changeIsEditingDueDate(true)}
-                                    >
-                                        {new Date(props.card.dueDate).toDateString()}
-                                    </button>
-                                </p>
-                            )
-                            : (
-                                <DueDate
-                                    cardId={props.card._id}
-                                    changeIsEditingDueDate={props.changeIsEditingDueDate}
-                                    isEditingDueDate={props.isEditingDueDate}
-                                    dueDate={props.card.dueDate}
-                                    editDate={props.editDate}
-                                />
-                            )}
-                    </div>
+                                    {new Date(props.card.dueDate).toLocaleString()}
+                                </button>
+                            </p>
+                        )
+                        : (
+                            <DueDate
+                                cardId={props.card._id}
+                                changeIsEditingDueDate={props.changeIsEditingDueDate}
+                                isEditingDueDate={props.isEditingDueDate}
+                                dueDate={props.card.dueDate}
+                                editDate={props.editDate}
+                            />
+                        )}
 
                 </div>
                 {/* ==================== */}
