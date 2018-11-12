@@ -52,11 +52,12 @@ class TeamComp extends React.Component {
     }
 
     render() {
-        const { team } = this.props;
+        const { clientId, team } = this.props;
         if (team) {
             return (
                 <TeamView
                     team={team}
+                    clientId={clientId}
                     addMemberToTeam={this.addMember}
                     onBoardClick={this.handleOnBoardClick}
                     onMemberClick={this.handleOnMemberClick}
@@ -84,6 +85,7 @@ class TeamComp extends React.Component {
 }
 TeamComp.propTypes = {
     addMemberToTeam: PropTypes.func.isRequired,
+    clientId: PropTypes.string.isRequired,
     team: PropTypes.object,
     fetchTeam: PropTypes.func.isRequired,
     goBack: PropTypes.func.isRequired,
@@ -101,7 +103,8 @@ TeamComp.defaultProps = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ currentTeam }) => ({
+const mapStateToProps = ({ currentTeam, auth }) => ({
+    clientId: auth.clientId,
     team: currentTeam.team,
 });
 

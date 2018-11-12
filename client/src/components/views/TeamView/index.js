@@ -49,16 +49,20 @@ const TeamView = props => (
         </div>
         <div className="row">
             <div className="col-sm-5">
-                <h2 className="text-center">Members</h2>
+                <h2 className="text-center" style={{ margin: '15px 0' }}>Members</h2>
 
                 <AddMemberForm
                     addMember={props.addMemberToTeam}
                 />
 
                 <ul>
-                    {props.team.members.sort((a, b) => a.fullName > b.fullName).map(member => (
+                    {props.team.members.sort((a, b) => {
+                        if (a._id === props.clientId) return false;
+                        if (b._id === props.clientId) return true;
+                        return a.fullName > b.fullName;
+                    }).map(member => (
                         <div key={member._id}>
-                            <li className="memberRow">
+                            <li className={`memberRow ${member._id === props.clientId ? 'memberMe' : ''}`}>
                                 <span
                                     onClick={event => props.onMemberClick(event, member._id)}
                                     onKeyDown={event => props.onMemberClick(event, member._id)}
@@ -89,7 +93,7 @@ const TeamView = props => (
                 </ul>
             </div>
             <div className="col-sm-7">
-                <h2 className="text-center">Boards</h2>
+                <h2 className="text-center" style={{ margin: '15px 0' }}>Boards</h2>
                 <ul className="boards-ul">
                     {props.team.boards.map(board => (
                         <li
@@ -113,6 +117,7 @@ const TeamView = props => (
 );
 TeamView.propTypes = {
     addMemberToTeam: PropTypes.func.isRequired,
+    clientId: PropTypes.string.isRequired,
     team: PropTypes.object.isRequired,
     onBoardClick: PropTypes.func.isRequired,
     onMemberClick: PropTypes.func.isRequired,

@@ -15,3 +15,7 @@
     cursor: pointer;
     transition: 0.2s;
 }
+
+.memberMe {
+    background-color: #b1d3ff;
+}
