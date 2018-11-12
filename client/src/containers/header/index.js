@@ -24,7 +24,7 @@ class Header extends React.Component {
 
     render() {
         const {
-            goAbout, goBoards, goHome, goProfile, goRegister, goSignIn, isLoggedIn,
+            goBoards, goHome, goProfile, goRegister, goSignIn, isLoggedIn,
         } = this.props;
         const element = (
             <div className="header-bar">
@@ -56,12 +56,25 @@ class Header extends React.Component {
                                 </button>
                             </Fragment>
                         ) : (
-                            <Fragment>
-                                <button className="btn btn-light" type="button" onClick={goRegister}>Register</button>
-                                <button className="btn btn-dark" type="button" onClick={goSignIn}>Sign In</button>
-                            </Fragment>
+                            <span style={{ marginRight: '5px' }}>
+                                <button
+                                    className="btn btn-light"
+                                    type="button"
+                                    onClick={goRegister}
+                                    style={{ height: '40px', margin: '5px 0' }}
+                                >
+                                Register
+                                </button>
+                                <button
+                                    className="btn btn-dark"
+                                    type="button"
+                                    onClick={goSignIn}
+                                    style={{ height: '40px', margin: '5px 0' }}
+                                >
+                                Sign In
+                                </button>
+                            </span>
                         )}
-                    <button className="btn btn-header" type="button" onClick={goAbout}><i className="fas fa-palette" /></button>
                 </div>
             </div>
         );
@@ -69,7 +82,6 @@ class Header extends React.Component {
     }
 }
 Header.propTypes = {
-    goAbout: PropTypes.func.isRequired,
     goBoards: PropTypes.func.isRequired,
     goHome: PropTypes.func.isRequired,
     goProfile: PropTypes.func.isRequired,
@@ -87,7 +99,6 @@ const mapStateToProps = ({ auth }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        goAbout: () => push('/graphical-charter'),
         goBoards: () => push('/boards'),
         goHome: () => push('/'),
         goProfile: () => push('/profile'),
