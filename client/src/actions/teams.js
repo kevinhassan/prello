@@ -30,7 +30,7 @@ export const fetchTeam = team => (dispatch) => {
             dispatch(fetchTeamSuccessAction(res.data.team));
         })
         .catch((error) => {
-            dispatch(fetchTeamFailureAction(error.response.data.error));
+            dispatch(fetchTeamFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {

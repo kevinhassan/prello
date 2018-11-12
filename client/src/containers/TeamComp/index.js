@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { push } from 'connected-react-router';
+import { push, goBack } from 'connected-react-router';
 import { fetchTeam, addMemberToTeam } from '../../actions/teams';
 
 // ===== Components / Containers
@@ -65,6 +65,9 @@ class TeamComp extends React.Component {
             );
         }
 
+        // Can't access the page
+        if (team === null) this.props.goBack();
+
         return '';
     }
 }
@@ -72,6 +75,7 @@ TeamComp.propTypes = {
     addMemberToTeam: PropTypes.func.isRequired,
     team: PropTypes.object,
     fetchTeam: PropTypes.func.isRequired,
+    goBack: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
     goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
@@ -98,6 +102,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
+        goBack,
     }, dispatch,
 );
 

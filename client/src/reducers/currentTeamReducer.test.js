@@ -24,6 +24,24 @@ describe(actions.FETCH_TEAM_SUCCESS, () => {
     });
 });
 
+describe(actions.FETCH_TEAM_FAILURE, () => {
+    it('should set the team to null', () => {
+        const action = actions.fetchTeamFailureAction();
+        const finalState = currentTeamReducer({}, action);
+
+        expect(finalState.team).toEqual(null);
+    });
+});
+
+describe(actions.FETCH_TEAM_STARTED, () => {
+    it('should set the team to undefined', () => {
+        const action = actions.fetchTeamStartedAction();
+        const finalState = currentTeamReducer({}, action);
+
+        expect(finalState.team).toEqual(undefined);
+    });
+});
+
 describe(actions.ADD_MEMBER_TO_TEAM_SUCCESS, () => {
     it('should put the team updated in the state', () => {
         const team = {
