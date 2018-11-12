@@ -57,6 +57,8 @@ exports.login = async (email, password) => {
  */
 exports.signUp = async (data) => {
     try {
+        const findUser = await User.findOne({ email: data.email }).select('-_id email');
+        if (findUser) throw new MyError(409, 'An account already exists for this email.');
         const user = new User({
             fullName: data.fullName,
             password: data.password,
@@ -67,9 +69,7 @@ exports.signUp = async (data) => {
         const newUser = await user.save();
         return newUser;
     } catch (err) {
-        if (err.name === 'MongoError' && err.code === 11000) {
-            throw new MyError(409, 'An account already exists for this email.');
-        }
+        if (err.status) throw err;
         return new MyError(500, 'Internal server error');
     }
 };
@@ -301,7 +301,6 @@ exports.deleteAccount = async (user, username) => {
         ]);
         await User.deleteOne({ _id: user._id });
     } catch (err) {
-        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
     }
