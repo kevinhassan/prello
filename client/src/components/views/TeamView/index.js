@@ -43,34 +43,34 @@ const TeamView = props => (
                 <h2 className="text-center">Members</h2>
 
                 <AddMemberForm
-
+                    addMember={props.addMemberToTeam}
                 />
 
                 <ul>
                     {props.team.members.sort((a, b) => a.fullName > b.fullName).map(member => (
-                        <div>
-                            <li key={member._id} className="memberRow">
+                        <div key={member._id}>
+                            <li className="memberRow">
                                 <span
                                     onClick={event => props.onMemberClick(event, member._id)}
                                     onKeyDown={event => props.onMemberClick(event, member._id)}
                                 >
-                                    <p style={{ margin: 0 }}>
+                                    <div style={{ margin: 0 }}>
                                         <b>{member.fullName}</b>
                                         {props.team.admins.map((admin) => {
                                             if (admin._id === member._id) {
                                                 return (
-                                                    <span className="float-right">Admin</span>
+                                                    <span className="float-right" key={admin._id}>Admin</span>
                                                 );
                                             }
                                             return (
-                                                <span className="float-right">Member</span>
+                                                <span className="float-right" key={member._id}>Member</span>
                                             );
                                         })}
                                         <p className="text-secondary" style={{ margin: 0 }}>
                                         @
                                             {member.username}
                                         </p>
-                                    </p>
+                                    </div>
                                 </span>
 
                             </li>

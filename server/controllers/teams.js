@@ -35,6 +35,7 @@ exports.getTeam = async (teamId) => {
             path: 'admins',
             select: 'username'
         }]);
+        if (!team) throw new MyError(404, 'Team not found');
         return team;
     } catch (err) {
         if (err.status) throw err;
@@ -116,9 +117,14 @@ exports.postMember = async (teamId, username) => {
     try {
         const user = await User.findOne({ username });
         if (!user) throw new MyError(404, 'User not found');
-        await Team.updateOne({ _id: teamId },
-            { $addToSet: { members: user._id } }, { new: true })
-            .catch(async () => { throw new MyError(404, 'Team not found'); });
+        const team = await this.getTeam(teamId);
+        if (team.members.some(m => m._id.toString() === user._id.toString())) {
+            throw new MyError(409, 'User already in the team');
+        }
+
+        team.members.push(user);
+        await team.save();
+        return this.getTeam(teamId);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');

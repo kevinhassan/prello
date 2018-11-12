@@ -31,7 +31,9 @@ class TeamComp extends React.Component {
         }
     }
 
-    addMember(username) {
+    addMember(event) {
+        event.preventDefault();
+        const username = event.target.username.value;
         this.props.addMemberToTeam(this.props.team._id, username);
     }
 
@@ -55,6 +57,7 @@ class TeamComp extends React.Component {
             return (
                 <TeamView
                     team={team}
+                    addMemberToTeam={this.addMember}
                     onBoardClick={this.handleOnBoardClick}
                     onMemberClick={this.handleOnMemberClick}
                     onTeamClick={this.handleOnTeamClick}

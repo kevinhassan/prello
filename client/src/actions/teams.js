@@ -58,7 +58,7 @@ export const addMemberToTeam = (teamId, username) => (dispatch) => {
     dispatch(addMemberToTeamStartedAction());
     dispatch(displayLoadingModal());
     const resource = `teams/${teamId}/members`;
-    APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.PUT)
+    APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.POST)
         .then((res) => {
             dispatch(addMemberToTeamSuccessAction(res.data.team));
         })

@@ -156,6 +156,8 @@ const teamController = require('../controllers/teams');
 *               description: Unauthorized user
 *           403:
 *               description: Forbidden access
+*           409:
+*               description: User already in the team
 *           500:
 *               description: Internal server error
 *
@@ -239,7 +241,7 @@ module.exports = (router) => {
                 const teamCreated = await teamController.postTeam(req.user, req.body);
                 res.status(201).send({ message: 'Team successfully created', team: teamCreated });
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         })
         .get('/teams/:teamId', Auth.isAuthenticated, async (req, res) => {
@@ -247,14 +249,14 @@ module.exports = (router) => {
                 const team = await teamController.getTeam(req.params.teamId);
                 res.status(200).send({ team });
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         }).delete('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
             try {
                 await teamController.deleteTeam(req.params.teamId);
                 res.sendStatus(204);
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         })
         .put('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], teamValidator.changeInformation, async (req, res) => {
@@ -266,7 +268,7 @@ module.exports = (router) => {
                 await teamController.putTeam(req.params.teamId, req.body);
                 res.sendStatus(204);
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         })
         .post('/teams/:teamId/members', Auth.isAuthenticated, [Team.isAdmin], [teamValidator.addMember], async (req, res) => {
@@ -278,7 +280,7 @@ module.exports = (router) => {
                 const newTeam = await teamController.postMember(req.params.teamId, req.body.username);
                 res.status(201).send({ message: 'User successfully added to the team', team: newTeam });
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         })
         .put('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.isAdmin], [teamValidator.changeAccess], async (req, res) => {
@@ -290,7 +292,7 @@ module.exports = (router) => {
                 await teamController.putMemberAccess(req.params.teamId, req.params.memberId, req.body.isAdmin);
                 res.sendStatus(204);
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         })
         .delete('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
@@ -298,7 +300,7 @@ module.exports = (router) => {
                 await teamController.deleteMember(req.params.teamId, req.params.memberId);
                 res.sendStatus(204);
             } catch (e) {
-                res.status(e.status).send({ err: e.message });
+                res.status(e.status).send({ error: e.message });
             }
         });
 };
