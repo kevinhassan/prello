@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
@@ -33,9 +33,18 @@ const TeamView = props => (
                 )
             }
             <div className="col-sm-10">
-                <b>Description:</b>
-                {' '}
-                {props.team.description}
+                {props.team.description
+                    ? (
+                        <Fragment>
+                            <b>Description:</b>
+                            {' '}
+                            {props.team.description}
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            <i>No description provided yet.</i>
+                        </Fragment>
+                    )}
             </div>
         </div>
         <div className="row">
