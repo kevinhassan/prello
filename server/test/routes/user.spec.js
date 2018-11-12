@@ -194,6 +194,7 @@ describe('GET /account', () => {
             .post('/login')
             .send({ email: data.email, password: data.password })
             .end((err, res) => {
+                console.log('error : ', err);
                 token = res.body.token;
                 done();
             });

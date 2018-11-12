@@ -69,7 +69,7 @@ describe('POST /boards', () => {
                         userData.userNotAdmin.password)).token;
                     tokenNotMember = (await userController.login(userData.userNotMember.email,
                         userData.userNotMember.password)).token;
-
+                    
                     // create the team and add the admin
                     team = new Team();
                     team.name = dataTeam.name;

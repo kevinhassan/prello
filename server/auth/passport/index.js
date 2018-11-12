@@ -13,7 +13,7 @@ module.exports = (passport) => {
             if (req.user) {
                 const existingUser = await User.findOne({ 'github.id': profile.id });
                 if (existingUser) return done(null, existingUser);
-                const user = await User.findById(req.user.id);
+                const user = await User.findById(req.user._id);
                 user.github = { token: accessToken, id: profile.id };
                 user.fullName = user.fullName || profile.displayName;
                 user.bio = profile.bio;
@@ -22,11 +22,13 @@ module.exports = (passport) => {
             }
             const existingUser = await User.findOne({ 'github.id': profile.id });
             if (existingUser) return done(null, existingUser);
-            const user = await User.findOne({ email: profile._json.email });
-            if (user) return done(null, user);
+            let user = await User.findOne({ email: profile._json.email });
+            if (!user) {
+                user = new User();
+            }
             user.github = { token: accessToken, id: profile.id };
             user.fullName = user.fullName || profile.displayName;
-            user.bio = profile.bio;
+            user.bio = user.biography || profile.bio;
             user.avatarUrl = user.avatarUrl || profile._json.avatar_url;
             return done(null, await user.save());
         } catch (err) {

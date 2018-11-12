@@ -6,6 +6,7 @@ const Auth = require('../auth');
 const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetPassword');
 
 const boardController = require('../controllers/boards');
+const teamController = require('../controllers/teams');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 const User = require('../models/User');
@@ -36,13 +37,11 @@ exports.login = async (email, password) => {
         if (!user) {
             throw new MyError(403, 'Invalid credentials.');
         }
-
         // check password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             throw new MyError(403, 'Invalid credentials.');
         }
-
         // return token + id to the user
         return { token: Auth.generateToken(user), userId: user._id };
     } catch (err) {
@@ -68,7 +67,6 @@ exports.signUp = async (data) => {
         const newUser = await user.save();
         return newUser;
     } catch (err) {
-        console.log(err);
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'An account already exists for this email.');
         }
@@ -248,9 +246,7 @@ exports.putAccount = async (user, data) => {
         email, password
     } = data;
     try {
-        const userProfile = await User.findById(user._id).select({
-            password: 1, email: 1
-        });
+        const userProfile = await User.findById(user._id);
         if (email && email !== '') {
             const userFound = await User.findOne({ email, _id: { $ne: user._id } });
             if (userFound) throw new MyError(409, 'Email already used');
@@ -299,8 +295,13 @@ exports.deleteAccount = async (user, username) => {
         if (username !== userToDelete.username) {
             throw new MyError(403, 'Invalid username confirmation');
         }
+        await Promise.all([
+            userToDelete.teams ? userToDelete.teams.map(team => teamController.deleteMember(team, user._id)) : null,
+            userToDelete.teams ? userToDelete.boards.map(board => boardController.deleteMember(board, user._id)) : null
+        ]);
         await User.deleteOne({ _id: user._id });
     } catch (err) {
+        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
     }
