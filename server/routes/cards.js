@@ -322,5 +322,18 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
+        })
+
+        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            try {
+                await cardController.editDate(req.params.cardId, req.body.dueDate);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };
