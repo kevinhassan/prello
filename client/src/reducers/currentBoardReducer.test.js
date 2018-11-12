@@ -123,6 +123,45 @@ describe(actions.UPDATE_LISTS_INDEXES_FAILURE, () => {
     });
 });
 
+describe(actions.UPDATE_BOARD_NAME_STARTED, () => {
+    it('should correctly change the board name', () => {
+        const name = 'a new board name';
+        const action = actions.updateBoardNameStartedAction(state.board._id, name);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.name).toEqual(name);
+    });
+});
+
+describe(`${actions.UPDATE_BOARD_NAME_STARTED}: not current board id`, () => {
+    it('if the id provided is not the current board one, should do nothing and return the current state', () => {
+        const name = 'a new board name';
+        const action = actions.updateBoardNameStartedAction('aRandomId', name);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board).toEqual(state.board);
+    });
+});
+
+describe(actions.UPDATE_BOARD_NAME_FAILURE, () => {
+    it('should correctly change the board name to the old one provided', () => {
+        const name = 'an old board name';
+        const action = actions.updateBoardNameFailureAction(state.board._id, name);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.name).toEqual(name);
+    });
+});
+
+describe(`${actions.UPDATE_BOARD_NAME_FAILURE}: not current board id`, () => {
+    it('if the id provided is not the current board one, should do nothing and return the current state', () => {
+        const name = 'an old board name';
+        const action = actions.updateBoardNameFailureAction('aRandomId', name);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board).toEqual(state.board);
+    });
+});
+
+
 // ===== LISTS ACTIONS ===== //
 
 // Create list

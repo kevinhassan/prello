@@ -20,6 +20,7 @@ const BoardView = props => (
         <div className="row">
             <div className="col-sm-12 boardSettingsBar">
                 <BoardNameComp
+                    boardId={props.board._id}
                     name={props.board.name}
                 />
 

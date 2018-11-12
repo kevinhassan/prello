@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-// TODO
-// import { editBoardName } from '../../../actions/boards';
+import { updateBoardName } from '../../../actions/boards';
 
 // ===== Components / Containers
 import BoardNameView from '../../../components/views/BoardView/BoardNameView';
@@ -29,7 +28,7 @@ class BoardNameComp extends React.Component {
     handleEditBoardName(event) {
         event.preventDefault();
         const name = event.target.name.value;
-        this.props.editBoardName(String.trim(name));
+        this.props.updateBoardName(this.props.boardId, String.trim(name), this.props.name);
         this.setState({ isFormVisible: false });
     }
 
@@ -45,8 +44,9 @@ class BoardNameComp extends React.Component {
     }
 }
 BoardNameComp.propTypes = {
+    boardId: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    editBoardName: PropTypes.func.isRequired,
+    updateBoardName: PropTypes.func.isRequired,
 };
 
 // Put info from the store state in props
@@ -57,7 +57,7 @@ const mapStateToProps = ({ currentBoard }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-
+        updateBoardName,
     }, dispatch,
 );
 
