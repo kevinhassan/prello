@@ -7,7 +7,7 @@ import './style.css';
 // ==================================
 
 const BoardNameView = props => (
-    <span>
+    <span style={{ display: 'inline-block' }}>
         {props.isFormVisible
             ? (
                 <form className="form-inline" onSubmit={props.editBoardName} style={{ display: 'inline-block' }}>
@@ -43,7 +43,7 @@ const BoardNameView = props => (
                     type="button"
                     onClick={() => props.displayForm(true)}
                     onKeyDown={() => props.displayForm(true)}
-                    style={{ verticalAlign: 'sub' }}
+                    style={{ verticalAlign: 'sub', display: 'inline-block', height: '100%' }}
                 >
                     <h1 className="boardName">
                         {props.name}
