@@ -14,22 +14,29 @@ const TeamView = props => (
         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
 
 
-        {props.team.isVisible
-            ? (
-                <div>
-                    Public
-                    {' '}
-                    <i className="fas fa-eye" />
-                </div>
-            )
-            : (
-                <div>
-                    Private
-                    {' '}
-                    <i className="fas fa-eye-slash" />
-                </div>
-            )
-        }
+        <div className="row">
+            {props.team.isVisible
+                ? (
+                    <div className="col-sm-2">
+                        Public
+                        {' '}
+                        <i className="fas fa-eye" />
+                    </div>
+                )
+                : (
+                    <div className="col-sm-2">
+                        Private
+                        {' '}
+                        <i className="fas fa-eye-slash" />
+                    </div>
+                )
+            }
+            <div className="col-sm-10">
+                <b>Description:</b>
+                {' '}
+                {props.team.description}
+            </div>
+        </div>
         <div className="row">
             <div className="col-sm-5">
                 <h2 className="text-center">Members</h2>
