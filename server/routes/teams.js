@@ -17,7 +17,7 @@ const teamController = require('../controllers/teams');
 *               type: string
 *   ChangeAccessForm:
 *       properties:
-*           isAdmin:
+*           canEdit:
 *               type: boolean
 *
 *   NewInformation:
@@ -70,9 +70,15 @@ const teamController = require('../controllers/teams');
 *             description: Team ID
 *       responses:
 *           200:
-*               description: Team successfully found
+*               description: Team found
 *           401:
-*               description: Unauthorized user
+*               description: You are not allowed to access this team. Please sign in and try again.
+*           403:
+*               description: You can't access this team because it is not visible.
+*           404:
+*               description: Team not found
+*           422:
+*               description: Incorrect team id
 *           500:
 *               description: Internal server error
 *   delete:
@@ -244,14 +250,14 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/teams/:teamId', Auth.isAuthenticated, async (req, res) => {
+        .get('/teams/:teamId', [Team.canSee], async (req, res) => {
             try {
                 const team = await teamController.getTeam(req.params.teamId);
                 res.status(200).send({ team });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
-        }).delete('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
+        }).delete('/teams/:teamId', Auth.isAuthenticated, [Team.canEdit], async (req, res) => {
             try {
                 await teamController.deleteTeam(req.params.teamId);
                 res.sendStatus(204);
@@ -259,7 +265,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/teams/:teamId', Auth.isAuthenticated, [Team.isAdmin], teamValidator.changeInformation, async (req, res) => {
+        .put('/teams/:teamId', Auth.isAuthenticated, [Team.canEdit], teamValidator.changeInformation, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -271,7 +277,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/teams/:teamId/members', Auth.isAuthenticated, [Team.isAdmin], [teamValidator.addMember], async (req, res) => {
+        .post('/teams/:teamId/members', Auth.isAuthenticated, [Team.canEdit], [teamValidator.addMember], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -283,19 +289,19 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.isAdmin], [teamValidator.changeAccess], async (req, res) => {
+        .put('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.canEdit], [teamValidator.changeAccess], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.putMemberAccess(req.params.teamId, req.params.memberId, req.body.isAdmin);
+                await teamController.putMemberAccess(req.params.teamId, req.params.memberId, req.body.canEdit);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.isAdmin], async (req, res) => {
+        .delete('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.canEdit], async (req, res) => {
             try {
                 await teamController.deleteMember(req.params.teamId, req.params.memberId);
                 res.sendStatus(204);

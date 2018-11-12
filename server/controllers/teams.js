@@ -40,7 +40,7 @@ exports.getTeam = async (teamId) => {
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect query');
+            throw new MyError(422, 'Incorrect team id');
         }
         throw new MyError(500, 'Internal server error');
     }
