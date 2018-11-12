@@ -32,9 +32,14 @@ exports.slackAction = async (stringToParse) => {
                 if (params.users.length !== 0 && params.cards.length !== 0) {
                     return `you have add ${params.users.toString()} to ${params.cards.toString()}`;
                 }
+                if (params.cards.length !== 0) {
+                    return `you have add the cards ${params.cards.toString()}`;
+                }
                 return 'you have to choose a user';
             }
-            if (params.keyword === 'duedate') return 'you have choose duedate action';
+            if (params.keyword === 'duedate') {
+                return 'the next task to do are : ';
+            }
             if (params.keyword === 'remove') return 'you have choose remove action';
             return 'no valid key-word found. \nValid key-word are add, remove, due date ';
         };
