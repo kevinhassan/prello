@@ -51,7 +51,7 @@ exports.getBoard = async (boardId) => {
         else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 exports.getBoards = async (userId) => {
@@ -77,7 +77,7 @@ exports.getBoards = async (userId) => {
             });
         return boards;
     } catch (err) {
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -100,7 +100,7 @@ exports.getLabels = async (boardId) => {
         if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -124,11 +124,11 @@ exports.putLists = async (boardId, lists) => {
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect Query');
+            throw new MyError(422, 'Incorrect query');
         } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -151,7 +151,7 @@ exports.putAccess = async (boardId, memberId, isAdmin) => {
         else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -164,9 +164,9 @@ exports.putVisibility = async (boardId, visibility) => {
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect Query');
+            throw new MyError(422, 'Incorrect query');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -179,9 +179,24 @@ exports.putIsArchived = async (boardId, isArchivedValue) => {
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect Query');
+            throw new MyError(422, 'Incorrect query');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+/**
+ * Change the name of the board
+ */
+exports.putName = async (boardId, name) => {
+    try {
+        await Board.updateOne({ _id: boardId }, { name });
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -209,9 +224,9 @@ exports.postBoard = async (owner, data) => {
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect Query');
+            throw new MyError(422, 'Incorrect query');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -249,7 +264,7 @@ exports.postTeam = async (boardId, teamId) => {
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -266,7 +281,7 @@ exports.postMemberWithMail = async (boardId, email) => {
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -323,7 +338,7 @@ exports.deleteMember = async (boardId, memberId) => {
         await userController.removeBoard(memberId, boardId);
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -339,7 +354,7 @@ exports.deleteTeam = async (boardId, teamId) => {
         return newBoard;
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -359,7 +374,7 @@ exports.addList = async (boardId, listId) => {
         } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 /**
@@ -402,7 +417,7 @@ exports.removeMember = async (boardId, memberId) => {
         } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 exports.removeTeam = async (boardId, teamId) => {
@@ -418,6 +433,6 @@ exports.removeTeam = async (boardId, teamId) => {
         } else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');
         }
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };

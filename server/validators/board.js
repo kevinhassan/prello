@@ -34,6 +34,14 @@ const changeIsArchived = [
         .isBoolean()
 ];
 
+const changeName = [
+    check('name')
+        .not().isEmpty()
+        .isString()
+        .trim()
+        .isLength({ min: 1 }),
+];
+
 const addMember = [
     check('email')
         .not().isEmpty()
@@ -75,6 +83,7 @@ module.exports = {
     addTeam,
     changeAccess,
     changeIsArchived,
+    changeName,
     changeVisibility,
     createLabel,
     updateBoardLists,
