@@ -8,6 +8,7 @@ import MemberPill from '../../MemberPill';
 
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
+import BoardNameComp from '../../../containers/BoardComp/BoardNameComp';
 
 // ===== Others
 import './style.css';
@@ -18,7 +19,10 @@ const BoardView = props => (
     <div className="boardPanel container-fluid">
         <div className="row">
             <div className="col-sm-12 boardSettingsBar">
-                <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
+                <BoardNameComp
+                    name={props.board.name}
+                />
+
                 {' | '}
                 {props.board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
                 {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
