@@ -240,28 +240,35 @@ export const EDIT_DATE_STARTED = 'cards/EDIT_DATE_STARTED';
 export const EDIT_DATE_FAILURE = 'cards/EDIT_DATE_FAILURE';
 
 
-export const editDateStartedAction = () => ({ type: EDIT_DATE_STARTED });
-
-export const editDateSuccessAction = card => ({
-    type: EDIT_DATE_SUCCESS,
+export const editDateStartedAction = (card, dueDate) => ({
+    type: EDIT_DATE_STARTED,
     payload: {
         card,
+        dueDate,
     },
 });
 
-export const editDateFailureAction = () => ({ type: EDIT_DATE_FAILURE });
+export const editDateSuccessAction = () => ({ type: EDIT_DATE_SUCCESS });
 
-export const editDate = (card, dueDate) => (dispatch) => {
-    dispatch(editDateStartedAction());
+export const editDateFailureAction = (card, initialDate) => ({
+    type: EDIT_DATE_FAILURE,
+    payload: {
+        card,
+        initialDate,
+    },
+});
+
+export const editDate = (card, dueDate, initialDate) => (dispatch) => {
+    dispatch(editDateStartedAction(card, dueDate));
     dispatch(displayLoadingModal());
     const resource = `cards/${card._id}/dueDate`;
-    APIFetch.fetchPrelloAPI(resource, { dueDate }, APIFetch.PUT)
+    APIFetch.fetchPrelloAPI(resource, { dueDate, initialDate }, APIFetch.PUT)
         .then(() => {
-            dispatch(editDateSuccessAction(card));
+            dispatch(editDateSuccessAction());
             dispatch(displaySuccessMessage('Due date updated'));
         })
         .catch((error) => {
-            dispatch(editDateFailureAction());
+            dispatch(editDateFailureAction(card, initialDate));
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
