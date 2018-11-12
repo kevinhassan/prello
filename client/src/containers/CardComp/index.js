@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import {
-    editCardDescription, editCardName, deleteLabel, archiveCard,
-} from '../../actions/cards';
-import {
-    editCardDescription, deleteLabel, archiveCard, editDate,
+    editCardDescription, editCardName, deleteLabel, archiveCard, editDate,
 } from '../../actions/cards';
 
 // ===== View
