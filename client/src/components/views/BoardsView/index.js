@@ -18,6 +18,18 @@ const BoardsView = props => (
             Boards
             {' '}
         </h1>
+        <h4>
+            <b>{props.boards.length}</b>
+            {' '}
+            boards (
+            {props.boards.reduce((sum, board) => {
+                if (board.isArchived) return sum + 1;
+                return sum;
+            }, 0)}
+            {' '}
+            {' '}
+            archived)
+        </h4>
 
         <CreateBoard
             createBoard={props.createBoard}
@@ -54,13 +66,6 @@ const BoardsView = props => (
                     <p className="text-center h3">
                         {'You don\'t have access to any boards currently '}
                         <i className="fas fa-frown-open" />
-                    </p>
-                    <p className="text-center h3">
-                        <button type="button" className="btn btn-success">
-                            <i className="fas fa-plus" />
-                            {' '}
-                            Create one
-                        </button>
                     </p>
                 </div>
             )
