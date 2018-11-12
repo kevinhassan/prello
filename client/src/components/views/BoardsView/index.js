@@ -14,11 +14,11 @@ import './style.css';
 
 const BoardsView = props => (
     <div className="boardsPanel">
-        <h1 className="boards-h1">
+        <h1 className="boards-h1" style={{ display: 'inline' }}>
             Boards
             {' '}
         </h1>
-        <h4>
+        <span style={{ fontSize: '1.5rem' }}>
             <b>{props.boards.length}</b>
             {' '}
             boards (
@@ -27,9 +27,8 @@ const BoardsView = props => (
                 return sum;
             }, 0)}
             {' '}
-            {' '}
             archived)
-        </h4>
+        </span>
 
         <CreateBoard
             createBoard={props.createBoard}
