@@ -39,6 +39,12 @@ const updateCardName = [
         .isLength({ min: 1 }),
 ];
 
+const editDate = [
+    check('dueDate')
+        .isString(),
+    check('dueDate').not().isEmpty(),
+];
+
 module.exports = {
     addCard,
     addLabel,
