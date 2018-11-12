@@ -6,7 +6,6 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const expressValidator = require('express-validator');
-const expressStatusMonitor = require('express-status-monitor');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
 const passport = require('passport');
@@ -24,7 +23,6 @@ require('./database')(config);
  * Express configuration.
  */
 app.set('port', process.env.PORT || 9090);
-app.use(expressStatusMonitor());
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
