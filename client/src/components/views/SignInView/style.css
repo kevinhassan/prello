@@ -19,3 +19,28 @@ h1.signInTitle {
 .signInForm {
     margin: 20px 0;
 }
+.loginWithGH, .loginWithGHLink  {
+    background-color: #444;
+    color: #eee;
+    padding: 6px;
+}
+
+.loginWithGH:hover {
+    box-shadow: 0 1px 2px black;
+}
+
+.loginWithGHLink:hover {
+    box-shadow: 0 1px 2px black;
+    color: #eee;
+}
+.button-group{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.button-group a, .button-group button {
+    width: 50%;
+}
+.button-group a{
+    margin-bottom: 5px;
+}

@@ -41,6 +41,33 @@ export const classicSignIn = (email, password) => (dispatch) => {
         });
 };
 
+// ===== Github sign in ===== //
+export const GITHUB_SIGN_IN_STARTED = 'auth/GITHUB_SIGN_IN_STARTED';
+export const GITHUB_SIGN_IN_FAILURE = 'auth/GITHUB_SIGN_IN_FAILURE';
+export const GITHUB_SIGN_IN_SUCCESS = 'auth/GITHUB_SIGN_IN_SUCCESS';
+
+export const githubSignInStartedAction = () => ({ type: GITHUB_SIGN_IN_STARTED });
+export const githubSignInFailureAction = () => ({ type: GITHUB_SIGN_IN_FAILURE });
+export const githubSignInSuccessAction = clientId => ({
+    type: GITHUB_SIGN_IN_SUCCESS,
+    payload: {
+        clientId,
+    },
+});
+
+export const githubSignIn = data => (dispatch) => {
+    dispatch(displayLoadingModal());
+    dispatch(githubSignInStartedAction());
+    if (data.token && data.token !== '' && data.clientId && data.clientId !== '') {
+        dispatch(githubSignInSuccessAction());
+        localStorage.setItem('prello_token', data.token);
+        dispatch(push('/boards'));
+    } else {
+        dispatch(githubSignInFailureAction());
+    }
+    dispatch(hideLoadingModal());
+};
+
 
 // ===== Classic Register ===== //
 export const CLASSIC_REGISTER_STARTED = 'auth/CLASSIC_REGISTER_STARTED';

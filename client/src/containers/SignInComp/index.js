@@ -9,7 +9,7 @@ import {
 } from 'react-redux';
 
 // ===== Actions
-import { classicSignIn } from '../../actions/auth';
+import { classicSignIn, githubSignIn } from '../../actions/auth';
 
 // ===== Models
 
@@ -21,6 +21,16 @@ class SignInComp extends React.Component {
     constructor(props) {
         super(props);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.location.search) {
+            const params = {};
+            window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, (_, key, value) => {
+                params[key] = value;
+            });
+            this.props.githubSignIn(params);
+        }
     }
 
     componentDidUpdate() {
@@ -52,9 +62,18 @@ SignInComp.propTypes = {
     classicSignIn: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
+    githubSignIn: PropTypes.func.isRequired,
     goBoards: PropTypes.func.isRequired,
+    location: PropTypes.object,
 };
-
+SignInComp.defaultProps = {
+    location: {
+        search: {
+            token: '',
+            clientId: '',
+        },
+    },
+};
 // Put info from the store state in props
 const mapStateToProps = ({ auth }) => ({
     errorMessage: auth.errorSignInMessage,
@@ -65,6 +84,7 @@ const mapStateToProps = ({ auth }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         classicSignIn,
+        githubSignIn,
         goBoards: () => push('/boards'),
     }, dispatch,
 );

@@ -58,29 +58,17 @@ exports.login = async (email, password) => {
  */
 exports.signUp = async (data) => {
     try {
-        const fullNameUser = data.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
-        // count the number of user with same fullName
-        const count = await User.countDocuments({ fullName: fullNameUser }) + 1;
-        let initialsUser = '';
-        const usernameUser = fullNameUser.toLowerCase().replace(/ /g, '') + count;
-        if (fullNameUser.split(' ').length >= 2) {
-            initialsUser = fullNameUser.split(' ')[0].toUpperCase().charAt(0) + fullNameUser.split(' ')[1].toUpperCase().charAt(0);
-        } else {
-            initialsUser = fullNameUser.toUpperCase().charAt(0);
-        }
-
         const user = new User({
-            fullName: fullNameUser,
-            username: usernameUser,
+            fullName: data.fullName,
             password: data.password,
             email: data.email,
             biography: data.biography,
             avatarUrl: data.avatarUrl,
-            initials: initialsUser
         });
         const newUser = await user.save();
         return newUser;
     } catch (err) {
+        console.log(err);
         if (err.name === 'MongoError' && err.code === 11000) {
             throw new MyError(409, 'An account already exists for this email.');
         }

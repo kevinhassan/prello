@@ -22,6 +22,7 @@ export const initialState = {
 export default function authReducer(state = initialState, action) {
     if (action) {
         switch (action.type) {
+        case actions.GITHUB_SIGN_IN_SUCCESS:
         case actions.CLASSIC_SIGN_IN_SUCCESS:
             return {
                 ...state,

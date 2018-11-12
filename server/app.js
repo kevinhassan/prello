@@ -9,12 +9,15 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
+const passport = require('passport');
 const config = require('./config');
 const swaggerSpec = require('./config/swagger');
+
+const app = express();
+require('./auth/passport')(passport);
 /**
  * Create Express server.
  */
-const app = express();
 require('./database')(config);
 
 /**
