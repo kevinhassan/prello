@@ -476,22 +476,11 @@ const { Auth, Board } = require('../middlewares');
 
 module.exports = (router) => {
     router
+        // ===== GET ===== //
         .get('/boards', Auth.isAuthenticated, async (req, res) => {
             try {
                 const { boards } = await boardController.getBoards(req.user);
                 res.status(200).send({ boards });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-        .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
-            }
-            try {
-                const boardCreated = await boardController.postBoard(req.user._id, req.body);
-                res.status(201).send({ message: 'Board successfully created', board: boardCreated });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -513,6 +502,73 @@ module.exports = (router) => {
             }
         })
 
+        // ===== POST ===== //
+        .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                const boardCreated = await boardController.postBoard(req.user._id, req.body);
+                res.status(201).send({ message: 'Board successfully created', board: boardCreated });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/members', Auth.isAuthenticated, Board.isAdmin, boardValidator.addMember, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await boardController.postMemberWithMail(req.params.boardId, req.body.email);
+                res.status(201).send({ message: 'Member successfully added' });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/labels', boardValidator.createLabel, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                const labelCreated = await boardController.postLabel({
+                    color: req.body.color,
+                    name: req.body.name,
+                    boardId: req.params.boardId,
+                });
+                res.status(201).send({ message: 'Label successfully created', label: labelCreated });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, listValidator.addList, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                const listCreated = await boardController.postList(req.params.boardId, req.body.name);
+                res.status(201).send({ message: 'List successfully created', list: listCreated });
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/boards/:boardId/teams', Auth.isAuthenticated, Board.isAdmin, boardValidator.addTeam, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await boardController.postTeam(req.params.boardId, req.body.team);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+
+        // ===== PUT ===== //
         .put('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -549,42 +605,6 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/members', Auth.isAuthenticated, Board.isAdmin, boardValidator.addMember, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
-            }
-            try {
-                await boardController.postMemberWithMail(req.params.boardId, req.body.email);
-                res.status(201).send({ message: 'Member successfully added' });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-        .post('/boards/:boardId/labels', boardValidator.createLabel, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).send({ error: 'Invalid form data' });
-            }
-            try {
-                const labelCreated = await boardController.postLabel({
-                    color: req.body.color,
-                    name: req.body.name,
-                    boardId: req.params.boardId,
-                });
-                res.status(201).send({ message: 'Label successfully created', label: labelCreated });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
-            try {
-                await boardController.deleteMember(req.params.boardId, req.params.memberId);
-                res.sendStatus(204);
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
         .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeAccess, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -599,18 +619,8 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/teams', Auth.isAuthenticated, Board.isAdmin, boardValidator.addTeam, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
-            }
-            try {
-                await boardController.postTeam(req.params.boardId, req.body.team);
-                res.sendStatus(204);
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
+
+        // ===== DELETE ===== //
         .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
             try {
                 await boardController.deleteTeam(req.params.boardId, req.params.teamId);
@@ -619,14 +629,10 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, listValidator.addList, async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).send({ error: 'Invalid form data' });
-            }
+        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
             try {
-                const listCreated = await boardController.postList(req.params.boardId, req.body.name);
-                res.status(201).send({ message: 'List successfully created', list: listCreated });
+                await boardController.deleteMember(req.params.boardId, req.params.memberId);
+                res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
