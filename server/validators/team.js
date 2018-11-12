@@ -6,7 +6,7 @@ const addTeam = [
         .isString()
 ];
 const addMember = [
-    check('member')
+    check('username')
         .not().isEmpty()
         .isString(),
 ];

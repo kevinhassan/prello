@@ -112,15 +112,12 @@ exports.postTeam = async (userId, data) => {
     }
 };
 
-exports.postMember = async (teamId, memberId) => {
+exports.postMember = async (teamId, username) => {
     try {
-        console.log('memberId : ', memberId);
-        const user = await User.findById(memberId);
-        console.log(user);
-
+        const user = await User.findOne({ username });
         if (!user) throw new MyError(404, 'User not found');
         await Team.updateOne({ _id: teamId },
-            { $addToSet: { members: memberId } }, { new: true })
+            { $addToSet: { members: user._id } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;

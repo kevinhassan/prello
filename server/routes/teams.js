@@ -13,7 +13,7 @@ const teamController = require('../controllers/teams');
 *               type: boolean
 *   AddMemberForm:
 *       properties:
-*           member:
+*           username:
 *               type: string
 *   ChangeAccessForm:
 *       properties:
@@ -144,14 +144,14 @@ const teamController = require('../controllers/teams');
 *             required: true
 *             description: Team ID
 *           - name: body
-*             description: The ID of the new member
+*             description: The username of the new member
 *             in: body
 *             required: true
 *             schema:
 *               $ref: '#/definitions/AddMemberForm'
 *       responses:
 *           201:
-*               description: User successfully added
+*               description: User successfully added to the team
 *           401:
 *               description: Unauthorized user
 *           403:
@@ -245,7 +245,7 @@ module.exports = (router) => {
         .get('/teams/:teamId', Auth.isAuthenticated, async (req, res) => {
             try {
                 const team = await teamController.getTeam(req.params.teamId);
-                res.status(200).send({team});
+                res.status(200).send({ team });
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
@@ -275,8 +275,8 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                const newTeam = await teamController.postMember(req.params.teamId, req.body.member);
-                res.status(201).send({ message: 'User successfully created', team: newTeam });
+                const newTeam = await teamController.postMember(req.params.teamId, req.body.username);
+                res.status(201).send({ message: 'User successfully added to the team', team: newTeam });
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
