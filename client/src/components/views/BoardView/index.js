@@ -72,7 +72,7 @@ const BoardView = props => (
             </DragDropContext>
             <AddListForm
                 displayAddListForm={props.displayAddListForm}
-                isInputVisible={props.isInputVisible}
+                isInputVisible={props.isAddListInputVisible}
                 onListAdded={props.onListAdded}
             />
         </div>
@@ -80,7 +80,7 @@ const BoardView = props => (
 );
 BoardView.propTypes = {
     board: PropTypes.object.isRequired,
-    isInputVisible: PropTypes.bool.isRequired,
+    isAddListInputVisible: PropTypes.bool.isRequired,
     onDragEnd: PropTypes.func.isRequired,
     displayAddListForm: PropTypes.func.isRequired,
 };
