@@ -65,8 +65,19 @@ class TeamComp extends React.Component {
             );
         }
 
-        // Can't access the page
-        if (team === null) this.props.goBack();
+        if (team === null) {
+            return (
+                <div style={{ backgroundColor: 'rgba(0, 140, 220, 0.1)', height: '100%', padding: '100px' }}>
+                    <h1 className="text-danger">Private team</h1>
+                    <p style={{ fontSize: '1.2rem' }}>{'You can\'t see this team because is private.'}</p>
+                    <button className="btn btn-primary" type="button" onClick={this.props.goBack}>
+                        <i className="fas fa-chevron-left" />
+                        {' '}
+                        Go back
+                    </button>
+                </div>
+            );
+        }
 
         return '';
     }
@@ -99,10 +110,10 @@ const mapDispatchToProps = dispatch => bindActionCreators(
     {
         addMemberToTeam,
         fetchTeam,
+        goBack,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
-        goBack,
     }, dispatch,
 );
 
