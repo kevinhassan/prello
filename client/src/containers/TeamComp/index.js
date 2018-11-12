@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { push } from 'connected-react-router';
-import { fetchTeam } from '../../actions/teams';
+import { fetchTeam, addMemberToTeam } from '../../actions/teams';
 
 // ===== Components / Containers
 import TeamView from '../../components/views/TeamView';
@@ -18,6 +18,7 @@ class TeamComp extends React.Component {
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
         this.handleOnMemberClick = this.handleOnMemberClick.bind(this);
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
+        this.addMember = this.addMember.bind(this);
     }
 
     componentWillMount() {
@@ -28,6 +29,10 @@ class TeamComp extends React.Component {
         if (prevProps.match.params.teamId !== this.props.match.params.teamId) {
             this.props.fetchTeam(this.props.match.params.teamId);
         }
+    }
+
+    addMember(username) {
+        this.props.addMemberToTeam(this.props.team._id, username);
     }
 
     handleOnBoardClick(boardId) {
@@ -61,6 +66,7 @@ class TeamComp extends React.Component {
     }
 }
 TeamComp.propTypes = {
+    addMemberToTeam: PropTypes.func.isRequired,
     team: PropTypes.object,
     fetchTeam: PropTypes.func.isRequired,
     goToBoard: PropTypes.func.isRequired,
@@ -84,6 +90,7 @@ const mapStateToProps = ({ currentTeam }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        addMemberToTeam,
         fetchTeam,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),

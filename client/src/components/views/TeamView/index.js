@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // ===== Components
 import BoardItem from '../../BoardItem';
+import AddMemberForm from './AddMemberForm';
 
 // ===== Others
 import './style.css';
@@ -40,6 +41,11 @@ const TeamView = props => (
         <div className="row">
             <div className="col-sm-5">
                 <h2 className="text-center">Members</h2>
+
+                <AddMemberForm
+
+                />
+
                 <ul>
                     {props.team.members.sort((a, b) => a.fullName > b.fullName).map(member => (
                         <div>
@@ -97,6 +103,7 @@ const TeamView = props => (
     </div>
 );
 TeamView.propTypes = {
+    addMemberToTeam: PropTypes.func.isRequired,
     team: PropTypes.object.isRequired,
     onBoardClick: PropTypes.func.isRequired,
     onMemberClick: PropTypes.func.isRequired,
