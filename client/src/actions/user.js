@@ -4,6 +4,8 @@ import {
     displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage, displayErrorMessageAction,
 } from './modal';
 
+import { signOut } from './auth';
+
 
 // ===== Get profile ===== //
 export const GET_PROFILE_STARTED = 'user/GET_PROFILE_STARTED';
