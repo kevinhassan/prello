@@ -50,7 +50,6 @@ class Header extends React.Component {
                         ? (
                             <Fragment>
                                 <button className="btn btn-header" type="button" onClick={goProfile}><i className="fas fa-user" /></button>
-                                <button className="btn btn-header" type="button"><i className="fas fa-bell" /></button>
                                 <button className="btn btn-header btn-logout" type="button" onClick={this.handleLogOut}>
                                     <i className="fas fa-sign-out-alt" />
                                 </button>
