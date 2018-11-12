@@ -9,8 +9,16 @@ const DueDate = props => (
     props.isEditingDueDate
         ? (
             <form onSubmit={props.editDate}>
-                <input type="date" name="duedate" className="datepicker" />
-                {' '}
+                <div className="row">
+                    <div className="col-sm-12">
+                        <input type="date" name="duedate" className="datepicker" />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                        <input type="text" name="time" placeholder="12:00" className="timepicker" />
+                    </div>
+                </div>
                 <button type="submit" className="btn">
                     <i className="fas fa-check" />
                 </button>

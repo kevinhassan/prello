@@ -104,7 +104,7 @@ class CardComp extends React.Component {
 
     handleEditDate(event) {
         event.preventDefault();
-        const date = event.target.duedate.value;
+        const date = new Date(`${event.target.duedate.value} ${event.target.time.value}`);
         this.props.editDate(this.props.card, date, this.props.card.dueDate);
         this.changeIsEditingDueDate(false);
     }
