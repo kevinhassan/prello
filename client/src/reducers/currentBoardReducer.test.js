@@ -13,17 +13,20 @@ const card1 = {
     name: 'card1',
     labels: [labels[0], labels[1]],
     list: { _id: 'l1' },
+    dueDate: '2000-01-01',
 };
 const card2 = {
     _id: 'c2',
     name: 'card2',
     labels: [labels[0]],
+    dueDate: '2018-11-15',
 };
 const card3 = {
     _id: 'c3',
     name: 'card3',
     labels: [],
     list: { _id: 'l3' },
+    dueDate: '2019-01-19',
 };
 
 const state = {
@@ -380,5 +383,32 @@ describe(`${cardActions.ARCHIVE_CARD_SUCCESS}: inexistant card given`, () => {
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState).toEqual(state);
+    });
+});
+
+// Edit due date
+describe(cardActions.EDIT_DUE_DATE_STARTED, () => {
+    it('should update the due date with the given one', () => {
+        const newDate = '2018-11-12';
+        const action = cardActions.editDateStartedAction(card1, newDate);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).dueDate,
+        ).toEqual(newDate);
+    });
+});
+
+describe(cardActions.EDIT_CARD_DESCRIPTION_FAILURE, () => {
+    it('should update the due date with the old one', () => {
+        const initialDate = '2000-01-01';
+        const action = cardActions.editDateFailureAction(card1, initialDate);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).dueDate,
+        ).toEqual(initialDate);
     });
 });
