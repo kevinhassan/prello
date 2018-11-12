@@ -75,9 +75,16 @@ describe(teamActions.CREATE_TEAM_SUCCESS, () => {
             name: 'A test team',
             isVisible: true,
         };
+        const initState = {
+            profile: {
+                teams: [{
+                    _id: 't1',
+                    name: 'Team number one',
+                }],
+            },
+        };
         const action = teamActions.createTeamSuccessAction(team);
-        const finalState = usersReducer({}, action);
-
-        expect(finalState.profile.teams).toEqual(initialState.teams.concat(team));
+        const finalState = usersReducer(initState, action);
+        expect(finalState.profile.teams).toEqual(initState.profile.teams.concat(team));
     });
 });
