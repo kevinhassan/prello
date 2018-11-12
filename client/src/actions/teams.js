@@ -37,3 +37,36 @@ export const fetchTeam = team => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Add member ===== //
+export const ADD_MEMBER_TO_TEAM_STARTED = 'teams/ADD_MEMBER_TO_TEAM_STARTED';
+export const ADD_MEMBER_TO_TEAM_FAILURE = 'teams/ADD_MEMBER_TO_TEAM_FAILURE';
+export const ADD_MEMBER_TO_TEAM_SUCCESS = 'teams/ADD_MEMBER_TO_TEAM_SUCCESS';
+
+export const addMemberToTeamStartedAction = () => ({ type: ADD_MEMBER_TO_TEAM_STARTED });
+
+export const addMemberToTeamFailureAction = () => ({ type: ADD_MEMBER_TO_TEAM_FAILURE });
+
+export const addMemberToTeamSuccessAction = team => ({
+    type: ADD_MEMBER_TO_TEAM_SUCCESS,
+    payload: {
+        team,
+    },
+});
+
+export const addMemberToTeam = (teamId, username) => (dispatch) => {
+    dispatch(addMemberToTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `teams/${teamId}/members`;
+    APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.PUT)
+        .then((res) => {
+            dispatch(addMemberToTeamSuccessAction(res.data.team));
+        })
+        .catch((error) => {
+            dispatch(addMemberToTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

@@ -23,3 +23,17 @@ describe(actions.FETCH_TEAM_SUCCESS, () => {
         expect(finalState.team).toEqual(team);
     });
 });
+
+describe(actions.ADD_MEMBER_TO_TEAM_SUCCESS, () => {
+    it('should put the team updated in the state', () => {
+        const team = {
+            _id: 't2',
+            name: 'Awesome team updated',
+            description: 'this is a team',
+        };
+        const action = actions.addMemberToTeamSuccessAction(team);
+        const finalState = currentTeamReducer({}, action);
+
+        expect(finalState.team).toEqual(team);
+    });
+});

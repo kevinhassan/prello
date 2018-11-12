@@ -13,6 +13,12 @@ export default function currentTeamReducer(state = initialState, action) {
                 team: action.payload.team,
             };
 
+        case actions.ADD_MEMBER_TO_TEAM_SUCCESS:
+            return {
+                ...state,
+                team: action.payload.team,
+            };
+
         default:
             return state;
         }
