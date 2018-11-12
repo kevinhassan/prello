@@ -35,7 +35,7 @@ const changeIsArchived = [
 ];
 
 const changeName = [
-    check('name')
+    check('boardName')
         .not().isEmpty()
         .isString()
         .trim()

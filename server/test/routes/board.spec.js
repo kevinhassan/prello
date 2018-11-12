@@ -242,7 +242,7 @@ describe('PUT /boards/:id/isArchived', () => {
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
-    it('should return 404 OK', (done) => {
+    it('should return 404 ERROR', (done) => {
         request(app)
             .put('/boards/1234BoardId48/isArchived')
             .send({ isArchived: 'somethingWrong' })
@@ -254,6 +254,35 @@ describe('PUT /boards/:id/isArchived', () => {
         request(app)
             .put(`/boards/${boardData.id}/isArchived`)
             .send({ isArchived: true })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
+
+describe('PUT /boards/:id/name/:name', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/name/aNewBoardName`)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/name/aNewBoardName`)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .put('/boards/1234BoardId48/name/aNewBoardName')
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/name/aNewBoardName`)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });
