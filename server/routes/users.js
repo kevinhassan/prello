@@ -1,7 +1,9 @@
 const { validationResult } = require('express-validator/check');
+const passport = require('passport');
 const userController = require('../controllers/users');
 const Auth = require('../middlewares/auth');
-
+const User = require('../models/User');
+const { generateToken } = require('../auth/index');
 const {
     registerValidator, loginValidator, accountValidator, profileValidator,
     forgotValidator, resetValidator, passwordValidator,
@@ -302,6 +304,58 @@ const {
 *               description: User not found
 *           500:
 *               description: Internal server error
+*
+* /auth/github:
+*   get:
+*       tags:
+*           - OAuth
+*       description: Authentification with Github
+*       summary: Github OAuth2
+*       produces:
+*           - application/json
+*       responses:
+*           302:
+*               description: Redirection
+*           404:
+*               description: Page not found
+*           500:
+*               description: Internal server error
+*   delete:
+*       tags:
+*           - OAuth
+*       description: Authentification with Github
+*       summary: Github OAuth2
+*       produces:
+*           - application/json
+*       responses:
+*           204:
+*               description: Account successfully removed
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
+*
+* /auth/github/callback:
+*   get:
+*       tags:
+*           - OAuth
+*       description: Authentification callback from Github
+*       summary: Github OAuth2 callback
+*       produces:
+*           - application/json
+*       responses:
+*           200:
+*               description: User connected
+*           302:
+*               description: Redirect to home page
+*           401:
+*               description: Unauthorized user
+*           422:
+*               description: Invalid information
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -422,6 +476,24 @@ module.exports = (router) => {
                 res.status(200).send({ user });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
+            }
+        })
+        .get('/auth/github', passport.authenticate('github'))
+        .delete('/auth/github', Auth.isAuthenticated, async (req, res) => {
+            try {
+                await userController.deleteGithubOauthLink(req.user._id);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .get('/auth/github/callback', passport.authenticate('github', { session: false }), async (req, res) => {
+            try {
+                const user = await User.findOne({ 'github.id': req.user.github.id });
+                const token = generateToken(user);
+                res.redirect(`${process.env.CLIENT_URI}/signin?token=${token}&clientId=${user._id}`);
+            } catch (e) {
+                res.status(500, 'Internal server error');
             }
         });
 };

@@ -6,6 +6,7 @@ const Auth = require('../auth');
 const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetPassword');
 
 const boardController = require('../controllers/boards');
+const teamController = require('../controllers/teams');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 const User = require('../models/User');
@@ -36,13 +37,11 @@ exports.login = async (email, password) => {
         if (!user) {
             throw new MyError(403, 'Invalid credentials.');
         }
-
         // check password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             throw new MyError(403, 'Invalid credentials.');
         }
-
         // return token + id to the user
         return { token: Auth.generateToken(user), userId: user._id };
     } catch (err) {
@@ -58,32 +57,19 @@ exports.login = async (email, password) => {
  */
 exports.signUp = async (data) => {
     try {
-        const fullNameUser = data.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
-        // count the number of user with same fullName
-        const count = await User.countDocuments({ fullName: fullNameUser }) + 1;
-        let initialsUser = '';
-        const usernameUser = fullNameUser.toLowerCase().replace(/ /g, '') + count;
-        if (fullNameUser.split(' ').length >= 2) {
-            initialsUser = fullNameUser.split(' ')[0].toUpperCase().charAt(0) + fullNameUser.split(' ')[1].toUpperCase().charAt(0);
-        } else {
-            initialsUser = fullNameUser.toUpperCase().charAt(0);
-        }
-
+        const findUser = await User.findOne({ email: data.email }).select('-_id email');
+        if (findUser) throw new MyError(409, 'An account already exists for this email.');
         const user = new User({
-            fullName: fullNameUser,
-            username: usernameUser,
+            fullName: data.fullName,
             password: data.password,
             email: data.email,
             biography: data.biography,
             avatarUrl: data.avatarUrl,
-            initials: initialsUser
         });
         const newUser = await user.save();
         return newUser;
     } catch (err) {
-        if (err.name === 'MongoError' && err.code === 11000) {
-            throw new MyError(409, 'An account already exists for this email.');
-        }
+        if (err.status) throw err;
         return new MyError(500, 'Internal server error');
     }
 };
@@ -260,9 +246,7 @@ exports.putAccount = async (user, data) => {
         email, password
     } = data;
     try {
-        const userProfile = await User.findById(user._id).select({
-            password: 1, email: 1
-        });
+        const userProfile = await User.findById(user._id);
         if (email && email !== '') {
             const userFound = await User.findOne({ email, _id: { $ne: user._id } });
             if (userFound) throw new MyError(409, 'Email already used');
@@ -311,6 +295,10 @@ exports.deleteAccount = async (user, username) => {
         if (username !== userToDelete.username) {
             throw new MyError(403, 'Invalid username confirmation');
         }
+        await Promise.all([
+            userToDelete.teams ? userToDelete.teams.map(team => teamController.deleteMember(team, user._id)) : null,
+            userToDelete.teams ? userToDelete.boards.map(board => boardController.deleteMember(board, user._id)) : null
+        ]);
         await User.deleteOne({ _id: user._id });
     } catch (err) {
         if (err.status) throw err;

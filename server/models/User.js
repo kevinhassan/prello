@@ -4,13 +4,13 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     avatarUrl: String,
     biography: String,
-    email: { type: String, unique: true, required: true },
+    email: String,
     fullName: { type: String, required: true },
     initials: String,
-    password: { type: String, required: true },
+    password: String,
     passwordResetExpires: Date,
     passwordResetToken: String,
-    username: { type: String, unique: true, required: true },
+    username: { type: String, unique: true },
     boards: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Board'
@@ -23,23 +23,45 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team'
     }],
+    github: {
+        type: {
+            id: String,
+            token: String
+        }
+    },
 }, { timestamps: true });
+
 
 /**
  * Password hash middleware.
  * Get method for getting the user's intials
  */
-userSchema.pre('save', function save(next) {
-    const user = this;
-    if (!user.isModified('password')) { return next(); }
-    bcrypt.genSalt(10, (err, salt) => {
-        if (err) { return next(err); }
-        bcrypt.hash(user.password, salt, null, (err, hash) => {
-            if (err) { return next(err); }
-            user.password = hash;
-        });
-    });
-    next();
+userSchema.pre('save', async function save() {
+    try {
+        if (this.isModified('password')) {
+            await bcrypt.genSalt(10, async (err, salt) => {
+                if (err) throw err;
+                bcrypt.hash(this.password, salt, null, (err, hash) => {
+                    if (err) throw err;
+                    this.password = hash;
+                });
+            });
+        }
+        if (!this.username) {
+            const cleanFullName = this.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a');
+            const count = await this.model('User').countDocuments({ fullName: this.fullName });
+            this.username = cleanFullName.toLowerCase().replace(/ /g, '') + (parseInt(count, 10) + 1);
+        }
+        if (!this.initials) {
+            if (this.fullName.split(' ').length >= 2) {
+                this.initials = this.fullName.split(' ')[0].toUpperCase().charAt(0) + this.fullName.split(' ')[1].toUpperCase().charAt(0);
+            } else {
+                this.initials = this.fullName.toUpperCase().charAt(0);
+            }
+        }
+    } catch (err) {
+        throw err;
+    }
 });
 
 /**
@@ -58,5 +80,4 @@ userSchema.methods.comparePassword = async function comparePassword(candidatePas
 };
 
 const User = mongoose.model('User', userSchema, 'Users');
-
 module.exports = User;

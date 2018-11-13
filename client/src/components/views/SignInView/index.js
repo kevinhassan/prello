@@ -44,7 +44,15 @@ const SignInView = props => (
             </div>
 
             <div className="form-group text-center">
-                <button type="submit" className="btn btn-primary">Sign in</button>
+                <div className="button-group">
+                    <a type="button" className="btn loginWithGHLink" href={`${process.env.REACT_APP_API_HOST}auth/github`}>
+                Sign with Github
+                        {' '}
+                        <i className="fab fa-github" />
+                    </a>
+
+                    <button type="submit" className="btn btn-primary">Sign in</button>
+                </div>
             </div>
             <p className="text-danger signInErrorMsg">{props.errorMessage}</p>
         </form>

@@ -75,7 +75,6 @@ const canSee = async (req, res, next) => {
             }
         }
     } catch (e) {
-        console.log(e);
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Team not found' });
         } if (e.status) {

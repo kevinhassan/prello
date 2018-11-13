@@ -122,7 +122,8 @@ describe('PUT /lists/:listId/cards/:cardId', () => {
                 card1 = await cardController.createCard(card1.name, card1.list);
                 done();
             } catch (e) {
-                console.log(e);
+                console.log('Error happened : ', e);
+                process.exit(-1);
             }
         });
     });
