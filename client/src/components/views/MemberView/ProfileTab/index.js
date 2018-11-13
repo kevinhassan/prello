@@ -24,7 +24,7 @@ const ProfileTab = props => (
                                     {team.isVisible ? <i className="fas fa-eye" /> : <i className="fas fa-eye-slash" />}
                                     {' '}
                                 </span>
-                                <Link to={`teams/${team._id}`}>
+                                <Link to={`/teams/${team._id}`}>
                                     {team.name}
                                 </Link>
                             </li>
