@@ -8,7 +8,7 @@ import './style.css';
 const DueDate = props => (
     props.isEditingDueDate
         ? (
-            <form onSubmit={props.editDate}>
+            <form onSubmit={props.editDate} style={{ marginTop: '5px' }}>
                 <div className="row" style={{ marginBottom: '3px' }}>
                     <div className="col-sm-12">
                         <input type="date" name="duedate" className="datepicker form-control form-control-sm" />
@@ -16,12 +16,13 @@ const DueDate = props => (
                 </div>
                 <div className="row" style={{ marginBottom: '3px' }}>
                     <div className="col-sm-12">
-                        <input type="text" name="time" placeholder="hh:mm" className="timePicker form-control form-control-sm" />
+                        <input type="text" name="time" placeholder="12:00" className="timePicker form-control form-control-sm" />
                     </div>
                 </div>
                 <button type="submit" className="btn btn-sm btn-success">
                     <i className="fas fa-check" />
                 </button>
+                <small><i className="text-secondary float-right"> 24h format</i></small>
             </form>
         )
         : (
