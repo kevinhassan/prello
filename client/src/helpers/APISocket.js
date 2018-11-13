@@ -16,7 +16,10 @@ class APISocket {
     }
 
     subscribeToBoard = (boardId, callback) => {
-        this.socket.emit('subscribeToBoard', boardId);
+        this.socket.emit('subscribeToBoard', {
+            boardId,
+            Authorization: `Bearer ${localStorage.getItem('prello_token')}`,
+        });
         this.socket.on('currentBoard', res => callback(res));
     }
 
