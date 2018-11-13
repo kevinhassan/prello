@@ -1,5 +1,14 @@
 import * as actions from '../actions/auth';
 
+/**
+ * Parse the content of the JWToken
+ */
+const parseJwt = (token) => {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace('-', '+').replace('_', '/');
+    return JSON.parse(window.atob(base64));
+};
+
 export const getToken = () => {
     try {
         const token = localStorage.getItem('prello_token');
@@ -16,7 +25,7 @@ export const initialState = {
     errorSignInMessage: '',
     errorRegisterMessage: '',
     isLoggedIn: getToken() !== null,
-    clientId: '',
+    clientId: parseJwt(getToken()).id,
 };
 
 export default function authReducer(state = initialState, action) {
