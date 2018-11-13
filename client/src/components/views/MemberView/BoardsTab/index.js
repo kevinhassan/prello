@@ -12,7 +12,10 @@ import './style.css';
 // ==================================
 
 const BoardsTab = props => (
-    <div style={{ height: '100%', padding: '20px 100px' }}>
+    <div style={{
+        backgroundColor: '#fff', height: '100%', padding: '20px 100px', width: '100%',
+    }}
+    >
         {props.boards.length > 0
             ? (
                 <div className="boardsContent">

@@ -39,7 +39,7 @@ const MemberView = props => (
             </div>
         </div>
 
-        <Tabs>
+        <Tabs className="memberTabPanel">
             <TabList className="profileTabList react-tabs__tab-list">
                 <Tab className="profileTab react-tabs__tab">
                     <h4>
