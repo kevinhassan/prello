@@ -65,17 +65,24 @@ const CardDetailView = props => (
 
                     {props.card.dueDate && !(props.isEditingDueDate)
                         ? (
-                            <p
-                                className="cardDetailDate"
+                            <div
+                                className="cardDetailDate clickableDueDate"
                             >
                                 <button
-                                    className="btn btn-link btn-addElement"
+                                    className="btn btnDueDate"
                                     type="button"
                                     onClick={() => props.changeIsEditingDueDate(true)}
                                 >
-                                    {new Date(props.card.dueDate).toLocaleString()}
+                                    {new Date(props.card.dueDate).toLocaleDateString('en-GB',
+                                        {
+                                            day: 'numeric',
+                                            month: 'numeric',
+                                            year: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                        })}
                                 </button>
-                            </p>
+                            </div>
                         )
                         : (
                             <DueDate
@@ -104,6 +111,8 @@ const CardDetailView = props => (
                 {/* ==================== */}
 
             </div>
+
+            <hr />
 
             {/* ===== DESCRIPTION ===== */}
             <Description
