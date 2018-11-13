@@ -101,7 +101,24 @@ class CardComp extends React.Component {
 
     handleEditDate(event) {
         event.preventDefault();
-        const date = new Date(`${event.target.duedate.value} ${event.target.time.value}`);
+        const dueDate = event.target.duedate.value;
+        const time = event.target.time.value;
+        let date;
+        if (!dueDate && !time) {
+            date = '';
+        } else if (dueDate) {
+            if (time) {
+                date = new Date(`${dueDate} ${time}`);
+            } else {
+                date = new Date(`${dueDate}`);
+                date.setHours(12, 0);
+            }
+        } else if (time) {
+            const hour = time.split(':')[0];
+            const minute = time.split(':')[1];
+            date = new Date();
+            date.setHours(hour, minute);
+        }
         this.props.editDate(this.props.card, date, this.props.card.dueDate);
         this.changeIsEditingDueDate(false);
     }
