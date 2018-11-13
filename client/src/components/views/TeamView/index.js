@@ -18,14 +18,14 @@ const TeamView = props => (
         <div className="row">
             {props.team.isVisible
                 ? (
-                    <div className="col-sm-2">
+                    <div className="col-sm-2 teamVisibility" onClick={() => props.changeVisibility(props.team._id, props.team.isVisible)} onKeyPress={() => props.changeVisibility(props.team._id, props.team.isVisible)}>
                         Public
                         {' '}
                         <i className="fas fa-eye" />
                     </div>
                 )
                 : (
-                    <div className="col-sm-2">
+                    <div className="col-sm-2 teamVisibility" onClick={() => props.changeVisibility(props.team._id, props.team.isVisible)} onKeyPress={() => props.changeVisibility(props.team._id, props.team.isVisible)}>
                         Private
                         {' '}
                         <i className="fas fa-eye-slash" />
@@ -122,6 +122,7 @@ TeamView.propTypes = {
     onBoardClick: PropTypes.func.isRequired,
     onMemberClick: PropTypes.func.isRequired,
     onTeamClick: PropTypes.func.isRequired,
+    changeVisibility: PropTypes.func.isRequired,
 };
 
 export default TeamView;
