@@ -40,7 +40,8 @@ const updateCardName = [
 ];
 
 const editDate = [
-    check('dueDate').not().isEmpty().isString(),
+    check('dueDate')
+        .isString(),
 ];
 
 module.exports = {
