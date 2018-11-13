@@ -3,10 +3,14 @@ import * as actions from '../actions/auth';
 /**
  * Parse the content of the JWToken
  */
-const parseJwt = (token) => {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace('-', '+').replace('_', '/');
-    return JSON.parse(window.atob(base64));
+export const parseJwtToId = (token) => {
+    try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace('-', '+').replace('_', '/');
+        return JSON.parse(window.atob(base64)).id;
+    } catch (e) {
+        return null;
+    }
 };
 
 export const getToken = () => {
@@ -25,7 +29,7 @@ export const initialState = {
     errorSignInMessage: '',
     errorRegisterMessage: '',
     isLoggedIn: getToken() !== null,
-    clientId: parseJwt(getToken()).id,
+    clientId: parseJwtToId(getToken()),
 };
 
 export default function authReducer(state = initialState, action) {
