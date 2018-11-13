@@ -23,10 +23,10 @@ exports.initialize = (server) => {
                     logger.info(`Client subscribed to board ${boardId}`);
                     socket.join(boardId);
                     const boardFound = await boardController.getBoard(boardId);
-                    io.sockets.connected[socket.id].emit('currentBoard', { board: boardFound });
+                    socket.emit('currentBoard', { board: boardFound });
                 }
             } catch (error) {
-                io.sockets.connected[socket.id].emit('error', { error });
+                socket.emit('error', { error: error.message, status: error.status });
             }
         });
 

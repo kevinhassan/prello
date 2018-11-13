@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import { fetchBoardFailureAction } from '../actions/boards';
 
 // ===================
 let instance = null;
@@ -17,6 +18,10 @@ class APISocket {
     }
 
     subscribeToBoard = (boardId, callback) => {
+        this.socket.on('error', error => (dispatch) => {
+            // TODO: never triggered... check the server or here, I don't know.
+            dispatch(fetchBoardFailureAction(error));
+        });
         this.socket.emit('subscribeToBoard', {
             boardId,
             Authorization: `Bearer ${localStorage.getItem('prello_token')}`,
