@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
-import { fetchTeam, addMemberToTeam, changeVisibility } from '../../actions/teams';
+import {
+    fetchTeam, addMemberToTeam, changeVisibility, changeName,
+} from '../../actions/teams';
 
 // ===== Components / Containers
 import TeamView from '../../components/views/TeamView';
@@ -20,6 +22,11 @@ class TeamComp extends React.Component {
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
         this.handleChangeVisibility = this.handleChangeVisibility.bind(this);
         this.addMember = this.addMember.bind(this);
+        this.changeIsEditingName = this.changeIsEditingName.bind(this);
+        this.handleEditName = this.handleEditName.bind(this);
+        this.state = {
+            isEditingName: false,
+        };
     }
 
     componentWillMount() {
@@ -56,6 +63,18 @@ class TeamComp extends React.Component {
         this.props.changeVisibility(this.props.team._id, this.props.team.isVisible);
     }
 
+    /* ===== NAME ===== */
+    changeIsEditingName(value) {
+        this.setState({ isEditingName: value });
+    }
+
+    handleEditName(event) {
+        event.preventDefault();
+        const name = event.target.name.value;
+        this.props.changeName(this.props.team._id, name, name);
+        this.setState({ isEditingName: false });
+    }
+
     render() {
         const { clientId, team } = this.props;
         if (team) {
@@ -68,6 +87,10 @@ class TeamComp extends React.Component {
                     onMemberClick={this.handleOnMemberClick}
                     onTeamClick={this.handleOnTeamClick}
                     changeVisibility={this.handleChangeVisibility}
+
+                    changeIsEditingName={this.changeIsEditingName}
+                    editName={this.handleEditName}
+                    isEditingName={this.state.isEditingName}
                 />
             );
         }
@@ -99,6 +122,7 @@ TeamComp.propTypes = {
     goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
     changeVisibility: PropTypes.func.isRequired,
+    changeName: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -122,6 +146,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         fetchTeam,
         goBack,
         changeVisibility,
+        changeName,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),

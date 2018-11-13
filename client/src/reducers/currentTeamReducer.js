@@ -38,6 +38,14 @@ export default function currentTeamReducer(state = initialState, action) {
                     isVisible: action.payload.isVisible,
                 },
             };
+        case actions.CHANGE_NAME_TEAM_SUCCESS:
+            return {
+                ...state,
+                team: {
+                    ...state.team,
+                    name: action.payload.name,
+                },
+            };
 
         default:
             return state;
