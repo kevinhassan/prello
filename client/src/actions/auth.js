@@ -59,7 +59,7 @@ export const githubSignIn = data => (dispatch) => {
     dispatch(displayLoadingModal());
     dispatch(githubSignInStartedAction());
     if (data.token && data.token !== '' && data.clientId && data.clientId !== '') {
-        dispatch(githubSignInSuccessAction());
+        dispatch(githubSignInSuccessAction(data.clientId));
         localStorage.setItem('prello_token', data.token);
         dispatch(push('/boards'));
     } else {
