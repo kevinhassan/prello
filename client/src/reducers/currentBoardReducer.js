@@ -45,6 +45,21 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        case actions.UPDATE_BOARD_NAME_STARTED:
+        case actions.UPDATE_BOARD_NAME_FAILURE:
+            if (action.payload.boardId === state.board._id) {
+                return {
+                    ...state,
+                    board: {
+                        ...state.board,
+                        name: action.payload.name,
+                    },
+                };
+            }
+            return {
+                ...state,
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
@@ -54,6 +69,7 @@ export default function currentBoardReducer(state = initialState, action) {
                     lists: state.board.lists.concat(action.payload.list),
                 },
             };
+
 
         // With started: action.payload.lists is the new lists.
         // With failure: action.payload.lists is the old lists.

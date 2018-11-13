@@ -8,6 +8,7 @@ import MemberPill from '../../MemberPill';
 
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
+import BoardNameComp from '../../../containers/BoardComp/BoardNameComp';
 
 // ===== Others
 import './style.css';
@@ -18,7 +19,11 @@ const BoardView = props => (
     <div className="boardPanel container-fluid">
         <div className="row">
             <div className="col-sm-12 boardSettingsBar">
-                <h1 className="boardSettingsBtn boardName">{props.board.name}</h1>
+                <BoardNameComp
+                    boardId={props.board._id}
+                    name={props.board.name}
+                />
+
                 {' | '}
                 {props.board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
                 {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
@@ -72,7 +77,7 @@ const BoardView = props => (
             </DragDropContext>
             <AddListForm
                 displayAddListForm={props.displayAddListForm}
-                isInputVisible={props.isInputVisible}
+                isInputVisible={props.isAddListInputVisible}
                 onListAdded={props.onListAdded}
             />
         </div>
@@ -80,7 +85,7 @@ const BoardView = props => (
 );
 BoardView.propTypes = {
     board: PropTypes.object.isRequired,
-    isInputVisible: PropTypes.bool.isRequired,
+    isAddListInputVisible: PropTypes.bool.isRequired,
     onDragEnd: PropTypes.func.isRequired,
     displayAddListForm: PropTypes.func.isRequired,
 };

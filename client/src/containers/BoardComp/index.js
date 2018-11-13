@@ -17,7 +17,7 @@ class BoardComp extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isInputVisible: false,
+            isAddListInputVisible: false,
         };
         this.handleOnDragEnd = this.handleOnDragEnd.bind(this);
         this.handleAddList = this.handleAddList.bind(this);
@@ -45,7 +45,7 @@ class BoardComp extends React.Component {
     };
 
     handleAddList(value) {
-        this.setState({ isInputVisible: value });
+        this.setState({ isAddListInputVisible: value });
     }
 
     handleListAdded(event) {
@@ -55,7 +55,7 @@ class BoardComp extends React.Component {
             name, board: this.props.board,
         });
         this.props.createList(newList);
-        this.setState({ isInputVisible: false });
+        this.setState({ isAddListInputVisible: false });
     }
 
     handleOnDragEnd(result) {
@@ -123,7 +123,7 @@ class BoardComp extends React.Component {
             return (
                 <BoardView
                     board={board}
-                    isInputVisible={this.state.isInputVisible}
+                    isAddListInputVisible={this.state.isAddListInputVisible}
                     onDragEnd={this.handleOnDragEnd}
                     displayAddListForm={this.handleAddList}
                     onListAdded={this.handleListAdded}

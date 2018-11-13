@@ -619,6 +619,18 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
+        .put('/boards/:boardId/name/:boardName', Auth.isAuthenticated, Board.isMember, boardValidator.changeName, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await boardController.putName(req.params.boardId, req.params.boardName);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
 
         // ===== DELETE ===== //
         .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {

@@ -188,3 +188,42 @@ export const updateIsArchived = (boardId, isArchived) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Update name ======
+export const UPDATE_BOARD_NAME_STARTED = 'board/UPDATE_BOARD_NAME_STARTED';
+export const UPDATE_BOARD_NAME_FAILURE = 'board/UPDATE_BOARD_NAME_FAILURE';
+export const UPDATE_BOARD_NAME_SUCCESS = 'board/UPDATE_BOARD_NAME_SUCCESS';
+
+export const updateBoardNameStartedAction = (boardId, name) => ({
+    type: UPDATE_BOARD_NAME_STARTED,
+    payload: {
+        boardId,
+        name,
+    },
+});
+export const updateBoardNameFailureAction = (boardId, oldName) => ({
+    type: UPDATE_BOARD_NAME_FAILURE,
+    payload: {
+        boardId,
+        name: oldName,
+    },
+});
+export const updateBoardNameSuccessAction = () => ({ type: UPDATE_BOARD_NAME_SUCCESS });
+
+export const updateBoardName = (boardId, name, oldName) => (dispatch) => {
+    dispatch(updateBoardNameStartedAction(boardId, name));
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/name/${name}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.PUT)
+        .then(() => {
+            dispatch(updateBoardNameSuccessAction());
+            dispatch(displaySuccessMessage('Board renamed'));
+        })
+        .catch((error) => {
+            dispatch(updateBoardNameFailureAction(boardId, oldName));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
