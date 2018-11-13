@@ -5,7 +5,7 @@ const app = require('./app');
 const server = require('http').Server(app);
 /* eslint-enable import/order */
 
-require('./socket')(server);
+require('./socket').getSocket(server);
 
 server.listen(app.get('port'), () => {
     console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));

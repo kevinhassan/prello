@@ -5,6 +5,7 @@ import {
 import APISocket from '../helpers/APISocket';
 import * as APIFetch from '../helpers/APIFetch';
 
+
 // ========================
 const DELAY_BEFORE_REDIRECTION = 1500;
 
@@ -55,15 +56,12 @@ export const fetchBoardSuccessAction = board => ({
 export const fetchBoard = boardId => (dispatch) => {
     dispatch(fetchBoardStartedAction());
     dispatch(displayLoadingModal());
-    new APISocket().subscribeToBoard(boardId, (res) => {
-        if (res.error) {
-            dispatch(fetchBoardFailureAction());
-            dispatch(displayErrorMessage(res.error));
-        } else {
-            dispatch(fetchBoardSuccessAction(res.board));
-        }
-        dispatch(hideLoadingModal());
+
+    // Set up socket
+    APISocket(boardId, (res) => {
+        dispatch(fetchBoardSuccessAction(res.board));
     });
+    dispatch(hideLoadingModal());
 };
 
 // ===== Remove board fetch =====
@@ -79,7 +77,7 @@ export const removeBoardFetchSuccessAction = () => ({
 
 export const removeBoardFetch = () => (dispatch) => {
     dispatch(removeBoardFetchStartedAction());
-    new APISocket().removeSubscriptionToCurrentBoard(() => {
+    APISocket().removeSubscriptionToCurrentBoard(() => {
         dispatch(removeBoardFetchSuccessAction());
     });
 };

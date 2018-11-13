@@ -1,13 +1,12 @@
 const winston = require('winston');
 
-const logger = winston.createLogger({
-    transports: [
-        new (winston.transports.Console)({ level: process.env.NODE_ENV === 'production' ? 'error' : 'debug' }),
-        new (winston.transports.File)({ filename: 'debug.log', level: 'debug' })
-    ]
-});
-
+let logger = {};
 if (process.env.NODE_ENV !== 'production') {
+    logger = winston.createLogger({
+        transports: [
+            new (winston.transports.Console)({ level: 'debug' })
+        ]
+    });
     logger.debug('Logging initialized at debug level');
 }
 
