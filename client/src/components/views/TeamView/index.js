@@ -12,7 +12,44 @@ import './style.css';
 
 const TeamView = props => (
     <div className="teamContent container-fluid">
-        <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
+        {props.isEditingName
+            ? (
+                <form onSubmit={props.editName}>
+                    <label className="sr-only" htmlFor="name">Name</label>
+                    <div className="input-group mb-2 mr-sm-2">
+                        <div className="input-group-prepend">
+                            <button
+                                className="btn btn-secondary"
+                                type="reset"
+                                onClick={() => props.changeIsEditingName(false)}
+                            >
+                                <i className="fas fa-times updateIcon" />
+                            </button>
+                        </div>
+                        <input
+                            className="form-control"
+                            name="name"
+                            defaultValue={props.team.name}
+                            type="text"
+                            id="name"
+                            required
+                        />
+                        <div className="input-group-prepend">
+                            <button
+                                className="btn btn-success"
+                                type="submit"
+                            >
+                                <i className="fas fa-check" />
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            ) : (
+                <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
+                    <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
+                </button>
+            )}
 
 
         <div className="row">
@@ -123,6 +160,9 @@ TeamView.propTypes = {
     onMemberClick: PropTypes.func.isRequired,
     onTeamClick: PropTypes.func.isRequired,
     changeVisibility: PropTypes.func.isRequired,
+    editName: PropTypes.func.isRequired,
+    isEditingName: PropTypes.bool.isRequired,
+    changeIsEditingName: PropTypes.func.isRequired,
 };
 
 export default TeamView;

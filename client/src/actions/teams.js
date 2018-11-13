@@ -135,3 +135,36 @@ export const changeVisibility = (teamId, visibility) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Change team name ===== //
+export const CHANGE_NAME_TEAM_STARTED = 'teams/CHANGE_NAME_TEAM_STARTED';
+export const CHANGE_NAME_TEAM_FAILURE = 'teams/CHANGE_NAME_TEAM_FAILURE';
+export const CHANGE_NAME_TEAM_SUCCESS = 'teams/CHANGE_NAME_TEAM_SUCCESS';
+
+export const changeNameTeamStartedAction = () => ({ type: CHANGE_NAME_TEAM_STARTED });
+
+export const changeNameTeamFailureAction = () => ({ type: CHANGE_NAME_TEAM_FAILURE });
+
+export const changeNameTeamSuccessAction = name => ({
+    type: CHANGE_NAME_TEAM_SUCCESS,
+    payload: {
+        name,
+    },
+});
+
+export const changeName = (teamId, name) => (dispatch) => {
+    dispatch(changeVisibilityTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'teams'.concat(`/${teamId}/name`);
+    APIFetch.fetchPrelloAPI(resource, { name }, APIFetch.PUT)
+        .then(() => {
+            dispatch(changeNameTeamSuccessAction(name));
+        })
+        .catch((error) => {
+            dispatch(changeNameTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
