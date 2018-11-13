@@ -54,14 +54,14 @@ export const fetchBoardSuccessAction = board => ({
 });
 
 export const fetchBoard = boardId => (dispatch) => {
-    dispatch(fetchBoardStartedAction());
     dispatch(displayLoadingModal());
+    dispatch(fetchBoardStartedAction());
 
     // Set up socket
     APISocket.subscribeToBoard(boardId, (res) => {
         dispatch(fetchBoardSuccessAction(res.board));
+        dispatch(hideLoadingModal());
     });
-    dispatch(hideLoadingModal());
 };
 
 // ===== Remove board fetch =====
