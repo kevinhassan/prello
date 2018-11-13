@@ -26,7 +26,7 @@ const newDueDate = {
 };
 
 const newInvalidDate = {
-    dueDate: '',
+    dueDate: 'toto',
 };
 
 const newDescription = {
