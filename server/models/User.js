@@ -66,7 +66,7 @@ userSchema.pre('save', async function save() {
                 }
             }
         }
-        await Promise.resolve(this);
+        return this;
     } catch (err) {
         throw err;
     }
