@@ -1,6 +1,5 @@
 const MyError = require('../util/error');
 const BoardController = require('./boards');
-const ListController = require('./lists');
 const CardController = require('./cards');
 
 function parse(stringToParse) {
@@ -12,14 +11,14 @@ function parse(stringToParse) {
         users: []
     };
     console.log(stringToParse);
-    const params = stringToParse.split(/(?=&|@|\$|%)/g);
+    const params = stringToParse.split(/(?= [&@$%].*)/g);
     params.forEach((param) => {
-        console.log(param);
-        if (param.charAt(0) === '#')retour.board = param.substring(1).trim();
-        else if (param.charAt(0) === '$')retour.cards.push(param.substring(1).trim());
-        else if (param.charAt(0) === '%')retour.list = (param.substring(1).trim());
-        else if (param.charAt(0) === '@')retour.users.push(param.substring(1).trim());
-        else if (param === params[0]) retour.keyword = param.trim().split(' ');
+        const trimedParam = param.trim();
+        if (trimedParam.charAt(0) === '#')retour.board = trimedParam.substring(1);
+        else if (trimedParam.charAt(0) === '$')retour.cards.push(trimedParam.substring(1));
+        else if (trimedParam.charAt(0) === '%')retour.list = (trimedParam.substring(1));
+        else if (trimedParam.charAt(0) === '@')retour.users.push(trimedParam.substring(1));
+        else if (trimedParam === params[0]) retour.keyword = trimedParam.split(' ');
     });
     return retour;
 }
@@ -41,16 +40,15 @@ exports.slackAction = async (stringToParse) => {
                     if (!listParam && !params.keyword.includes('-R')) {
                         return `the list ${params.list} does not exist`;
                     }
-                    const list = async (listParam) => {
-                        if (!listParam) {
-                            const boar = (await BoardController.postList(board.id, params.list).lists); //.find(list => list.name === params.list);
-                            return boar[boar.length];
-                        }
-                        return listParam;
-                    };
-                    console.log(list());
-                    await params.cards.forEach(async (card) => {
-                        await CardController.postCard({ name: card, list: await list().id });
+                    if (!listParam) {
+                        const boar = (await BoardController.postList(board.id, params.list));
+                        params.cards.forEach(async (card) => {
+                            await CardController.postCard({ name: card, list: boar.lists[boar.lists.length - 1]._id });
+                        });
+                        return `you have add the cards ${params.cards.toString()} to the new list ${params.list}`;
+                    }
+                    params.cards.forEach(async (card) => {
+                        await CardController.postCard({ name: card, list: listParam._id });
                     });
                     return `you have add the cards ${params.cards.toString()} to ${params.list}`;
                 }
