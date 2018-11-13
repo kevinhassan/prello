@@ -67,7 +67,6 @@ exports.putTeamDescription = async (teamId, description) => {
         const newTeam = await Team.findByIdAndUpdate(teamId, { description });
         return newTeam;
     } catch (err) {
-        console.log('tututo : ', err);
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');
