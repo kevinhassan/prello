@@ -3,10 +3,8 @@ const boardController = require('../controllers/boards');
 const cardController = require('../controllers/cards');
 const listController = require('../controllers/lists');
 const { listValidator } = require('../validators');
-
-const socket = require('../socket');
-
 const { Auth, List } = require('../middlewares');
+const { updateClientsOnBoard } = require('../socket');
 /**
 * @swagger
 * definitions:
@@ -132,8 +130,10 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                const listCreated = await listController.postCard(req.params.listId, req.body.name);
-                res.status(201).send({ message: 'Card successfully created', list: listCreated });
+                const newList = await listController.postCard(req.params.listId, req.body.name);
+                res.status(201).send({ message: 'Card successfully created', list: newList });
+
+                updateClientsOnBoard(newList.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -166,7 +166,8 @@ module.exports = (router) => {
                 const listsUpdated = await boardController.getBoard(listUpdated.board._id).lists;
 
                 res.status(200).send({ message: 'Card successfully moved', lists: listsUpdated });
-                socket.updateClientsOnBoard(listUpdated.board._id);
+
+                updateClientsOnBoard(listUpdated.board._id);
             } catch (e) {
                 res.status(e.status).send({ err: e.message });
             }
@@ -178,8 +179,10 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await listController.archiveList(req.params.listId, req.body.isArchived);
+                const newList = await listController.archiveList(req.params.listId, req.body.isArchived);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(newList.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

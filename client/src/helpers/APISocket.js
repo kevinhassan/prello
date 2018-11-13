@@ -1,19 +1,28 @@
-import openSocket from 'socket.io-client';
+import io from 'socket.io-client';
 
 // ===================
+let instance = null;
 
-const APISocket = {};
-APISocket.socket = openSocket(process.env.REACT_APP_SOCKET_API_HOST);
+class APISocket {
+    constructor() {
+        if (instance) {
+            return instance;
+        }
+        if (process.env.REACT_APP_API_HOST === undefined && process.env.ENVIRONMENT !== 'production') {
+            throw Error('REACT_APP_API_HOST in .env file not found.');
+        }
+        this.socket = io.connect(process.env.REACT_APP_API_HOST);
+        instance = this;
+    }
 
-APISocket.subscribeToBoard = (boardId, callback) => {
-    APISocket.socket.on('currentBoard', (res) => {
-        callback(res);
-    });
-    APISocket.socket.emit('subscribeToCurrentBoard', boardId);
-};
+    subscribeToBoard = (boardId, callback) => {
+        this.socket.emit('subscribeToBoard', boardId);
+        this.socket.on('currentBoard', res => callback(res));
+    }
 
-APISocket.removeSubscriptionToCurrentBoard = (callback) => {
-    APISocket.socket.removeListener('subscribeToCurrentBoard', callback());
-};
+    removeSubscriptionToCurrentBoard = () => {
+        this.socket.emit('unsuscribeFromBoard', () => {});
+    };
+}
 
-export default APISocket;
+export default new APISocket();

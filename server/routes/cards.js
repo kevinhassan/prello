@@ -3,10 +3,9 @@ const cardController = require('../controllers/cards');
 const listController = require('../controllers/lists');
 const CardModel = require('../models/Card');
 const List = require('../models/List');
-const socket = require('../socket');
 const { cardValidator } = require('../validators');
 const { Auth, Card } = require('../middlewares');
-
+const { updateClientsOnBoard } = require('../socket');
 /**
 * @swagger
 * definitions:
@@ -184,9 +183,9 @@ module.exports = (router) => {
 
                 const card = await CardModel.findById(req.params.cardId);
                 const list = await List.findById(card.list._id);
-                socket.updateClientsOnBoard(list.board._id);
-
                 res.status(200).send({ message: 'Label removed' });
+
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -220,9 +219,10 @@ module.exports = (router) => {
 
                 const card = await CardModel.findById(req.params.cardId);
                 const list = await List.findById(card.list._id);
-                socket.updateClientsOnBoard(list.board._id);
 
                 res.status(200).send({ message: 'Label added' });
+
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -237,7 +237,8 @@ module.exports = (router) => {
                 const card = await cardController.putDescription(req.params.cardId, req.body.description);
                 const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
-                socket.updateClientsOnBoard(list.board._id);
+
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -252,7 +253,8 @@ module.exports = (router) => {
                 const card = await cardController.putName(req.params.cardId, req.body.name);
                 const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
-                socket.updateClientsOnBoard(list.board._id);
+
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

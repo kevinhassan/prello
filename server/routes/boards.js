@@ -2,6 +2,8 @@ const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
 const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
+const { updateClientsOnBoard } = require('../socket');
+
 /**
 * @swagger
 * definitions:
@@ -523,6 +525,8 @@ module.exports = (router) => {
             try {
                 await boardController.postMemberWithMail(req.params.boardId, req.body.email);
                 res.status(201).send({ message: 'Member successfully added' });
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -539,6 +543,8 @@ module.exports = (router) => {
                     boardId: req.params.boardId,
                 });
                 res.status(201).send({ message: 'Label successfully created', label: labelCreated });
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -551,6 +557,8 @@ module.exports = (router) => {
             try {
                 const listCreated = await boardController.postList(req.params.boardId, req.body.name);
                 res.status(201).send({ message: 'List successfully created', list: listCreated });
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -563,6 +571,8 @@ module.exports = (router) => {
             try {
                 await boardController.postTeam(req.params.boardId, req.body.team);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -577,6 +587,8 @@ module.exports = (router) => {
             try {
                 await boardController.putLists(req.params.boardId, req.body.lists);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -589,6 +601,8 @@ module.exports = (router) => {
             try {
                 await boardController.putVisibility(req.params.boardId, req.body.visibility);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -601,6 +615,8 @@ module.exports = (router) => {
             try {
                 await boardController.putIsArchived(req.params.boardId, req.body.isArchived);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -615,6 +631,8 @@ module.exports = (router) => {
                     req.params.memberId,
                     req.body.isAdmin);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -627,6 +645,8 @@ module.exports = (router) => {
             try {
                 await boardController.putName(req.params.boardId, req.params.boardName);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -637,6 +657,8 @@ module.exports = (router) => {
             try {
                 await boardController.deleteTeam(req.params.boardId, req.params.teamId);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -645,6 +667,8 @@ module.exports = (router) => {
             try {
                 await boardController.deleteMember(req.params.boardId, req.params.memberId);
                 res.sendStatus(204);
+
+                updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

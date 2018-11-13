@@ -23,12 +23,12 @@ require('./database')(config);
  * Express configuration.
  */
 app.set('port', process.env.PORT || 9090);
+app.use(cors());
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
-app.use(cors());
 
 app.disable('x-powered-by');
 
@@ -40,11 +40,6 @@ app.use('/', require('./middlewares/auth').authRequest);
  * Load all the models
  */
 require('./models');
-
-/**
- * Set up socket
- */
-require('./socket');
 
 /**
  * Swagger API documentation

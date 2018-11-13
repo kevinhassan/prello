@@ -123,6 +123,7 @@ exports.postMember = async (teamId, username) => {
         }
 
         team.members.push(user);
+        await userController.joinTeam(user._id, team._id);
         await team.save();
         return this.getTeam(teamId);
     } catch (err) {

@@ -236,9 +236,7 @@ exports.postList = async (boardId, name) => {
         if (!board) throw new MyError(404, 'Board not found');
 
         const newList = await listController.createList(boardId, name);
-        const newBoard = await Board.findOneAndUpdate({ _id: boardId }, { $addToSet: { lists: newList._id } }, { new: true });
-
-        socket.updateClientsOnBoard(newBoard._id);
+        await Board.findOneAndUpdate({ _id: boardId }, { $addToSet: { lists: newList._id } }, { new: true });
         return newList;
     } catch (err) {
         if (err.status) throw err;
