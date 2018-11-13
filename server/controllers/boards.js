@@ -239,7 +239,6 @@ exports.postList = async (boardId, name) => {
         await Board.findOneAndUpdate({ _id: boardId }, { $addToSet: { lists: newList._id } }, { new: true });
         return newList;
     } catch (err) {
-        console.log(err);
         if (err.status) throw err;
         else if (err.name === 'CastError') {
             throw new MyError(404, 'Board not found');

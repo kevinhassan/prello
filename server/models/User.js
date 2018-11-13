@@ -48,7 +48,7 @@ userSchema.pre('save', async function save() {
             });
         }
         const cleanFullName = this.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a').replace(/ /g, '').toLowerCase();
-        const count = await this.model('User').countDocuments({ username: new RegExp('kevinhassan[0-9]*', 'i') });
+        const count = await this.model('User').countDocuments({ username: new RegExp(`${cleanFullName}[0-9]*`, 'i') });
         this.username = count > 0 ? cleanFullName.toLowerCase() + count : cleanFullName.toLowerCase();
         if (!this.initials) {
             if (this.fullName.split(' ').length >= 2) {
