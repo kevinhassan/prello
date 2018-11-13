@@ -1,0 +1,194 @@
+/* ===== PRELLO ===== */
+
+/*
+    Blue: #004a75
+    Cyan: #009cdd
+    White: #e8e8e8
+    Gray: #222
+    Red: #ac1212
+
+    Main font: Nunito
+    Alt font: Cabin
+*/
+
+/* ===== BLOCKS ===== */
+
+html {
+    font-size: 100%;
+    height: 100vh;
+}
+
+body {
+    font-family: Nunito, Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    height: 100%;
+}
+
+/* ===== TEXT ===== */
+a, .btn-link {
+    color: #009cdd;
+    position: relative;
+    transition: 0.2s;
+}
+
+a:hover, .btn-link:hover {
+    color: #004a75;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.text-warning {
+    color: #ddb107;
+}
+
+/* Underline from center effect
+Source: http://tobiasahlin.com/blog/css-trick-animating-link-underlines/
+*/
+a:before, .btn-link:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #004a75;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+}
+a:hover:before, .btn-link:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+h1, h2, h3 {
+    font-family: Cabin;
+    margin: 0;
+    padding: 0;
+}
+
+/* "!important" beacause I can't find what is overriding the h1 properties... 
+Maybe something in the /node_modules */
+h1 {
+    color: #004a75;
+    font-size: 2.8em !important;
+    margin-bottom: 5px !important;
+    margin-top: 0 !important;
+}
+
+h2 {
+    color: #444;
+    font-size: 2.5rem;
+}
+
+h3 {
+    color: #444;
+    font-size: 2rem;
+}
+
+
+p {
+    color: #222;
+}
+
+/* ===== ELEMENTS ===== */
+
+/* List */
+ul {
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+/* Buttons */
+.btnReseted {
+    background: none;
+    border: inherit;
+    color: #222;
+    padding: inherit;
+}
+
+.btn {
+    border: none;
+    border-radius: 0;
+    transition: 0.2s;
+}
+
+.btn-primary:hover, .btn-secondary:hover, .btn-danger:hover,
+.btn-warning:hover, .btn-success:hover, .btn-light:hover,
+.btn-dark:hover, .btn-info:hover {
+    box-shadow: 0 5px 5px -5px #111;
+    opacity: 0.9;
+    transition: 0.2s;
+}
+
+.btn-primary:active, .btn-secondary:active, .btn-danger:active,
+.btn-warning:active, .btn-success:active, .btn-light:active,
+.btn-dark:active, .btn-info:active,
+.btn-primary:focus, .btn-secondary:focus, .btn-danger:focus,
+.btn-warning:focus, .btn-success:focus, .btn-light:focus,
+.btn-dark:focus, .btn-info:focus,
+.btn-primary:not(:disabled):not(.disabled):active, .btn-secondary:active:not(:disabled):not(.disabled),
+.btn-danger:active:not(:disabled):not(.disabled),.btn-warning:active:not(:disabled):not(.disabled),
+.btn-success:active:not(:disabled):not(.disabled), .btn-light:active:not(:disabled):not(.disabled),
+.btn-dark:active:not(:disabled):not(.disabled), .btn-info:active:not(:disabled):not(.disabled),
+.btn-primary:not(:disabled):not(.disabled):active:focus, .btn-secondary:active:not(:disabled):not(.disabled):active:focus,
+.btn-danger:active:not(:disabled):not(.disabled):active:focus,.btn-warning:active:not(:disabled):not(.disabled):active:focus,
+.btn-success:active:not(:disabled):not(.disabled):active:focus, .btn-light:active:not(:disabled):not(.disabled):active:focus,
+.btn-dark:active:not(:disabled):not(.disabled):active:focus, .btn-info:active:not(:disabled):not(.disabled):active:focus  {
+    box-shadow: 0 5px 5px -5px #111;
+    opacity: 0.9;
+    transition: 0.2s;
+}
+
+
+.btn-primary, .btn.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary:not(:disabled):not(.disabled):active {
+    background-color: #004a75;
+}
+
+.btn-danger, .btn.btn-danger:hover {
+    background-color: #ac1212;
+}
+
+.btn-info, .btn.btn-info:hover {
+    background-color: #009cdd;
+}
+
+.btn-success, .btn.btn-success:hover {
+    background-color: #43b949;
+}
+
+.btn-warning, btn.btn-warning:hover {
+    background-color: #ddb107;
+}
+
+.btn-success {
+    margin-left: 0 !important;
+}
+
+.general-form {
+    text-align: center;
+}
+
+.general-form .form-title{
+    margin:15px;
+}
+.signin-container {
+    display: inline;
+}
+
+.appened-form{
+    border-radius: 0.25rem;
+    background-color: #dbdbed;
+}

@@ -1,0 +1,20 @@
+/* FONTS */
+h1.registerTitle {
+    margin: 10px auto;
+    text-align: center;
+}
+
+.registerErrorMsg {
+    font-size: 1.2rem;
+    transition: 1s;
+}
+
+/* BLOCS */
+.registerFormWrapper {
+    margin: auto;
+    max-width: 500px;
+}
+
+.registerForm {
+    margin: 20px 0;
+}

@@ -1,0 +1,20 @@
+.addMemberForm{
+    border: 1px solid #bbb;
+    background: #eee;
+    border-radius: 0.25rem;
+    padding: 5px;
+}
+
+.addMemberForm-btn {
+    width: 100%;
+}
+
+.addMember_btnBlock {
+    text-align: center;
+    padding: 0 5px;
+    width: 33.33333%;
+}
+
+.addMember_inputBlock {
+    width: 66.66666% !important;
+}

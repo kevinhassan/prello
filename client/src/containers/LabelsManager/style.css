@@ -1,0 +1,17 @@
+.labelsManagerModal {
+    background-color: #ddd;
+    box-shadow: 1px 2px 4px black;
+    padding: 10px;
+    position: absolute;
+    left: +25%;
+    top: +100%;
+}
+
+.closeLabelManager-icon {
+    float: right;
+}
+
+.closeLabelManager-icon:hover {
+    color: #555;
+    cursor: pointer;
+}

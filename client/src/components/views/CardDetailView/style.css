@@ -1,0 +1,102 @@
+.cardDetailOverlay {
+    background-color: rgba(70, 70, 70, 0.5);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.cardDetailOverlay:hover {
+    cursor: default;
+}
+
+.cardDetailContent {
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 2px 3px;
+    display: inline-block;
+    margin: 20px auto;
+    height: calc(100vh - 40px);
+    overflow-y: auto;
+    padding: 15px;
+    text-align: left;
+    transition: all 0.3s, visibility 0s;
+    width: 50%;
+}
+
+/* ===== Card elements ===== */
+.cardElementContent {
+    margin: 10px;
+}
+
+.cardDetail-h2 {
+    color: #004a75;
+    font-size: 1.4rem;
+}
+
+.descriptionContent {
+    line-height: 20px;
+    white-space: pre-line;
+}
+
+.descriptionForm {
+    margin: 10px;
+}
+
+.descriptionFormGroup {
+    margin-bottom: 5px;
+}
+
+.btnDescription {
+    background: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.btn-addElement {
+    color: #888;
+}
+
+.clickableDescription {
+    width: 100%;
+}
+.clickableDescription:hover {
+    background-color: #f4f4f4;
+}
+
+.btnDescription:hover {
+    cursor: pointer;
+}
+
+.cardDetailInList {
+    font-weight: bold;
+}
+
+.descriptionTextArea, .descriptionTextArea:hover,  
+.descriptionTextArea:focus, .descriptionTextArea:active {
+    background-color: #efefff;
+}
+
+.closeCardDetailIcon {
+    float: right;
+    margin: 0 3px;
+}
+
+.closeCardDetailIcon:hover {
+    cursor: pointer;
+}
+
+.cardDetailContent .archiveBtn:hover {
+    background-color: #ac1212;
+}
+
+.cardDetailActions button {
+    font-size: 0.8rem;
+}
+.cardDetailActions button:not(:first-child) {
+    margin-left: 5px;
+}

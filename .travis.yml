@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+- '8'
+- '10'
+branches:
+  only:
+  - master
+  - develop
+cache:
+  yarn: true
+  directories:
+  - ".npm"
+  - node_modules
+services:
+- mongodb
+env:
+- TEST_DIR=./client
+- TEST_DIR=./server
+before_script:
+- cd $TEST_DIR
+- npm install
+- npm test
+notifications:
+  email: false
+  slack:
+    secure: PnObvvDhdayHXHvS+QkYEnU5pV9hs9Nsb5PNZce9ZlxC7DMSmg6e2d3/vD8Eq4Y7NUARQJWx6t3WV6c1D5tQA/pH0uqNCbfqRa5hVMMWddLY6+jMJRAJKnp9rgf3qugif+TllJ7/+jFXC/2hQEmL4lxIotRxtte7PA/8YhgsQIHgVkh3sBmiK1n1rPBL8jjY+YSW3VyoeqCnv4JPCa4HpmUEmckKF5DNHNsxajD9SRDRFD9EYZFaV4o65yePaedCbC4EAF2YHmB+vJ6k5vT5/6sjPrrgWmD04tVT94VMb0HHSlls2cjrw3PLPnX9bTD5m7eDSIiZj9zMPxKPHtDwhvIzBRv4pHNZmr7aAg+nPK0TnMDYas+Ls6s0M9b4644VTk7Ni2kW7zIJVE8RuS7/l7137Mop+sw3xWMHqBN6YjG5D3tnrSGC7os6ajVYfCAd0D3/1YHiIAn3sky+2Pd5SFs8cIMOuXV2NBx17ZO4E5lPU2U4LVqbmpmJTqonLLgSg+43La8CLvAMeXLfwE8JcaXKufDkpsRlznce7+L6/yqRM62POe0x5Rb8hpDO+wIVv7ZddbAv4qKQBANaYq/yhpfxlwUWU2DkQE6TpUZvsW428+kbSyE1WLPSEtlYzIfRTZ+jc1kyi9X7AP6XW+RQ6QEbQMsW/56vxbSeZJY5I8Q=

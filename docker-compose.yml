@@ -1,0 +1,32 @@
+version: '3.1'
+services:
+  reactapp:
+    container_name: prello-react
+    build: ./client
+    environment:
+      - API_URI=http://api:9090
+    ports:
+      - "3000:3000"
+    links:
+      - api:api
+    depends_on:
+      - api
+  api:
+    container_name: prello-api
+    build: ./server
+    environment:
+      - MONGODB_URI_LOCAL=mongodb://mongo:27017/prello
+    ports:
+      - "9090:9090"
+    links:
+      - mongo
+  mongo:
+    container_name: prello-mongo
+    image: mongo
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongo-data:

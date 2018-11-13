@@ -1,0 +1,72 @@
+.modalContent, .hideModal {
+    background-color: none;
+    left: 50%;
+    margin: auto;
+    position: fixed;
+    text-align: center;
+    transform: translateX(-50%);
+    z-index: 10000;
+}
+
+.loadingModalContent {
+    background-color: #004a75;
+    border-radius: 3px;
+    box-shadow: 0px 5px 4px;
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px;
+    transition: 0.5s;
+}
+
+.spinnerImg {
+    width: 3.5vw;
+}
+
+.hideModal > *, .hideModal {
+    opacity: 0;
+    transition: 0.2s opacity, 3s transform;
+    transform: translateY(-500vh);
+}
+
+.errorMessageModalContent, .successMessageModalContent {
+    border-radius: 3px;
+    box-shadow: 0px 5px 4px black;
+    display: inline-block;
+    font-size: 0.9rem;
+    line-height: 1rem;
+    min-width: 100px;
+    margin-top: 5px;
+    width: 20vw;
+    padding: 10px;
+    transition: 0.5s;
+}
+
+.errorMessageModalContent:hover, .successMessageModalContent:hover {
+    cursor: pointer;
+}
+
+.errorMessageModalContent {
+    background-color: #ac1212;
+    transform: translateX(-15vw);
+}
+
+.errorModalText {
+    color: white;
+}
+
+.successMessageModalContent {
+    background-color: #53c959;
+    transform: translateX(15vw);
+}
+
+.successModalText {
+    color: #111;
+}
+
+.modalText {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    margin: 0;
+    text-align: left;
+}

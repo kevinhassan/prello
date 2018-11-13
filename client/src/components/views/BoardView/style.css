@@ -1,0 +1,58 @@
+.boardSettingsBar {
+    background-color: rgba(255,255,255, 0.7);
+    flex: none;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 10px;
+}
+
+.boardSettingsBar > * {
+    vertical-align: middle;
+}
+
+.boardSettingsBtn {
+    font-size: 1.5rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    margin-right: 5px;
+}
+
+.boardSettingsBtn:hover {
+    cursor: pointer;
+}
+
+.starBtn:hover {
+    color: rgb(227, 227, 79)
+}
+
+.listsAndAddPanel {
+    display: flex;
+    height: 100%;
+    padding-bottom: 15px;
+    overflow-x: auto;
+}
+
+.listsPanel {
+    height: 100%;
+    min-height: 0;
+    white-space: nowrap;
+}
+
+.listCompWrapper {
+    display: inline-block;
+    height: 100%;
+    margin-right: 5px;
+    vertical-align: top;
+    width: 250px;
+}
+
+.boardPanel {
+    background: url('../../../assets/board_background.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    overflow-y: hidden;
+}

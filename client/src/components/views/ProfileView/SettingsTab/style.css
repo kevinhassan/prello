@@ -1,0 +1,29 @@
+.settingsPanel {
+    background-color: #fff;
+    height: 100%;
+    padding: 20px 20vw;
+}
+
+.settingsList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.deleteAccount {
+    display: flex;
+    justify-content:space-around;
+    align-items:center;
+    text-align:center;
+}
+
+.deleteAccountForm {
+    display: flex;
+    justify-content:space-around;
+    align-items:center;
+    text-align:center;
+}
+
+.closeForm{
+    float: right;
+}

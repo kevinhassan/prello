@@ -1,0 +1,69 @@
+.btn-success {
+    margin-left: 10px
+}
+
+.cardsList {
+    height: 100%;
+    margin: 0;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.cardsListPanel {
+    background-color: rgba(255,255,255, 0.7);
+    border-radius: 0.25rem;
+    box-shadow: 1px 1px 2px black;
+    display: flex;
+    max-height: 100%;
+    flex-direction: column;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.card-item {
+    border-radius: 0.25rem;
+}
+
+.listDragged {
+    box-shadow: 0 5px 10px;
+    transform: scale(1.005);
+    transition: 0.3s;
+}
+
+.listName {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.cardHeader {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.archiveCardIcon {
+    align-self: flex-start;
+    font-size: 12px;
+    margin: 10px 10px 0 0;
+}
+
+.archiveCardIcon:hover {
+    color: #ac1212;
+    cursor: pointer;
+}
+
+.archiveIcon {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    transition: 0.2s;
+}
+
+.archiveIcon:hover {
+    color: #ac1212;
+    cursor: pointer;
+    transition: 0.2s;
+}

@@ -1,0 +1,54 @@
+.card {
+    background: none;
+    border: none;
+    box-shadow: none;
+    color: inherit;
+    flex-basis: 33%;
+    list-style-type: none;
+    margin: 5px;
+    transition: all 0.2s, visibility 0s;
+    vertical-align: top;
+}
+
+.card:hover:before {
+    display: none;
+}
+
+.cardName {
+    white-space: normal;
+}
+
+.cardContent {
+    background-color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0px 1px 3px;
+    display: inline-block;
+    padding: 5px;
+    text-align: center;
+    transition: all 0.2s, visibility 0s;
+}
+
+.cardContent:hover {
+    background-color: #d2e5ee;
+}
+
+.btn-noCss{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+  
+.btn-noCss:hover,
+.btn-noCss:focus {
+    text-decoration: none;
+}
+
+.labelsBar {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+}

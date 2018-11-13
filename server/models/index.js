@@ -1,0 +1,13 @@
+require('./Action');
+require('./ActionType');
+require('./Attachment');
+require('./Board');
+require('./Card');
+require('./Checklist');
+require('./ChecklistItem');
+require('./Comment');
+require('./Label');
+require('./List');
+require('./Notication');
+require('./Team');
+require('./User');

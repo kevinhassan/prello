@@ -1,0 +1,23 @@
+.memberPill {
+    border-radius: 0.25rem;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.memberLink {
+    border-radius: 0.25rem;
+    color: #000;
+    padding: 2px;
+    transition: 0.2s;
+}
+
+.memberLink:hover {
+    box-shadow: 0px 1px 1px black;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.memberLink:hover:before {
+    display: none;
+}

@@ -1,0 +1,70 @@
+/* BLOCKS */
+.userPanel {
+    display: flex;
+    min-height: 100%;
+}
+
+.userPage {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.headerProfile{
+    background-color: rgba(0, 140, 220, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+
+.profileTabPanel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.profileTabPanel > .react-tabs__tab-panel--selected {
+    display: flex;
+    flex: 1;
+}
+
+/* TEXT & ELEMENTS */
+
+.nickname{
+    display: flex;
+}
+
+.nickname > h1, p{
+    text-align: left
+}
+
+.readOnly{
+    background-color: #ccc;
+    border: 0;
+}
+
+.btnUpdate{
+    float: right;
+}
+
+.initials{
+    text-align: right; 
+    padding: 30px;
+    color: #d44;
+}
+
+.userData{
+    width:400px;
+    min-width: 300px;
+}
+
+.profileTabList{
+    background-color: rgba(0, 140, 220, 0.1);
+    margin: 0;
+    text-align: center;
+}
+
+.profileTab:hover {
+    cursor: pointer;
+}

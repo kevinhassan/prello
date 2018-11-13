@@ -1,0 +1,37 @@
+.addListForm {
+  
+}
+
+.appened-form {
+    background-color: rgba(255,255,255, 0.7);
+    box-shadow: 1px 1px 2px black;
+    display: inline-block;
+    padding: 10px;
+    width: 250px;
+}
+
+.addListForm-btn {
+    margin-top: 5px;
+}
+
+.addListButton {
+    background-color: rgba(255,255,255, 0.7);
+    box-shadow: 1px 1px 2px black;
+    border: 0;
+    border-radius: 0.25rem;
+    height: 50px;
+    width: 250px;
+}
+
+.addListButton:hover {
+    background-color: rgba(255,255,255, 0.8);
+}
+
+.addListButton:hover > .addListIcon {
+    transform: rotateZ(90deg) scale(1.5);
+    transition: 0.2s;
+}
+
+.addListIcon {
+    transition: 0.2s;
+}

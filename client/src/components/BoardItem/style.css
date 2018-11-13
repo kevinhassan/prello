@@ -1,0 +1,84 @@
+.board-li-content, .board-li-content-light {
+    box-shadow: 1px 1px 2px black;
+    border-radius: 0.25rem;
+    height: 100%;
+    margin-right: 10px;
+    padding: 5px 10px;
+    position: relative;
+    transition: 0.2s;
+}
+
+.board-li-content {
+    background-color: rgba(0, 140, 220, 0.1);
+}
+
+.board-li-content-light {
+    background-color: rgba(255,255,255,0.7);
+}
+
+.board-li-content:hover, .board-li-content-light:hover {
+    background-color: #eef;
+    box-shadow: 1px 1px 5px black;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* BOARD-LI ELEMENTS */
+.board-li .boardName {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;    
+}
+
+.archiveIcon {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    transition: 0.2s;
+}
+
+.archiveIcon:hover {
+    color: #ac1212;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.board-li a.boardLink:hover .board-li-content {
+    background-color: #ddd;
+    transition: 0.2s;
+}
+
+.board-li .boardInfo {
+    margin: 0;
+}
+
+.teamLink:not(:last-child)::after {
+    content: ", ";
+    display: inline-block;
+    white-space: pre;
+}
+
+.teamLink {
+    color: #009cdd;
+    transition: 0.2s;
+}
+
+.teamLink:hover {
+    color: #004a75;
+    text-decoration: underline;
+    transition: 0.2s;
+}
+
+.teamLink:hover::after {
+    color: initial;
+    text-decoration: none;
+}
+
+.membersInitialsList {
+    display: flex;
+    flex-wrap: wrap;
+}
