@@ -55,3 +55,17 @@ describe(actions.ADD_MEMBER_TO_TEAM_SUCCESS, () => {
         expect(finalState.team).toEqual(team);
     });
 });
+describe(actions.CHANGE_VISIBILITY_TEAM_SUCCESS, () => {
+    it('should put the team visibility updated in the state', () => {
+        const team = {
+            _id: 't2',
+            name: 'Awesome team updated',
+            description: 'this is a team',
+            visibility: true
+        };
+        const action = actions.changeVisibilityTeamSuccessAction(!team.visibility);
+        const finalState = currentTeamReducer({}, action);
+
+        expect(finalState.team.isVisible).not.toEqual(team.isVisible);
+    });
+});

@@ -86,6 +86,16 @@ exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+exports.putVisibility = async (teamId, isVisible) => {
+    try {
+        const team = Team.findById(teamId);
+        if (!team) throw new MyError(404, 'Team not found');
+        await Team.updateOne({ _id: teamId }, { isVisible });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
+    }
+};
 
 
 // ======================== //

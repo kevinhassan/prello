@@ -30,6 +30,14 @@ export default function currentTeamReducer(state = initialState, action) {
                 ...state,
                 team: action.payload.team,
             };
+        case actions.CHANGE_VISIBILITY_TEAM_SUCCESS:
+            return {
+                ...state,
+                team: {
+                    ...state.team,
+                    isVisible: action.payload.isVisible,
+                },
+            };
 
         default:
             return state;
