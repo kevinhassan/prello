@@ -487,7 +487,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/boards/:boardId', async (req, res) => {
+        .get('/boards/:boardId', [Board.canSee], async (req, res) => {
             try {
                 const boardFound = await boardController.getBoard(req.params.boardId);
                 res.status(200).send({ board: boardFound });
@@ -495,7 +495,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .get('/boards/:boardId/labels', async (req, res) => {
+        .get('/boards/:boardId/labels', [Board.canSee], async (req, res) => {
             try {
                 const labels = await boardController.getLabels(req.params.boardId);
                 res.status(200).send({ labels });
