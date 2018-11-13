@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
@@ -70,18 +70,53 @@ const TeamView = props => (
                 )
             }
             <div className="col-sm-10">
+                {props.isEditingDescription
+                    ? (
+                        <form onSubmit={props.editDescription}>
+                            <label className="sr-only" htmlFor="description">Description</label>
+                            <div className="input-group mb-2 mr-sm-2">
+                                <div className="input-group-prepend">
+                                    <button
+                                        className="btn btn-secondary"
+                                        type="reset"
+                                        onClick={() => props.changeIsEditingDescription(false)}
+                                    >
+                                        <i className="fas fa-times updateIcon" />
+                                    </button>
+                                </div>
+                                <input
+                                    className="form-control"
+                                    description="description"
+                                    defaultValue={props.team.description}
+                                    type="text"
+                                    id="description"
+                                />
+                                <div className="input-group-prepend">
+                                    <button
+                                        className="btn btn-success"
+                                        type="submit"
+                                    >
+                                        <i className="fas fa-check" />
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    ) : ''
+                }
                 {props.team.description
                     ? (
-                        <Fragment>
+                        <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
                             <b>Description:</b>
                             {' '}
                             {props.team.description}
-                        </Fragment>
+                        </div>
                     ) : (
-                        <Fragment>
+                        <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
                             <i>No description provided yet.</i>
-                        </Fragment>
-                    )}
+                        </div>
+                    )
+                }
             </div>
         </div>
         <div className="row">
@@ -163,6 +198,9 @@ TeamView.propTypes = {
     editName: PropTypes.func.isRequired,
     isEditingName: PropTypes.bool.isRequired,
     changeIsEditingName: PropTypes.func.isRequired,
+    isEditingDescription: PropTypes.bool.isRequired,
+    changeIsEditingDescription: PropTypes.func.isRequired,
+    editDescription: PropTypes.func.isRequired,
 };
 
 export default TeamView;
