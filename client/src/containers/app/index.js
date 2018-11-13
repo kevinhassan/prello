@@ -28,6 +28,7 @@ const App = () => (
             <div className="whiteBackground">
                 <Switch>
                     <Route exact path="/" component={HomeComp} />
+                    <Route exact path="/boards/:boardId" component={BoardComp} />
                     <Route exact path="/graphical-charter" component={GraphicalCharter} />
                     <Route exact path="/boards/:boardId" component={BoardComp} />
                     <Route exact path="/members/:memberId" component={MemberComp} />
