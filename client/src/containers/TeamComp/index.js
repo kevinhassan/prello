@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
 import {
-    fetchTeam, addMemberToTeam, changeVisibility, changeName,
+    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription,
 } from '../../actions/teams';
 
 // ===== Components / Containers
@@ -24,8 +24,11 @@ class TeamComp extends React.Component {
         this.addMember = this.addMember.bind(this);
         this.changeIsEditingName = this.changeIsEditingName.bind(this);
         this.handleEditName = this.handleEditName.bind(this);
+        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
+        this.handleEditDescription = this.handleEditDescription.bind(this);
         this.state = {
             isEditingName: false,
+            isEditingDescription: false,
         };
     }
 
@@ -71,8 +74,20 @@ class TeamComp extends React.Component {
     handleEditName(event) {
         event.preventDefault();
         const name = event.target.name.value;
-        this.props.changeName(this.props.team._id, name, name);
+        this.props.changeName(this.props.team._id, name);
         this.setState({ isEditingName: false });
+    }
+
+    /* ===== Description ===== */
+    changeIsEditingDescription(value) {
+        this.setState({ isEditingDescription: value });
+    }
+
+    handleEditDescription(event) {
+        event.preventDefault();
+        const description = event.target.description.value;
+        this.props.changeDescription(this.props.team._id, description);
+        this.setState({ isEditingDescription: false });
     }
 
     render() {
@@ -91,6 +106,10 @@ class TeamComp extends React.Component {
                     changeIsEditingName={this.changeIsEditingName}
                     editName={this.handleEditName}
                     isEditingName={this.state.isEditingName}
+
+                    changeIsEditingDescription={this.changeIsEditingDescription}
+                    editDescription={this.handleEditDescription}
+                    isEditingDescription={this.state.isEditingDescription}
                 />
             );
         }
@@ -123,6 +142,7 @@ TeamComp.propTypes = {
     goToTeam: PropTypes.func.isRequired,
     changeVisibility: PropTypes.func.isRequired,
     changeName: PropTypes.func.isRequired,
+    changeDescription: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -147,6 +167,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         goBack,
         changeVisibility,
         changeName,
+        changeDescription,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),

@@ -46,6 +46,14 @@ export default function currentTeamReducer(state = initialState, action) {
                     name: action.payload.name,
                 },
             };
+        case actions.CHANGE_DESCRIPTION_TEAM_SUCCESS:
+            return {
+                ...state,
+                team: {
+                    ...state.team,
+                    description: action.payload.description,
+                },
+            };
 
         default:
             return state;

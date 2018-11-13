@@ -168,3 +168,36 @@ export const changeName = (teamId, name) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Change team description ===== //
+export const CHANGE_DESCRIPTION_TEAM_STARTED = 'teams/CHANGE_DESCRIPTION_TEAM_STARTED';
+export const CHANGE_DESCRIPTION_TEAM_FAILURE = 'teams/CHANGE_DESCRIPTION_TEAM_FAILURE';
+export const CHANGE_DESCRIPTION_TEAM_SUCCESS = 'teams/CHANGE_DESCRIPTION_TEAM_SUCCESS';
+
+export const changeDescriptionTeamStartedAction = () => ({ type: CHANGE_DESCRIPTION_TEAM_STARTED });
+
+export const changeDescriptionTeamFailureAction = () => ({ type: CHANGE_DESCRIPTION_TEAM_FAILURE });
+
+export const changeDescriptionTeamSuccessAction = description => ({
+    type: CHANGE_DESCRIPTION_TEAM_SUCCESS,
+    payload: {
+        description,
+    },
+});
+
+export const changeDescription = (teamId, description) => (dispatch) => {
+    dispatch(changeDescriptionTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'teams'.concat(`/${teamId}/description`);
+    APIFetch.fetchPrelloAPI(resource, { description }, APIFetch.PUT)
+        .then(() => {
+            dispatch(changeDescriptionTeamSuccessAction(description));
+        })
+        .catch((error) => {
+            dispatch(changeDescriptionTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
