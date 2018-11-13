@@ -19,10 +19,6 @@ module.exports.getSocket = (server) => {
             io.sockets.connected[socket.id].emit('currentBoard', { board: boardFound });
         });
 
-        socket.updateClientsOnBoard = async (boardId) => {
-            const boardFound = await boardController.getBoard(boardId);
-            io.emit('currentBoard', { board: boardFound });
-        };
 
         socket.on('unsuscribeFromBoard', async (boardId) => {
             logger.info('Client leaving board');
@@ -33,6 +29,11 @@ module.exports.getSocket = (server) => {
             logger.info('Client disconnected');
         });
     });
+
+    io.updateClientsOnBoard = async (boardId) => {
+        const boardFound = await boardController.getBoard(boardId);
+        io.emit('currentBoard', { board: boardFound });
+    };
 
     return io;
 };

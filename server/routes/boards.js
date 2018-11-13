@@ -2,6 +2,7 @@ const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
 const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
+const socket = require('../socket');
 /**
 * @swagger
 * definitions:
@@ -577,6 +578,8 @@ module.exports = (router) => {
             try {
                 await boardController.putLists(req.params.boardId, req.body.lists);
                 res.sendStatus(204);
+
+                socket.updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

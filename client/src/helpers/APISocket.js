@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 let instance = null;
 
 class APISocket {
-    constructor(boardId, callback) {
+    constructor() {
         if (instance) {
             return instance;
         }
@@ -12,9 +12,12 @@ class APISocket {
             throw Error('REACT_APP_API_HOST in .env file not found.');
         }
         this.socket = io.connect(process.env.REACT_APP_API_HOST);
+        instance = this;
+    }
+
+    subscribeToBoard = (boardId, callback) => {
         this.socket.emit('subscribeToBoard', boardId);
         this.socket.on('currentBoard', res => callback(res));
-        instance = this;
     }
 
     removeSubscriptionToCurrentBoard = () => {
@@ -22,4 +25,4 @@ class APISocket {
     };
 }
 
-export default (boardId, callback) => new APISocket(boardId, callback);
+export default new APISocket();

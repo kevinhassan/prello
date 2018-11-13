@@ -58,7 +58,7 @@ export const fetchBoard = boardId => (dispatch) => {
     dispatch(displayLoadingModal());
 
     // Set up socket
-    APISocket(boardId, (res) => {
+    APISocket.subscribeToBoard(boardId, (res) => {
         dispatch(fetchBoardSuccessAction(res.board));
     });
     dispatch(hideLoadingModal());
@@ -77,7 +77,7 @@ export const removeBoardFetchSuccessAction = () => ({
 
 export const removeBoardFetch = () => (dispatch) => {
     dispatch(removeBoardFetchStartedAction());
-    APISocket().removeSubscriptionToCurrentBoard(() => {
+    APISocket.removeSubscriptionToCurrentBoard(() => {
         dispatch(removeBoardFetchSuccessAction());
     });
 };
