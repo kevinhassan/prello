@@ -16,7 +16,7 @@
         "username": "anthonydupont1",
         "email": "test@test.fr",
         "password": "password",
-        "boards": ["b00000000001", "b00000000002", "b00000000003"],
+        "boards": ["b00000000001", "b00000000002"],
         "teams": ["t00000000001", "t00000000002"]
     },
     {
