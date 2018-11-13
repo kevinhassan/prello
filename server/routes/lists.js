@@ -3,9 +3,6 @@ const boardController = require('../controllers/boards');
 const cardController = require('../controllers/cards');
 const listController = require('../controllers/lists');
 const { listValidator } = require('../validators');
-
-const socket = require('../socket');
-
 const { Auth, List } = require('../middlewares');
 /**
 * @swagger

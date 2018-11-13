@@ -2,7 +2,7 @@ const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
 const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
-const socket = require('../server').io;
+const { updateClientsOnBoard } = require('../socket');
 
 /**
 * @swagger
@@ -669,7 +669,6 @@ module.exports = (router) => {
                 res.sendStatus(204);
 
                 updateClientsOnBoard(req.params.boardId);
-
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
