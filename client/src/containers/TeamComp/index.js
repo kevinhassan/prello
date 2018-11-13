@@ -52,8 +52,8 @@ class TeamComp extends React.Component {
         this.props.goToTeam(teamId);
     }
 
-    handleChangeVisibility(teamId, visibility) {
-        this.props.changeVisibility(teamId, visibility);
+    handleChangeVisibility() {
+        this.props.changeVisibility(this.props.team._id, this.props.team.isVisible);
     }
 
     render() {
