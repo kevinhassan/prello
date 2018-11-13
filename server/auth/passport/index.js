@@ -27,7 +27,7 @@ module.exports = (passport) => {
                 user = new User();
             }
             user.github = { token: accessToken, id: profile.id };
-            user.fullName = user.fullName || profile.displayName;
+            user.fullName = user.fullName || profile.displayName || profile.username;
             user.username = user.username || profile.username;
             user.bio = user.biography || profile.bio;
             user.avatarUrl = user.avatarUrl || profile._json.avatar_url;
