@@ -1,3 +1,15 @@
+/* BLOCKS */
+.userPanel {
+    display: flex;
+    min-height: 100%;
+}
+
+.userPage {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
 .headerProfile{
     background-color: rgba(0, 140, 220, 0.1);
     display: flex;
@@ -5,6 +17,19 @@
     justify-content: space-around;
     padding: 20px 0;
 }
+
+.profileTabPanel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.profileTabPanel > .react-tabs__tab-panel--selected {
+    display: flex;
+    flex: 1;
+}
+
+/* TEXT & ELEMENTS */
 
 .nickname{
     display: flex;

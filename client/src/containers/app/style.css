@@ -5,7 +5,14 @@
 }
 
 main {
+    background: url('../../assets/prello_background.jpg') no-repeat center center fixed;
+    background-size: 100% 100%;
     height: calc(100% - 50px);
+}
+.whiteBackground {
+    background-color: rgba(255,255,255,0.3);
+    height: 100%;
+    width: 100%;
 }
 
 .link {

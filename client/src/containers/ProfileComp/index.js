@@ -3,8 +3,6 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-// ===== Models
-
 // ===== Components / Containers
 import ProfileView from '../../components/views/ProfileView';
 
@@ -15,8 +13,7 @@ import {
 
 import { createTeam } from '../../actions/teams';
 
-// ===== Others
-import './style.css';
+// =====
 
 class ProfileComp extends React.Component {
     constructor(props) {
@@ -91,27 +88,25 @@ class ProfileComp extends React.Component {
         if (!this.state.errorMessage) {
             if (profile) {
                 const element = (
-                    <div className="usersPanel">
-                        <ProfileView
-                            user={profile}
+                    <ProfileView
+                        user={profile}
 
-                            handleUpdateInformation={this.handleUpdateInformation}
-                            handleUpdateDisplay={this.handleUpdateDisplay}
-                            isUpdateVisible={this.state.isUpdateVisible}
+                        handleUpdateInformation={this.handleUpdateInformation}
+                        handleUpdateDisplay={this.handleUpdateDisplay}
+                        isUpdateVisible={this.state.isUpdateVisible}
 
-                            handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
-                            handleModifyingPassword={this.handleModifyingPassword}
-                            isPasswordVisible={this.state.isPasswordVisible}
+                        handlePasswordModifyDisplay={this.handlePasswordModifyDisplay}
+                        handleModifyingPassword={this.handleModifyingPassword}
+                        isPasswordVisible={this.state.isPasswordVisible}
 
-                            handleDeleteAccountDisplay={this.handleDeleteAccountDisplay}
-                            handleDeletingAccount={this.handleDeletingAccount}
-                            isDeleteVisible={this.state.isDeleteVisible}
+                        handleDeleteAccountDisplay={this.handleDeleteAccountDisplay}
+                        handleDeletingAccount={this.handleDeletingAccount}
+                        isDeleteVisible={this.state.isDeleteVisible}
 
-                            displayCreateTeamForm={this.handleDisplayCreateTeamForm}
-                            createTeam={this.handleCreateTeam}
-                            isCreateTeamFormVisible={this.state.isCreateTeamFormVisible}
-                        />
-                    </div>
+                        displayCreateTeamForm={this.handleDisplayCreateTeamForm}
+                        createTeam={this.handleCreateTeam}
+                        isCreateTeamFormVisible={this.state.isCreateTeamFormVisible}
+                    />
                 );
                 return element;
             }

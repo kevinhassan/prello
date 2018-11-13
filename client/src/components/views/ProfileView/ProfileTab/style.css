@@ -1,5 +1,7 @@
 .profilePanelsList {
+    background-color: #fff;
     padding: 20px 20vw;
+    width: 100%;
 }
 
 .profilePanelsList .teamsList {
