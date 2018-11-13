@@ -233,3 +233,45 @@ export const archiveCard = card => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== EDIT DATE ===== //
+export const EDIT_DATE_SUCCESS = 'cards/EDIT_DATE_SUCCESS';
+export const EDIT_DATE_STARTED = 'cards/EDIT_DATE_STARTED';
+export const EDIT_DATE_FAILURE = 'cards/EDIT_DATE_FAILURE';
+
+
+export const editDateStartedAction = (card, dueDate) => ({
+    type: EDIT_DATE_STARTED,
+    payload: {
+        card,
+        dueDate,
+    },
+});
+
+export const editDateSuccessAction = () => ({ type: EDIT_DATE_SUCCESS });
+
+export const editDateFailureAction = (card, initialDate) => ({
+    type: EDIT_DATE_FAILURE,
+    payload: {
+        card,
+        initialDate,
+    },
+});
+
+export const editDate = (card, dueDate, initialDate) => (dispatch) => {
+    dispatch(editDateStartedAction(card, dueDate));
+    dispatch(displayLoadingModal());
+    const resource = `cards/${card._id}/dueDate`;
+    APIFetch.fetchPrelloAPI(resource, { dueDate, initialDate }, APIFetch.PUT)
+        .then(() => {
+            dispatch(editDateSuccessAction());
+            dispatch(displaySuccessMessage('Due date updated'));
+        })
+        .catch((error) => {
+            dispatch(editDateFailureAction(card, initialDate));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Description from './Description';
 import Labels from './Labels';
 import CardName from './CardName';
+import DueDate from './DueDate';
 
 import './style.css';
 
@@ -48,6 +49,7 @@ const CardDetailView = props => (
                         Watch
                     </button>
                     <hr />
+
                 </div>
             </div>
 
@@ -61,20 +63,36 @@ const CardDetailView = props => (
                             Due date
                     </h2>
 
-                    <div className="cardElementContent">
-                        {props.card.dueDate
-                            ? (
-                                <p className="cardDetailDate">{new Date(props.card.dueDate).toDateString()}</p>
-                            )
-                            : (
+                    {props.card.dueDate && !(props.isEditingDueDate)
+                        ? (
+                            <div
+                                className="cardDetailDate clickableDueDate"
+                            >
                                 <button
-                                    className="btn btn-link btn-addElement"
+                                    className="btn btnDueDate"
                                     type="button"
+                                    onClick={() => props.changeIsEditingDueDate(true)}
                                 >
-                                Add a due date...
+                                    {new Date(props.card.dueDate).toLocaleDateString('en-GB',
+                                        {
+                                            day: 'numeric',
+                                            month: 'numeric',
+                                            year: 'numeric',
+                                            hour: 'numeric',
+                                            minute: 'numeric',
+                                        })}
                                 </button>
-                            ) }
-                    </div>
+                            </div>
+                        )
+                        : (
+                            <DueDate
+                                cardId={props.card._id}
+                                changeIsEditingDueDate={props.changeIsEditingDueDate}
+                                isEditingDueDate={props.isEditingDueDate}
+                                dueDate={props.card.dueDate}
+                                editDate={props.editDate}
+                            />
+                        )}
 
                 </div>
                 {/* ==================== */}
@@ -93,6 +111,8 @@ const CardDetailView = props => (
                 {/* ==================== */}
 
             </div>
+
+            <hr />
 
             {/* ===== DESCRIPTION ===== */}
             <Description
@@ -125,12 +145,16 @@ CardDetailView.propTypes = {
     deleteLabel: PropTypes.func.isRequired,
     isEditingLabels: PropTypes.bool,
     archiveCard: PropTypes.func.isRequired,
+    isEditingDueDate: PropTypes.bool,
+    changeIsEditingDueDate: PropTypes.func.isRequired,
+    editDate: PropTypes.func.isRequired,
 };
 
 CardDetailView.defaultProps = {
     isEditingDescription: false,
     isEditingLabels: false,
     isEditingName: false,
+    isEditingDueDate: false,
 };
 
 // Put info from the store state in props (None)
