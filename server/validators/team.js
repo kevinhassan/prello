@@ -22,11 +22,13 @@ const changeAccess = [
         .escape()
         .isBoolean()
 ];
-const changeInformation = [
+const changeName = [
     check('name')
         .not().isEmpty()
         .escape()
-        .isString(),
+        .isString()
+];
+const changeDescription = [
     check('description')
         .escape()
         .isString()
@@ -42,6 +44,7 @@ module.exports = {
     addMember,
     removeMember,
     changeAccess,
-    changeInformation,
+    changeName,
+    changeDescription,
     changeVisibility
 };

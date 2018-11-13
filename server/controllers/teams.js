@@ -49,17 +49,25 @@ exports.getTeam = async (teamId) => {
 // ======================== //
 // ===== Put functions ==== //
 // ======================== //
-/**
- * Change team's information
- */
-exports.putTeam = async (teamId, data) => {
+exports.putTeamName = async (teamId, name) => {
     try {
-        const team = await Team.findById(teamId);
-        team.name = data.name;
-        team.description = data.description;
-        const newTeam = await team.save();
+        const newTeam = await Team.findByIdAndUpdate(teamId, { name });
         return newTeam;
     } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+exports.putTeamDescription = async (teamId, description) => {
+    try {
+        const newTeam = await Team.findByIdAndUpdate(teamId, { description });
+        return newTeam;
+    } catch (err) {
+        console.log('tututo : ', err);
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
             throw new MyError(422, 'Incorrect query');

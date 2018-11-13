@@ -189,18 +189,18 @@ describe('DELETE /teams/:id/members/:id', () => {
             .expect(204, done);
     });
 });
-describe('PUT /teams/:id/', () => {
+describe('PUT /teams/:id/name', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
-            .put(`/teams/${newTeam.id}/`)
-            .send({ name: 'test', description: '' })
+            .put(`/teams/${newTeam.id}/name`)
+            .send({ name: 'test' })
             .expect('Content-Type', /json/)
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
-            .put(`/teams/${newTeam.id}/`)
-            .send({ name: 'test', description: '' })
+            .put(`/teams/${newTeam.id}/name`)
+            .send({ name: 'test' })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
             .expect(403, done);
@@ -208,10 +208,9 @@ describe('PUT /teams/:id/', () => {
     it('should return 422 ERROR', (done) => {
         const wrongData = {
             name: '',
-            description: ''
         };
         request(app)
-            .put(`/teams/${newTeam.id}/`)
+            .put(`/teams/${newTeam.id}/name`)
             .send(wrongData)
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
@@ -219,21 +218,64 @@ describe('PUT /teams/:id/', () => {
     });
     it('should return 404 OK', (done) => {
         request(app)
-            .put('/teams/test1234/')
-            .send({ name: 'test', description: '' })
+            .put('/teams/test1234/name')
+            .send({ name: 'test' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404, done);
     });
     it('should return 204 OK', (done) => {
         request(app)
-            .put(`/teams/${newTeam.id}/`)
-            .send({ name: 'test', description: '' })
+            .put(`/teams/${newTeam.id}/name`)
+            .send({ name: 'test' })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });
 });
-describe('PUT /teams/:id/', () => {
+describe('PUT /teams/:id/description', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/description`)
+            .send({ description: 'test' })
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/description`)
+            .send({ description: 'test' })
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    // it('should return 422 ERROR', (done) => {
+    //     const wrongData = {
+    //         description: '',
+    //     };
+    //     request(app)
+    //         .put(`/teams/${newTeam.id}/description`)
+    //         .send(wrongData)
+    //         .set('Authorization', `Bearer ${tokenAdmin}`)
+    //         .expect('Content-Type', /json/)
+    //         .expect(422, done);
+    // });
+    it('should return 404 OK', (done) => {
+        request(app)
+            .put('/teams/test1234/description')
+            .send({ description: 'test' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/teams/${newTeam.id}/description`)
+            .send({ description: 'test' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
+describe('PUT /teams/:id/visibility', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .put(`/teams/${newTeam.id}/visibility`)
