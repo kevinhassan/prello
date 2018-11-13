@@ -1,6 +1,7 @@
 const socketIo = require('socket.io');
 const boardController = require('../controllers/boards');
 const logger = require('../util/logger');
+const { canSeeViaSocket } = require('../middlewares/board');
 
 let io = null;
 
@@ -8,6 +9,8 @@ exports.io = () => io;
 
 exports.initialize = (server) => {
     io = socketIo(server);
+
+    io.use(canSeeViaSocket);
 
     // Set up socket
     io.on('connection', (socket) => {
