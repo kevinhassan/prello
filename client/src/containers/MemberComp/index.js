@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
+import { replace } from 'connected-react-router';
 
 // ===== Actions
 import { getUserInformation } from '../../actions/user';
@@ -74,7 +74,7 @@ const mapStateToProps = ({ users, auth }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getUserInformation,
-        goToProfile: () => push('/profile'),
+        goToProfile: () => replace('/profile'),
     }, dispatch,
 );
 
