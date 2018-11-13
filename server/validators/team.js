@@ -31,10 +31,17 @@ const changeInformation = [
         .escape()
         .isString()
 ];
+const changeVisibility = [
+    check('isVisible')
+        .not().isEmpty()
+        .escape()
+        .isBoolean()
+];
 module.exports = {
     addTeam,
     addMember,
     removeMember,
     changeAccess,
-    changeInformation
+    changeInformation,
+    changeVisibility
 };

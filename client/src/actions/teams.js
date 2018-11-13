@@ -103,3 +103,35 @@ export const createTeam = (name, isPublic) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+// ===== Change team visibility ===== //
+export const CHANGE_VISIBILITY_TEAM_STARTED = 'teams/CHANGE_VISIBILITY_TEAM_STARTED';
+export const CHANGE_VISIBILITY_TEAM_FAILURE = 'teams/CHANGE_VISIBILITY_TEAM_FAILURE';
+export const CHANGE_VISIBILITY_TEAM_SUCCESS = 'teams/CHANGE_VISIBILITY_TEAM_SUCCESS';
+
+export const changeVisibilityTeamStartedAction = () => ({ type: CHANGE_VISIBILITY_TEAM_STARTED });
+
+export const changeVisibilityTeamFailureAction = () => ({ type: CHANGE_VISIBILITY_TEAM_FAILURE });
+
+export const changeVisibilityTeamSuccessAction = isVisible => ({
+    type: CHANGE_VISIBILITY_TEAM_SUCCESS,
+    payload: {
+        isVisible,
+    },
+});
+
+export const changeVisibility = (teamId, visibility) => (dispatch) => {
+    dispatch(changeVisibilityTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'teams'.concat(`/${teamId}/visibility`);
+    APIFetch.fetchPrelloAPI(resource, { isVisible: !visibility }, APIFetch.PUT)
+        .then(() => {
+            dispatch(changeVisibilityTeamSuccessAction(!visibility));
+        })
+        .catch((error) => {
+            dispatch(changeVisibilityTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

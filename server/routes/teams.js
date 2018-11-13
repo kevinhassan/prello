@@ -26,6 +26,10 @@ const teamController = require('../controllers/teams');
 *               type: string
 *           description:
 *               type: string
+*   NewVisibility:
+*       properties:
+*           isVisible:
+*               type: boolean
 *
 * /teams:
 *   post:
@@ -127,6 +131,37 @@ const teamController = require('../controllers/teams');
 *       responses:
 *           204:
 *               description: Team successfully updated
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
+*
+* /teams/{teamId}/visibility:
+*   put:
+*       tags:
+*           - Team
+*       description: Change team's visibility
+*       summary: Change visibility
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*           - name: body
+*             description: The new visibility of the team
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewVisibility'
+*       responses:
+*           204:
+*               description: Team visibility successfully updated
 *           401:
 *               description: Unauthorized user
 *           403:
@@ -272,6 +307,18 @@ module.exports = (router) => {
             }
             try {
                 await teamController.putTeam(req.params.teamId, req.body);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/teams/:teamId/Visibility', Auth.isAuthenticated, [Team.canEdit], teamValidator.changeVisibility, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                await teamController.putVisibility(req.params.teamId, req.body.isVisible);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

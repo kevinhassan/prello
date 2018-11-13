@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
-import { fetchTeam, addMemberToTeam } from '../../actions/teams';
+import { fetchTeam, addMemberToTeam, changeVisibility } from '../../actions/teams';
 
 // ===== Components / Containers
 import TeamView from '../../components/views/TeamView';
@@ -18,6 +18,7 @@ class TeamComp extends React.Component {
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
         this.handleOnMemberClick = this.handleOnMemberClick.bind(this);
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
+        this.handleChangeVisibility = this.handleChangeVisibility.bind(this);
         this.addMember = this.addMember.bind(this);
     }
 
@@ -51,6 +52,10 @@ class TeamComp extends React.Component {
         this.props.goToTeam(teamId);
     }
 
+    handleChangeVisibility(teamId, visibility) {
+        this.props.changeVisibility(teamId, visibility);
+    }
+
     render() {
         const { clientId, team } = this.props;
         if (team) {
@@ -62,6 +67,7 @@ class TeamComp extends React.Component {
                     onBoardClick={this.handleOnBoardClick}
                     onMemberClick={this.handleOnMemberClick}
                     onTeamClick={this.handleOnTeamClick}
+                    changeVisibility={this.handleChangeVisibility}
                 />
             );
         }
@@ -92,6 +98,7 @@ TeamComp.propTypes = {
     goToBoard: PropTypes.func.isRequired,
     goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
+    changeVisibility: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -114,6 +121,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         addMemberToTeam,
         fetchTeam,
         goBack,
+        changeVisibility,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
