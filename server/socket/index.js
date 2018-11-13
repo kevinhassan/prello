@@ -11,6 +11,8 @@ exports.io = () => io;
 exports.initialize = (server) => {
     io = socketIo(server);
 
+    io.use(canSeeViaSocket);
+
     // Set up socket
     io.on('connection', (socket) => {
         logger.info('New client');
