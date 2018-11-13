@@ -252,7 +252,7 @@ exports.editDate = async (cardId, dueDate) => {
 
         return card;
     } catch (err) {
-        if (err.status === 404) {
+        if (err.status) {
             throw err;
         }
         if (err.name === 'ValidationError') {

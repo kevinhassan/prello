@@ -167,6 +167,38 @@ const { updateClientsOnBoard } = require('../socket');
 *               description: Incorrect query, data provided invalid
 *           500:
 *               description: Internal server error
+*
+* /cards/{cardId}/dueDate:
+*   put:
+*       tags:
+*           - Card
+*       description: Update the due date of the specified card.
+*       summary: Update due date
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: cardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Card ID
+*           - in: body
+*             name: dueDate
+*             description: new due date, can not be empty.
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewDueDate'
+*       responses:
+*           204:
+*               description: Card due date updated
+*           404:
+*               description: Card not found
+*           422:
+*               description: Incorrect query, data provided invalid
+*           500:
+*               description: Internal server error
+*
 */
 
 module.exports = (router) => {
