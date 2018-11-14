@@ -54,6 +54,7 @@ userSchema.pre('save', async function save() {
                 });
             });
         }
+        // Avoid the case where the user update his informations
         if (this.isNew) {
             const cleanFullName = this.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a').replace(/ /g, '').toLowerCase();
             const count = await this.model('User').countDocuments({ username: new RegExp(`${cleanFullName}[0-9]*`, 'i') });
