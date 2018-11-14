@@ -172,7 +172,6 @@ module.exports = (router) => {
                 res.status(e.status).send({ err: e.message });
             }
         })
-
         .put('/lists/:listId/isArchived', Auth.isAuthenticated, List.canEdit, listValidator.archiveCard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
@@ -180,6 +179,20 @@ module.exports = (router) => {
             }
             try {
                 const newList = await listController.archiveList(req.params.listId, req.body.isArchived);
+                res.sendStatus(204);
+
+                updateClientsOnBoard(newList.board._id);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/lists/:listId/name', Auth.isAuthenticated, List.canEdit, listValidator.changeName, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                const newList = await listController.putName(req.params.listId, req.body.name);
                 res.sendStatus(204);
 
                 updateClientsOnBoard(newList.board._id);

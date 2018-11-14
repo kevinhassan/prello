@@ -18,7 +18,7 @@ const canEdit = async (req, res, next) => {
             throw new MyError(404, 'Card not found');
         }
         const member = card.list.board.members.find(member => member._id.toString() === req.user._id.toString());
-        if (!member) throw new MyError(403, 'Forbidden access');
+        if (!member) throw new MyError(403, 'Forbidden, you can not edit this card');
 
         next();
     } catch (e) {
