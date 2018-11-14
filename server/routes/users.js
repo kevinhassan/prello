@@ -450,7 +450,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Invalid form data' });
             }
             try {
-                await userController.forgot(req.body.email, req.headers.host);
+                await userController.forgot(req.body.email);
                 res.status(200).json({ message: 'Reset mail sent.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

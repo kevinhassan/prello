@@ -93,7 +93,7 @@ export const classicRegister = (fullName, email, password) => (dispatch) => {
     }, APIFetch.POST)
         .then(() => {
             dispatch(classicRegisterSuccessAction());
-            dispatch(displaySuccessMessage(`You have been successfully registered!\n An email has been send to ${email}`));
+            dispatch(displaySuccessMessage(`Account registered: An email has been send to ${email}`));
             dispatch(push('/signin'));
         })
         .catch((error) => {
