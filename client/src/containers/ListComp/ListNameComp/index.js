@@ -27,10 +27,8 @@ class ListNameComp extends React.Component {
 
     handleEditListName(event) {
         event.preventDefault();
-        console.log(event);
         const name = event.target.name.value;
-
-        //this.props.updateListName(this.props.listId, String.trim(name), this.props.name);
+        this.props.updateListName(this.props.listId, String.trim(name), this.props.name);
         this.setState({ isFormVisible: false });
     }
 
@@ -52,7 +50,7 @@ ListNameComp.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = () => {};
+const mapStateToProps = () => ({});
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
