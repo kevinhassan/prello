@@ -526,9 +526,10 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                if (req.body.email) await boardController.postMemberWithMail(req.params.boardId, req.body.email);
-                else await boardController.postMemberWithUsername(req.params.boardId, req.body.username);
-                res.status(201).send({ message: 'Member successfully added to the board' });
+                let user;
+                if (req.body.email) user = await boardController.postMemberWithMail(req.params.boardId, req.body.email);
+                else user = await boardController.postMemberWithUsername(req.params.boardId, req.body.username);
+                res.status(201).send({ message: 'Member successfully added to the board', user });
 
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {

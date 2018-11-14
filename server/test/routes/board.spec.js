@@ -323,6 +323,13 @@ describe('POST /boards/:id/members', () => {
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(201, done);
     });
+    it('should return 409 error', (done) => {
+        request(app)
+            .post(`/boards/${boardData.id}/members`)
+            .send({ email: userData.userNotAdmin.email })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(409, done);
+    });
     it('should return 404 ERROR', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/members`)

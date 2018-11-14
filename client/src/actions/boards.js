@@ -250,8 +250,8 @@ export const addBoardMember = (boardId, username) => (dispatch) => {
     dispatch(displayLoadingModal());
     const resource = `boards/${boardId}/members`;
     APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.POST)
-        .then(() => {
-            dispatch(addBoardMemberSuccessAction(boardId, username));
+        .then((res) => {
+            dispatch(addBoardMemberSuccessAction(boardId, res.user));
             dispatch(displaySuccessMessage(`${username} added to the board`));
         })
         .catch((error) => {
