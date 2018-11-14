@@ -20,7 +20,7 @@
     background-color: #d3ffae;
 }
 
-.teamVisibility:hover{
+.teamVisibility.click:hover{
     cursor: pointer;
     transform: scale(1.03);
     transition: 0.2s;
