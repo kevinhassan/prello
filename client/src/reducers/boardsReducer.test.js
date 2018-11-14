@@ -1,5 +1,5 @@
-import boardsReducer, { initialState } from './boardsReducer';
 import * as actions from '../actions/boards';
+import boardsReducer, { initialState } from './boardsReducer';
 
 describe('Action not referenced', () => {
     it('should return the current state', () => {
