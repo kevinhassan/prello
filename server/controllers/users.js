@@ -140,7 +140,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
         await userCheck.save();
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 

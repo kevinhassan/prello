@@ -6,7 +6,7 @@ const MyError = require('../util/error');
  */
 const canEdit = async (req, res, next) => {
     try {
-        if (!req.user) throw new MyError(401, 'Unauthorize user');
+        if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const list = await List.findById(req.params.listId).populate({
             path: 'board',
             select: 'members'

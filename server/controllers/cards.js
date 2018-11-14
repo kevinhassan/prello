@@ -20,7 +20,7 @@ exports.deleteMember = async (cardId, memberId) => {
         });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -105,7 +105,7 @@ exports.putMember = async (cardId, memberId) => {
         });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -180,7 +180,7 @@ exports.deleteLabel = async (data) => {
         });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
