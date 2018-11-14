@@ -14,7 +14,7 @@ import SignInComp from '../SignInComp';
 import TeamComp from '../TeamComp';
 
 import PrivateRoute from '../../components/PrivateRoute';
-import Page404 from '../../components/Page404';
+import ErrorPage from '../../components/ErrorPage';
 
 import './style.css';
 
@@ -39,7 +39,7 @@ const App = () => (
                     <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
 
-                    <Route component={Page404} />
+                    <Route render={props => <ErrorPage status={404} {...props} />} />
                 </Switch>
             </div>
         </main>
