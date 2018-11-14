@@ -134,6 +134,23 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        // ===== Edit list name ===== //
+        case listActions.UPDATE_LIST_NAME_STARTED:
+        case listActions.UPDATE_LIST_NAME_FAILURE:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.listId
+                            ? l
+                            : {
+                                ...l,
+                                name: action.payload.name,
+                            }
+                    )),
+                },
+            };
 
         // ===== Archive List ===== //
         case listActions.ARCHIVE_LIST_SUCCESS:
