@@ -53,7 +53,7 @@ const isAdmin = async (req, res, next) => {
  */
 const canSee = async (req, res, next) => {
     try {
-        const board = await Board.findById(req.params.boardId).select('members teams').populate([
+        const board = await Board.findById(req.params.boardId).select('visibility members teams').populate([
             {
                 path: 'teams',
                 select: 'members',
