@@ -50,9 +50,10 @@ BoardNameComp.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ currentBoard }) => ({
-    name: currentBoard.board.name,
-});
+const mapStateToProps = ({ currentBoard }) => {
+    if (currentBoard.board) return { name: currentBoard.board.name };
+    return { name: '' };
+};
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(

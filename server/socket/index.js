@@ -15,6 +15,10 @@ exports.initialize = (server) => {
     io.on('connection', (socket) => {
         logger.info('New client');
 
+        socket.on('error', (error) => {
+            socket.emit('myError', { error: error.message, status: error.status });
+        });
+
         socket.on('subscribeToBoard', async ({ boardId, Authorization }) => {
             try {
                 const user = await authRequestViaSocket(Authorization);
