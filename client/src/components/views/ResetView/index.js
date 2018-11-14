@@ -15,9 +15,9 @@ const ResetView = props => (
         <h1 className="resetTitle">Hello back !</h1>
         <h5>Choose a new password and confirm it</h5>
         <form className="resetForm" onSubmit={props.handleFormSubmit}>
-            <div className="form-group row">
-                <label htmlFor="password" className="col-form-label col-sm-4">Password</label>
-                <div className="col-sm-8">
+            <div className="">
+                <label htmlFor="password" className="">Password</label>
+                <div className="">
                     <input
                         className="form-control"
                         id="password"
