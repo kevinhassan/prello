@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
@@ -12,120 +12,181 @@ import './style.css';
 
 const TeamView = props => (
     <div className="teamContent container-fluid">
-        {props.isEditingName
+        {props.isAdmin()
             ? (
-                <form onSubmit={props.editName}>
-                    <label className="sr-only" htmlFor="name">Name</label>
-                    <div className="input-group mb-2 mr-sm-2">
-                        <div className="input-group-prepend">
-                            <button
-                                className="btn btn-secondary"
-                                type="reset"
-                                onClick={() => props.changeIsEditingName(false)}
-                            >
-                                <i className="fas fa-times updateIcon" />
-                            </button>
-                        </div>
-                        <input
-                            className="form-control"
-                            name="name"
-                            defaultValue={props.team.name}
-                            type="text"
-                            id="name"
-                            required
-                        />
-                        <div className="input-group-prepend">
-                            <button
-                                className="btn btn-success"
-                                type="submit"
-                            >
-                                <i className="fas fa-check" />
-                            </button>
-                        </div>
+                <Fragment>
+                    {props.isEditingName
+                        ? (
+                            <form onSubmit={props.editName}>
+                                <label className="sr-only" htmlFor="name">Name</label>
+                                <div className="input-group mb-2 mr-sm-2">
+                                    <div className="input-group-prepend">
+                                        <button
+                                            className="btn btn-secondary"
+                                            type="reset"
+                                            onClick={() => props.changeIsEditingName(false)}
+                                        >
+                                            <i className="fas fa-times updateIcon" />
+                                        </button>
+                                    </div>
+                                    <input
+                                        className="form-control"
+                                        name="name"
+                                        defaultValue={props.team.name}
+                                        type="text"
+                                        id="name"
+                                        required
+                                    />
+                                    <div className="input-group-prepend">
+                                        <button
+                                            className="btn btn-success"
+                                            type="submit"
+                                        >
+                                            <i className="fas fa-check" />
+                                        </button>
+                                    </div>
 
-                    </div>
-                </form>
+                                </div>
+                            </form>
+                        ) : (
+                            <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
+                                <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
+                            </button>
+
+                        )
+                    }
+                </Fragment>
             ) : (
-                <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
-                    <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
-                </button>
-            )}
-
-
+                <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
+            )
+        }
         <div className="row">
-            {props.team.isVisible
+            {props.isAdmin()
                 ? (
-                    <div className="col-sm-2 teamVisibility" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
+                    <Fragment>
+                        {props.team.isVisible
+                            ? (
+                                <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
                         Public
-                        {' '}
-                        <i className="fas fa-eye" />
-                    </div>
-                )
-                : (
-                    <div className="col-sm-2 teamVisibility" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
+                                    {' '}
+                                    <i className="fas fa-eye" />
+                                </div>
+                            )
+                            : (
+                                <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
                         Private
-                        {' '}
-                        <i className="fas fa-eye-slash" />
-                    </div>
+                                    {' '}
+                                    <i className="fas fa-eye-slash" />
+                                </div>
+                            )
+                        }
+                    </Fragment>
+                ) : (
+                    <Fragment>
+                        {props.team.isVisible
+                            ? (
+                                <div className="col-sm-2 teamVisibility">
+                        Public
+                                    {' '}
+                                    <i className="fas fa-eye" />
+                                </div>
+                            )
+                            : (
+                                <div className="col-sm-2 teamVisibility">
+                        Private
+                                    {' '}
+                                    <i className="fas fa-eye-slash" />
+                                </div>
+                            )
+                        }
+                    </Fragment>
                 )
             }
             <div className="col-sm-10">
-                {props.isEditingDescription
+                {props.isAdmin()
                     ? (
-                        <form onSubmit={props.editDescription}>
-                            <label className="sr-only" htmlFor="description">Description</label>
-                            <div className="input-group mb-2 mr-sm-2">
-                                <div className="input-group-prepend">
-                                    <button
-                                        className="btn btn-secondary"
-                                        type="reset"
-                                        onClick={() => props.changeIsEditingDescription(false)}
-                                    >
-                                        <i className="fas fa-times updateIcon" />
-                                    </button>
-                                </div>
-                                <input
-                                    className="form-control"
-                                    description="description"
-                                    defaultValue={props.team.description}
-                                    type="text"
-                                    id="description"
-                                />
-                                <div className="input-group-prepend">
-                                    <button
-                                        className="btn btn-success"
-                                        type="submit"
-                                    >
-                                        <i className="fas fa-check" />
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
-                    ) : ''
-                }
-                {props.team.description
-                    ? (
-                        <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
-                            <b>Description:</b>
-                            {' '}
-                            {props.team.description}
-                        </div>
+                        <Fragment>
+                            {props.isEditingDescription
+                                ? (
+                                    <form onSubmit={props.editDescription}>
+                                        <label className="sr-only" htmlFor="description">Description</label>
+                                        <div className="input-group mb-2 mr-sm-2">
+                                            <div className="input-group-prepend">
+                                                <button
+                                                    className="btn btn-secondary"
+                                                    type="reset"
+                                                    onClick={() => props.changeIsEditingDescription(false)}
+                                                >
+                                                    <i className="fas fa-times updateIcon" />
+                                                </button>
+                                            </div>
+                                            <input
+                                                className="form-control"
+                                                description="description"
+                                                defaultValue={props.team.description}
+                                                type="text"
+                                                id="description"
+                                            />
+                                            <div className="input-group-prepend">
+                                                <button
+                                                    className="btn btn-success"
+                                                    type="submit"
+                                                >
+                                                    <i className="fas fa-check" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <Fragment>
+                                        {props.team.description
+                                            ? (
+                                                <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                                    <b>Description:</b>
+                                                    {' '}
+                                                    {props.team.description}
+                                                </div>
+                                            ) : (
+                                                <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                                    <i>No description provided yet.</i>
+                                                </div>
+                                            )
+                                        }
+                                    </Fragment>
+                                )
+                            }
+                        </Fragment>
                     ) : (
-                        <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
-                            <i>No description provided yet.</i>
-                        </div>
-                    )
-                }
+                        <Fragment>
+                            {props.team.description
+                                ? (
+                                    <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                        <b>Description:</b>
+                                        {' '}
+                                        {props.team.description}
+                                    </div>
+                                ) : (
+                                    <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                        <i>No description provided yet.</i>
+                                    </div>
+                                )
+                            }
+                        </Fragment>
+                    )}
             </div>
         </div>
         <div className="row">
             <div className="col-sm-5">
                 <h2 className="text-center" style={{ margin: '15px 0' }}>Members</h2>
 
-                <AddMemberForm
-                    addMember={props.addMemberToTeam}
-                />
+                {props.isAdmin()
+                    ? (
+                        <AddMemberForm
+                            addMember={props.addMemberToTeam}
+                        />
+                    ) : ''
+                }
+
 
                 <ul>
                     {props.team.members.sort((a, b) => {
@@ -201,6 +262,7 @@ TeamView.propTypes = {
     isEditingDescription: PropTypes.bool.isRequired,
     changeIsEditingDescription: PropTypes.func.isRequired,
     editDescription: PropTypes.func.isRequired,
+    isAdmin: PropTypes.func.isRequired,
 };
 
 export default TeamView;

@@ -26,6 +26,8 @@ class TeamComp extends React.Component {
         this.handleEditName = this.handleEditName.bind(this);
         this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleEditDescription = this.handleEditDescription.bind(this);
+        this.isMember = this.isMember.bind(this);
+        this.isAdmin = this.isAdmin.bind(this);
         this.state = {
             isEditingName: false,
             isEditingDescription: false,
@@ -90,6 +92,16 @@ class TeamComp extends React.Component {
         this.setState({ isEditingDescription: false });
     }
 
+    isMember() {
+        const memberFound = this.props.team.members.find(member => member._id === this.props.clientId);
+        return memberFound !== undefined;
+    }
+
+    isAdmin() {
+        const adminFound = this.props.team.admins.find(admin => admin._id === this.props.clientId);
+        return adminFound !== undefined;
+    }
+
     render() {
         const { clientId, team } = this.props;
         if (team) {
@@ -110,6 +122,8 @@ class TeamComp extends React.Component {
                     changeIsEditingDescription={this.changeIsEditingDescription}
                     editDescription={this.handleEditDescription}
                     isEditingDescription={this.state.isEditingDescription}
+
+                    isAdmin={this.isAdmin}
                 />
             );
         }
