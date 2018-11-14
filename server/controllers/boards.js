@@ -41,8 +41,10 @@ exports.getBoard = async (boardId) => {
         }, {
             path: 'members',
             select: ['-password']
-        }
-        ]);
+        }, {
+            path: 'admins',
+            select: '_id'
+        }]);
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
@@ -65,15 +67,16 @@ exports.getBoards = async (userId) => {
                     {
                         path: 'lists',
                         select: 'cards'
-                    },
-                    {
+                    }, {
                         path: 'members',
                         select: 'initials'
-                    },
-                    {
+                    }, {
                         path: 'teams',
                         select: 'name'
-                    },
+                    }, {
+                        path: 'admins',
+                        select: '_id'
+                    }
                 ]
             });
         return boards;
@@ -268,13 +271,16 @@ exports.postTeam = async (boardId, teamId) => {
 };
 
 /**
- * Add member to the board (only for admins).
+ * Add member to the board with mail.
  */
 exports.postMemberWithMail = async (boardId, email) => {
     try {
         const member = await userController.findMemberWithMail(email);
+        const board = await this.getBoard(boardId);
 
-        // add the board to the member
+        if (board.members.some(m => m._id.toString() === member._id.toString())) {
+            throw new MyError(409, `${email} is already on the board`);
+        }
         await userController.postBoard(member._id, boardId);
         const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
         return newBoard;
@@ -283,6 +289,27 @@ exports.postMemberWithMail = async (boardId, email) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+/**
+ * Add member to the board with username.
+ */
+exports.postMemberWithUsername = async (boardId, username) => {
+    try {
+        const member = await userController.findMemberWithUsername(username);
+        const board = await this.getBoard(boardId);
+
+        if (board.members.some(m => m._id.toString() === member._id.toString())) {
+            throw new MyError(409, `${username} is already on the board`);
+        }
+        const user = await userController.postBoard(member._id, boardId);
+        await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 
 /**
  * Create a new label.

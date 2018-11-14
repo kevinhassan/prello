@@ -230,3 +230,35 @@ export const updateBoardName = (boardId, name, oldName) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Add member ======
+export const ADD_BOARD_MEMBER_STARTED = 'board/ADD_BOARD_MEMBER_STARTED';
+export const ADD_BOARD_MEMBER_FAILURE = 'board/ADD_BOARD_MEMBER_FAILURE';
+export const ADD_BOARD_MEMBER_SUCCESS = 'board/ADD_BOARD_MEMBER_SUCCESS';
+
+export const addBoardMemberStartedAction = () => ({ type: ADD_BOARD_MEMBER_STARTED });
+export const addBoardMemberFailureAction = () => ({ type: ADD_BOARD_MEMBER_FAILURE });
+export const addBoardMemberSuccessAction = (boardId, username) => ({
+    type: ADD_BOARD_MEMBER_SUCCESS,
+    payload: {
+        boardId,
+        username,
+    },
+});
+export const addBoardMember = (boardId, username) => (dispatch) => {
+    dispatch(addBoardMemberStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/members`;
+    APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.POST)
+        .then((res) => {
+            dispatch(addBoardMemberSuccessAction(boardId, res.user));
+            dispatch(displaySuccessMessage(`${username} added to the board`));
+        })
+        .catch((error) => {
+            dispatch(addBoardMemberFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

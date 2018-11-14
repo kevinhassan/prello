@@ -180,6 +180,16 @@ describe(actions.UPDATE_BOARD_NAME_FAILURE, () => {
     });
 });
 
+describe(actions.ADD_BOARD_MEMBER_SUCCESS, () => {
+    it('should add the member to the board', () => {
+        const username = 'a new member';
+        const action = actions.addBoardMemberSuccessAction(state.board._id, username);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.members.length).toEqual(state.board.members.length + 1);
+    });
+});
+
 describe(`${actions.UPDATE_BOARD_NAME_FAILURE}: not current board id`, () => {
     it('if the id provided is not the current board one, should do nothing and return the current state', () => {
         const name = 'an old board name';

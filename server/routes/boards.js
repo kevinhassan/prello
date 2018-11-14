@@ -33,9 +33,11 @@ const { updateClientsOnBoard } = require('../socket');
 *           isArchived:
 *               type: boolean
 *
-*   AddMemberForm:
+*   AddMemberToBoardForm:
 *       properties:
 *           email:
+*               type: string
+*           username:
 *               type: string
 *   AddTeamForm:
 *       properties:
@@ -219,6 +221,7 @@ const { updateClientsOnBoard } = require('../socket');
 *           500:
 *               description: Internal server error
 *
+*
 * /boards/{boardId}/members:
 *   post:
 *       tags:
@@ -235,14 +238,14 @@ const { updateClientsOnBoard } = require('../socket');
 *             required: true
 *             description: Board ID
 *           - name: body
-*             description: Email of the user to add
+*             description: Email or username of the user to add
 *             in: body
 *             required: true
 *             schema:
-*               $ref: '#/definitions/AddMemberForm'
+*               $ref: '#/definitions/AddMemberToBoardForm'
 *       responses:
 *           204:
-*               description: The visility of the board is updated
+*               description: Member successfully added to the board
 *           401:
 *               description: Unauthorized user
 *           403:
@@ -508,7 +511,7 @@ module.exports = (router) => {
         .post('/boards', Auth.isAuthenticated, boardValidator.addBoard, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 const boardCreated = await boardController.postBoard(req.user._id, req.body);
@@ -520,11 +523,13 @@ module.exports = (router) => {
         .post('/boards/:boardId/members', Auth.isAuthenticated, Board.isAdmin, boardValidator.addMember, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await boardController.postMemberWithMail(req.params.boardId, req.body.email);
-                res.status(201).send({ message: 'Member successfully added' });
+                let user;
+                if (req.body.email) user = await boardController.postMemberWithMail(req.params.boardId, req.body.email);
+                else user = await boardController.postMemberWithUsername(req.params.boardId, req.body.username);
+                res.status(201).send({ message: 'Member successfully added to the board', user });
 
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {
@@ -566,7 +571,7 @@ module.exports = (router) => {
         .post('/boards/:boardId/teams', Auth.isAuthenticated, Board.isAdmin, boardValidator.addTeam, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 await boardController.postTeam(req.params.boardId, req.body.team);
@@ -582,7 +587,7 @@ module.exports = (router) => {
         .put('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 await boardController.putLists(req.params.boardId, req.body.lists);
@@ -596,7 +601,7 @@ module.exports = (router) => {
         .put('/boards/:boardId/visibility', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeVisibility, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 await boardController.putVisibility(req.params.boardId, req.body.visibility);
@@ -610,7 +615,7 @@ module.exports = (router) => {
         .put('/boards/:boardId/isArchived', Auth.isAuthenticated, Board.isMember, boardValidator.changeIsArchived, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 await boardController.putIsArchived(req.params.boardId, req.body.isArchived);
@@ -624,7 +629,7 @@ module.exports = (router) => {
         .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeAccess, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 await boardController.putAccess(req.params.boardId,
@@ -640,7 +645,7 @@ module.exports = (router) => {
         .put('/boards/:boardId/name/:boardName', Auth.isAuthenticated, Board.isMember, boardValidator.changeName, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
+                return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
                 await boardController.putName(req.params.boardId, req.params.boardName);
