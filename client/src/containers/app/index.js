@@ -43,7 +43,7 @@ const App = () => (
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
 
                     <Route exact path="/reset/:token" component={ResetComp} />
-                    <Route component={Page404} />
+                    <Route component={ErrorPage} />
                 </Switch>
             </div>
         </main>
