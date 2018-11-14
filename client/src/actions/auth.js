@@ -126,6 +126,6 @@ export const forgottenPassword = email => (dispatch) => {
             dispatch(push('/'));
         })
         .catch((error) => {
-            dispatch(classicRegisterFailureAction(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
         });
 };
