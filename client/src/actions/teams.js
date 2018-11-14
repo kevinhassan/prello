@@ -1,3 +1,4 @@
+import { replace } from 'connected-react-router';
 import * as APIFetch from '../helpers/APIFetch';
 import {
     displayLoadingModal, hideLoadingModal, displayErrorMessage,
@@ -225,6 +226,7 @@ export const deleteTeam = team => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
         .then(() => {
             dispatch(deleteTeamSuccessAction(team));
+            dispatch(replace('/profile'));
         })
         .catch((error) => {
             dispatch(deleteTeamFailureAction());
