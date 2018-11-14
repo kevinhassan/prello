@@ -44,7 +44,6 @@ const ProfileTab = props => (
                                 <Link to={`/teams/${team._id}`}>
                                     {team.name}
                                 </Link>
-                                <i className="fas fa-trash-alt removeIcon" onClick={() => { props.deleteTeam(team); }} onKeyPress={() => { props.deleteTeam(team); }}/>
                             </li>
                         ))}
                     </ul>
@@ -61,7 +60,6 @@ ProfileTab.propTypes = {
     createTeam: PropTypes.func.isRequired,
     isCreateTeamFormVisible: PropTypes.bool.isRequired,
     displayCreateTeamForm: PropTypes.func.isRequired,
-    deleteTeam: PropTypes.func.isRequired,
 };
 ProfileTab.defaultProps = {
     teams: [],
