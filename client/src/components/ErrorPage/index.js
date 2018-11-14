@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { goBack } from 'connected-react-router';
 
 import './style.css';
 
@@ -41,6 +44,13 @@ const ErrorPage = props => (
                             <li><Link to="/boards">Your boards</Link></li>
                         )
                     }
+                    <li>
+                        <button className="btn btn-primary" type="submit" onClick={props.goBack}>
+                            <i className="fas fa-chevron-left" />
+                            {' '}
+                            Go back
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -48,6 +58,7 @@ const ErrorPage = props => (
 );
 
 ErrorPage.propTypes = {
+    goBack: PropTypes.func.isRequired,
     message: PropTypes.string,
     status: PropTypes.number,
 };
@@ -56,4 +67,14 @@ ErrorPage.defaultProps = {
     status: undefined,
 };
 
-export default ErrorPage;
+const mapStateToProps = () => ({});
+const mapDispatchToProps = dispatch => bindActionCreators(
+    {
+        goBack,
+    }, dispatch,
+);
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(ErrorPage);
