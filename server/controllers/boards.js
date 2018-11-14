@@ -39,7 +39,8 @@ exports.getBoard = async (boardId) => {
         }, {
             path: 'teams'
         }, {
-            path: 'members'
+            path: 'members',
+            select: ['-password']
         }
         ]);
         if (!board) {
