@@ -84,7 +84,7 @@ exports.signUp = async (data) => {
 /**
  * Create a random token, then the send user an email with a reset link.
  */
-exports.forgot = async (email, host) => {
+exports.forgot = async (email) => {
     try {
         let user = await User.findOne({ email });
         if (!user) throw new MyError(404, 'No user found');
@@ -100,7 +100,7 @@ exports.forgot = async (email, host) => {
                 pass: process.env.MAILJET_PASSWORD
             }
         });
-        await transporter.sendMail(resetPasswordMail(email, host, token));
+        await transporter.sendMail(resetPasswordMail(email, token));
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
