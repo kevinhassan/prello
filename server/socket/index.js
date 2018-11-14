@@ -15,8 +15,8 @@ exports.initialize = (server) => {
     io.on('connection', (socket) => {
         logger.info('New client');
 
-        socket.on('error', (error) => {
-            socket.emit('myError', { error: error.message, status: error.status });
+        socket.on('error', (err) => {
+            socket.emit('myError', { message: err.error, status: err.status });
         });
 
         socket.on('subscribeToBoard', async ({ boardId, Authorization }) => {

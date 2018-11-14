@@ -123,7 +123,7 @@ const canSeeViaSocket = async (boardId, user) => {
         if (!user) {
             // Is the board public ?
             if (board.visibility !== 'public') {
-                throw new MyError(401, 'You are not allowed to access this team. Please sign in and try again.');
+                throw new MyError(401, 'You are not allowed to access this board. Please sign in and try again.');
             } else return true;
         } else {
             // Is the user a board member ?
