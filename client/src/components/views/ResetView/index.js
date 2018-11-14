@@ -14,7 +14,7 @@ const ResetView = props => (
     <div className="resetFormWrapper">
         <h1 className="resetTitle">Hello back !</h1>
         <h5 className="resetText">Choose a new password and confirm it</h5>
-        <form className="resetForm" onSubmit={props.handleFormSubmit}>
+        <form className="resetForm" onSubmit={props.handleResetFormSubmit}>
 
             <div className="password">
                 <label htmlFor="password" className="passwordLabel">Password</label>
@@ -36,8 +36,8 @@ const ResetView = props => (
                 <div className="passwordInput">
                     <input
                         className="form-control"
-                        id="password"
-                        name="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
                         placeholder="Confirm your password"
                         required
                         type="password"
@@ -45,7 +45,7 @@ const ResetView = props => (
                 </div>
             </div>
             
-            <button type="submit" className="btn btn-primary">Reset password</button>
+            <button type="submit" className="btn btn-primary resetFormBtn">Reset password</button>
             <p className="text-danger resetErrorMsg">{props.errorMessage}</p>
         </form>
     </div>
@@ -53,7 +53,7 @@ const ResetView = props => (
 
 ResetView.propTypes = {
     errorMessage: PropTypes.string,
-    handleFormSubmit: PropTypes.func.isRequired,
+    handleResetFormSubmit: PropTypes.func.isRequired,
 };
 ResetView.defaultProps = {
     errorMessage: '',
