@@ -48,6 +48,14 @@ export default function currentBoardReducer(state = initialState, action) {
                 status: action.payload.status,
             };
 
+        case actions.FETCH_BOARD_FAILURE:
+            return {
+                ...state,
+                board: null,
+                errorMessage: action.payload.message,
+                status: action.payload.status,
+            };
+
         case actions.REMOVE_BOARD_FETCH_SUCCESS:
             return {
                 ...state,
