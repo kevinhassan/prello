@@ -13,11 +13,12 @@ import './style.css';
 const ResetView = props => (
     <div className="resetFormWrapper">
         <h1 className="resetTitle">Hello back !</h1>
-        <h5>Choose a new password and confirm it</h5>
+        <h5 className="resetText">Choose a new password and confirm it</h5>
         <form className="resetForm" onSubmit={props.handleFormSubmit}>
-            <div className="">
-                <label htmlFor="password" className="">Password</label>
-                <div className="">
+
+            <div className="password">
+                <label htmlFor="password" className="passwordLabel">Password</label>
+                <div className="passwordInput">
                     <input
                         className="form-control"
                         id="password"
@@ -28,9 +29,11 @@ const ResetView = props => (
                     />
                 </div>
             </div>
-            <div className="form-group row">
-                <label htmlFor="password" className="col-form-label col-sm-4">Password confirmation</label>
-                <div className="col-sm-8">
+
+
+            <div className="password">
+                <label htmlFor="password" className="passwordLabel">Password confirmation</label>
+                <div className="passwordInput">
                     <input
                         className="form-control"
                         id="password"

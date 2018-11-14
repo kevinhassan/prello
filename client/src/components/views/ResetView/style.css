@@ -3,7 +3,6 @@
 }
 
 .resetForm{
-    justify-content: space-around;
     align-items: center;
     text-align: center;
 }
@@ -14,17 +13,21 @@
     margin-bottom: 30px;
 }
 
-.inputPassword{
+.password{
     display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    margin-bottom: 15px;
 }
 
 .passwordLabel{
-    margin-right: 20px; 
+    flex: 1;
+    text-align: left;
+    max-width: 250px;
 }
 
 .passwordInput{
-    margin-left: 20px; 
+    flex: 4;
+    max-width: 350px;
+
 }
