@@ -4,11 +4,11 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // ===== Components
 import AddListForm from './AddListForm';
-import MemberPill from '../../MemberPill';
 
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
 import BoardNameComp from '../../../containers/BoardComp/BoardNameComp';
+import BoardMembersComp from '../../../containers/BoardComp/BoardMembersComp';
 
 // ===== Others
 import './style.css';
@@ -31,11 +31,9 @@ const BoardView = props => (
                 {' '}
                 <span style={{ verticalAlign: 'sub' }}>{props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}</span>
                 {' | '}
-                <i className="fas fa-users" />
-                {' '}
-                {props.board.members.map(member => (
-                    <MemberPill key={member._id} member={member} />
-                ))}
+                <BoardMembersComp
+                    members={props.board.members}
+                />
             </div>
         </div>
         <div className="listsAndAddPanel">
