@@ -1,5 +1,6 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
+const axios = require('axios');
 const nodemailer = require('nodemailer');
 const MyError = require('../util/error');
 const Auth = require('../auth');
@@ -10,6 +11,7 @@ const teamController = require('../controllers/teams');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 const User = require('../models/User');
+
 
 // ======================== //
 // ==== Post functions ==== //
@@ -211,6 +213,24 @@ exports.getUser = async (userId) => {
     }
 };
 
+exports.getGithubUser = async (githubId) => {
+    try {
+        const user = await User.findOne({ 'github.id': githubId }).select('_id github');
+        const token = await Auth.generateToken(user);
+
+        // get all user repositories
+        const { data } = await axios.get(`https://api.github.com/user/repos?access_token=${user.github.token}`);
+        const repositories = data.map(repo => ({ name: repo.name, private: repo.private, url: repo.html_url }));
+        user.github = {
+            ...user.github,
+            repos: repositories
+        };
+        await user.save();
+        return { token, user };
+    } catch (err) {
+        throw new MyError(500, 'Internal server error');
+    }
+};
 
 // ======================== //
 // ===== Put functions ==== //
