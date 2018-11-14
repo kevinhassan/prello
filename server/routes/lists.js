@@ -16,6 +16,10 @@ const { updateClientsOnBoard } = require('../socket');
 *       properties:
 *           isArchived:
 *               type: boolean
+*   ListNameForm:
+*       properties:
+*           name:
+*               type: string
 *
 * /lists/{listId}/cards:
 *   post:
@@ -114,6 +118,37 @@ const { updateClientsOnBoard } = require('../socket');
 *       responses:
 *           204:
 *               description: List isArchived updated
+*           404:
+*               description: List not found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+*
+* /lists/{listId}/name:
+*   put:
+*       tags:
+*           - List
+*       description: Put list name
+*       summary: Put list name
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: listId
+*             schema:
+*               type: string
+*             required: true
+*             description: List Id
+*           - in: body
+*             name: name
+*             description: new name
+*             required: true
+*             schema:
+*               $ref: '#/definitions/ListNameForm'
+*       responses:
+*           204:
+*               description: List name updated
 *           404:
 *               description: List not found
 *           422:
