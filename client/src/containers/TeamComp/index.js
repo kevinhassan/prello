@@ -98,11 +98,13 @@ class TeamComp extends React.Component {
     }
 
     isMember() {
+        if (!this.props.clientId) return false;
         const memberFound = this.props.team.members.find(member => member._id === this.props.clientId);
         return memberFound !== undefined;
     }
 
     isAdmin() {
+        if (!this.props.clientId) return false;
         const adminFound = this.props.team.admins.find(admin => admin._id === this.props.clientId);
         return adminFound !== undefined;
     }
