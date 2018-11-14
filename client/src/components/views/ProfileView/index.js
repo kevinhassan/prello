@@ -77,6 +77,7 @@ const ProfileView = props => (
                         createTeam={props.createTeam}
                         isCreateTeamFormVisible={props.isCreateTeamFormVisible}
                         displayCreateTeamForm={props.displayCreateTeamForm}
+                        deleteTeam={props.deleteTeam}
                     />
                 </TabPanel>
                 <TabPanel>
@@ -123,6 +124,8 @@ ProfileView.propTypes = {
     isCreateTeamFormVisible: PropTypes.bool.isRequired,
     createTeam: PropTypes.func.isRequired,
     displayCreateTeamForm: PropTypes.func.isRequired,
+
+    deleteTeam: PropTypes.func.isRequired,
 };
 
 ProfileView.defaultProps = {
