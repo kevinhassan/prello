@@ -52,13 +52,10 @@ const BoardMembersView = props => (
                 </form>
             ) : (
                 <button
-                    className="btn btn-success addCard-btn boardSettingsBtn"
+                    className="btn btn-success addCard-btn boardSettingsBtn addMember-btn"
                     type="button"
                     onClick={() => props.displayForm(true)}
                     onKeyDown={() => props.displayForm(true)}
-                    style={{
-                        verticalAlign: 'sub', display: 'inline-block', height: '100%', padding: 0,
-                    }}
                 >
                     <i className="fas fa-plus-circle addCardIcon" />
                 </button>
