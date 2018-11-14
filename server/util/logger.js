@@ -7,7 +7,6 @@ if (process.env.NODE_ENV !== 'production') {
             new (winston.transports.Console)({ level: 'debug' })
         ]
     });
-    logger.debug('Logging initialized at debug level');
 }
 
 module.exports = logger;
