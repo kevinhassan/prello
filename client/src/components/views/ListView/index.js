@@ -7,6 +7,7 @@ import CardComp from '../../../containers/CardComp';
 
 // ===== Components
 import AddCardForm from './AddCardForm';
+import ListNameComp from '../../../containers/ListComp/ListNameComp';
 
 // ===== Models
 
@@ -18,9 +19,10 @@ import './style.css';
 const ListView = props => (
     <div className={'cardsListPanel '.concat(props.isBeingDragged ? 'listDragged' : '')}>
         <div className="cardHeader" style={{ position: 'relative' }}>
-            <h3 className="listName">
-                {props.list.name}
-            </h3>
+            <ListNameComp
+                listId={props.list._id}
+                name={props.list.name}
+            />
             <i
                 className="archiveIcon fas fa-archive float-right"
                 onClick={props.archiveList}
