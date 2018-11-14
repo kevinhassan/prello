@@ -45,36 +45,45 @@ class ListComp extends React.Component {
 
     render() {
         const { boardLabels, list, isBeingDragged } = this.props;
-        return (
-            <ListView
-                boardLabels={boardLabels}
-                isInputVisible={this.state.isInputVisible}
-                isBeingDragged={isBeingDragged}
-                displayAddCardForm={this.handleAddCard}
-                list={list}
-                onCardAdded={this.handleCardAdded}
-                archiveList={this.handleArchiveList}
-            />
-        );
+        if (list) {
+            return (
+                <ListView
+                    boardLabels={boardLabels}
+                    isInputVisible={this.state.isInputVisible}
+                    isBeingDragged={isBeingDragged}
+                    displayAddCardForm={this.handleAddCard}
+                    list={list}
+                    onCardAdded={this.handleCardAdded}
+                    archiveList={this.handleArchiveList}
+                />
+            );
+        } return '';
     }
 }
 ListComp.propTypes = {
-    boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
+    boardLabels: PropTypes.arrayOf(PropTypes.object),
     createCard: PropTypes.func.isRequired,
     isBeingDragged: PropTypes.bool,
     listId: PropTypes.string.isRequired,
-    list: PropTypes.object.isRequired,
+    list: PropTypes.object,
     archiveList: PropTypes.func.isRequired,
 };
 ListComp.defaultProps = {
     isBeingDragged: false,
+    list: undefined,
+    boardLabels: undefined,
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ currentBoard }, props) => ({
-    list: currentBoard.board.lists.find(l => l._id === props.listId),
-    boardLabels: currentBoard.board.labels,
-});
+const mapStateToProps = ({ currentBoard }, props) => {
+    if (currentBoard.board) {
+        return {
+            list: currentBoard.board.lists.find(l => l._id === props.listId),
+            boardLabels: currentBoard.board.labels,
+        };
+    }
+    return {};
+};
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(

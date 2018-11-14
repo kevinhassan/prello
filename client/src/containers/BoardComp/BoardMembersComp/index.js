@@ -14,9 +14,17 @@ import BoardMembersView from '../../../components/views/BoardView/BoardMembersVi
 class BoardMembersComp extends React.Component {
     constructor(props) {
         super(props);
+        let canAddMember = false;
+
+        // Check if client is admin
+        if (props.clientId) {
+            canAddMember = props.boardAdmins.some(a => a._id === props.clientId);
+        }
         this.state = {
+            canAddMember,
             isFormVisible: false,
         };
+
         this.handleAddMember = this.handleAddMember.bind(this);
         this.displayForm = this.displayForm.bind(this);
     }
@@ -39,21 +47,39 @@ class BoardMembersComp extends React.Component {
                 isFormVisible={this.state.isFormVisible}
                 addMember={this.handleAddMember}
                 displayForm={this.displayForm}
+                canAddMember={this.state.canAddMember}
             />
         );
     }
 }
 BoardMembersComp.propTypes = {
-    boardId: PropTypes.string.isRequired,
-    members: PropTypes.arrayOf(PropTypes.object).isRequired,
+    boardId: PropTypes.string,
+    clientId: PropTypes.string,
+    members: PropTypes.arrayOf(PropTypes.object),
     addBoardMember: PropTypes.func.isRequired,
+    boardAdmins: PropTypes.arrayOf(PropTypes.object),
+};
+BoardMembersComp.defaultProps = {
+    boardId: undefined,
+    clientId: undefined,
+    members: [],
+    boardAdmins: [],
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ currentBoard }) => ({
-    boardId: currentBoard.board._id,
-    members: currentBoard.board.members,
-});
+const mapStateToProps = ({ currentBoard, auth }) => {
+    if (currentBoard.board) {
+        return {
+            clientId: auth.clientId,
+            boardId: currentBoard.board._id,
+            boardAdmins: currentBoard.board.admins,
+            members: currentBoard.board.members,
+        };
+    }
+    return {
+        clientId: auth.clientId,
+    };
+};
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(

@@ -41,8 +41,10 @@ exports.getBoard = async (boardId) => {
         }, {
             path: 'members',
             select: ['-password']
-        }
-        ]);
+        }, {
+            path: 'admins',
+            select: '_id'
+        }]);
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
@@ -65,15 +67,16 @@ exports.getBoards = async (userId) => {
                     {
                         path: 'lists',
                         select: 'cards'
-                    },
-                    {
+                    }, {
                         path: 'members',
                         select: 'initials'
-                    },
-                    {
+                    }, {
                         path: 'teams',
                         select: 'name'
-                    },
+                    }, {
+                        path: 'admins',
+                        select: '_id'
+                    }
                 ]
             });
         return boards;

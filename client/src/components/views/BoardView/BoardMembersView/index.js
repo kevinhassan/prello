@@ -9,6 +9,11 @@ import './style.css';
 
 // ==================================
 
+const displayAddMemberButton = (isFormVisible, visible, hidden) => {
+    if (isFormVisible) return visible;
+    return hidden;
+};
+
 const BoardMembersView = props => (
     <span style={{ display: 'inline-block' }}>
         <i className="fas fa-users" />
@@ -22,7 +27,7 @@ const BoardMembersView = props => (
                 <span>0 member</span>
             )
         }
-        {props.isFormVisible
+        {props.isFormVisible && props.canAddMember
             ? (
                 <form className="form-inline" onSubmit={props.addMember} style={{ display: 'inline-block' }}>
                     <label className="sr-only" htmlFor="name">Username:</label>
@@ -51,14 +56,18 @@ const BoardMembersView = props => (
                     </button>
                 </form>
             ) : (
-                <button
-                    className="btn btn-success addCard-btn boardSettingsBtn addMember-btn"
-                    type="button"
-                    onClick={() => props.displayForm(true)}
-                    onKeyDown={() => props.displayForm(true)}
-                >
-                    <i className="fas fa-plus-circle addCardIcon" />
-                </button>
+                displayAddMemberButton(props.isFormVisible, (
+                    <button
+                        className="btn btn-success addCard-btn boardSettingsBtn addMember-btn"
+                        type="button"
+                        onClick={() => props.displayForm(true)}
+                        onKeyDown={() => props.displayForm(true)}
+                    >
+                        <i className="fas fa-plus-circle addCardIcon" />
+                    </button>
+                ), (
+                    ''
+                ))
             )
         }
     </span>
@@ -66,9 +75,13 @@ const BoardMembersView = props => (
 
 BoardMembersView.propTypes = {
     members: PropTypes.arrayOf(PropTypes.object).isRequired,
-    isFormVisible: PropTypes.bool.isRequired,
+    isFormVisible: PropTypes.bool,
     addMember: PropTypes.func.isRequired,
     displayForm: PropTypes.func.isRequired,
+    canAddMember: PropTypes.bool.isRequired,
+};
+BoardMembersView.defaultProps = {
+    isFormVisible: false,
 };
 
 export default BoardMembersView;
