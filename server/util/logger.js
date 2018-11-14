@@ -7,6 +7,15 @@ if (process.env.NODE_ENV !== 'production') {
             new (winston.transports.Console)({ level: 'debug' })
         ]
     });
+} else {
+    logger = winston.createLogger({
+        transports: [
+            new (winston.transports.Console)({
+                level: 0,
+                silent: true
+            })
+        ]
+    });
 }
 
 module.exports = logger;
