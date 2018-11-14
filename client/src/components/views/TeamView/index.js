@@ -63,6 +63,13 @@ const TeamView = props => (
         <div className="row">
             {props.isAdmin()
                 ? (
+                    <button className="btn btn-danger" onClick={() => { props.deleteTeam(props.team); }} type="submit">Remove</button>
+                ) : ''
+            }
+        </div>
+        <div className="row">
+            {props.isAdmin()
+                ? (
                     <Fragment>
                         {props.team.isVisible
                             ? (
@@ -263,6 +270,7 @@ TeamView.propTypes = {
     changeIsEditingDescription: PropTypes.func.isRequired,
     editDescription: PropTypes.func.isRequired,
     isAdmin: PropTypes.func.isRequired,
+    deleteTeam: PropTypes.func.isRequired,
 };
 
 export default TeamView;

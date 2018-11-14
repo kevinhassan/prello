@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
 import {
-    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription,
+    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam,
 } from '../../actions/teams';
 
 // ===== Components / Containers
@@ -26,6 +26,7 @@ class TeamComp extends React.Component {
         this.handleEditName = this.handleEditName.bind(this);
         this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleEditDescription = this.handleEditDescription.bind(this);
+        this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
         this.isMember = this.isMember.bind(this);
         this.isAdmin = this.isAdmin.bind(this);
         this.state = {
@@ -92,6 +93,10 @@ class TeamComp extends React.Component {
         this.setState({ isEditingDescription: false });
     }
 
+    handleDeleteTeam() {
+        this.props.deleteTeam(this.props.team);
+    }
+
     isMember() {
         const memberFound = this.props.team.members.find(member => member._id === this.props.clientId);
         return memberFound !== undefined;
@@ -122,6 +127,8 @@ class TeamComp extends React.Component {
                     changeIsEditingDescription={this.changeIsEditingDescription}
                     editDescription={this.handleEditDescription}
                     isEditingDescription={this.state.isEditingDescription}
+
+                    deleteTeam={this.handleDeleteTeam}
 
                     isAdmin={this.isAdmin}
                 />
@@ -157,6 +164,7 @@ TeamComp.propTypes = {
     changeVisibility: PropTypes.func.isRequired,
     changeName: PropTypes.func.isRequired,
     changeDescription: PropTypes.func.isRequired,
+    deleteTeam: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -182,6 +190,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         changeVisibility,
         changeName,
         changeDescription,
+        deleteTeam,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
