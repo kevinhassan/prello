@@ -50,7 +50,7 @@ const authRequestViaSocket = (Authorization) => {
 const isAuthenticated = async (req, res, next) => {
     try {
         if (!req.user) {
-            throw new MyError(401, 'Unauthorized user');
+            throw new MyError(401, 'Unauthorized, you need to be authenticated');
         }
         next();
     } catch (e) {

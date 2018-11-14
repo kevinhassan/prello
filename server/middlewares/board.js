@@ -6,7 +6,7 @@ const MyError = require('../util/error');
  */
 const isMember = async (req, res, next) => {
     try {
-        if (!req.user) throw new MyError(401, 'Unauthorize user');
+        if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const board = await Board.findById(req.params.boardId).select('members');
         if (!board) {
             throw new MyError(404, 'Board not found');
@@ -29,7 +29,7 @@ const isMember = async (req, res, next) => {
 */
 const isAdmin = async (req, res, next) => {
     try {
-        if (!req.user) throw new MyError(401, 'Unauthorize user');
+        if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const board = await Board.findById(req.params.boardId).select('admins');
 
         if (!board) {

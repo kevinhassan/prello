@@ -83,7 +83,7 @@ exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
         }
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 

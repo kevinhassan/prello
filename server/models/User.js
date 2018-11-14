@@ -70,7 +70,7 @@ userSchema.methods.comparePassword = async function comparePassword(candidatePas
     const isMatch = await new Promise((resolve, reject) => {
         bcrypt.compare(candidatePassword, this.password, (err, result) => {
             if (err) {
-                reject(new Error(500, 'Internal Server Error'));
+                reject(new Error(500, 'Internal server error'));
             }
             resolve(result);
         });

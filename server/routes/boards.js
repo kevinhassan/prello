@@ -72,7 +72,7 @@ const { updateClientsOnBoard } = require('../socket');
 *           200:
 *               description: Boards found
 *           401:
-*               description: Unauthorize user
+*               description: Unauthorized, you need to be authenticated
 *           500:
 *               description: Internal server error
 
