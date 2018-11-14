@@ -13,6 +13,7 @@ import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
 import TeamComp from '../TeamComp';
 import ForgotComp from '../ForgotComp';
+import ResetComp from '../ResetComp';
 
 import PrivateRoute from '../../components/PrivateRoute';
 import ErrorPage from '../../components/ErrorPage';
@@ -41,7 +42,8 @@ const App = () => (
                     <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
 
-                    <Route render={props => <ErrorPage status={404} {...props} />} />
+                    <Route exact path="/reset/:token" component={ResetComp} />
+                    <Route component={Page404} />
                 </Switch>
             </div>
         </main>
