@@ -32,7 +32,6 @@ const ListName = props => (
                             <button
                                 className="btn btn-sm btn-success"
                                 type="submit"
-                                onClick={() => props.displayForm(false)}
                             >
                                 <i className="fas fa-check" />
                             </button>
