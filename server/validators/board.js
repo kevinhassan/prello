@@ -1,4 +1,4 @@
-const { check } = require('express-validator/check');
+const { check, oneOf } = require('express-validator/check');
 
 const addBoard = [
     check('name')
@@ -42,13 +42,19 @@ const changeName = [
         .isLength({ min: 1 }),
 ];
 
-const addMember = [
+const addMember = oneOf([
     check('email')
         .not().isEmpty()
         .trim()
         .escape()
-        .isEmail()
-];
+        .isEmail(),
+    check('username')
+        .not().isEmpty()
+        .trim()
+        .escape()
+        .isString(),
+]);
+
 const addTeam = [
     check('team')
         .not().isEmpty()

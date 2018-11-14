@@ -330,6 +330,18 @@ exports.findMemberWithMail = async (email) => {
     }
 };
 
+exports.findMemberWithUsername = async (username) => {
+    try {
+        const user = await User.findOne({ username });
+        if (!user) throw new MyError(404, 'User not found');
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+
 exports.removeBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId },

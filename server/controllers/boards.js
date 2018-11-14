@@ -268,13 +268,12 @@ exports.postTeam = async (boardId, teamId) => {
 };
 
 /**
- * Add member to the board (only for admins).
+ * Add member to the board with mail.
  */
 exports.postMemberWithMail = async (boardId, email) => {
     try {
         const member = await userController.findMemberWithMail(email);
 
-        // add the board to the member
         await userController.postBoard(member._id, boardId);
         const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
         return newBoard;
@@ -283,6 +282,24 @@ exports.postMemberWithMail = async (boardId, email) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+/**
+ * Add member to the board with username.
+ */
+exports.postMemberWithUsername = async (boardId, username) => {
+    try {
+        const member = await userController.findMemberWithUsername(username);
+
+        // Add the board to the member
+        await userController.postBoard(member._id, boardId);
+        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
+        return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 
 /**
  * Create a new label.
