@@ -120,16 +120,25 @@ export const UPDATE_LIST_NAME_STARTED = 'lists/UPDATE_LIST_NAME_STARTED';
 export const UPDATE_LIST_NAME_SUCCESS = 'lists/UPDATE_LIST_NAME_SUCCESS';
 export const UPDATE_LIST_NAME_FAILURE = 'lists/UPDATE_LIST_NAME_FAILURE';
 
-export const updateListNameStartedAction = () => ({ type: UPDATE_LIST_NAME_STARTED });
-
-export const updateListNameSuccessAction = list => ({
-    type: UPDATE_LIST_NAME_SUCCESS,
+export const updateListNameStartedAction = (listId, name) => ({
+    type: UPDATE_LIST_NAME_STARTED,
     payload: {
-        list,
+        listId,
+        name,
     },
 });
 
-export const updateListNameFailureAction = () => ({ type: UPDATE_LIST_NAME_FAILURE });
+export const updateListNameSuccessAction = () => ({
+    type: UPDATE_LIST_NAME_SUCCESS,
+});
+
+export const updateListNameFailureAction = (listId, name) => ({
+    type: UPDATE_LIST_NAME_FAILURE,
+    payload: {
+        listId,
+        name,
+    },
+});
 
 export const updateListName = (listId, name, oldName) => (dispatch) => {
     dispatch(updateListNameStartedAction(listId, name));
