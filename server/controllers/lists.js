@@ -33,9 +33,6 @@ exports.removeCard = async (data) => {
     }
 };
 
-/**
- * POST /lists
- */
 // ======================== //
 // ==== Post functions ==== //
 // ======================== //
@@ -117,6 +114,9 @@ exports.getList = async (listId) => {
 };
 
 
+// ======================= //
+// ==== Put functions ==== //
+// ======================= //
 /**
  * Set list archived
  */
@@ -126,6 +126,27 @@ exports.archiveList = async (listId, isArchived) => {
         if (!list) throw new MyError(404, 'List not found.');
 
         list.isArchived = isArchived;
+        await list.save();
+
+        return list;
+    } catch (err) {
+        if (err.status) throw err;
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query.');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'List not found.');
+        }
+        throw new MyError(500, 'Internal server error.');
+    }
+};
+
+exports.putName = async (listId, name) => {
+    try {
+        const list = await List.findById(listId);
+        if (!list) throw new MyError(404, 'List not found.');
+
+        list.name = name;
         await list.save();
 
         return list;
