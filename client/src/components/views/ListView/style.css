@@ -30,14 +30,6 @@
     transition: 0.3s;
 }
 
-.listName {
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding: 10px;
-    text-align: left;
-    white-space: pre-wrap;
-}
-
 .cardHeader {
     align-items: center;
     display: flex;
