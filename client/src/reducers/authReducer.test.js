@@ -73,10 +73,11 @@ describe(actions.CLASSIC_REGISTER_FAILURE, () => {
 });
 
 describe(actions.SIGN_OUT, () => {
-    it('should set isLoggedIn to false', () => {
+    it('should set isLoggedIn to false and clientId to null', () => {
         const action = actions.signOutAction();
         const finalState = authReducer({}, action);
 
         expect(finalState.isLoggedIn).toEqual(false);
+        expect(finalState.clientId).toEqual(null);
     });
 });
