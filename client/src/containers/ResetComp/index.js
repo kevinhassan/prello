@@ -14,19 +14,14 @@ import { resetPassword } from '../../actions/auth';
 // ===== Models
 
 // ===== Components / Containers
-import SignInView from '../../components/views/SignInView';
+import ResetView from '../../components/views/ResetView';
+
 
 
 class ResetComp extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
- 
-
     render() {
         return (
-            <SignInView
+            <ResetView
                 errorMessage={this.props.errorMessage}
                 handleFormSubmit={this.handleFormSubmit}
             />

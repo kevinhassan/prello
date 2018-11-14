@@ -1,0 +1,30 @@
+.resetTitle{
+    text-align: center;
+}
+
+.resetForm{
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.resetText{
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+}
+
+.inputPassword{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.passwordLabel{
+    margin-right: 20px; 
+}
+
+.passwordInput{
+    margin-left: 20px; 
+}
