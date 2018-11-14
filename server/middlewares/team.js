@@ -53,7 +53,7 @@ const canEdit = async (req, res, next) => {
  */
 const canSee = async (req, res, next) => {
     try {
-        const team = await Team.findById(req.params.teamId).select('admins members');
+        const team = await Team.findById(req.params.teamId).select('isVisible admins members');
         if (!team) throw new MyError(404, 'Team not found');
         // User not logged in
         if (!req.user) {

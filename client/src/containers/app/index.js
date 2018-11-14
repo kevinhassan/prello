@@ -33,10 +33,10 @@ const App = () => (
                     <Route exact path="/members/:memberId" component={MemberComp} />
                     <Route exact path="/register" component={RegisterComp} />
                     <Route exact path="/signin" component={SignInComp} />
+                    <Route exact path="/teams/:teamId" component={TeamComp} />
 
                     <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
-                    <PrivateRoute authed={isAuthenticated()} exact path="/teams/:teamId" component={TeamComp} />
 
                     <Route component={Page404} />
                 </Switch>
