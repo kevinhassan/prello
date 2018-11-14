@@ -69,8 +69,8 @@ class TeamComp extends React.Component {
         if (team === null) {
             return (
                 <div style={{ backgroundColor: 'rgba(0, 140, 220, 0.1)', height: '100%', padding: '100px' }}>
-                    <h1 className="text-danger">Private team</h1>
-                    <p style={{ fontSize: '1.2rem' }}>{'You can\'t see this team because is private.'}</p>
+                    <h1 className="text-danger">Team private or not found</h1>
+                    <p style={{ fontSize: '1.2rem' }}>{'You can\'t see this team because is private or maybe because it doesn\'t exist...'}</p>
                     <button className="btn btn-primary" type="button" onClick={this.props.goBack}>
                         <i className="fas fa-chevron-left" />
                         {' '}
