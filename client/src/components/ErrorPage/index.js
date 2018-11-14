@@ -26,10 +26,10 @@ const ErrorPage = props => (
                     ) : (
                         <Fragment>
                             <p className="text-center">Sorry, we can not find the page you are looking for...</p>
-                            <p className="text-center">Maybe you would like to go somewhere else:</p>
                         </Fragment>
                     )}
                 <ul>
+                    <p className="text-center">Maybe you would like to go somewhere else:</p>
                     <li><Link to="/">Home</Link></li>
                     {localStorage.getItem('prello_token') === null
                         ? (
