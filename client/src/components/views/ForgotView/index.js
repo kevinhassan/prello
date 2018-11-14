@@ -16,8 +16,8 @@ const ForgotView = props => (
         <form className="forgotForm" onSubmit={props.handleForgotFormSubmit}>
 
             <div className="form-group inputEmail">
-                <label htmlFor="email" className="">Email</label>
-                <div className="">
+                <label htmlFor="email" className="emailLabel">Email</label>
+                <div className="emailInput">
                     <input
                         className="form-control"
                         id="email"

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { push } from 'connected-react-router';
 import {
     bindActionCreators,
 } from 'redux';
