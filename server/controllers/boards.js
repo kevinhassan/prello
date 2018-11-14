@@ -273,7 +273,11 @@ exports.postTeam = async (boardId, teamId) => {
 exports.postMemberWithMail = async (boardId, email) => {
     try {
         const member = await userController.findMemberWithMail(email);
+        const board = await this.getBoard(boardId);
 
+        if (board.members.some(m => m._id.toString() === member._id.toString())) {
+            throw new MyError(409, `${email} is already on the board`);
+        }
         await userController.postBoard(member._id, boardId);
         const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
         return newBoard;
@@ -289,11 +293,14 @@ exports.postMemberWithMail = async (boardId, email) => {
 exports.postMemberWithUsername = async (boardId, username) => {
     try {
         const member = await userController.findMemberWithUsername(username);
+        const board = await this.getBoard(boardId);
 
-        // Add the board to the member
-        await userController.postBoard(member._id, boardId);
-        const newBoard = await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
-        return newBoard;
+        if (board.members.some(m => m._id.toString() === member._id.toString())) {
+            throw new MyError(409, `${username} is already on the board`);
+        }
+        const user = await userController.postBoard(member._id, boardId);
+        await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: member._id } } });
+        return user;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');

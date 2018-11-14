@@ -78,6 +78,15 @@ export default function currentBoardReducer(state = initialState, action) {
                 ...state,
             };
 
+        case actions.ADD_BOARD_MEMBER_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    members: state.board.members.concat(action.payload.user),
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
