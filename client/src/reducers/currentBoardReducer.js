@@ -4,6 +4,8 @@ import * as cardActions from '../actions/cards';
 
 export const initialState = {
     board: undefined,
+    errorMessage: '',
+    status: null,
 };
 
 export default function currentBoardReducer(state = initialState, action) {
@@ -14,10 +16,26 @@ export default function currentBoardReducer(state = initialState, action) {
 
         switch (action.type) {
         // ===== BOARD ACTIONS ===== //
+        case actions.FETCH_BOARD_STARTED:
+            return {
+                ...state,
+                board: undefined,
+                errorMessage: '',
+                status: null,
+            };
+
         case actions.FETCH_BOARD_SUCCESS:
             return {
                 ...state,
                 board: action.payload.board,
+            };
+
+        case actions.FETCH_BOARD_FAILURE:
+            return {
+                ...state,
+                board: null,
+                errorMessage: action.payload.message,
+                status: action.payload.status,
             };
 
         case actions.REMOVE_BOARD_FETCH_SUCCESS:

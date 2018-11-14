@@ -1,7 +1,7 @@
-import currentBoardReducer, { initialState } from './currentBoardReducer';
 import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
 import * as cardActions from '../actions/cards';
+import currentBoardReducer, { initialState } from './currentBoardReducer';
 
 const labels = [
     { _id: 'lab1', name: 'label1' },
@@ -64,6 +64,8 @@ const state = {
             _id: '623030303030303030303031',
         },
     },
+    errorMessage: '',
+    status: null,
 };
 
 describe('Action not referenced', () => {
@@ -76,6 +78,17 @@ describe('Action not referenced', () => {
 });
 
 // ===== BOARDS ACTIONS ===== //
+describe(actions.FETCH_BOARD_STARTED, () => {
+    it('should reinitialiaze the state (undefined or empty value)', () => {
+        const action = actions.fetchBoardStartedAction();
+        const finalState = currentBoardReducer(initialState, action);
+
+        expect(finalState.board).toEqual(undefined);
+        expect(finalState.errorMessage).toEqual('');
+        expect(finalState.status).toEqual(null);
+    });
+});
+
 describe(actions.FETCH_BOARD_SUCCESS, () => {
     it('should put the new board in state', () => {
         const newBoard = { _id: 'newBoardI', name: 'new board' };
@@ -83,6 +96,18 @@ describe(actions.FETCH_BOARD_SUCCESS, () => {
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board).toEqual(newBoard);
+    });
+});
+
+describe(actions.FETCH_BOARD_FAILURE, () => {
+    it('should set the board to null, set the errorMessage and status', () => {
+        const error = { message: 'an error', status: 404 };
+        const action = actions.fetchBoardFailureAction(error.message, error.status);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board).toEqual(null);
+        expect(finalState.errorMessage).toEqual(error.message);
+        expect(finalState.status).toEqual(error.status);
     });
 });
 

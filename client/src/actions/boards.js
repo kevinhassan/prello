@@ -45,7 +45,13 @@ export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
-export const fetchBoardFailureAction = () => ({ type: FETCH_BOARD_FAILURE });
+export const fetchBoardFailureAction = (message, status) => ({
+    type: FETCH_BOARD_FAILURE,
+    payload: {
+        message,
+        status,
+    },
+});
 export const fetchBoardSuccessAction = board => ({
     type: FETCH_BOARD_SUCCESS,
     payload: {
@@ -54,14 +60,13 @@ export const fetchBoardSuccessAction = board => ({
 });
 
 export const fetchBoard = boardId => (dispatch) => {
-    dispatch(fetchBoardStartedAction());
     dispatch(displayLoadingModal());
-
+    dispatch(fetchBoardStartedAction());
     // Set up socket
     APISocket.subscribeToBoard(boardId, (res) => {
         dispatch(fetchBoardSuccessAction(res.board));
+        dispatch(hideLoadingModal());
     });
-    dispatch(hideLoadingModal());
 };
 
 // ===== Remove board fetch =====
