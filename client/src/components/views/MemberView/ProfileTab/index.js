@@ -37,7 +37,7 @@ const ProfileTab = props => (
         </div>
 
         <hr />
-        <div className="activityPanel">
+        <div>
 
             <h4 className="news">
                 <i className="far fa-newspaper teamIcon" />

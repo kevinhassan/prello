@@ -9,6 +9,7 @@ import 'react-tabs/style/react-tabs.css';
 import InformationForm from './InformationForm';
 import SettingsTab from './SettingsTab';
 import ProfileTab from './ProfileTab';
+import GithubTab from './GithubTab';
 
 
 // ===== Others
@@ -48,16 +49,23 @@ const ProfileView = props => (
                 <TabList className="profileTabList react-tabs__tab-list">
                     <Tab className="profileTab react-tabs__tab">
                         <h4>
-                            <i className="fas fa-user teamIcon" />
+                            <i className="fas fa-user" />
                             {' '}
                         Profile
                         </h4>
                     </Tab>
                     <Tab className="profileTab react-tabs__tab">
                         <h4>
-                            <i className="fas fa-cog teamIcon" />
+                            <i className="fas fa-cog" />
                             {' '}
                         Settings
+                        </h4>
+                    </Tab>
+                    <Tab className="profileTab react-tabs__tab">
+                        <h4>
+                            <i className="fab fa-github" />
+                            {' '}
+                            Github
                         </h4>
                     </Tab>
                 </TabList>
@@ -65,6 +73,7 @@ const ProfileView = props => (
                 <TabPanel>
                     <ProfileTab
                         teams={props.user.teams}
+                        github={props.user.github}
                         createTeam={props.createTeam}
                         isCreateTeamFormVisible={props.isCreateTeamFormVisible}
                         displayCreateTeamForm={props.displayCreateTeamForm}
@@ -80,6 +89,13 @@ const ProfileView = props => (
                             isDeleteVisible={props.isDeleteVisible}
                             displayDeleteForm={props.handleDeleteAccountDisplay}
                             handleDeletingAccount={props.handleDeletingAccount}
+                        />
+                    </div>
+                </TabPanel>
+                <TabPanel>
+                    <div style={{ flex: 1 }}>
+                        <GithubTab
+                            github={props.user.github ? props.user.github : undefined}
                         />
                     </div>
                 </TabPanel>
