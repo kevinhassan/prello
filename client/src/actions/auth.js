@@ -110,3 +110,22 @@ export const signOut = () => (dispatch) => {
     localStorage.removeItem('prello_token');
     dispatch(signOutAction());
 };
+
+// ===== Forgotten password ===== //
+export const FORGOTTEN_PASSWORD = 'auth/FORGOTTEN_PASSWORD';
+
+export const forgottenPasswordAction = () => ({ type: FORGOTTEN_PASSWORD });
+
+export const forgottenPassword = email => (dispatch) => {
+    APIFetch.fetchPrelloAPI('forgot', {
+        email,
+    }, APIFetch.POST)
+        .then(() => {
+            const messageSuccess = 'A email have been sent to '.concat(email).concat(' to reset your password');
+            dispatch(displaySuccessMessage(messageSuccess));
+            dispatch(push('/'));
+        })
+        .catch((error) => {
+            dispatch(classicRegisterFailureAction(error.response.data.error));
+        });
+};
