@@ -155,7 +155,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
  */
 exports.getProfile = async (userId) => {
     try {
-        const userProfile = await User.findById(userId).select('-password').populate('teams');
+        const userProfile = await User.findById(userId).select('-password -github.token').populate('teams');
         return userProfile;
     } catch (err) {
         throw new MyError(500, 'Internal server error');

@@ -46,7 +46,7 @@ const SignInView = props => (
             <div className="form-group text-center">
                 <div className="button-group">
                     <a type="button" className="btn loginWithGHLink" href={`${process.env.REACT_APP_API_HOST}auth/github`}>
-                Sign with Github
+                        Sign with Github
                         {' '}
                         <i className="fab fa-github" />
                     </a>

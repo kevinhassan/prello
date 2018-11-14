@@ -18,7 +18,7 @@ const settingsDisplay = (isDeleteVisible, visible, hidden) => {
 };
 
 const SettingsTab = props => (
-    <div className="settingsPanel">
+    <div className="bottomProfilePanel">
         {(props.isPasswordVisible) ? (
             <div className="settings">
                 <div className="changePassword">
