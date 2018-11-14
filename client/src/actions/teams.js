@@ -201,3 +201,36 @@ export const changeDescription = (teamId, description) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Delete team ===== //
+export const DELETE_TEAM_STARTED = 'teams/DELETE_TEAM_STARTED';
+export const DELETE_TEAM_FAILURE = 'teams/DELETE_TEAM_FAILURE';
+export const DELETE_TEAM_SUCCESS = 'teams/DELETE_TEAM_SUCCESS';
+
+export const deleteTeamStartedAction = () => ({ type: DELETE_TEAM_STARTED });
+
+export const deleteTeamFailureAction = () => ({ type: DELETE_TEAM_FAILURE });
+
+export const deleteTeamSuccessAction = team => ({
+    type: DELETE_TEAM_SUCCESS,
+    payload: {
+        team,
+    },
+});
+
+export const deleteTeam = team => (dispatch) => {
+    dispatch(deleteTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = 'teams'.concat(`/${team._id}`);
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
+        .then(() => {
+            dispatch(deleteTeamSuccessAction(team));
+        })
+        .catch((error) => {
+            dispatch(deleteTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

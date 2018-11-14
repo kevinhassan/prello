@@ -11,7 +11,7 @@ import {
     getProfile, updateUserInformation, updatePassword, deleteUser,
 } from '../../actions/user';
 
-import { createTeam } from '../../actions/teams';
+import { createTeam, deleteTeam } from '../../actions/teams';
 
 // =====
 
@@ -36,6 +36,8 @@ class ProfileComp extends React.Component {
 
         this.handleDisplayCreateTeamForm = this.handleDisplayCreateTeamForm.bind(this);
         this.handleCreateTeam = this.handleCreateTeam.bind(this);
+
+        this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
     }
 
     componentWillMount() {
@@ -82,6 +84,10 @@ class ProfileComp extends React.Component {
         this.props.deleteUser(event.target.username.value);
     }
 
+    handleDeleteTeam(team) {
+        this.props.deleteTeam(team);
+    }
+
     render() {
         const { profile } = this.props;
 
@@ -106,6 +112,8 @@ class ProfileComp extends React.Component {
                         displayCreateTeamForm={this.handleDisplayCreateTeamForm}
                         createTeam={this.handleCreateTeam}
                         isCreateTeamFormVisible={this.state.isCreateTeamFormVisible}
+
+                        deleteTeam={this.handleDeleteTeam}
                     />
                 );
                 return element;
@@ -123,6 +131,7 @@ class ProfileComp extends React.Component {
 ProfileComp.propTypes = {
     errorMessage: PropTypes.object,
     createTeam: PropTypes.func.isRequired,
+    deleteTeam: PropTypes.func.isRequired,
     getProfile: PropTypes.func.isRequired,
     updateUserInformation: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
@@ -145,6 +154,7 @@ const mapStateToProps = ({ users }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         createTeam,
+        deleteTeam,
         getProfile,
         updateUserInformation,
         updatePassword,

@@ -14,6 +14,7 @@ import MemberView from '../../components/views/MemberView';
 // ===== Others
 
 class MemberComp extends React.Component {
+
     componentWillMount() {
         // Redirect user to his profile if he is looking for him.
         if (this.props.clientId === this.props.match.params.memberId) {
