@@ -42,7 +42,9 @@ const SignInView = props => (
                     />
                 </div>
             </div>
-
+            <div className="form-group text-right">
+                <button type="button" className="btn btn-secondary forgottenPassword" onClick={() => (props.handleForgotPassword())}>Forgotten password</button>
+            </div>
             <div className="form-group text-center">
                 <div className="button-group">
                     <a type="button" className="btn loginWithGHLink" href={`${process.env.REACT_APP_API_HOST}auth/github`}>
@@ -54,6 +56,7 @@ const SignInView = props => (
                     <button type="submit" className="btn btn-primary">Sign in</button>
                 </div>
             </div>
+            
             <p className="text-danger signInErrorMsg">{props.errorMessage}</p>
         </form>
     </div>
@@ -62,6 +65,7 @@ const SignInView = props => (
 SignInView.propTypes = {
     errorMessage: PropTypes.string,
     handleFormSubmit: PropTypes.func.isRequired,
+    handleForgotPassword: PropTypes.func.isRequired,
 };
 SignInView.defaultProps = {
     errorMessage: '',

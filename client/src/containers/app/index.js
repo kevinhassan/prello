@@ -12,6 +12,7 @@ import ProfileComp from '../ProfileComp';
 import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
 import TeamComp from '../TeamComp';
+import ForgotComp from '../ForgotComp';
 
 import PrivateRoute from '../../components/PrivateRoute';
 import ErrorPage from '../../components/ErrorPage';
@@ -35,6 +36,7 @@ const App = () => (
                     <Route exact path="/register" component={RegisterComp} />
                     <Route exact path="/signin" component={SignInComp} />
                     <Route exact path="/teams/:teamId" component={TeamComp} />
+                    <Route exact path="/forgot" component={ForgotComp} />
 
                     <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />

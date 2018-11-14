@@ -44,3 +44,8 @@ h1.signInTitle {
 .button-group a{
     margin-bottom: 5px;
 }
+
+.forgottenPassword{
+    margin-bottom: 0x; 
+    margin-top: 0px; 
+}

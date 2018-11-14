@@ -69,6 +69,13 @@ export default function authReducer(state = initialState, action) {
                 clientId: null,
             };
 
+        case actions.FORGOTTEN_PASSWORD:
+            return {
+                ...state,
+                isLoggedIn: false,
+                clientId: null,
+            };
+
         default:
             return state;
         }
