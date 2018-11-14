@@ -16,21 +16,34 @@ import { resetPassword } from '../../actions/auth';
 // ===== Components / Containers
 import ResetView from '../../components/views/ResetView';
 
-
-
 class ResetComp extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleResetFormSubmit = this.handleResetFormSubmit.bind(this);
+    }
+
+    handleResetFormSubmit(event) {
+        event.preventDefault();
+        const password = event.target.password.value;
+        const passwordConfirm = event.target.confirmPassword.value;
+        if (password && passwordConfirm) {
+            // this.props.resetPassword(password);
+        }
+    }
+
     render() {
         return (
             <ResetView
                 errorMessage={this.props.errorMessage}
-                handleFormSubmit={this.handleFormSubmit}
+                handleResetFormSubmit={this.handleResetFormSubmit}
             />
         );
     }
 }
 
 ResetComp.propTypes = {
-
+    errorMessage: PropTypes.string.isRequired,
+    resetPassword: PropTypes.func.isRequired,
 };
 ResetComp.defaultProps = {
 
@@ -44,6 +57,7 @@ const mapStateToProps = ({ auth }) => ({
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        resetPassword,
     }, dispatch,
 );
 

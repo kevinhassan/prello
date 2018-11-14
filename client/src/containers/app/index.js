@@ -38,11 +38,12 @@ const App = () => (
                     <Route exact path="/signin" component={SignInComp} />
                     <Route exact path="/teams/:teamId" component={TeamComp} />
                     <Route exact path="/forgot" component={ForgotComp} />
+                    <Route exact path="/reset/:token" component={ResetComp} />
+
 
                     <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
 
-                    <Route exact path="/reset/:token" component={ResetComp} />
                     <Route component={ErrorPage} />
                 </Switch>
             </div>
