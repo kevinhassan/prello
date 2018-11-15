@@ -114,7 +114,7 @@ exports.forgot = async (email) => {
 exports.resetPassword = async (token, password) => {
     try {
         const user = await User.findOne({ passwordResetToken: token }).where('passwordResetExpires').gt(Date.now());
-        if (!user) throw new MyError(403, 'User can\'t reset his password');
+        if (!user) throw new MyError(403, 'This link is expired.');
         user.password = password;
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
