@@ -69,11 +69,12 @@ const canSee = async (req, res, next) => {
 
         if (!board) throw new MyError(404, 'Board not found');
 
+        // Is the board public ?
+        if (board.visibility === 'public') return true;
+
         // User not logged in
         if (!req.user) {
-            // Is the board public ?
-            if (!board.visibility === 'public') throw new MyError(401, 'You are not allowed to access this team. Please sign in and try again.');
-            else next();
+            throw new MyError(401, 'You are not allowed to access this team. Please sign in and try again.');
         } else {
             // Is the user a board member ?
             let member = board.members.find(member => req.user._id.toString() === member._id.toString());
@@ -81,7 +82,7 @@ const canSee = async (req, res, next) => {
 
             else {
                 // Is the user a team member and board not private ?
-                member = board.teams.members.find(member => req.user._id.toString() === member._id.toString());
+                member = board.teams.map(t => t.members.find(member => req.user._id.toString() === member._id.toString()));
                 if (member && !board.visibility === 'private') {
                     next();
                 } else {
@@ -119,19 +120,21 @@ const canSeeViaSocket = async (boardId, user) => {
         ]);
         if (!board) throw new MyError(404, 'Board not found');
 
+        // Is the board public ?
+        if (board.visibility === 'public') {
+            return true;
+        }
+
         // User not logged in
         if (!user) {
-            // Is the board public ?
-            if (board.visibility !== 'public') {
-                throw new MyError(401, 'You are not allowed to access this board. Please sign in and try again.');
-            } else return true;
+            throw new MyError(401, 'You are not allowed to access this board. Please sign in and try again.');
         } else {
             // Is the user a board member ?
             let member = board.members.find(member => user._id.toString() === member._id.toString());
             if (member) return true;
 
             // Is the user a team member and board not private ?
-            member = board.teams.members.find(member => user._id.toString() === member._id.toString());
+            member = board.teams.map(t => t.members.find(member => user._id.toString() === member._id.toString()));
             if (member && !board.visibility === 'private') {
                 return true;
             }
