@@ -44,13 +44,13 @@ const GithubLinkBoard = props => (
                         <option value="" disabled>
                         Link to Github
                         </option>
-                        {props.repos.filter(repo => !repo.private).map(repo => (
+                        {props.repos.filter(repo => !repo.private).sort((a, b) => a.name > b.name).map(repo => (
                             <option key={repo.url} value={JSON.stringify(repo)}>{repo.name}</option>
                         ))}
                     </select>
                     <button
                         className="btn btn-secondary btn-sm"
-                        type="submit"
+                        type="reset"
                         onClick={() => props.displayReposList(false)}
                     >
                         <i className="fas fa-times" />
@@ -63,7 +63,7 @@ const GithubLinkBoard = props => (
 
 GithubLinkBoard.propTypes = {
     canEdit: PropTypes.bool.isRequired,
-    boardGithubRepo: PropTypes.object,
+    boardGithubRepo: PropTypes.object.isRequired,
     displayReposList: PropTypes.func.isRequired,
     isReposListVisible: PropTypes.bool.isRequired,
     linkBoardToGithubRepo: PropTypes.func.isRequired,
