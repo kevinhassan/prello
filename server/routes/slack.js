@@ -8,15 +8,17 @@ function parse(stringToParse) {
         board: '',
         cards: [],
         keyword: '',
+        labels: [],
         list: '',
         users: []
     };
     console.log(stringToParse);
-    const params = stringToParse.split(/(?= [&@$%].*)/g);
+    const params = stringToParse.split(/(?= [#$&%@].*)/g);
     params.forEach((param) => {
         const trimedParam = param.trim();
         if (trimedParam.charAt(0) === '#')retour.board = trimedParam.substring(1);
         else if (trimedParam.charAt(0) === '$')retour.cards.push(trimedParam.substring(1));
+        else if (trimedParam.charAt(0) === '&')retour.labels.push(trimedParam.substring(1));
         else if (trimedParam.charAt(0) === '%')retour.list = (trimedParam.substring(1));
         else if (trimedParam.charAt(0) === '@')retour.users.push(trimedParam.substring(1));
         else if (trimedParam === params[0]) retour.keyword = trimedParam.split(' ');
@@ -34,10 +36,7 @@ module.exports = (router) => {
                 const board = await BoardController.getBoard('b00000000001');
                 const listParam = board.lists.find(list => list.name === params.list && list.isArchived === false);
                 const message = async (params) => {
-                    if (params.keyword[0] === 'add') {
-                        if (params.users.length !== 0 && params.cards.length !== 0) {
-                            return `You have added ${params.users.toString()} to ${params.cards.toString()}.`;
-                        }
+                    if (params.keyword[0] === 'addCard') {
                         if (params.cards.length !== 0) {
                             if (!listParam && !params.keyword.includes('-R')) {
                                 return `The list ${params.list} does not exist.`;
@@ -59,7 +58,10 @@ module.exports = (router) => {
                     if (params.keyword[0] === 'duedate') {
                         return 'The next task to do are : .';
                     }
-                    if (params.keyword[0] === 'remove') {
+                    if (params.keyword[0] === 'removeCard') {
+                        if (params.cards.length === 0) {
+                            return 'You have to choose at least a card to archive.';
+                        }
                         if (!listParam) {
                             return `The list ${params.list} does not exist.`;
                         }
@@ -70,6 +72,48 @@ module.exports = (router) => {
                             });
                         });
                         return `You have archive the cards ${params.cards.toString()}.`;
+                    }
+                    if (params.keyword[0] === 'addLabel') {
+                        if (params.cards.length === 0) {
+                            return 'You have to choose at least a card.';
+                        }
+                        if (params.labels.length === 0) {
+                            return 'You have to choose at least a label.';
+                        }
+                        if (!listParam) {
+                            return `The list ${params.list} does not exist.`;
+                        }
+                        await params.cards.forEach(async (card) => {
+                            const findCard = await listParam.cards.filter(listCard => listCard.name === card);
+                            const findLabel = await board.labels.filter(label => params.labels.includes(label.name));
+                            findCard.forEach((cardToLabel) => {
+                                findLabel.forEach((labelToAdd) => {
+                                    CardController.addLabel({ cardId: cardToLabel._id, labelId: labelToAdd._id });
+                                });
+                            });
+                        });
+                        return `You have added the labels ${params.labels.toString()} to the cards ${params.cards.toString()}.`;
+                    }
+                    if (params.keyword[0] === 'removeLabel') {
+                        if (params.cards.length === 0) {
+                            return 'You have to choose at least a card.';
+                        }
+                        if (params.labels.length === 0) {
+                            return 'You have to choose at least a label.';
+                        }
+                        if (!listParam) {
+                            return `The list ${params.list} does not exist.`;
+                        }
+                        await params.cards.forEach(async (card) => {
+                            const findCard = await listParam.cards.filter(listCard => listCard.name === card);
+                            const findLabel = await board.labels.filter(label => params.labels.includes(label.name));
+                            findCard.forEach((cardToLabel) => {
+                                findLabel.forEach((labelToAdd) => {
+                                    CardController.deleteLabel({ cardId: cardToLabel._id, labelId: labelToAdd._id });
+                                });
+                            });
+                        });
+                        return `You have remove the labels ${params.labels.toString()} from the cards ${params.cards.toString()}.`;
                     }
                     return 'No valid key-word found. \nValid key-word are add, remove, duedate.';
                 };
