@@ -40,7 +40,7 @@ class GithubLinkBoardComp extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getProfile();
+        if (this.props.canEdit) this.props.getProfile();
     }
 
     displayReposList(value) {
@@ -55,7 +55,6 @@ class GithubLinkBoardComp extends React.Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <GithubLinkBoard
                 repos={this.state.repos}
@@ -63,7 +62,7 @@ class GithubLinkBoardComp extends React.Component {
                 boardGithubRepo={this.state.boardGithubRepo}
                 isReposListVisible={this.state.isReposListVisible}
                 displayReposList={this.displayReposList}
-                canEdit={this.props.admins.some(a => a._id.toString() === this.props.clientId.toString())}
+                canEdit={this.props.canEdit}
             />
         );
     }
@@ -73,16 +72,16 @@ GithubLinkBoardComp.propTypes = {
     admins: PropTypes.arrayOf(PropTypes.object),
     boardId: PropTypes.string.isRequired,
     boardGithubRepo: PropTypes.object,
-    clientId: PropTypes.string.isRequired,
+    canEdit: PropTypes.bool,
     getProfile: PropTypes.func.isRequired,
     linkBoardToRepoGithub: PropTypes.func.isRequired,
     repos: PropTypes.arrayOf(PropTypes.object),
 };
 GithubLinkBoardComp.defaultProps = {
     admins: [],
-    clientId: undefined,
+    canEdit: false,
     repos: [],
-    boardGithubRepo: undefined,
+    boardGithubRepo: {},
 };
 
 // Put info from the store state in props
@@ -91,11 +90,17 @@ const mapStateToProps = ({ auth, currentBoard, users }) => {
     if (users && users.profile && users.profile.repos) {
         ghRepos = users.profile.repos;
     }
+    let canEdit = false;
+    if (auth.clientId) {
+        canEdit = currentBoard.board.admins.some(a => a._id === auth.clientId);
+    }
+
     return {
         boardGithubRepo: currentBoard.board.githubRepo,
         clientId: auth.clientId,
         admins: currentBoard.board.admins,
         repos: ghRepos,
+        canEdit,
     };
 };
 
