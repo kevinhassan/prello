@@ -136,7 +136,7 @@ export const RESET_USER_PASSWORD = 'auth/RESET_USER_PASSWORD';
 export const resetPasswordAction = () => ({ type: RESET_USER_PASSWORD });
 
 export const resetPassword = (password, resetToken) => (dispatch) => {
-    APIFetch.fetchPrelloAPI(`reset/${resetToken}`, {
+    APIFetch.fetchPrelloAPI(`account/password/${resetToken}`, {
         password,
     }, APIFetch.PUT)
         .then(() => {
