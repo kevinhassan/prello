@@ -51,23 +51,11 @@ class GithubLinkBoardComp extends React.Component {
         event.preventDefault();
         const newRepo = JSON.parse(event.target.value);
         // TODO: dispatch action
+        this.displayReposList(false);
     }
 
     render() {
-        if (this.props.clientId) {
-            console.log('pas de client id');
-            return (
-                <GithubLinkBoard
-                    repos={this.state.repos}
-                    linkBoardToGithubRepo={this.linkBoardToGithubRepo}
-                    boardGithubRepo={this.state.boardGithubRepo}
-                    isReposListVisible={this.state.isReposListVisible}
-                    displayReposList={this.displayReposList}
-                    canEdit={false}
-                />
-            );
-        }
-        console.log(this.props.admins.some(a => a._id.toString() === this.props.clientId.toString()));
+        console.log(this.props);
         return (
             <GithubLinkBoard
                 repos={this.state.repos}
@@ -80,16 +68,18 @@ class GithubLinkBoardComp extends React.Component {
         );
     }
 }
+
 GithubLinkBoardComp.propTypes = {
-    admins: PropTypes.arrayOf(PropTypes.object).isRequired,
+    admins: PropTypes.arrayOf(PropTypes.object),
     boardId: PropTypes.string.isRequired,
     boardGithubRepo: PropTypes.object,
-    clientId: PropTypes.string,
+    clientId: PropTypes.string.isRequired,
     getProfile: PropTypes.func.isRequired,
     linkBoardToRepoGithub: PropTypes.func.isRequired,
     repos: PropTypes.arrayOf(PropTypes.object),
 };
 GithubLinkBoardComp.defaultProps = {
+    admins: [],
     clientId: undefined,
     repos: [],
     boardGithubRepo: undefined,
@@ -102,9 +92,9 @@ const mapStateToProps = ({ auth, currentBoard, users }) => {
         ghRepos = users.profile.repos;
     }
     return {
-        boardGithubRepo: currentBoard.githubRepo,
+        boardGithubRepo: currentBoard.board.githubRepo,
         clientId: auth.clientId,
-        admins: currentBoard.admins,
+        admins: currentBoard.board.admins,
         repos: ghRepos,
     };
 };
