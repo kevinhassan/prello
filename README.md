@@ -1,13 +1,13 @@
 # Prello :clipboard:
+[![Build Status](https://travis-ci.org/kevinhassan/prello.svg?branch=develop)](https://travis-ci.org/kevinhassan/prello)
 <div>
   <a href="https://prello22app.igpolytech.fr">
 <img src="https://raw.githubusercontent.com/kevinhassan/prello/develop/client/src/assets/logo_prello.png" style="margin:auto"/>
   </a>
 </div>
 
-**Production site: https://prello22app.igpolytech.fr**
-
-[![Build Status](https://travis-ci.org/kevinhassan/prello.svg?branch=develop)](https://travis-ci.org/kevinhassan/prello)
+**Online App website: https://prello22app.igpolytech.fr**
+**Online API website: https://prello22api.igpolytech.fr**
 
 Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Application developed during our 5th year of CS & Management formation at Polytech Montpellier.
 
