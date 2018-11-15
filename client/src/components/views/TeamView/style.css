@@ -16,6 +16,9 @@
     cursor: pointer;
     transition: 0.2s;
 }
+.memberRow .badge:hover {
+    cursor: default;
+}
 
 .memberMe {
     background-color: #d3ffae;
@@ -31,8 +34,9 @@
 .teamVisibility:hover {
     cursor: pointer;
 }
-button.removeMember{
+.memberButtons{
     position: absolute; 
     bottom: 0;
-    right: 0;
+    right: 0;  
+
 }
