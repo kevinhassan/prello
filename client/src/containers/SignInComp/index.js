@@ -21,6 +21,7 @@ class SignInComp extends React.Component {
     constructor(props) {
         super(props);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
+        this.handleForgotPassword = this.handleForgotPassword.bind(this);
     }
 
     componentDidMount() {
@@ -39,6 +40,10 @@ class SignInComp extends React.Component {
         }
     }
 
+    handleForgotPassword() {
+        this.props.goForgot();
+    }
+
     handleFormSubmit(event) {
         event.preventDefault();
         const email = event.target.email.value;
@@ -53,6 +58,7 @@ class SignInComp extends React.Component {
             <SignInView
                 errorMessage={this.props.errorMessage}
                 handleFormSubmit={this.handleFormSubmit}
+                handleForgotPassword={this.handleForgotPassword}
             />
         );
     }
@@ -64,6 +70,7 @@ SignInComp.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     githubSignIn: PropTypes.func.isRequired,
     goBoards: PropTypes.func.isRequired,
+    goForgot: PropTypes.func.isRequired,
     location: PropTypes.object,
 };
 SignInComp.defaultProps = {
@@ -86,6 +93,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         classicSignIn,
         githubSignIn,
         goBoards: () => push('/boards'),
+        goForgot: () => push('/forgot'),
     }, dispatch,
 );
 

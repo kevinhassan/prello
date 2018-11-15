@@ -224,6 +224,32 @@ const {
 *               description: Invalid form data
 *           500:
 *               description: Internal server error
+* /account/password/:token :
+*    put:
+*       tags:
+*           - User
+*       description: User object that needs to change his password because he forget it
+*       summary: Update the user password
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The user password to update
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/AccountForm'
+*       responses:
+*           204:
+*               description: User password changed
+*           401:
+*               description: Expired token
+*           409:
+*               description: Email already used
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 * /forgot:
 *   post:
 *       tags:
@@ -444,19 +470,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/forgot', [forgotValidator], async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
-            }
-            try {
-                await userController.forgot(req.body.email, req.headers.host);
-                res.status(200).json({ message: 'Reset mail sent.' });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-        .post('/reset/:token', [resetValidator], async (req, res) => {
+        .put('/account/password/:token', [resetValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -464,6 +478,18 @@ module.exports = (router) => {
             try {
                 await userController.resetPassword(req.params.token, req.body.password);
                 res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/forgot', [forgotValidator], async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await userController.forgot(req.body.email);
+                res.status(200).json({ message: 'Reset mail sent.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

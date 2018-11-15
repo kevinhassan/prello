@@ -4,7 +4,7 @@ const axios = require('axios');
 const nodemailer = require('nodemailer');
 const MyError = require('../util/error');
 const Auth = require('../auth');
-const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetPassword');
+const { resetPasswordMail, confirmResetPasswordMail, confirmAccountCreationMail } = require('../mails');
 
 const boardController = require('../controllers/boards');
 const teamController = require('../controllers/teams');
@@ -69,6 +69,14 @@ exports.signUp = async (data) => {
             avatarUrl: data.avatarUrl,
         });
         const newUser = await user.save();
+        const transporter = nodemailer.createTransport({
+            service: 'Mailjet',
+            auth: {
+                user: process.env.MAILJET_USER,
+                pass: process.env.MAILJET_PASSWORD
+            }
+        });
+        await transporter.sendMail(confirmAccountCreationMail(newUser.email));
         return newUser;
     } catch (err) {
         if (err.status) throw err;
@@ -78,7 +86,7 @@ exports.signUp = async (data) => {
 /**
  * Create a random token, then the send user an email with a reset link.
  */
-exports.forgot = async (email, host) => {
+exports.forgot = async (email) => {
     try {
         let user = await User.findOne({ email });
         if (!user) throw new MyError(404, 'No user found');
@@ -94,7 +102,7 @@ exports.forgot = async (email, host) => {
                 pass: process.env.MAILJET_PASSWORD
             }
         });
-        await transporter.sendMail(resetPasswordMail(email, host, token));
+        await transporter.sendMail(resetPasswordMail(email, token));
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
@@ -106,7 +114,7 @@ exports.forgot = async (email, host) => {
 exports.resetPassword = async (token, password) => {
     try {
         const user = await User.findOne({ passwordResetToken: token }).where('passwordResetExpires').gt(Date.now());
-        if (!user) throw new MyError(403, 'User can\'t reset his password');
+        if (!user) throw new MyError(403, 'This link is expired.');
         user.password = password;
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
