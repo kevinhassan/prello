@@ -34,32 +34,32 @@ exports.slackAction = async (stringToParse) => {
         const message = async (params) => {
             if (params.keyword[0] === 'add') {
                 if (params.users.length !== 0 && params.cards.length !== 0) {
-                    return `you have add ${params.users.toString()} to ${params.cards.toString()}`;
+                    return `You have added ${params.users.toString()} to ${params.cards.toString()}.`;
                 }
                 if (params.cards.length !== 0) {
                     if (!listParam && !params.keyword.includes('-R')) {
-                        return `the list ${params.list} does not exist`;
+                        return `The list ${params.list} does not exist.`;
                     }
                     if (!listParam) {
                         const list = (await BoardController.postList(board.id, params.list));
                         params.cards.forEach(async (card) => {
                             await CardController.postCard({ name: card, list: list._id });
                         });
-                        return `you have add the cards ${params.cards.toString()} to the new list ${params.list}`;
+                        return `You have added the cards ${params.cards.toString()} to the new list ${params.list}.`;
                     }
                     params.cards.forEach(async (card) => {
                         await CardController.postCard({ name: card, list: listParam._id });
                     });
-                    return `you have add the cards ${params.cards.toString()} to ${params.list}`;
+                    return `You have add the cards ${params.cards.toString()} to ${params.list}.`;
                 }
-                return 'you have to choose a user';
+                return 'You have to choose a user.';
             }
             if (params.keyword[0] === 'duedate') {
-                return 'the next task to do are : ';
+                return 'The next task to do are : .';
             }
             if (params.keyword[0] === 'remove') {
                 if (!listParam) {
-                    return `the list ${params.list} does not exist`;
+                    return `The list ${params.list} does not exist.`;
                 }
                 await params.cards.forEach(async (card) => {
                     const findCard = await listParam.cards.filter(listCard => listCard.name === card);
@@ -67,9 +67,9 @@ exports.slackAction = async (stringToParse) => {
                         CardController.archiveCard(cardToArchive._id);
                     });
                 });
-                return `you have archive the cards ${params.cards.toString()}`;
+                return `You have archive the cards ${params.cards.toString()}.`;
             }
-            return 'no valid key-word found. \nValid key-word are add, remove, due date ';
+            return 'No valid key-word found. \nValid key-word are add, remove, duedate.';
         };
         return await message(params);
     } catch (err) {
