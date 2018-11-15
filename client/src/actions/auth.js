@@ -130,12 +130,13 @@ export const forgottenPassword = email => (dispatch) => {
         });
 };
 
-// ===== Forgotten password ===== //
+// ===== Reset password ===== //
 export const RESET_USER_PASSWORD = 'auth/RESET_USER_PASSWORD';
 
 export const resetPasswordAction = () => ({ type: RESET_USER_PASSWORD });
 
 export const resetPassword = password => (dispatch) => {
+    // TODO : var resetToken to send to backend
     APIFetch.fetchPrelloAPI('reset/:token', {
         password,
     }, APIFetch.PUT)
