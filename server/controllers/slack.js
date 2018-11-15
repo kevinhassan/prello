@@ -57,7 +57,18 @@ exports.slackAction = async (stringToParse) => {
             if (params.keyword[0] === 'duedate') {
                 return 'the next task to do are : ';
             }
-            if (params.keyword[0] === 'remove') return 'you have choose remove action';
+            if (params.keyword[0] === 'remove') {
+                if (!listParam) {
+                    return `the list ${params.list} does not exist`;
+                }
+                await params.cards.forEach(async (card) => {
+                    const findCard = await listParam.cards.filter(listCard => listCard.name === card);
+                    findCard.forEach((cardToArchive) => {
+                        CardController.archiveCard(cardToArchive._id);
+                    });
+                });
+                return `you have archive the cards ${params.cards.toString()}`;
+            }
             return 'no valid key-word found. \nValid key-word are add, remove, due date ';
         };
         return await message(params);
