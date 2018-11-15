@@ -270,6 +270,38 @@ export const updateBoardGithub = (boardId, githubRepo, oldGithubRepo) => (dispat
         });
 };
 
+// ===== Remove github link ======
+export const REMOVE_BOARD_GITHUB_STARTED = 'board/REMOVE_BOARD_GITHUB_STARTED';
+export const REMOVE_BOARD_GITHUB_FAILURE = 'board/REMOVE_BOARD_GITHUB_FAILURE';
+export const REMOVE_BOARD_GITHUB_SUCCESS = 'board/REMOVE_BOARD_GITHUB_SUCCESS';
+
+export const removeBoardGithubStartedAction = () => ({ type: REMOVE_BOARD_GITHUB_STARTED });
+export const removeBoardGithubFailureAction = () => ({ type: REMOVE_BOARD_GITHUB_FAILURE });
+export const removeBoardGithubSuccessAction = boardId => ({
+    type: REMOVE_BOARD_GITHUB_SUCCESS,
+    action: {
+        boardId,
+    },
+});
+
+export const removeBoardGithub = boardId => (dispatch) => {
+    dispatch(removeBoardGithubStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/githubRepo/`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
+        .then(() => {
+            dispatch(removeBoardGithubSuccessAction());
+            dispatch(displaySuccessMessage('Link to Github removed'));
+        })
+        .catch((error) => {
+            dispatch(removeBoardGithubFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
 
 // ===== Add member ======
 export const ADD_BOARD_MEMBER_STARTED = 'board/ADD_BOARD_MEMBER_STARTED';

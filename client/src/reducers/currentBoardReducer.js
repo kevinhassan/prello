@@ -102,6 +102,15 @@ export default function currentBoardReducer(state = initialState, action) {
                 ...state,
             };
 
+        case actions.REMOVE_BOARD_GITHUB_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    githubRepo: {},
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {

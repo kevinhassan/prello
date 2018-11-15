@@ -728,5 +728,14 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
+        })
+        .delete('/boards/:boardId/githubRepo/', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
+            try {
+                await boardController.deleteGithubRepo(req.params.boardId);
+                res.sendStatus(204);
+                updateClientsOnBoard(req.params.boardId);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };

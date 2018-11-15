@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { getProfile } from '../../../actions/user';
-import { updateBoardGithub } from '../../../actions/boards';
+import { removeBoardGithub, updateBoardGithub } from '../../../actions/boards';
 
 // ===== Components / Containers
 import GithubLinkBoard from '../../../components/views/BoardView/GithubLinkBoard';
@@ -20,6 +20,7 @@ class GithubLinkBoardComp extends React.Component {
         };
         this.linkBoardToGithubRepo = this.linkBoardToGithubRepo.bind(this);
         this.displayReposList = this.displayReposList.bind(this);
+        this.removeBoardGithub = this.removeBoardGithub.bind(this);
     }
 
     componentWillMount() {
@@ -37,11 +38,18 @@ class GithubLinkBoardComp extends React.Component {
         this.displayReposList(false);
     }
 
+    removeGithubRepo(event) {
+        event.preventDefault();
+        this.props.removeBoardGithub(this.props.boardId);
+        this.displayReposList(true);
+    }
+
     render() {
         return (
             <GithubLinkBoard
                 repos={this.props.repos}
                 linkBoardToGithubRepo={this.linkBoardToGithubRepo}
+                removeGithubRepo={this.removeGithubRepo}
                 boardGithubRepo={this.props.boardGithubRepo}
                 isReposListVisible={this.state.isReposListVisible}
                 displayReposList={this.displayReposList}
@@ -56,6 +64,7 @@ GithubLinkBoardComp.propTypes = {
     boardGithubRepo: PropTypes.object,
     canEdit: PropTypes.bool,
     getProfile: PropTypes.func.isRequired,
+    removeBoardGithub: PropTypes.func.isRequired,
     repos: PropTypes.arrayOf(PropTypes.object),
     updateBoardGithub: PropTypes.func.isRequired,
 };
@@ -71,19 +80,19 @@ const mapStateToProps = ({ auth, currentBoard, users }) => {
     if (users && users.profile && users.profile.github) {
         ghRepos = users.profile.github.repos;
     }
-    
+
     let canEdit = false;
     if (auth.clientId && currentBoard.board && currentBoard.board.admins) {
         canEdit = currentBoard.board.admins.some(a => a._id === auth.clientId);
     }
 
-    let githubRepo = {}
-    if(currentBoard.board && currentBoard.board.githubRepo) {
-        githubRepo = currentBoard.board.githubRepo;
+    let ghRepo = {};
+    if (currentBoard.board && currentBoard.board.githubRepo) {
+        ghRepo = currentBoard.board.githubRepo;
     }
-    
+
     return {
-        boardGithubRepo: githubRepo,
+        boardGithubRepo: ghRepo,
         clientId: auth.clientId,
         repos: ghRepos,
         canEdit,
@@ -94,6 +103,7 @@ const mapStateToProps = ({ auth, currentBoard, users }) => {
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getProfile,
+        removeBoardGithub,
         updateBoardGithub,
     }, dispatch,
 );

@@ -394,6 +394,20 @@ exports.deleteTeam = async (boardId, teamId) => {
     }
 };
 
+exports.deleteGithubRepo = async (boardId) => {
+    try {
+        const board = await Board.findById(boardId);
+        if (!board) throw new MyError(404, 'Board not found');
+        board.githubRepo = {};
+        board.save();
+
+        return board;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 /**
  * Add list to the boaard
  */

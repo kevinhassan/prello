@@ -212,7 +212,7 @@ describe(`${actions.UPDATE_BOARD_GITHUB_STARTED}`, () => {
     });
 });
 
-describe(`${actions.UPDATE_BOARD_GITHUB_FAILURE}`, () => {
+describe(actions.UPDATE_BOARD_GITHUB_FAILURE, () => {
     it('should add the github repo to the board', () => {
         const githubRepo = {
             name: 'My failure repo',
@@ -235,6 +235,14 @@ describe(`${actions.UPDATE_BOARD_GITHUB_FAILURE}: incorrect board id`, () => {
         const action = actions.updateBoardGithubFailureAction('aRandomId', githubRepo);
         const finalState = currentBoardReducer(state, action);
         expect(finalState).toEqual(state);
+    });
+});
+
+describe(actions.REMOVE_BOARD_GITHUB_SUCCESS, () => {
+    it('should remove the github repo from the board', () => {
+        const action = actions.removeBoardGithubSuccessAction(state.board._id);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.githubRepo).toEqual({});
     });
 });
 
