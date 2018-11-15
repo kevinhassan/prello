@@ -9,6 +9,7 @@ import AddListForm from './AddListForm';
 import ListComp from '../../../containers/ListComp';
 import BoardNameComp from '../../../containers/BoardComp/BoardNameComp';
 import BoardMembersComp from '../../../containers/BoardComp/BoardMembersComp';
+import GithubLinkBoardComp from '../../../containers/BoardComp/GithubLinkBoardComp';
 
 // ===== Others
 import './style.css';
@@ -30,12 +31,19 @@ const BoardView = props => (
                 {props.board.visibility === 'private' ? <i className="fas fa-lock boardSettingsItem" /> : ''}
                 {props.board.visibility === 'team' ? <i className="fas fa-user-friends boardSettingsItem" /> : ''}
                 <span style={{ verticalAlign: 'sub' }}>{props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}</span>
-                
+
                 <span className="boardSettingsSeparator" />
-                
+
                 <BoardMembersComp
                     members={props.board.members}
                 />
+
+                <span className="boardSettingsSeparator" />
+
+                <GithubLinkBoardComp
+                    boardId={props.board._id}
+                />
+
             </div>
         </div>
         <div className="listsAndAddPanel">
