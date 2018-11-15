@@ -8,7 +8,6 @@ import './style.css';
 
 const GithubLinkBoard = props => (
     <span style={{ display: 'inline-block' }}>
-        {console.log(props)}
         {props.boardGithubRepo && !props.isReposListVisible
             ? (
                 <Fragment>
@@ -18,20 +17,32 @@ const GithubLinkBoard = props => (
                         {props.boardGithubRepo.name}
                     </a>
                     {' '}
-                    <button
-                        className="btn btn-primary btn-sm"
-                        type="submit"
-                        onClick={() => props.displayReposList(true)}
-                        style={{ transform: 'scale(0.9)' }}
-                    >
-                        <i className="fas fa-pen fa-xs" />
-                    </button>
+                    {props.canEdit
+                        ? (
+                            <button
+                                className="btn btn-primary btn-sm"
+                                type="submit"
+                                onClick={() => props.displayReposList(true)}
+                                style={{ transform: 'scale(0.9)' }}
+                            >
+                                <i className="fas fa-pen fa-xs" />
+                            </button>
+                        ) : (
+                            ''
+                        )
+                    }
                 </Fragment>
             ) : (
                 <span style={{ display: 'flex' }}>
-                    <select onChange={event => props.linkBoardToGithubRepo(event)} defaultValue="" className="custom-select custom-select-sm" id="repoUrl" required>
+                    <select
+                        onChange={event => props.linkBoardToGithubRepo(event)}
+                        defaultValue=""
+                        className="custom-select custom-select-sm"
+                        id="repoUrl"
+                        required
+                    >
                         <option value="" disabled>
-                    Link to Github
+                        Link to Github
                         </option>
                         {props.repos.filter(repo => !repo.private).map(repo => (
                             <option key={repo.url} value={JSON.stringify(repo)}>{repo.name}</option>
@@ -51,11 +62,12 @@ const GithubLinkBoard = props => (
 );
 
 GithubLinkBoard.propTypes = {
-    repos: PropTypes.arrayOf(PropTypes.object).isRequired,
-    isReposListVisible: PropTypes.bool.isRequired,
-    displayReposList: PropTypes.func.isRequired,
-    linkBoardToGithubRepo: PropTypes.func.isRequired,
+    canEdit: PropTypes.bool.isRequired,
     boardGithubRepo: PropTypes.object,
+    displayReposList: PropTypes.func.isRequired,
+    isReposListVisible: PropTypes.bool.isRequired,
+    linkBoardToGithubRepo: PropTypes.func.isRequired,
+    repos: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default GithubLinkBoard;
