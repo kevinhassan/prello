@@ -13,7 +13,7 @@ exports.getTeam = async (teamId) => {
     try {
         const team = await Team.findById(teamId).populate([{
             path: 'boards',
-            select: ['name', 'isVisible', 'description', 'avatarUrl'],
+            select: ['name', 'visibility', 'description', 'avatarUrl'],
             populate: [{
                 path: 'lists',
                 select: '_id cards',
