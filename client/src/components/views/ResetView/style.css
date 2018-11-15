@@ -36,3 +36,7 @@
 .resetFormBtn{
     margin-top: 15px;
 }
+
+.passwordWarning{
+    text-align: center;
+}

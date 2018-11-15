@@ -24,6 +24,7 @@ const ResetView = props => (
                         id="password"
                         name="password"
                         placeholder="Enter your new password"
+                        pattern=".{5,}"
                         required
                         type="password"
                     />
@@ -39,11 +40,16 @@ const ResetView = props => (
                         id="confirmPassword"
                         name="confirmPassword"
                         placeholder="Confirm your password"
+                        pattern=".{5,}"
                         required
                         type="password"
                     />
                 </div>
             </div>
+
+            <p className="text-warning passwordWarning">
+                <i>* Password must be at least 5 characters long.</i>
+            </p>
             
             <button type="submit" className="btn btn-primary resetFormBtn">Reset password</button>
             <p className="text-danger resetErrorMsg">{props.errorMessage}</p>
