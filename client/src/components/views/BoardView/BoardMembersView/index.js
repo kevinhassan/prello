@@ -15,7 +15,7 @@ const displayAddMemberButton = (isFormVisible, visible, hidden) => {
 };
 
 const BoardMembersView = props => (
-    <span style={{ display: 'inline-block' }}>
+    <span className="boardSettingsItem" style={{ display: 'inline-block' }}>
         <i className="fas fa-users" />
         {' '}
         {props.members.length > 0

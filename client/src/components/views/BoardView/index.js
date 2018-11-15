@@ -24,13 +24,15 @@ const BoardView = props => (
                     name={props.board.name}
                 />
 
-                {' | '}
-                {props.board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
-                {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
-                {props.board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
-                {' '}
+                <span className="boardSettingsSeparator" />
+
+                {props.board.visibility === 'public' ? <i className="fas fa-globe boardSettingsItem" /> : ''}
+                {props.board.visibility === 'private' ? <i className="fas fa-lock boardSettingsItem" /> : ''}
+                {props.board.visibility === 'team' ? <i className="fas fa-user-friends boardSettingsItem" /> : ''}
                 <span style={{ verticalAlign: 'sub' }}>{props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}</span>
-                {' | '}
+                
+                <span className="boardSettingsSeparator" />
+                
                 <BoardMembersComp
                     members={props.board.members}
                 />
