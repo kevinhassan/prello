@@ -12,7 +12,7 @@ const isMember = async (req, res, next) => {
             throw new MyError(404, 'Board not found');
         }
         const member = board.members.find(member => req.user._id.toString() === member._id.toString());
-        if (!member) throw new MyError(403, 'Forbidden access');
+        if (!member) throw new MyError(403, 'Forbidden, you can not edit this board');
         next();
     } catch (e) {
         if (e.name === 'CastError') {
@@ -36,7 +36,7 @@ const isAdmin = async (req, res, next) => {
             throw new MyError(404, 'Board not found');
         }
         const member = board.admins.find(admin => req.user._id.toString() === admin._id.toString());
-        if (!member) throw new MyError(403, 'Forbidden access');
+        if (!member) throw new MyError(403, 'Forbidden, you can not edit this board');
         next();
     } catch (e) {
         if (e.name === 'CastError') {
@@ -144,7 +144,7 @@ const canSeeViaSocket = async (boardId, user) => {
             if (member && !board.visibility === 'private') {
                 return true;
             }
-            throw new MyError(403, 'You can\'t access this board.');
+            throw new MyError(403, 'You can not access this board.');
         }
     } catch (e) {
         if (e.name === 'CastError') {

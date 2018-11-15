@@ -263,6 +263,25 @@ describe(`${listActions.ARCHIVE_LIST_SUCCESS}: inexistant list given`, () => {
     });
 });
 
+// Update name
+describe(listActions.UPDATE_LIST_NAME_STARTED, () => {
+    it('should set the list name', () => {
+        const name = 'My tested list name';
+        const action = listActions.updateListNameStartedAction(state.board.lists[0]._id, name);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.lists[0].name).toEqual(name);
+    });
+});
+
+describe(listActions.UPDATE_LIST_NAME_FAILURE, () => {
+    it('should set the list name', () => {
+        const name = 'My tested list name';
+        const action = listActions.updateListNameFailureAction(state.board.lists[0]._id, name);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.lists[0].name).toEqual(name);
+    });
+});
 
 // ===== CARDS ACTIONS ===== //
 

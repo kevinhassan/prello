@@ -114,3 +114,46 @@ export const archiveList = (list, isArchived) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== UPDATE NAME ===== //
+export const UPDATE_LIST_NAME_STARTED = 'lists/UPDATE_LIST_NAME_STARTED';
+export const UPDATE_LIST_NAME_SUCCESS = 'lists/UPDATE_LIST_NAME_SUCCESS';
+export const UPDATE_LIST_NAME_FAILURE = 'lists/UPDATE_LIST_NAME_FAILURE';
+
+export const updateListNameStartedAction = (listId, name) => ({
+    type: UPDATE_LIST_NAME_STARTED,
+    payload: {
+        listId,
+        name,
+    },
+});
+
+export const updateListNameSuccessAction = () => ({
+    type: UPDATE_LIST_NAME_SUCCESS,
+});
+
+export const updateListNameFailureAction = (listId, name) => ({
+    type: UPDATE_LIST_NAME_FAILURE,
+    payload: {
+        listId,
+        name,
+    },
+});
+
+export const updateListName = (listId, name, oldName) => (dispatch) => {
+    dispatch(updateListNameStartedAction(listId, name));
+    dispatch(displayLoadingModal());
+    const resource = `lists/${listId}/name`;
+    APIFetch.fetchPrelloAPI(resource, { name }, APIFetch.PUT)
+        .then(() => {
+            dispatch(updateListNameSuccessAction());
+            dispatch(displaySuccessMessage('List renamed'));
+        })
+        .catch((error) => {
+            dispatch(updateListNameFailureAction(listId, oldName));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
