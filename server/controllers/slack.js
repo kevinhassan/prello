@@ -41,9 +41,9 @@ exports.slackAction = async (stringToParse) => {
                         return `the list ${params.list} does not exist`;
                     }
                     if (!listParam) {
-                        const boar = (await BoardController.postList(board.id, params.list));
+                        const list = (await BoardController.postList(board.id, params.list));
                         params.cards.forEach(async (card) => {
-                            await CardController.postCard({ name: card, list: boar.lists[boar.lists.length - 1]._id });
+                            await CardController.postCard({ name: card, list: list._id });
                         });
                         return `you have add the cards ${params.cards.toString()} to the new list ${params.list}`;
                     }
