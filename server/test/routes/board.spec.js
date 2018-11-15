@@ -300,6 +300,7 @@ describe('PUT /boards/:id/githubRepo', () => {
     const githubRepo = {
         name: 'a repo',
         url: 'http://anurl.com',
+        private: false,
     };
     it('should return 401 ERROR', (done) => {
         request(app)
