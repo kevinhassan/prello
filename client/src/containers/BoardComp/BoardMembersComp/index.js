@@ -36,7 +36,7 @@ class BoardMembersComp extends React.Component {
     handleAddMember(event) {
         event.preventDefault();
         const username = event.target.username.value;
-        this.props.addBoardMember(this.props.boardId, String.trim(username));
+        this.props.addBoardMember(this.props.boardId, username.trim());
         this.setState({ isFormVisible: false });
     }
 

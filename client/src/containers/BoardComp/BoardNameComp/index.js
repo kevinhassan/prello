@@ -28,7 +28,7 @@ class BoardNameComp extends React.Component {
     handleEditBoardName(event) {
         event.preventDefault();
         const name = event.target.name.value;
-        this.props.updateBoardName(this.props.boardId, String.trim(name), this.props.name);
+        this.props.updateBoardName(this.props.boardId, name.trim(), this.props.name);
         this.setState({ isFormVisible: false });
     }
 
