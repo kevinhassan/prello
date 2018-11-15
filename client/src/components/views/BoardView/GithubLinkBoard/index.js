@@ -8,7 +8,7 @@ import './style.css';
 
 const GithubLinkBoard = props => (
     <span style={{ display: 'inline-block' }}>
-        {props.boardGithubRepo && !props.isReposListVisible
+        {props.boardGithubRepo.name && !props.isReposListVisible
             ? (
                 <Fragment>
                     <a href={props.boardGithubRepo.url} style={{ color: '#222' }} target="_blank" rel="noopener noreferrer">
