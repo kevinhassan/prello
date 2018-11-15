@@ -1,7 +1,7 @@
 {
     "name": "prello-client",
     "private": true,
-    "homepage": "https://prello22-app.igpolytech.fr",
+    "homepage": "https://prello22app.igpolytech.fr",
     "scripts": {
         "deploy": "now && now alias",
         "start": "react-scripts start",

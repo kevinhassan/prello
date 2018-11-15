@@ -63,11 +63,14 @@ const GithubLinkBoard = props => (
 
 GithubLinkBoard.propTypes = {
     canEdit: PropTypes.bool.isRequired,
-    boardGithubRepo: PropTypes.object.isRequired,
+    boardGithubRepo: PropTypes.object,
     displayReposList: PropTypes.func.isRequired,
     isReposListVisible: PropTypes.bool.isRequired,
     linkBoardToGithubRepo: PropTypes.func.isRequired,
     repos: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+GithubLinkBoard.defaultProps = {
+    boardGithubRepo: undefined,
 };
 
 export default GithubLinkBoard;

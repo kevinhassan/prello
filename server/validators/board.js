@@ -83,11 +83,23 @@ const createLabel = [
         .isString(),
 ];
 
+const changeGithubRepo = [
+    check('url')
+        .not().isEmpty()
+        .trim()
+        .isString(),
+    check('name')
+        .not().isEmpty()
+        .trim()
+        .isString(),
+];
+
 module.exports = {
     addBoard,
     addMember,
     addTeam,
     changeAccess,
+    changeGithubRepo,
     changeIsArchived,
     changeName,
     changeVisibility,
