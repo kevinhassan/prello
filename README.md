@@ -7,6 +7,7 @@
 </div>
 
 **Online App website: https://prello22app.igpolytech.fr**
+
 **Online API website: https://prello22api.igpolytech.fr**
 
 Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Application developed during our 5th year of CS & Management formation at Polytech Montpellier.
@@ -19,7 +20,10 @@ Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Appli
 - [npm](https://www.npmjs.com/) for package dependencies management
 
 ### Launch :rocket:
-In localhost, you can use `npm start` for the client and `npm run watch` for the server.
+
+- Dependancies installation: `npm install` in both /client and /server folders.
+- Set a .env or your environment variables accordingly to the *.env.example* & *.model.env* files.
+- In localhost, you can use `npm start` for the client and `npm run watch` for the server.
 
 ### Deployment 
 The client and server contain a Dockerfile. These Dockerfile are used by the **/scripts/deploy.sh** script to deploy the application to Dokku or Herokku for example.
