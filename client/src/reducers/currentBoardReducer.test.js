@@ -199,6 +199,44 @@ describe(`${actions.UPDATE_BOARD_NAME_FAILURE}: not current board id`, () => {
     });
 });
 
+describe(`${actions.UPDATE_BOARD_GITHUB_STARTED}`, () => {
+    it('should add the github repo to the board', () => {
+        const githubRepo = {
+            name: 'My repo',
+            private: false,
+            url: 'http://localhost:1234',
+        };
+        const action = actions.updateBoardGithubStartedAction(state.board._id, githubRepo);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.githubRepo).toEqual(githubRepo);
+    });
+});
+
+describe(`${actions.UPDATE_BOARD_GITHUB_FAILURE}`, () => {
+    it('should add the github repo to the board', () => {
+        const githubRepo = {
+            name: 'My failure repo',
+            private: false,
+            url: 'http://locsalhost:1234',
+        };
+        const action = actions.updateBoardGithubFailureAction(state.board._id, githubRepo);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.githubRepo).toEqual(githubRepo);
+    });
+});
+
+describe(`${actions.UPDATE_BOARD_GITHUB_FAILURE}: incorrect board id`, () => {
+    it('should do nothing on the state', () => {
+        const githubRepo = {
+            name: 'My failure repo',
+            private: false,
+            url: 'http://locsalhost:1234',
+        };
+        const action = actions.updateBoardGithubFailureAction('aRandomId', githubRepo);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState).toEqual(state);
+    });
+});
 
 // ===== LISTS ACTIONS ===== //
 

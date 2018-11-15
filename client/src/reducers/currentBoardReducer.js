@@ -87,6 +87,21 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        case actions.UPDATE_BOARD_GITHUB_STARTED:
+        case actions.UPDATE_BOARD_GITHUB_FAILURE:
+            if (action.payload.boardId === state.board._id) {
+                return {
+                    ...state,
+                    board: {
+                        ...state.board,
+                        githubRepo: action.payload.githubRepo,
+                    },
+                };
+            }
+            return {
+                ...state,
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
