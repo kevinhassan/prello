@@ -129,3 +129,21 @@ export const forgottenPassword = email => (dispatch) => {
             dispatch(displayErrorMessage(error.response.data.error));
         });
 };
+
+// ===== Forgotten password ===== //
+export const RESET_USER_PASSWORD = 'auth/RESET_USER_PASSWORD';
+
+export const resetPasswordAction = () => ({ type: RESET_USER_PASSWORD });
+
+export const resetPassword = password => (dispatch) => {
+    APIFetch.fetchPrelloAPI('reset/:token', {
+        password,
+    }, APIFetch.PUT)
+        .then(() => {
+            dispatch(displaySuccessMessage('Password well changed !'));
+            dispatch(push('/signin'));
+        })
+        .catch((error) => {
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
