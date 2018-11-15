@@ -63,7 +63,10 @@ const TeamView = props => (
         <div className="row">
             {props.isAdmin()
                 ? (
-                    <button className="btn btn-danger" onClick={() => { props.deleteTeam(props.team); }} type="submit">Remove</button>
+                    <button className="btn btn-danger" onClick={() => { props.deleteTeam(props.team); }} type="submit">
+                        Remove&nbsp;
+                        <i className="fas fa-trash-alt" />
+                    </button>
                 ) : ''
             }
         </div>
@@ -225,7 +228,17 @@ const TeamView = props => (
                                         </p>
                                     </div>
                                 </span>
-
+                                {props.isAdmin() && member._id !== props.clientId
+                                    ? (
+                                        <button className="btn btn-danger" type="submit" onClick={() => props.deleteMember(member)}>
+                                            Remove&nbsp;
+                                            <i className="fas fa-user-times removeMember" />
+                                        </button>
+                                    )
+                                    : (
+                                        ''
+                                    )
+                                }
                             </li>
                             <hr style={{ margin: 0 }} />
                         </div>
@@ -271,6 +284,7 @@ TeamView.propTypes = {
     editDescription: PropTypes.func.isRequired,
     isAdmin: PropTypes.func.isRequired,
     deleteTeam: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired,
 };
 
 export default TeamView;

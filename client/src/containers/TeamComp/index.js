@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
 import {
-    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam,
+    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam, deleteMember,
 } from '../../actions/teams';
 
 // ===== Components / Containers
@@ -27,6 +27,7 @@ class TeamComp extends React.Component {
         this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
         this.handleEditDescription = this.handleEditDescription.bind(this);
         this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
+        this.handleDeleteMember = this.handleDeleteMember.bind(this);
         this.isMember = this.isMember.bind(this);
         this.isAdmin = this.isAdmin.bind(this);
         this.state = {
@@ -97,6 +98,10 @@ class TeamComp extends React.Component {
         this.props.deleteTeam(this.props.team);
     }
 
+    handleDeleteMember(member) {
+        this.props.deleteMember(this.props.team, member);
+    }
+
     isMember() {
         if (!this.props.clientId) return false;
         const memberFound = this.props.team.members.find(member => member._id === this.props.clientId);
@@ -131,6 +136,7 @@ class TeamComp extends React.Component {
                     isEditingDescription={this.state.isEditingDescription}
 
                     deleteTeam={this.handleDeleteTeam}
+                    deleteMember={this.handleDeleteMember}
 
                     isAdmin={this.isAdmin}
                 />
@@ -167,6 +173,7 @@ TeamComp.propTypes = {
     changeName: PropTypes.func.isRequired,
     changeDescription: PropTypes.func.isRequired,
     deleteTeam: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -193,6 +200,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         changeName,
         changeDescription,
         deleteTeam,
+        deleteMember,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),

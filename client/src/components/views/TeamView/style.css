@@ -19,12 +19,6 @@
 .memberMe {
     background-color: #d3ffae;
 }
-
-.teamVisibility.click:hover{
-    cursor: pointer;
-    transform: scale(1.03);
-    transition: 0.2s;
-}
 .teamVisibility {
     align-items: center;
     text-align: center;
@@ -32,4 +26,7 @@
     border-radius: solid 20px;
     background-color:rgb(0, 156, 221);
     color: white;
+}
+i.removeMember{
+    background-color: 
 }
