@@ -81,7 +81,6 @@ exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
     try {
         const member = User.findById(memberId);
         if (!member) throw new MyError(404, 'Member not found');
-
         if (isAdmin) {
             // add to admin collection
             await Team.updateOne({ _id: teamId }, { $addToSet: { admins: memberId } });
@@ -178,7 +177,7 @@ exports.deleteBoard = async (teamId, boardId) => {
 exports.deleteMember = async (teamId, memberId) => {
     try {
         // remove the member from the team
-        const newTeam = await Team.findByIdAndUpdate(teamId, { $pull: { members: { _id: memberId } } }, { new: true });
+        const newTeam = await Team.findByIdAndUpdate(teamId, { $pull: { members: memberId, admins: memberId } }, { new: true });
 
         // remove the team from the member
         await userController.leaveTeam(memberId, teamId);

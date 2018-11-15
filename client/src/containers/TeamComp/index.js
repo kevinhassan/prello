@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
 import {
-    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam, deleteMember,
+    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam, deleteMember, editMemberRight,
 } from '../../actions/teams';
 
 // ===== Components / Containers
@@ -28,6 +28,7 @@ class TeamComp extends React.Component {
         this.handleEditDescription = this.handleEditDescription.bind(this);
         this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
         this.handleDeleteMember = this.handleDeleteMember.bind(this);
+        this.handleEditMemberRight = this.handleEditMemberRight.bind(this);
         this.isMember = this.isMember.bind(this);
         this.isAdmin = this.isAdmin.bind(this);
         this.state = {
@@ -102,6 +103,10 @@ class TeamComp extends React.Component {
         this.props.deleteMember(this.props.team, member);
     }
 
+    handleEditMemberRight(member) {
+        this.props.editMemberRight(this.props.team, member);
+    }
+
     isMember() {
         if (!this.props.clientId) return false;
         const memberFound = this.props.team.members.find(member => member._id === this.props.clientId);
@@ -137,6 +142,8 @@ class TeamComp extends React.Component {
 
                     deleteTeam={this.handleDeleteTeam}
                     deleteMember={this.handleDeleteMember}
+                    editMemberRight={this.handleEditMemberRight}
+
 
                     isAdmin={this.isAdmin}
                 />
@@ -174,6 +181,7 @@ TeamComp.propTypes = {
     changeDescription: PropTypes.func.isRequired,
     deleteTeam: PropTypes.func.isRequired,
     deleteMember: PropTypes.func.isRequired,
+    editMemberRight: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -201,6 +209,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         changeDescription,
         deleteTeam,
         deleteMember,
+        editMemberRight,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
