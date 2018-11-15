@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { push } from 'connected-react-router';
 import {
     bindActionCreators,
 } from 'redux';
@@ -10,6 +9,8 @@ import {
 
 // ===== Actions
 import { resetPassword } from '../../actions/auth';
+import { displayErrorMessage } from '../../actions/modal';
+
 
 // ===== Models
 
@@ -30,7 +31,11 @@ class ResetComp extends React.Component {
         if (password && passwordConfirm) {
             if (password === passwordConfirm) {
                 this.props.resetPassword(password, resetToken);
+            } else {
+                this.props.displayErrorMessage('Both passwords must be equal');
             }
+        } else {
+            this.props.displayErrorMessage('Fill both inputs');
         }
     }
 
@@ -47,6 +52,7 @@ class ResetComp extends React.Component {
 ResetComp.propTypes = {
     errorMessage: PropTypes.string.isRequired,
     resetPassword: PropTypes.func.isRequired,
+    displayErrorMessage: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             token: PropTypes.string,
@@ -66,6 +72,7 @@ const mapStateToProps = ({ auth }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         resetPassword,
+        displayErrorMessage,
     }, dispatch,
 );
 
