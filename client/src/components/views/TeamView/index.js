@@ -63,7 +63,7 @@ const TeamView = props => (
         <div className="row">
             {props.isAdmin()
                 ? (
-                    <button className="btn btn-danger" onClick={() => { props.deleteTeam(props.team); }} type="submit">
+                    <button className="btn btn-danger btn-sm" onClick={() => { props.deleteTeam(props.team); }} type="submit">
                         Remove&nbsp;
                         <i className="fas fa-trash-alt" />
                     </button>
@@ -215,11 +215,11 @@ const TeamView = props => (
                                         {props.team.admins.map((admin) => {
                                             if (admin._id === member._id) {
                                                 return (
-                                                    <span className="float-right" key={admin._id}>Admin</span>
+                                                    <span className="float-right badge" key={admin._id}>Admin</span>
                                                 );
                                             }
                                             return (
-                                                <span className="float-right" key={member._id}>Member</span>
+                                                <span className="float-right badge" key={member._id}>Member</span>
                                             );
                                         })}
                                         <p className="text-secondary" style={{ margin: 0 }}>
@@ -230,9 +230,8 @@ const TeamView = props => (
                                 </span>
                                 {props.isAdmin() && member._id !== props.clientId
                                     ? (
-                                        <button className="btn btn-danger" type="submit" onClick={() => props.deleteMember(member)}>
-                                            Remove&nbsp;
-                                            <i className="fas fa-user-times removeMember" />
+                                        <button className="btn btn-danger btn-sm float-right removeMember" type="submit" onClick={() => props.deleteMember(member)}>
+                                            <i className="fas fa-user-times" />
                                         </button>
                                     )
                                     : (
