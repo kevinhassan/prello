@@ -296,6 +296,43 @@ describe('PUT /boards/:id/name/:name', () => {
     });
 });
 
+describe('PUT /boards/:id/githubRepo', () => {
+    const githubRepo = {
+        name: 'a repo',
+        url: 'http://anurl.com',
+    }
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/githubRepo`)
+            .send(githubRepo)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/githubRepo`)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .send(githubRepo)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .put('/boards/1234BoardId48/githubRepo')
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .send(githubRepo)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/githubRepo`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .send(githubRepo)
+            .expect(204, done);
+    });
+});
+
 describe('POST /boards/:id/members', () => {
     it('should return 401 ERROR', (done) => {
         request(app)

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { getProfile } from '../../../actions/user';
+import { updateBoardGithub } from '../../../actions/boards';
 
 // ===== Components / Containers
 import GithubLinkBoard from '../../../components/views/BoardView/GithubLinkBoard';
@@ -32,7 +33,7 @@ class GithubLinkBoardComp extends React.Component {
     linkBoardToGithubRepo(event) {
         event.preventDefault();
         const newRepo = JSON.parse(event.target.value);
-        // TODO: dispatch action
+        this.props.updateBoardGithub(this.props.boardId, newRepo, this.props.boardGithubRepo);
         this.displayReposList(false);
     }
 
@@ -55,13 +56,13 @@ GithubLinkBoardComp.propTypes = {
     boardGithubRepo: PropTypes.object,
     canEdit: PropTypes.bool,
     getProfile: PropTypes.func.isRequired,
-    linkBoardToRepoGithub: PropTypes.func.isRequired,
     repos: PropTypes.arrayOf(PropTypes.object),
+    updateBoardGithub: PropTypes.func.isRequired,
 };
 GithubLinkBoardComp.defaultProps = {
     canEdit: false,
     repos: [],
-    boardGithubRepo: {},
+    boardGithubRepo: undefined,
 };
 
 // Put info from the store state in props
@@ -88,6 +89,7 @@ const mapStateToProps = ({ auth, currentBoard, users }) => {
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getProfile,
+        updateBoardGithub,
     }, dispatch,
 );
 

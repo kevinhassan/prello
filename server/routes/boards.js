@@ -33,6 +33,13 @@ const { updateClientsOnBoard } = require('../socket');
 *           isArchived:
 *               type: boolean
 *
+*   BoardGithubRepoForm:
+*       properties:
+*           url:
+*               type: string
+*           name:
+*               type: string
+*
 *   AddMemberToBoardForm:
 *       properties:
 *           email:
@@ -477,6 +484,37 @@ const { updateClientsOnBoard } = require('../socket');
 *               description: Board not found
 *           500:
 *               description: Internal server error
+*
+* /boards/{boardId}/githubRepo:
+*   put:
+*       tags:
+*           - Board
+*       description: Put board github repo
+*       summary: Put board github repo
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board Id
+*           - in: body
+*             name: githubRepo
+*             description: githubRepo new value
+*             required: true
+*             schema:
+*               $ref: '#/definitions/BoardGithubRepoForm'
+*       responses:
+*           204:
+*               description: Board github repo updated
+*           422:
+*               description: Invalid form data
+*           404:
+*               description: Board not found
+*           500:
+*               description: Internal server error
 */
 
 module.exports = (router) => {
@@ -651,6 +689,19 @@ module.exports = (router) => {
                 await boardController.putName(req.params.boardId, req.params.boardName);
                 res.sendStatus(204);
 
+                updateClientsOnBoard(req.params.boardId);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/boards/:boardId/githubRepo/', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeGithubRepo, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                await boardController.putGithubRepo(req.params.boardId, req.body.githubRepo);
+                res.sendStatus(204);
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

@@ -255,8 +255,8 @@ export const updateBoardGithubSuccessAction = () => ({ type: UPDATE_BOARD_GITHUB
 export const updateBoardGithub = (boardId, githubRepo, oldGithubRepo) => (dispatch) => {
     dispatch(updateBoardGithubStartedAction(boardId, githubRepo));
     dispatch(displayLoadingModal());
-    const resource = `boards/${boardId}/github/${githubRepo}`;
-    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.PUT)
+    const resource = `boards/${boardId}/githubRepo/`;
+    APIFetch.fetchPrelloAPI(resource, githubRepo, APIFetch.PUT)
         .then(() => {
             dispatch(updateBoardGithubSuccessAction());
             dispatch(displaySuccessMessage('Link to Github updated'));

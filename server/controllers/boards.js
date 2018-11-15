@@ -199,6 +199,21 @@ exports.putName = async (boardId, name) => {
     }
 };
 
+/**
+ * Change the github repo
+ */
+exports.putGithubRepo = async (boardId, githubRepo) => {
+    try {
+        await Board.updateOne({ _id: boardId }, { githubRepo });
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 // ========================== //
 // ===== Post functions ===== //
 // ========================== //
