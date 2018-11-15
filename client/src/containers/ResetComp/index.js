@@ -26,8 +26,11 @@ class ResetComp extends React.Component {
         event.preventDefault();
         const password = event.target.password.value;
         const passwordConfirm = event.target.confirmPassword.value;
+        const resetToken = this.props.match.params.token;
         if (password && passwordConfirm) {
-            // this.props.resetPassword(password);
+            if (password === passwordConfirm) {
+                this.props.resetPassword(password, resetToken);
+            }
         }
     }
 
@@ -44,6 +47,11 @@ class ResetComp extends React.Component {
 ResetComp.propTypes = {
     errorMessage: PropTypes.string.isRequired,
     resetPassword: PropTypes.func.isRequired,
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            token: PropTypes.string,
+        }),
+    }).isRequired,
 };
 ResetComp.defaultProps = {
 
