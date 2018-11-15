@@ -199,6 +199,21 @@ exports.putName = async (boardId, name) => {
     }
 };
 
+/**
+ * Change the github repo
+ */
+exports.putGithubRepo = async (boardId, name, url, isPrivate) => {
+    try {
+        await Board.updateOne({ _id: boardId }, { githubRepo: { name, url, private: isPrivate } });
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 // ========================== //
 // ===== Post functions ===== //
 // ========================== //
@@ -373,6 +388,20 @@ exports.deleteTeam = async (boardId, teamId) => {
             { $pull: { teams: teamId } }, { new: true })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
         return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+exports.deleteGithubRepo = async (boardId) => {
+    try {
+        const board = await Board.findById(boardId);
+        if (!board) throw new MyError(404, 'Board not found');
+        board.githubRepo = {};
+        await board.save();
+
+        return board;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');

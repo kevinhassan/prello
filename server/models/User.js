@@ -26,7 +26,14 @@ const userSchema = new mongoose.Schema({
     github: {
         type: {
             id: String,
-            token: String
+            token: String,
+            repos: [
+                {
+                    name: String,
+                    private: Boolean,
+                    url: String,
+                }
+            ]
         }
     },
 }, { timestamps: true });
@@ -47,14 +54,16 @@ userSchema.pre('save', async function save() {
                 });
             });
         }
-        const cleanFullName = this.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a').replace(/ /g, '').toLowerCase();
-        const count = await this.model('User').countDocuments({ username: new RegExp(`${cleanFullName}[0-9]*`, 'i') });
-        this.username = count > 0 ? cleanFullName.toLowerCase() + count : cleanFullName.toLowerCase();
-        if (!this.initials) {
-            if (this.fullName.split(' ').length >= 2) {
-                this.initials = this.fullName.split(' ')[0].toUpperCase().charAt(0) + this.fullName.split(' ')[1].toUpperCase().charAt(0);
-            } else {
-                this.initials = this.fullName.toUpperCase().charAt(0);
+        if (this.isNew) {
+            const cleanFullName = this.fullName.replace(/[éèê]/g, 'e').replace(/[àâ]/g, 'a').replace(/ /g, '').toLowerCase();
+            const count = await this.model('User').countDocuments({ username: new RegExp(`${cleanFullName}[0-9]*`, 'i') });
+            this.username = count > 0 ? cleanFullName.toLowerCase() + count : cleanFullName.toLowerCase();
+            if (!this.initials) {
+                if (this.fullName.split(' ').length >= 2) {
+                    this.initials = this.fullName.split(' ')[0].toUpperCase().charAt(0) + this.fullName.split(' ')[1].toUpperCase().charAt(0);
+                } else {
+                    this.initials = this.fullName.toUpperCase().charAt(0);
+                }
             }
         }
         await Promise.resolve(this);

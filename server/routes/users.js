@@ -2,8 +2,6 @@ const { validationResult } = require('express-validator/check');
 const passport = require('passport');
 const userController = require('../controllers/users');
 const Auth = require('../middlewares/auth');
-const User = require('../models/User');
-const { generateToken } = require('../auth/index');
 const {
     registerValidator, loginValidator, accountValidator, profileValidator,
     forgotValidator, resetValidator, passwordValidator,
@@ -489,8 +487,7 @@ module.exports = (router) => {
         })
         .get('/auth/github/callback', passport.authenticate('github', { session: false }), async (req, res) => {
             try {
-                const user = await User.findOne({ 'github.id': req.user.github.id });
-                const token = generateToken(user);
+                const { token, user } = await userController.getGithubUser(req.user.github.id);
                 res.redirect(`${process.env.CLIENT_URI}/signin?token=${token}&clientId=${user._id}`);
             } catch (e) {
                 res.status(500, 'Internal server error');
