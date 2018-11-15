@@ -11,15 +11,35 @@ cache:
   directories:
   - ".npm"
   - node_modules
+
+addons:
+  sonarcloud:
+    organization: "kevinhassan-github"
+    token:
+      secure: "YTnMdPnt4cH84iID9HaoN4Rb
+WgQyLSMrTODeefE9RuFkwljL253F/UvimbC
+OIJDMgDiIzvVg38ZiKku6VCSBYPI7LVme7/jwleEaJOPodhzHTKX6fV9zfnIyiedeJSYax
+MEpqpD+Pu1RXsVObrSS2T3h7JHZ1Vj8o3XeYCKVAwQcrPSwRgW7+QIQzVxaCM6v/q2DxNt0to2gTTZvFQfjMWi3x1mhz9RQoZFxcS2Ebo
+JsfQP8eHG4XhdIVR0AmP0IPDsE4SJMsuEkxdfPakuln6n7IBi1JcwrtQOykncVXk1kmdGt
+CrDkinLB0TodZBxT+bvVv0gTDeaANqBjtEtsoWpY9VjMAKO+piQgexiLA77MpwpW4X+P/V
+g0jNl4ZlNEMEKud209gUrSlIqUw0THeiR02YZ5JqUnPVzybBBGWQ3Of4jlwEg+Fkl/X2Lt
+fP/Sg6UbxTRAEcrYll6jY/gmF5QOs7jiYS++vcL9oHWv1QEhTnBZfLLeT7gblFXEyMGDW7JxUQFL6h+xqyn3uF8oh3PfS4L0TsVPgrewrKh3cIEIvX2FHH4777FoGzuy9wQczhH0/xTMzX8bSPh3lq3eDAzQ0EIaKacr01OmsI5Ez55SPkC0Ev4jPXBH/CxSZ35sA+Pc0ImjLNzpMTt1kBbxrsX6wX3P9hl3hgGfUohV1Jo="
+
 services:
 - mongodb
+
 env:
 - TEST_DIR=./client
 - TEST_DIR=./server
+
 before_script:
 - cd $TEST_DIR
 - npm install
 - npm test
+
+script: 
+- sonar-scanner
+
 notifications:
   email: false
   slack:
