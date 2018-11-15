@@ -93,17 +93,12 @@ exports.getLabels = async (boardId) => {
         const board = await Board.findById(boardId).populate([{
             path: 'labels'
         }]);
-        if (!board) {
-            throw new MyError(404, 'Board not found');
-        }
+
+        if (!board) throw new MyError(404, 'Board not found');
         return board;
     } catch (err) {
-        if (err.status) {
-            throw err;
-        }
-        if (err.name === 'CastError') {
-            throw new MyError(404, 'Board not found');
-        }
+        if (err.status) throw err;
+        if (err.name === 'CastError') throw new MyError(404, 'Board not found');
         throw new MyError(500, 'Internal server error');
     }
 };
