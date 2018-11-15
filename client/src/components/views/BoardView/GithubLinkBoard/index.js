@@ -17,7 +17,7 @@ const GithubLinkBoard = props => (
                         {props.boardGithubRepo.name}
                     </a>
                     {' '}
-                    {props.canEdit
+                    {props.canEdit && props.repos.length > 0
                         ? (
                             <span>
                                 <button
@@ -42,47 +42,54 @@ const GithubLinkBoard = props => (
                     }
                 </Fragment>
             ) : (
-                <span style={{ display: 'flex' }}>
-                    <select
-                        onChange={event => props.linkBoardToGithubRepo(event)}
-                        value={
-                            props.boardGithubRepo.name
-                                ? JSON.stringify(props.boardGithubRepo, Object.keys(props.boardGithubRepo).sort())
-                                : 'no-repo'
-                        }
-                        className="custom-select custom-select-sm"
-                        id="repoUrl"
-                        required
-                    >
-                        <option
-                            value="no-repo"
-                            disabled
-                        >
-                            Link to Github
-                        </option>
-                        {props.repos.filter(repo => !repo.private).sort((a, b) => a.name > b.name).map(repo => (
-                            <option
-                                key={repo.url}
-                                value={JSON.stringify(repo, Object.keys(repo).sort())}
-                            >
-                                {repo.name}
-                            </option>
-                        ))}
-                    </select>
-                    {props.boardGithubRepo.name
+                <Fragment>
+                    {props.repos.length > 0
                         ? (
-                            <button
-                                className="btn btn-secondary btn-sm"
-                                type="reset"
-                                onClick={() => props.displayReposList(false)}
-                            >
-                                <i className="fas fa-times" />
-                            </button>
+                            <span style={{ display: 'flex' }}>
+                                <select
+                                    onChange={event => props.linkBoardToGithubRepo(event)}
+                                    value={
+                                        props.boardGithubRepo.name
+                                            ? JSON.stringify(props.boardGithubRepo, Object.keys(props.boardGithubRepo).sort())
+                                            : 'no-repo'
+                                    }
+                                    className="custom-select custom-select-sm"
+                                    id="repoUrl"
+                                    required
+                                >
+                                    <option
+                                        value="no-repo"
+                                        disabled
+                                    >
+                            Link to Github
+                                    </option>
+                                    {props.repos.filter(repo => !repo.private).sort((a, b) => a.name > b.name).map(repo => (
+                                        <option
+                                            key={repo.url}
+                                            value={JSON.stringify(repo, Object.keys(repo).sort())}
+                                        >
+                                            {repo.name}
+                                        </option>
+                                    ))}
+                                </select>
+                                {props.boardGithubRepo.name
+                                    ? (
+                                        <button
+                                            className="btn btn-secondary btn-sm"
+                                            type="reset"
+                                            onClick={() => props.displayReposList(false)}
+                                        >
+                                            <i className="fas fa-times" />
+                                        </button>
+                                    ) : (
+                                        ''
+                                    )}
+                            </span>
                         ) : (
                             ''
                         )}
-                </span>
 
+                </Fragment>
             )}
     </span>
 );
