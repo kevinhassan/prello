@@ -43,11 +43,6 @@ const CardDetailView = props => (
                         {' '}
                         Archive
                     </button>
-                    <button type="button" className="watchBtn btn btn-secondary">
-                        <i className="fas fa-eye" />
-                        {' '}
-                        Watch
-                    </button>
                     <hr />
 
                 </div>
