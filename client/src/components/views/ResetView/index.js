@@ -13,7 +13,7 @@ import './style.css';
 const ResetView = props => (
     <div className="resetFormWrapper">
         <h1 className="resetTitle">Hello back !</h1>
-        <h5 className="resetText">Choose a new password and confirm it</h5>
+        <h5 className="resetText">Type a new password and confirm it.</h5>
         <form className="resetForm" onSubmit={props.handleResetFormSubmit}>
 
             <div className="password">
