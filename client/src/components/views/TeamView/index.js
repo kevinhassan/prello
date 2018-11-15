@@ -212,32 +212,39 @@ const TeamView = props => (
                                 >
                                     <div style={{ margin: 0 }}>
                                         <b>{member.fullName}</b>
-                                        {props.team.admins.map((admin) => {
-                                            if (admin._id === member._id) {
-                                                return (
-                                                    <span className="float-right badge" key={admin._id}>Admin</span>
-                                                );
-                                            }
-                                            return (
-                                                <span className="float-right badge" key={member._id}>Member</span>
-                                            );
-                                        })}
+                                        {props.team.admins.some(admin => admin._id === member._id) ? (
+                                            <span className="float-right badge badge-info" key={member._id}>Admin</span>
+                                        ) : (
+                                            <span className="float-right badge badge-secondary" key={member._id}>Member</span>
+                                        )}
                                         <p className="text-secondary" style={{ margin: 0 }}>
                                         @
                                             {member.username}
                                         </p>
                                     </div>
                                 </span>
-                                {props.isAdmin() && member._id !== props.clientId
-                                    ? (
-                                        <button className="btn btn-danger btn-sm float-right removeMember" type="submit" onClick={() => props.deleteMember(member)}>
-                                            <i className="fas fa-user-times" />
-                                        </button>
-                                    )
-                                    : (
-                                        ''
-                                    )
-                                }
+                                <div className="btn-group btn-group-sm float-right memberButtons">
+                                    {props.isAdmin() && member._id !== props.clientId
+                                        ? (
+                                            <button className="btn btn-info editMember" type="submit" onClick={() => props.editMemberRight(member)}>
+                                                <i className="fas fa-user-edit" />
+                                            </button>
+                                        )
+                                        : (
+                                            ''
+                                        )
+                                    }
+                                    {props.isAdmin() && member._id !== props.clientId
+                                        ? (
+                                            <button className="btn btn-danger removeMember" type="submit" onClick={() => props.deleteMember(member)}>
+                                                <i className="fas fa-user-times" />
+                                            </button>
+                                        )
+                                        : (
+                                            ''
+                                        )
+                                    }
+                                </div>
                             </li>
                             <hr style={{ margin: 0 }} />
                         </div>
@@ -284,6 +291,7 @@ TeamView.propTypes = {
     isAdmin: PropTypes.func.isRequired,
     deleteTeam: PropTypes.func.isRequired,
     deleteMember: PropTypes.func.isRequired,
+    editMemberRight: PropTypes.func.isRequired,
 };
 
 export default TeamView;

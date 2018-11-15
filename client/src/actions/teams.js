@@ -269,3 +269,38 @@ export const deleteMember = (team, member) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Edit member right ===== //
+export const EDIT_MEMBER_RIGHT_STARTED = 'teams/EDIT_MEMBER_RIGHT_STARTED';
+export const EDIT_MEMBER_RIGHT_FAILURE = 'teams/EDIT_MEMBER_RIGHT_FAILURE';
+export const EDIT_MEMBER_RIGHT_SUCCESS = 'teams/EDIT_MEMBER_RIGHT_SUCCESS';
+
+export const editMemberRightStartedAction = () => ({ type: EDIT_MEMBER_RIGHT_STARTED });
+
+export const editMemberRightFailureAction = () => ({ type: EDIT_MEMBER_RIGHT_FAILURE });
+
+export const editMemberRightSuccessAction = member => ({
+    type: EDIT_MEMBER_RIGHT_SUCCESS,
+    payload: {
+        member,
+    },
+});
+
+export const editMemberRight = (team, member) => (dispatch) => {
+    dispatch(editMemberRightStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `teams/${team._id}/members/${member._id}`;
+    const editedMember = member;
+    editedMember.isAdmin = !member.isAdmin;
+    APIFetch.fetchPrelloAPI(resource, { isAdmin: editedMember.isAdmin }, APIFetch.PUT)
+        .then(() => {
+            dispatch(editMemberRightSuccessAction(editedMember));
+        })
+        .catch((error) => {
+            dispatch(editMemberRightFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

@@ -64,6 +64,18 @@ export default function currentTeamReducer(state = initialState, action) {
                     members: state.team.members.filter(member => member._id.toString() !== user._id.toString()),
                 },
             };
+        case actions.EDIT_MEMBER_RIGHT_SUCCESS:
+            const editedMember = action.payload.member;
+            // if member access is false remove him from admins collection and update from member
+            // else add him to admins collection
+            return {
+                ...state,
+                team: {
+                    ...state.team,
+                    admins: editedMember.isAdmin ? state.team.admins.concat({ _id: editedMember._id, username: editedMember.username }) : state.team.admins.filter(admin => admin._id !== editedMember._id),
+                    members: state.team.members.map(member => (member._id.toString() === editedMember._id.toString() ? editedMember : member)),
+                },
+            };
         default:
             return state;
         }
