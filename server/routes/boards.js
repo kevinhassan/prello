@@ -700,7 +700,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await boardController.putGithubRepo(req.params.boardId, req.body.githubRepo);
+                await boardController.putGithubRepo(req.params.boardId, req.body.name, req.body.url);
                 res.sendStatus(204);
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {

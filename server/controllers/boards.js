@@ -202,9 +202,9 @@ exports.putName = async (boardId, name) => {
 /**
  * Change the github repo
  */
-exports.putGithubRepo = async (boardId, githubRepo) => {
+exports.putGithubRepo = async (boardId, name, url) => {
     try {
-        await Board.updateOne({ _id: boardId }, { githubRepo });
+        await Board.updateOne({ _id: boardId }, { githubRepo: { name, url } });
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {

@@ -71,15 +71,20 @@ const mapStateToProps = ({ auth, currentBoard, users }) => {
     if (users && users.profile && users.profile.github) {
         ghRepos = users.profile.github.repos;
     }
+    
     let canEdit = false;
-    if (auth.clientId) {
+    if (auth.clientId && currentBoard.board && currentBoard.board.admins) {
         canEdit = currentBoard.board.admins.some(a => a._id === auth.clientId);
     }
 
+    let githubRepo = {}
+    if(currentBoard.board && currentBoard.board.githubRepo) {
+        githubRepo = currentBoard.board.githubRepo;
+    }
+    
     return {
-        boardGithubRepo: currentBoard.board.githubRepo,
+        boardGithubRepo: githubRepo,
         clientId: auth.clientId,
-        admins: currentBoard.board.admins,
         repos: ghRepos,
         canEdit,
     };
