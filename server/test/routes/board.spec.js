@@ -114,7 +114,7 @@ describe('POST /boards', () => {
             });
     });
 });
-// TODO: integrate visibility on the GET
+
 describe('GET /boards/:id', () => {
     it('should return 404 OK', (done) => {
         request(app)
@@ -122,10 +122,18 @@ describe('GET /boards/:id', () => {
             .expect('Content-Type', /json/)
             .expect(404, done);
     });
-    it('should return 200 OK', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .get(`/boards/${boardData.id}`)
             .send(boardData)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 200 ERROR', (done) => {
+        request(app)
+            .get(`/boards/${boardData.id}`)
+            .send(boardData)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(200, done);
     });
@@ -360,7 +368,7 @@ describe('POST /boards/:boardId/labels', () => {
     it('should return 422 ERROR: invalid color', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/labels`)
-            .send({ name: 'a random lable', color: '#2y5689' })
+            .send({ name: 'a random label', color: '#2y5689' })
             .expect(422, done);
     });
     it('should return 404 ERROR', (done) => {
@@ -375,11 +383,14 @@ describe('GET /boards/:boardId/labels', () => {
     it('should return 200 OK', (done) => {
         request(app)
             .get(`/boards/${boardData.id}/labels`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
             .expect(200, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .get('/boards/arandomboard/labels')
+            .get('/boards/dqoikdoadsq/labels')
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
     });
 });

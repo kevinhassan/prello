@@ -67,10 +67,15 @@ const canSee = async (req, res, next) => {
             }
         ]);
 
-        if (!board) throw new MyError(404, 'Board not found');
+        if (!board) {
+            throw new MyError(404, 'Board not found');
+        }
 
         // Is the board public ?
-        if (board.visibility === 'public') return true;
+        if (board.visibility === 'public') {
+            next();
+            return;
+        }
 
         // User not logged in
         if (!req.user) {
@@ -78,16 +83,17 @@ const canSee = async (req, res, next) => {
         } else {
             // Is the user a board member ?
             let member = board.members.find(member => req.user._id.toString() === member._id.toString());
-            if (member) next();
+            if (member) {
+                next();
+                return;
+            }
 
-            else {
-                // Is the user a team member and board not private ?
-                member = board.teams.map(t => t.members.find(member => req.user._id.toString() === member._id.toString()));
-                if (member && !board.visibility === 'private') {
-                    next();
-                } else {
-                    throw new MyError(403, 'You can\'t access this board.');
-                }
+            // Is the user a team member and board not private ?
+            member = board.teams.map(t => t.members.find(member => req.user._id.toString() === member._id.toString()));
+            if (member && !board.visibility === 'private') {
+                next();
+            } else {
+                throw new MyError(403, 'You can\'t access this board.');
             }
         }
     } catch (e) {
