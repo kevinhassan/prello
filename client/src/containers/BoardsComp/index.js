@@ -33,7 +33,7 @@ class BoardsComp extends React.Component {
 
     handleCreateBoard(event) {
         event.preventDefault();
-        this.props.createBoard(String.trim(event.target.name.value), event.target.visibility.value);
+        this.props.createBoard(event.target.name.value.trim(), event.target.visibility.value);
         this.setState({ isCreateBoardFormVisible: false });
     }
 

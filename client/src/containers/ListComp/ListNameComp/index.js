@@ -28,7 +28,7 @@ class ListNameComp extends React.Component {
     handleEditListName(event) {
         event.preventDefault();
         const name = event.target.name.value;
-        this.props.updateListName(this.props.listId, String.trim(name), this.props.name);
+        this.props.updateListName(this.props.listId, name.trim(), this.props.name);
         this.setState({ isFormVisible: false });
     }
 

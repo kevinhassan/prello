@@ -51,7 +51,7 @@ class BoardComp extends React.Component {
 
     handleListAdded(event) {
         event.preventDefault();
-        const name = event.target.listName.value;
+        const name = event.target.listName.value.trim();
         const newList = new List({
             name, board: this.props.board,
         });
