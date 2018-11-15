@@ -16,24 +16,6 @@ class GithubLinkBoardComp extends React.Component {
         super(props);
         this.state = {
             isReposListVisible: false,
-            repos: [{
-                name: 'repo1',
-                private: true,
-                url: 'http://facebook.fr',
-            }, {
-                name: 'Prello',
-                private: false,
-                url: 'http://amazon.fr',
-            }, {
-                name: 'Data Science',
-                private: false,
-                url: 'http://ebay.fr',
-            }],
-            boardGithubRepo: {
-                name: 'Awesome Repo',
-                private: false,
-                url: 'http://google.fr',
-            },
         };
         this.linkBoardToGithubRepo = this.linkBoardToGithubRepo.bind(this);
         this.displayReposList = this.displayReposList.bind(this);
@@ -57,9 +39,9 @@ class GithubLinkBoardComp extends React.Component {
     render() {
         return (
             <GithubLinkBoard
-                repos={this.state.repos}
+                repos={this.props.repos}
                 linkBoardToGithubRepo={this.linkBoardToGithubRepo}
-                boardGithubRepo={this.state.boardGithubRepo}
+                boardGithubRepo={this.props.boardGithubRepo}
                 isReposListVisible={this.state.isReposListVisible}
                 displayReposList={this.displayReposList}
                 canEdit={this.props.canEdit}
@@ -69,7 +51,6 @@ class GithubLinkBoardComp extends React.Component {
 }
 
 GithubLinkBoardComp.propTypes = {
-    admins: PropTypes.arrayOf(PropTypes.object),
     boardId: PropTypes.string.isRequired,
     boardGithubRepo: PropTypes.object,
     canEdit: PropTypes.bool,
@@ -78,7 +59,6 @@ GithubLinkBoardComp.propTypes = {
     repos: PropTypes.arrayOf(PropTypes.object),
 };
 GithubLinkBoardComp.defaultProps = {
-    admins: [],
     canEdit: false,
     repos: [],
     boardGithubRepo: {},
@@ -87,8 +67,8 @@ GithubLinkBoardComp.defaultProps = {
 // Put info from the store state in props
 const mapStateToProps = ({ auth, currentBoard, users }) => {
     let ghRepos = [];
-    if (users && users.profile && users.profile.repos) {
-        ghRepos = users.profile.repos;
+    if (users && users.profile && users.profile.github) {
+        ghRepos = users.profile.github.repos;
     }
     let canEdit = false;
     if (auth.clientId) {
