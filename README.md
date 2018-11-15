@@ -1,8 +1,34 @@
-# Prello
+# Prello :clipboard:
+<div>
+  <a href="https://prello22app.igpolytech.fr">
+<img src="https://raw.githubusercontent.com/kevinhassan/prello/develop/client/src/assets/logo_prello.png" style="margin:auto"/>
+  </a>
+</div>
+
+**Production site: https://prello22app.igpolytech.fr**
 
 [![Build Status](https://travis-ci.org/kevinhassan/prello.svg?branch=develop)](https://travis-ci.org/kevinhassan/prello)
 
-Project managing tool using MERN stack. Application developed during our 5th year of CS & Management formation at Polytech Montpellier.
+Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Application developed during our 5th year of CS & Management formation at Polytech Montpellier.
+
+## Getting Started
+
+### Requirements
+
+- A [MongoDB](https://www.mongodb.com/fr)
+- [npm](https://www.npmjs.com/) for package dependencies management
+
+### Launch :rocket:
+In localhost, you can use `npm start` for the client and `npm run watch` for the server.
+
+### Deployment 
+The client and server contain a Dockerfile. These Dockerfile are used by the **/scripts/deploy.sh** script to deploy the application to Dokku or Herokku for example.
+
+### Tests
+
+You can run the tests in /client and /server folder by using the following command: 
+
+`npm test`
 
 ## Authors
 
