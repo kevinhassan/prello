@@ -1,7 +1,9 @@
 const axios = require('axios');
+const passport = require('passport');
 const slackController = require('../controllers/slack');
 const BoardController = require('../controllers/boards');
 const CardController = require('../controllers/cards');
+const util = require ('util');
 
 function parse(stringToParse) {
     const retour = {
@@ -32,6 +34,7 @@ module.exports = (router) => {
             try {
                 res.status(204).send();
                 // const result = await slackController.slackAction(req.param('text'));
+                console.log(req.param('user_id'));
                 const params = parse(req.param('text'));
                 const board = await BoardController.getBoard('b00000000001');
                 const listParam = board.lists.find(list => list.name === params.list && list.isArchived === false);
@@ -132,6 +135,28 @@ module.exports = (router) => {
                 }).then().catch();
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
+            }
+        })
+        .get('/slack/login', async (req, res) => {
+            try {
+                console.log(req.param('code'));
+                console.log(req.query.code);
+                res.status(204).send();
+                const code = await req.param('code');
+                axios({
+                    url: 'https://slack.com/api/oauth.access?code='.concat(code).concat('&client_id=').concat('a').concat('&client_secret=').concat('b'),
+                    method: 'get',
+                }).then((e) => { console.log(util.inspect(e.data)); }).catch((e) => { console.log(e); });
+            } catch (e) {
+                res.status(e.data).send({ error: e.message });
+            }
+        })
+        .get('/auth/slack', passport.authenticate('slack'))
+        .get('/auth/slack/callback', passport.authenticate('slack', { session: false }), async (req, res) => {
+            try {
+                console.log('callback');
+            } catch (e) {
+                res.status(500, 'Internal server error');
             }
         })
         .post('/slack', async (req, res) => {
