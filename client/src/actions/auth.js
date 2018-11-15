@@ -121,7 +121,7 @@ export const forgottenPassword = email => (dispatch) => {
         email,
     }, APIFetch.POST)
         .then(() => {
-            const messageSuccess = 'A email have been sent to '.concat(email).concat(' to reset your password');
+            const messageSuccess = 'A email has been sent to '.concat(email).concat(' to reset your password');
             dispatch(displaySuccessMessage(messageSuccess));
             dispatch(push('/'));
         })
@@ -140,7 +140,7 @@ export const resetPassword = (password, resetToken) => (dispatch) => {
         password,
     }, APIFetch.PUT)
         .then(() => {
-            dispatch(displaySuccessMessage('Password successfully updated!'));
+            dispatch(displaySuccessMessage('Password well updated !'));
             dispatch(push('/signin'));
         })
         .catch((error) => {
