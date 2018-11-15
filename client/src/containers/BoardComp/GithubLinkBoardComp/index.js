@@ -38,7 +38,7 @@ class GithubLinkBoardComp extends React.Component {
         this.displayReposList(false);
     }
 
-    removeGithubRepo(event) {
+    removeBoardGithub(event) {
         event.preventDefault();
         this.props.removeBoardGithub(this.props.boardId);
         this.displayReposList(true);
@@ -49,7 +49,7 @@ class GithubLinkBoardComp extends React.Component {
             <GithubLinkBoard
                 repos={this.props.repos}
                 linkBoardToGithubRepo={this.linkBoardToGithubRepo}
-                removeGithubRepo={this.removeGithubRepo}
+                removeBoardGithub={this.removeBoardGithub}
                 boardGithubRepo={this.props.boardGithubRepo}
                 isReposListVisible={this.state.isReposListVisible}
                 displayReposList={this.displayReposList}

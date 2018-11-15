@@ -202,9 +202,9 @@ exports.putName = async (boardId, name) => {
 /**
  * Change the github repo
  */
-exports.putGithubRepo = async (boardId, name, url) => {
+exports.putGithubRepo = async (boardId, name, url, isPrivate) => {
     try {
-        await Board.updateOne({ _id: boardId }, { githubRepo: { name, url } });
+        await Board.updateOne({ _id: boardId }, { githubRepo: { name, url, private: isPrivate } });
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {
@@ -399,7 +399,7 @@ exports.deleteGithubRepo = async (boardId) => {
         const board = await Board.findById(boardId);
         if (!board) throw new MyError(404, 'Board not found');
         board.githubRepo = {};
-        board.save();
+        await board.save();
 
         return board;
     } catch (err) {
