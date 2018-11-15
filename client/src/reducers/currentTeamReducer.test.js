@@ -61,11 +61,54 @@ describe(actions.CHANGE_VISIBILITY_TEAM_SUCCESS, () => {
             _id: 't2',
             name: 'Awesome team updated',
             description: 'this is a team',
-            visibility: true
+            visibility: true,
         };
         const action = actions.changeVisibilityTeamSuccessAction(!team.visibility);
         const finalState = currentTeamReducer({}, action);
 
         expect(finalState.team.isVisible).not.toEqual(team.isVisible);
+    });
+});
+describe(actions.DELETE_MEMBER_SUCCESS, () => {
+    it('should delete member of the team in the state', () => {
+        const team = {
+            _id: 't2',
+            members: [{
+                id: 'u00000000001',
+            }, {
+                id: 'u00000000002',
+            }],
+            admins: [{
+                id: 'u00000000001',
+            }],
+            description: 'this is a team',
+            visibility: true,
+        };
+        const action = actions.deleteMemberSuccessAction(team.members[1]);
+        const finalState = currentTeamReducer({ team: Object.assign(team) }, action);
+        expect(finalState.team.members).not.toEqual(team.members);
+    });
+
+    it('should delete admin member of the team in the state', () => {
+        const team = {
+            _id: 't2',
+            members: [{
+                id: 'u00000000001',
+            }, {
+                id: 'u00000000002',
+            }],
+            admins: [{
+                id: 'u00000000001',
+            }, {
+                id: 'u00000000002',
+            }],
+            description: 'this is a team',
+            visibility: true,
+        };
+        const action = actions.deleteMemberSuccessAction(team.members[0]);
+        const finalState = currentTeamReducer({ team: Object.assign(team) }, action);
+
+        expect(finalState.team.members).not.toEqual(team.members);
+        expect(finalState.team.admins).not.toEqual(team.admins);
     });
 });

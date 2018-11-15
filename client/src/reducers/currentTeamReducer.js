@@ -54,7 +54,17 @@ export default function currentTeamReducer(state = initialState, action) {
                     description: action.payload.description,
                 },
             };
-
+        case actions.DELETE_MEMBER_SUCCESS:
+            const indexMember = state.team.members.indexOf(action.payload.member);
+            const indexAdmin = state.team.admins.indexOf(action.payload.member);
+            state.team.members.splice(indexMember, 1);
+            state.team.admins.splice(indexAdmin, 1);
+            return {
+                ...state,
+                team: {
+                    ...state.team,
+                },
+            };
         default:
             return state;
         }
