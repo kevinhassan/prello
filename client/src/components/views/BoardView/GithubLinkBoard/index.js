@@ -19,14 +19,23 @@ const GithubLinkBoard = props => (
                     {' '}
                     {props.canEdit
                         ? (
-                            <button
-                                className="btn btn-primary btn-sm"
-                                type="submit"
-                                onClick={() => props.displayReposList(true)}
-                                style={{ transform: 'scale(0.9)' }}
-                            >
-                                <i className="fas fa-pen fa-xs" />
-                            </button>
+                            <span>
+                                <button
+                                    className="btn btn-primary btn-sm"
+                                    type="submit"
+                                    onClick={() => props.displayReposList(true)}
+                                >
+                                    <i className="fas fa-pen fa-xs" />
+                                </button>
+
+                                <button
+                                    className="btn btn-danger btn-sm"
+                                    type="submit"
+                                    onClick={() => props.removeGithubRepo()}
+                                >
+                                    <i className="fas fa-trash-alt fa-xs" />
+                                </button>
+                            </span>
                         ) : (
                             ''
                         )
@@ -64,6 +73,7 @@ const GithubLinkBoard = props => (
 GithubLinkBoard.propTypes = {
     canEdit: PropTypes.bool.isRequired,
     boardGithubRepo: PropTypes.object,
+    removeGithubRepo: PropTypes.func.isRequired,
     displayReposList: PropTypes.func.isRequired,
     isReposListVisible: PropTypes.bool.isRequired,
     linkBoardToGithubRepo: PropTypes.func.isRequired,
