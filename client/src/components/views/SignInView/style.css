@@ -22,6 +22,7 @@ h1.signInTitle {
 .loginWithGH, .loginWithGHLink  {
     background-color: #444;
     color: #eee;
+    margin-top: 10px;
     padding: 6px;
 }
 

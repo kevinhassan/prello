@@ -13,7 +13,7 @@ import './style.css';
 const TeamView = props => (
     <div className="teamContent container-fluid">
         <div className="row">
-            <div className="col-9">
+            <div className="col-sm-12">
                 {props.isAdmin()
                     ? (
                         <Fragment>
@@ -51,10 +51,14 @@ const TeamView = props => (
                                         </div>
                                     </form>
                                 ) : (
-                                    <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
+                                    <button
+                                        className="btn btnReseted"
+                                        type="button"
+                                        style={{ padding: 0 }}
+                                        onClick={() => props.changeIsEditingName(true)}
+                                    >
                                         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
                                     </button>
-
                                 )
                             }
                         </Fragment>
@@ -62,69 +66,81 @@ const TeamView = props => (
                         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
                     )
                 }
-                <div className="row">
-                    {props.isAdmin()
-                        ? (
-                            <Fragment>
-                                {props.team.isVisible
-                                    ? (
-                                        <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                        Public
-                                            {' '}
-                                            <i className="fas fa-eye" />
-                                        </div>
-                                    )
-                                    : (
-                                        <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                        Private
-                                            {' '}
-                                            <i className="fas fa-eye-slash" />
-                                        </div>
-                                    )
-                                }
-                            </Fragment>
-                        ) : (
-                            <Fragment>
-                                {props.team.isVisible
-                                    ? (
-                                        <div className="col-sm-2 teamVisibility">
-                        Public
-                                            {' '}
-                                            <i className="fas fa-eye" />
-                                        </div>
-                                    )
-                                    : (
-                                        <div className="col-sm-2 teamVisibility">
-                        Private
-                                            {' '}
-                                            <i className="fas fa-eye-slash" />
-                                        </div>
-                                    )
-                                }
-                            </Fragment>
-                        )
-                    }
-                </div>
-            </div>
-            <div className="col-3">
-                <div className="row float-right">
-                    {props.isAdmin()
-                        ? (
+                {props.isAdmin()
+                    ? (
+                        <span style={{ marginLeft: '40px' }}>
                             <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
-                                <span>Remove&nbsp;</span>
+                                <span>Delete&nbsp;</span>
                                 <i className="fas fa-trash-alt" />
                             </button>
-                        ) : ''
-                    }
-                </div>
+                        </span>
+                    ) : ''
+                }
             </div>
-            <div className="col-sm-10">
+        </div>
+        <div className="row">
+            <div className="col-sm-12">
+                {props.isAdmin()
+                    ? (
+                        <Fragment>
+                            {props.team.isVisible
+                                ? (
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary teamVisibility click"
+                                        onClick={props.changeVisibility}
+                                        onKeyPress={props.changeVisibility}
+                                    >
+                                            Public
+                                        {' '}
+                                        <i className="fas fa-eye" />
+                                    </button>
+                                )
+                                : (
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary teamVisibility click"
+                                        onClick={props.changeVisibility}
+                                        onKeyPress={props.changeVisibility}
+                                    >
+                                            Private
+                                        {' '}
+                                        <i className="fas fa-eye-slash" />
+                                    </button>
+                                )
+                            }
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            {props.team.isVisible
+                                ? (
+                                    <p className="text-dark">
+                                            Public
+                                        {' '}
+                                        <i className="fas fa-eye" />
+                                    </p>
+                                )
+                                : (
+                                    <p className="text-dark">
+                                            Private
+                                        {' '}
+                                        <i className="fas fa-eye-slash" />
+                                    </p>
+                                )
+                            }
+                        </Fragment>
+                    )
+                }
+            </div>
+        </div>
+        <div className="row" style={{ marginTop: '10px' }}>
+            <div className="col-sm-12">
                 {props.isAdmin()
                     ? (
                         <Fragment>
                             {props.isEditingDescription
                                 ? (
-                                    <form onSubmit={props.editDescription}>
+                                    <form className="form-inline" onSubmit={props.editDescription}>
                                         <label className="sr-only" htmlFor="description">Description</label>
                                         <div className="input-group mb-2 mr-sm-2">
                                             <div className="input-group-prepend">
@@ -157,15 +173,27 @@ const TeamView = props => (
                                     <Fragment>
                                         {props.team.description
                                             ? (
-                                                <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btnReseted btnTeamDescription"
+                                                    style={{ padding: 0 }}
+                                                    onClick={() => props.changeIsEditingDescription(true)}
+                                                    onKeyPress={() => props.changeIsEditingDescription(true)}
+                                                >
                                                     <b>Description:</b>
                                                     {' '}
                                                     {props.team.description}
-                                                </div>
+                                                </button>
                                             ) : (
-                                                <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btnReseted"
+                                                    style={{ padding: 0 }}
+                                                    onClick={() => props.changeIsEditingDescription(true)}
+                                                    onKeyPress={() => props.changeIsEditingDescription(true)}
+                                                >
                                                     <i>No description provided yet.</i>
-                                                </div>
+                                                </button>
                                             )
                                         }
                                     </Fragment>
@@ -176,13 +204,19 @@ const TeamView = props => (
                         <Fragment>
                             {props.team.description
                                 ? (
-                                    <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                    <div
+                                        onClick={() => props.changeIsEditingDescription(true)}
+                                        onKeyPress={() => props.changeIsEditingDescription(true)}
+                                    >
                                         <b>Description:</b>
                                         {' '}
                                         {props.team.description}
                                     </div>
                                 ) : (
-                                    <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                    <div
+                                        onClick={() => props.changeIsEditingDescription(true)}
+                                        onKeyPress={() => props.changeIsEditingDescription(true)}
+                                    >
                                         <i>No description provided yet.</i>
                                     </div>
                                 )

@@ -163,7 +163,7 @@ export default function currentBoardReducer(state = initialState, action) {
                             ? l
                             : {
                                 ...l,
-                                isArchived: true,
+                                isArchived: action.payload.isArchived,
                             }
                     )),
                 },
@@ -349,7 +349,50 @@ export default function currentBoardReducer(state = initialState, action) {
                                 cards: l.cards.map(card => (card._id === action.payload.card._id
                                     ? {
                                         ...card,
-                                        isArchived: true,
+                                        isArchived: action.payload.isArchived,
+                                    }
+                                    : card)),
+                            }
+                    )),
+                },
+            };
+
+        // ===== Edit due date ===== //
+        case cardActions.EDIT_DATE_STARTED:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.map(card => (card._id === action.payload.card._id
+                                    ? {
+                                        ...card,
+                                        dueDate: action.payload.dueDate,
+                                    }
+                                    : card)),
+                            }
+                    )),
+                },
+            };
+
+        case cardActions.EDIT_DATE_FAILURE:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.map(card => (card._id === action.payload.card._id
+                                    ? {
+                                        ...card,
+                                        dueDate: action.payload.initialDate,
                                     }
                                     : card)),
                             }

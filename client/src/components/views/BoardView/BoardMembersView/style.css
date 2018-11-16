@@ -5,3 +5,14 @@
     padding: 0;
     vertical-align: sub;
 }
+
+.boardMemberLists {
+    display: inline-block;
+    height: 40px;
+    margin: 0;
+    overflow-y: auto;
+    vertical-align: middle;
+    max-width: 20vw;
+    scroll-snap-type: proximity;
+    scroll-snap-points-y: repeat(40px);
+}

@@ -292,14 +292,31 @@ module.exports = (router) => {
             }
         })
 
-        .put('/cards/:cardId/archive', Auth.isAuthenticated, async (req, res) => {
+        .put('/cards/:cardId/isArchived', Auth.isAuthenticated, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.archiveCard(req.params.cardId);
+                const card = await cardController.archiveCard(req.params.cardId, req.body.isArchived);
+                const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
+                updateClientsOnBoard(list.board._id);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+
+        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, cardValidator.editDate, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            try {
+                const card = await cardController.editDate(req.params.cardId, req.body.dueDate);
+                const list = await listController.getList(card.list._id);
+                res.sendStatus(204);
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

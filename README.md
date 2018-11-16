@@ -26,7 +26,11 @@ Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Appli
 - In localhost, you can use `npm start` for the client and `npm run watch` for the server.
 
 ### Deployment 
-The client and server contain a Dockerfile. These Dockerfile are used by the **/scripts/deploy.sh** script to deploy the application to Dokku or Herokku for example.
+The client and server contain a Dockerfile. These Dockerfile are used by the **/scripts/deploy.sh** script to deploy the application to Dokku or Herokku for example. To use it, when you are at the root of the repository: 
+
+`cd ./scripts`
+
+`sh ./deploy.sh`
 
 ### Tests
 

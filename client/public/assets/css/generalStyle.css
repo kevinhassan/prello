@@ -177,6 +177,7 @@ li {
     margin-left: 0 !important;
 }
 
+/* FORM */
 .general-form {
     text-align: center;
 }
@@ -191,4 +192,14 @@ li {
 .appened-form{
     border-radius: 0.25rem;
     background-color: #dbdbed;
+}
+
+.custom-select{
+    border: none;
+    border-radius: 0;
+    color: #004a75;
+}
+
+.custom-select:hover{
+    cursor: pointer;
 }

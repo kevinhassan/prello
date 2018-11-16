@@ -9,6 +9,7 @@ import BoardItemComp from '../../../containers/BoardItemComp';
 
 // ===== Others
 import './style.css';
+import ArchivedBoardsView from './ArchivedBoardsView';
 
 // ==================================
 
@@ -16,25 +17,18 @@ const BoardsView = props => (
     <div className="boardsPanel">
         <h1 className="boards-h1" style={{ display: 'inline' }}>
             Boards
-            {' '}
         </h1>
-        <span style={{ fontSize: '1.5rem' }}>
-            <b>{props.boards.length}</b>
-            {' '}
-            boards (
-            {props.boards.reduce((sum, board) => {
-                if (board.isArchived) return sum + 1;
-                return sum;
-            }, 0)}
-            {' '}
-            archived)
-        </span>
-
-        <CreateBoard
-            createBoard={props.createBoard}
-            isCreateBoardFormVisible={props.isCreateBoardFormVisible}
-            displayCreateBoardForm={props.displayCreateBoardForm}
-        />
+        <div>
+            <CreateBoard
+                createBoard={props.createBoard}
+                isCreateBoardFormVisible={props.isCreateBoardFormVisible}
+                displayCreateBoardForm={props.displayCreateBoardForm}
+            />
+            <ArchivedBoardsView
+                boards={props.boards.filter(b => b.isArchived)}
+                updateIsArchived={props.updateIsArchived}
+            />
+        </div>
 
         {props.boards.length > 0
             ? (
@@ -76,6 +70,7 @@ BoardsView.propTypes = {
     createBoard: PropTypes.func.isRequired,
     displayCreateBoardForm: PropTypes.func.isRequired,
     isCreateBoardFormVisible: PropTypes.bool.isRequired,
+    updateIsArchived: PropTypes.func.isRequired,
 };
 
 export default BoardsView;

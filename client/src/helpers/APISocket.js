@@ -12,6 +12,7 @@ class APISocket {
             return instance;
         }
         if (process.env.REACT_APP_API_HOST === undefined && process.env.ENVIRONMENT !== 'production') {
+            console.log(process.env);
             throw Error('REACT_APP_API_HOST in .env file not found.');
         }
         this.socket = io.connect(process.env.REACT_APP_API_HOST);

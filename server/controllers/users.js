@@ -1,10 +1,8 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
 const axios = require('axios');
-const nodemailer = require('nodemailer');
 
 const MyError = require('../util/error');
-const logger = require('../util/logger');
 const Auth = require('../auth');
 const { resetPasswordMail, confirmResetPasswordMail, confirmAccountCreationMail } = require('../mails');
 
@@ -72,17 +70,7 @@ exports.signUp = async (data) => {
         });
         const newUser = await user.save();
 
-        if (process.env.MAILJET_USER && process.env.MAILJET_PASSWORD) {
-            logger.info('Sending register confirmation mail');
-            const transporter = nodemailer.createTransport({
-                service: 'Mailjet',
-                auth: {
-                    user: process.env.MAILJET_USER,
-                    pass: process.env.MAILJET_PASSWORD
-                }
-            });
-            await transporter.sendMail(confirmAccountCreationMail(newUser.email));
-        }
+        await confirmAccountCreationMail(newUser.email);
         return newUser;
     } catch (err) {
         if (err.status) throw err;
@@ -101,14 +89,7 @@ exports.forgot = async (email) => {
         user = await user.save();
         if (!user) throw new MyError(500, 'Internal server error');
         const token = user.passwordResetToken;
-        const transporter = nodemailer.createTransport({
-            service: 'Mailjet',
-            auth: {
-                user: process.env.MAILJET_USER,
-                pass: process.env.MAILJET_PASSWORD
-            }
-        });
-        await transporter.sendMail(resetPasswordMail(email, token));
+        await resetPasswordMail(email, token);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
@@ -125,14 +106,7 @@ exports.resetPassword = async (token, password) => {
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
         await user.save();
-        const transporter = nodemailer.createTransport({
-            service: 'Mailjet',
-            auth: {
-                user: process.env.MAILJET_USER,
-                pass: process.env.MAILJET_PASSWORD
-            }
-        });
-        await transporter.sendMail(confirmResetPasswordMail(user.email));
+        await confirmResetPasswordMail(user.email);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
@@ -420,7 +394,7 @@ exports.leaveTeam = async (userId, teamId) => {
     try {
         const user = await User.findById(userId);
         if (!user) throw new MyError(404, 'User unknown');
-
+        
         await User.updateOne({ _id: userId },
             { $pull: { teams: teamId } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });

@@ -9,10 +9,6 @@ import {
     fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam, deleteMember, editMemberRight,
 } from '../../actions/teams';
 
-import {
-    memberSearch,
-} from '../../actions/search';
-
 // ===== Components / Containers
 import TeamView from '../../components/views/TeamView';
 
@@ -86,7 +82,7 @@ class TeamComp extends React.Component {
     }
 
     handleChangeVisibility() {
-        this.props.changeVisibility(this.props.team._id, this.props.team.isVisible);
+        this.props.changeVisibility(this.props.team._id, !this.props.team.isVisible);
     }
 
     /* ===== NAME ===== */
@@ -254,7 +250,6 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         deleteTeam,
         deleteMember,
         editMemberRight,
-        memberSearch,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
