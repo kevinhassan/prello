@@ -39,8 +39,7 @@ exports.getBoard = async (boardId) => {
         }, {
             path: 'teams'
         }, {
-            path: 'members',
-            select: ['-password']
+            path: 'members'
         }, {
             path: 'admins',
             select: '_id'

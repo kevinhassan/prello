@@ -7,9 +7,9 @@ const userSchema = new mongoose.Schema({
     email: String,
     fullName: { type: String, required: true },
     initials: String,
-    password: String,
-    passwordResetExpires: Date,
-    passwordResetToken: String,
+    password: { type: String, select: false },
+    passwordResetExpires: { type: Date, select: false },
+    passwordResetToken: { type: String, select: false },
     username: { type: String, unique: true },
     boards: [{
         type: mongoose.Schema.Types.ObjectId,
