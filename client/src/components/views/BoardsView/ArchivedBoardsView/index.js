@@ -14,9 +14,7 @@ const ArchivedBoardsView = props => (
             <option disabled>Archived boards</option>
             {props.boards.filter(board => board.isArchived).map(board => (
                 <option name={board._id} onClick={event => props.updateIsArchived(event, board._id, false)}>{board.name}</option>
-            ))
-            }
-            {}
+            ))}
         </select>
     </span>
 );
