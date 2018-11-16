@@ -12,9 +12,7 @@ export const FETCH_TEAM_FAILURE = 'teams/FETCH_TEAM_FAILURE';
 export const FETCH_TEAM_SUCCESS = 'teams/FETCH_TEAM_SUCCESS';
 
 export const fetchTeamStartedAction = () => ({ type: FETCH_TEAM_STARTED });
-
 export const fetchTeamFailureAction = () => ({ type: FETCH_TEAM_FAILURE });
-
 export const fetchTeamSuccessAction = team => ({
     type: FETCH_TEAM_SUCCESS,
     payload: {
@@ -45,9 +43,7 @@ export const ADD_MEMBER_TO_TEAM_FAILURE = 'teams/ADD_MEMBER_TO_TEAM_FAILURE';
 export const ADD_MEMBER_TO_TEAM_SUCCESS = 'teams/ADD_MEMBER_TO_TEAM_SUCCESS';
 
 export const addMemberToTeamStartedAction = () => ({ type: ADD_MEMBER_TO_TEAM_STARTED });
-
 export const addMemberToTeamFailureAction = () => ({ type: ADD_MEMBER_TO_TEAM_FAILURE });
-
 export const addMemberToTeamSuccessAction = team => ({
     type: ADD_MEMBER_TO_TEAM_SUCCESS,
     payload: {
@@ -79,9 +75,7 @@ export const CREATE_TEAM_FAILURE = 'teams/CREATE_TEAM_FAILURE';
 export const CREATE_TEAM_SUCCESS = 'teams/CREATE_TEAM_SUCCESS';
 
 export const createTeamStartedAction = () => ({ type: CREATE_TEAM_STARTED });
-
 export const createTeamFailureAction = () => ({ type: CREATE_TEAM_FAILURE });
-
 export const createTeamSuccessAction = team => ({
     type: CREATE_TEAM_SUCCESS,
     payload: {
@@ -107,32 +101,30 @@ export const createTeam = (name, isPublic) => (dispatch) => {
         });
 };
 // ===== Change team visibility ===== //
-export const CHANGE_VISIBILITY_TEAM_STARTED = 'teams/CHANGE_VISIBILITY_TEAM_STARTED';
-export const CHANGE_VISIBILITY_TEAM_FAILURE = 'teams/CHANGE_VISIBILITY_TEAM_FAILURE';
-export const CHANGE_VISIBILITY_TEAM_SUCCESS = 'teams/CHANGE_VISIBILITY_TEAM_SUCCESS';
+export const CHANGE_TEAM_VISIBILITY_STARTED = 'teams/CHANGE_TEAM_VISIBILITY_STARTED';
+export const CHANGE_TEAM_VISIBILITY_FAILURE = 'teams/CHANGE_TEAM_VISIBILITY_FAILURE';
+export const CHANGE_TEAM_VISIBILITY_SUCCESS = 'teams/CHANGE_TEAM_VISIBILITY_SUCCESS';
 
-export const changeVisibilityTeamStartedAction = () => ({ type: CHANGE_VISIBILITY_TEAM_STARTED });
-
-export const changeVisibilityTeamFailureAction = () => ({ type: CHANGE_VISIBILITY_TEAM_FAILURE });
-
-export const changeVisibilityTeamSuccessAction = isVisible => ({
-    type: CHANGE_VISIBILITY_TEAM_SUCCESS,
+export const changeTeamVisibilityStartedAction = () => ({ type: CHANGE_TEAM_VISIBILITY_STARTED });
+export const changeTeamVisibilityFailureAction = () => ({ type: CHANGE_TEAM_VISIBILITY_FAILURE });
+export const changeTeamVisibilitySuccessAction = isVisible => ({
+    type: CHANGE_TEAM_VISIBILITY_SUCCESS,
     payload: {
         isVisible,
     },
 });
 
 export const changeVisibility = (teamId, visibility) => (dispatch) => {
-    dispatch(changeVisibilityTeamStartedAction());
+    dispatch(changeTeamVisibilityStartedAction());
     dispatch(displayLoadingModal());
     const resource = 'teams'.concat(`/${teamId}/visibility`);
     APIFetch.fetchPrelloAPI(resource, { isVisible: visibility }, APIFetch.PUT)
         .then(() => {
-            dispatch(changeVisibilityTeamSuccessAction(visibility));
+            dispatch(changeTeamVisibilitySuccessAction(visibility));
             dispatch(displaySuccessMessage('Team visibility updated'));
         })
         .catch((error) => {
-            dispatch(changeVisibilityTeamFailureAction());
+            dispatch(changeTeamVisibilityFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -141,32 +133,30 @@ export const changeVisibility = (teamId, visibility) => (dispatch) => {
 };
 
 // ===== Change team name ===== //
-export const CHANGE_NAME_TEAM_STARTED = 'teams/CHANGE_NAME_TEAM_STARTED';
-export const CHANGE_NAME_TEAM_FAILURE = 'teams/CHANGE_NAME_TEAM_FAILURE';
-export const CHANGE_NAME_TEAM_SUCCESS = 'teams/CHANGE_NAME_TEAM_SUCCESS';
+export const CHANGE_TEAM_NAME_STARTED = 'teams/CHANGE_TEAM_NAME_STARTED';
+export const CHANGE_TEAM_NAME_FAILURE = 'teams/CHANGE_TEAM_NAME_FAILURE';
+export const CHANGE_TEAM_NAME_SUCCESS = 'teams/CHANGE_TEAM_NAME_SUCCESS';
 
-export const changeNameTeamStartedAction = () => ({ type: CHANGE_NAME_TEAM_STARTED });
-
-export const changeNameTeamFailureAction = () => ({ type: CHANGE_NAME_TEAM_FAILURE });
-
-export const changeNameTeamSuccessAction = name => ({
-    type: CHANGE_NAME_TEAM_SUCCESS,
+export const changeTeamNameStartedAction = () => ({ type: CHANGE_TEAM_NAME_STARTED });
+export const changeTeamNameFailureAction = () => ({ type: CHANGE_TEAM_NAME_FAILURE });
+export const changeTeamNameSuccessAction = name => ({
+    type: CHANGE_TEAM_NAME_SUCCESS,
     payload: {
         name,
     },
 });
 
 export const changeName = (teamId, name) => (dispatch) => {
-    dispatch(changeNameTeamStartedAction());
+    dispatch(changeTeamNameStartedAction());
     dispatch(displayLoadingModal());
     const resource = 'teams'.concat(`/${teamId}/name`);
     APIFetch.fetchPrelloAPI(resource, { name }, APIFetch.PUT)
         .then(() => {
-            dispatch(changeNameTeamSuccessAction(name));
+            dispatch(changeTeamNameSuccessAction(name));
             dispatch(displaySuccessMessage('Team renamed.'));
         })
         .catch((error) => {
-            dispatch(changeNameTeamFailureAction());
+            dispatch(changeTeamNameFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -175,32 +165,30 @@ export const changeName = (teamId, name) => (dispatch) => {
 };
 
 // ===== Change team description ===== //
-export const CHANGE_DESCRIPTION_TEAM_STARTED = 'teams/CHANGE_DESCRIPTION_TEAM_STARTED';
-export const CHANGE_DESCRIPTION_TEAM_FAILURE = 'teams/CHANGE_DESCRIPTION_TEAM_FAILURE';
-export const CHANGE_DESCRIPTION_TEAM_SUCCESS = 'teams/CHANGE_DESCRIPTION_TEAM_SUCCESS';
+export const CHANGE_TEAM_DESCRIPTION_STARTED = 'teams/CHANGE_TEAM_DESCRIPTION_STARTED';
+export const CHANGE_TEAM_DESCRIPTION_FAILURE = 'teams/CHANGE_TEAM_DESCRIPTION_FAILURE';
+export const CHANGE_TEAM_DESCRIPTION_SUCCESS = 'teams/CHANGE_TEAM_DESCRIPTION_SUCCESS';
 
-export const changeDescriptionTeamStartedAction = () => ({ type: CHANGE_DESCRIPTION_TEAM_STARTED });
-
-export const changeDescriptionTeamFailureAction = () => ({ type: CHANGE_DESCRIPTION_TEAM_FAILURE });
-
-export const changeDescriptionTeamSuccessAction = description => ({
-    type: CHANGE_DESCRIPTION_TEAM_SUCCESS,
+export const changeTeamDescriptionStartedAction = () => ({ type: CHANGE_TEAM_DESCRIPTION_STARTED });
+export const changeTeamDescriptionFailureAction = () => ({ type: CHANGE_TEAM_DESCRIPTION_FAILURE });
+export const changeTeamDescriptionSuccessAction = description => ({
+    type: CHANGE_TEAM_DESCRIPTION_SUCCESS,
     payload: {
         description,
     },
 });
 
 export const changeDescription = (teamId, description) => (dispatch) => {
-    dispatch(changeDescriptionTeamStartedAction());
+    dispatch(changeTeamDescriptionStartedAction());
     dispatch(displayLoadingModal());
     const resource = 'teams'.concat(`/${teamId}/description`);
     APIFetch.fetchPrelloAPI(resource, { description }, APIFetch.PUT)
         .then(() => {
-            dispatch(changeDescriptionTeamSuccessAction(description));
+            dispatch(changeTeamDescriptionSuccessAction(description));
             dispatch(displaySuccessMessage('Description updated.'));
         })
         .catch((error) => {
-            dispatch(changeDescriptionTeamFailureAction());
+            dispatch(changeTeamDescriptionFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {
@@ -214,9 +202,7 @@ export const DELETE_TEAM_FAILURE = 'teams/DELETE_TEAM_FAILURE';
 export const DELETE_TEAM_SUCCESS = 'teams/DELETE_TEAM_SUCCESS';
 
 export const deleteTeamStartedAction = () => ({ type: DELETE_TEAM_STARTED });
-
 export const deleteTeamFailureAction = () => ({ type: DELETE_TEAM_FAILURE });
-
 export const deleteTeamSuccessAction = team => ({
     type: DELETE_TEAM_SUCCESS,
     payload: {
@@ -249,9 +235,7 @@ export const DELETE_MEMBER_FAILURE = 'teams/DELETE_MEMBER_FAILURE';
 export const DELETE_MEMBER_SUCCESS = 'teams/DELETE_MEMBER_SUCCESS';
 
 export const deleteMemberStartedAction = () => ({ type: DELETE_MEMBER_STARTED });
-
 export const deleteMemberFailureAction = () => ({ type: DELETE_MEMBER_FAILURE });
-
 export const deleteMemberSuccessAction = member => ({
     type: DELETE_MEMBER_SUCCESS,
     payload: {
@@ -283,9 +267,7 @@ export const EDIT_MEMBER_RIGHT_FAILURE = 'teams/EDIT_MEMBER_RIGHT_FAILURE';
 export const EDIT_MEMBER_RIGHT_SUCCESS = 'teams/EDIT_MEMBER_RIGHT_SUCCESS';
 
 export const editMemberRightStartedAction = () => ({ type: EDIT_MEMBER_RIGHT_STARTED });
-
 export const editMemberRightFailureAction = () => ({ type: EDIT_MEMBER_RIGHT_FAILURE });
-
 export const editMemberRightSuccessAction = member => ({
     type: EDIT_MEMBER_RIGHT_SUCCESS,
     payload: {
