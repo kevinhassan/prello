@@ -26,7 +26,7 @@ exports.getTeam = async (teamId) => {
                 select: 'name'
             }, {
                 path: 'members',
-                select: 'initials'
+                select: 'initials username'
             }]
         }, {
             path: 'members',
