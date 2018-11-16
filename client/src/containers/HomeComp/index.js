@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import { push } from 'connected-react-router';
 
 // ===== Others
+import IGLogo from '../../assets/ig_logo.png'
+import PolytechLogo from '../../assets/polytech_montpellier_logo.png'
 
 class HomeComp extends React.Component {
     render() {
@@ -42,14 +44,14 @@ class HomeComp extends React.Component {
                         <div className="row text-center">
                             <div className="col-sm-6">
                                 <img
-                                    src="http://www.sietmanagement.fr/wp-content/uploads/2016/05/Polytech-Montpellier.png"
+                                    src={PolytechLogo}
                                     width="200"
                                     alt="Logo Polytech Montpellier"
                                 />
                             </div>
                             <div className="col-sm-6">
                                 <img
-                                    src="http://asa.polytech.univ-montp2.fr/polymap/files/picto/IG.png"
+                                    src={IGLogo}
                                     width="100"
                                     alt="Informatique et Gestion logo"
                                 />

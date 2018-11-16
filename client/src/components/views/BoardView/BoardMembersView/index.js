@@ -31,9 +31,9 @@ const BoardMembersView = props => (
                 <span>0 member</span>
             )
         }
-        <span style={{ marginLeft: '10px' }}>
-            {props.isFormVisible && props.canAddMember
-                ? (
+        {props.isFormVisible && props.canAddMember
+            ? (
+                <span style={{ marginLeft: '10px' }}>
                     <form className="form-inline" onSubmit={props.addMember} style={{ display: 'inline-block' }}>
                         <label className="sr-only" htmlFor="name">Username:</label>
                         <button
@@ -60,22 +60,22 @@ const BoardMembersView = props => (
                             <i className="fas fa-check" />
                         </button>
                     </form>
-                ) : (
-                    displayAddMemberButton(props.canAddMember, (
-                        <button
-                            className="btn btn-success addCard-btn boardSettingsBtn addMember-btn"
-                            type="button"
-                            onClick={() => props.displayForm(true)}
-                            onKeyDown={() => props.displayForm(true)}
-                        >
-                            <i className="fas fa-plus-circle addCardIcon" />
-                        </button>
-                    ), (
-                        ''
-                    ))
-                )
-            }
-        </span>
+                </span>
+            ) : (
+                displayAddMemberButton(props.canAddMember, (
+                    <button
+                        className="btn btn-success addCard-btn boardSettingsBtn addMember-btn"
+                        type="button"
+                        onClick={() => props.displayForm(true)}
+                        onKeyDown={() => props.displayForm(true)}
+                    >
+                        <i className="fas fa-plus-circle addCardIcon" />
+                    </button>
+                ), (
+                    ''
+                ))
+            )
+        }
     </span>
 );
 
