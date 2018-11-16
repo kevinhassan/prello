@@ -11,6 +11,7 @@ const GithubLinkBoard = props => (
         {props.boardGithubRepo.name && !props.isReposListVisible
             ? (
                 <Fragment>
+                    <span className="boardSettingsSeparator" />
                     <a href={props.boardGithubRepo.url} style={{ color: '#222' }} target="_blank" rel="noopener noreferrer">
                         <i className="fab fa-github" />
                         {' '}
@@ -46,6 +47,7 @@ const GithubLinkBoard = props => (
                     {props.repos.length > 0
                         ? (
                             <span style={{ display: 'flex' }}>
+                                <span className="boardSettingsSeparator" />
                                 <select
                                     onChange={event => props.linkBoardToGithubRepo(event)}
                                     value={
@@ -88,7 +90,6 @@ const GithubLinkBoard = props => (
                         ) : (
                             ''
                         )}
-
                 </Fragment>
             )}
     </span>
