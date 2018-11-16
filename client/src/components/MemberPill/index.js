@@ -45,7 +45,7 @@ const stringToRandomInt = (member) => {
 // ==========
 
 const MemberPill = props => (
-    <span className="memberPill">
+    <span className="memberPill" title={props.member.username}>
         <Link
             className="memberLink"
             to={`/members/${props.member._id}`}

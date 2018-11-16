@@ -69,7 +69,7 @@ exports.getBoards = async (userId) => {
                         select: 'cards'
                     }, {
                         path: 'members',
-                        select: 'initials'
+                        select: 'initials username'
                     }, {
                         path: 'teams',
                         select: 'name'
