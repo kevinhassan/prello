@@ -257,7 +257,6 @@ exports.findMembers = async (userId, username) => {
             .select(['username', 'email']).sort({ username: 1 }).limit(5);
         return users;
     } catch (err) {
-        console.log(err);
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
     }

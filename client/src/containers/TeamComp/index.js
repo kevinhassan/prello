@@ -36,7 +36,6 @@ class TeamComp extends React.Component {
         this.handleDeleteMember = this.handleDeleteMember.bind(this);
         this.handleEditMemberRight = this.handleEditMemberRight.bind(this);
         this.handleOnMemberSearch = this.handleOnMemberSearch.bind(this);
-        this.handleSelectMemberSearch = this.handleSelectMemberSearch.bind(this);
         this.isMember = this.isMember.bind(this);
         this.isAdmin = this.isAdmin.bind(this);
         this.state = {
@@ -62,6 +61,13 @@ class TeamComp extends React.Component {
     addMember(event) {
         event.preventDefault();
         const username = event.target.username.value;
+        this.setState({
+            search: {
+                selectedMember: '',
+                members: [],
+            },
+        });
+        event.target.username.value = '';
         this.props.addMemberToTeam(this.props.team._id, username);
     }
 
@@ -131,15 +137,6 @@ class TeamComp extends React.Component {
         return adminFound !== undefined;
     }
 
-    handleSelectMemberSearch(username) {
-        this.setState({
-            search: {
-                selectedMember: username,
-                members: [],
-            },
-        });
-    }
-
     handleOnMemberSearch(event) {
         const username = event.target.value;
         const searchCopy = this.state.search;
@@ -193,7 +190,6 @@ class TeamComp extends React.Component {
 
 
                     isAdmin={this.isAdmin}
-                    selectMemberSearch={this.handleSelectMemberSearch}
                 />
             );
         }

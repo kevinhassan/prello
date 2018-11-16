@@ -201,7 +201,6 @@ const TeamView = props => (
                             addMember={props.addMemberToTeam}
                             onChangeMemberSearch={props.onChangeMemberSearch}
                             search={props.search}
-                            selectMemberSearch={props.selectMemberSearch}
                         />
                     ) : ''
                 }
@@ -286,7 +285,6 @@ const TeamView = props => (
 TeamView.propTypes = {
     addMemberToTeam: PropTypes.func.isRequired,
     onChangeMemberSearch: PropTypes.func.isRequired,
-    selectMemberSearch: PropTypes.func.isRequired,
     search: PropTypes.object.isRequired,
     clientId: PropTypes.string.isRequired,
     team: PropTypes.object.isRequired,
