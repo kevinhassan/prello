@@ -2,7 +2,9 @@ const { promisify } = require('util');
 const crypto = require('crypto');
 const axios = require('axios');
 const nodemailer = require('nodemailer');
+
 const MyError = require('../util/error');
+const logger = require('../util/logger');
 const Auth = require('../auth');
 const { resetPasswordMail, confirmResetPasswordMail, confirmAccountCreationMail } = require('../mails');
 
@@ -71,6 +73,7 @@ exports.signUp = async (data) => {
         const newUser = await user.save();
 
         if (process.env.MAILJET_USER && process.env.MAILJET_PASSWORD) {
+            logger.info('Sending register confirmation mail');
             const transporter = nodemailer.createTransport({
                 service: 'Mailjet',
                 auth: {
