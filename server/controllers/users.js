@@ -59,8 +59,8 @@ exports.login = async (email, password) => {
  */
 exports.signUp = async (data) => {
     try {
-        const findUser = await User.findOne({ email: data.email }).select('-_id email');
-        if (findUser) throw new MyError(409, 'An account already exists for this email.');
+        const isUserAlreadyExisting = await User.findOne({ email: data.email }).select('email');
+        if (isUserAlreadyExisting) throw new MyError(409, 'An account already exists for this email.');
         const user = new User({
             fullName: data.fullName,
             password: data.password,
