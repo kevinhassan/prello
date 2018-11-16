@@ -19,7 +19,7 @@ const TeamView = props => (
                         <Fragment>
                             {props.isEditingName
                                 ? (
-                                    <form onSubmit={props.editName}>
+                                    <form className="form-inline" onSubmit={props.editName}>
                                         <label className="sr-only" htmlFor="name">Name</label>
                                         <div className="input-group mb-2 mr-sm-2">
                                             <div className="input-group-prepend">
@@ -51,7 +51,7 @@ const TeamView = props => (
                                         </div>
                                     </form>
                                 ) : (
-                                    <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
+                                    <button className="btn btnReseted" type="button" style={{ padding: 0 }} onClick={() => props.changeIsEditingName(true)}>
                                         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
                                     </button>
 
