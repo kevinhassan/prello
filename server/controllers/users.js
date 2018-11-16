@@ -22,9 +22,9 @@ const User = require('../models/User');
  */
 exports.postBoard = async (userId, boardId) => {
     try {
-        await User.updateOne({ _id: userId },
-            { $addToSet: { boards: { _id: boardId } } })
-            .catch(async () => { throw new MyError(404, 'User not found'); });
+        const user = await User.findOneAndUpdate({ _id: userId },
+            { $addToSet: { boards: { _id: boardId } } }, { new: true });
+        return user;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
