@@ -9,6 +9,7 @@ import BoardItemComp from '../../../containers/BoardItemComp';
 
 // ===== Others
 import './style.css';
+import ArchivedBoardsView from './ArchivedBoardsView';
 
 // ==================================
 
@@ -30,11 +31,17 @@ const BoardsView = props => (
             archived)
         </span>
 
-        <CreateBoard
-            createBoard={props.createBoard}
-            isCreateBoardFormVisible={props.isCreateBoardFormVisible}
-            displayCreateBoardForm={props.displayCreateBoardForm}
-        />
+        <div>
+            <CreateBoard
+                createBoard={props.createBoard}
+                isCreateBoardFormVisible={props.isCreateBoardFormVisible}
+                displayCreateBoardForm={props.displayCreateBoardForm}
+            />
+            <ArchivedBoardsView
+                boards={props.boards}
+                updateIsArchived={props.updateIsArchived}
+            />
+        </div>
 
         {props.boards.length > 0
             ? (
@@ -76,6 +83,7 @@ BoardsView.propTypes = {
     createBoard: PropTypes.func.isRequired,
     displayCreateBoardForm: PropTypes.func.isRequired,
     isCreateBoardFormVisible: PropTypes.bool.isRequired,
+    updateIsArchived: PropTypes.func.isRequired,
 };
 
 export default BoardsView;
