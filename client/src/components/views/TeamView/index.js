@@ -12,106 +12,112 @@ import './style.css';
 
 const TeamView = props => (
     <div className="teamContent container-fluid">
-        {props.isAdmin()
-            ? (
-                <Fragment>
-                    {props.isEditingName
+        <div className="row">
+            <div className="col-9">
+                {props.isAdmin()
+                    ? (
+                        <Fragment>
+                            {props.isEditingName
+                                ? (
+                                    <form onSubmit={props.editName}>
+                                        <label className="sr-only" htmlFor="name">Name</label>
+                                        <div className="input-group mb-2 mr-sm-2">
+                                            <div className="input-group-prepend">
+                                                <button
+                                                    className="btn btn-secondary"
+                                                    type="reset"
+                                                    onClick={() => props.changeIsEditingName(false)}
+                                                >
+                                                    <i className="fas fa-times updateIcon" />
+                                                </button>
+                                            </div>
+                                            <input
+                                                className="form-control"
+                                                name="name"
+                                                defaultValue={props.team.name}
+                                                type="text"
+                                                id="name"
+                                                required
+                                            />
+                                            <div className="input-group-prepend">
+                                                <button
+                                                    className="btn btn-success"
+                                                    type="submit"
+                                                >
+                                                    <i className="fas fa-check" />
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                ) : (
+                                    <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
+                                        <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
+                                    </button>
+
+                                )
+                            }
+                        </Fragment>
+                    ) : (
+                        <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
+                    )
+                }
+                <div className="row">
+                    {props.isAdmin()
                         ? (
-                            <form onSubmit={props.editName}>
-                                <label className="sr-only" htmlFor="name">Name</label>
-                                <div className="input-group mb-2 mr-sm-2">
-                                    <div className="input-group-prepend">
-                                        <button
-                                            className="btn btn-secondary"
-                                            type="reset"
-                                            onClick={() => props.changeIsEditingName(false)}
-                                        >
-                                            <i className="fas fa-times updateIcon" />
-                                        </button>
-                                    </div>
-                                    <input
-                                        className="form-control"
-                                        name="name"
-                                        defaultValue={props.team.name}
-                                        type="text"
-                                        id="name"
-                                        required
-                                    />
-                                    <div className="input-group-prepend">
-                                        <button
-                                            className="btn btn-success"
-                                            type="submit"
-                                        >
-                                            <i className="fas fa-check" />
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </form>
+                            <Fragment>
+                                {props.team.isVisible
+                                    ? (
+                                        <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
+                        Public
+                                            {' '}
+                                            <i className="fas fa-eye" />
+                                        </div>
+                                    )
+                                    : (
+                                        <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
+                        Private
+                                            {' '}
+                                            <i className="fas fa-eye-slash" />
+                                        </div>
+                                    )
+                                }
+                            </Fragment>
                         ) : (
-                            <button className="btnReseted" type="button" onClick={() => props.changeIsEditingName(true)}>
-                                <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
-                            </button>
-
+                            <Fragment>
+                                {props.team.isVisible
+                                    ? (
+                                        <div className="col-sm-2 teamVisibility">
+                        Public
+                                            {' '}
+                                            <i className="fas fa-eye" />
+                                        </div>
+                                    )
+                                    : (
+                                        <div className="col-sm-2 teamVisibility">
+                        Private
+                                            {' '}
+                                            <i className="fas fa-eye-slash" />
+                                        </div>
+                                    )
+                                }
+                            </Fragment>
                         )
                     }
-                </Fragment>
-            ) : (
-                <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
-            )
-        }
-        <div className="row">
-            {props.isAdmin()
-                ? (
-                    <button className="btn btn-danger btn-sm" onClick={() => { props.deleteTeam(props.team); }} type="submit">
-                        Remove&nbsp;
-                        <i className="fas fa-trash-alt" />
-                    </button>
-                ) : ''
-            }
-        </div>
-        <div className="row">
-            {props.isAdmin()
-                ? (
-                    <Fragment>
-                        {props.team.isVisible
-                            ? (
-                                <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                        Public
-                                    {' '}
-                                    <i className="fas fa-eye" />
-                                </div>
-                            )
-                            : (
-                                <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                        Private
-                                    {' '}
-                                    <i className="fas fa-eye-slash" />
-                                </div>
-                            )
-                        }
-                    </Fragment>
-                ) : (
-                    <Fragment>
-                        {props.team.isVisible
-                            ? (
-                                <div className="col-sm-2 teamVisibility">
-                        Public
-                                    {' '}
-                                    <i className="fas fa-eye" />
-                                </div>
-                            )
-                            : (
-                                <div className="col-sm-2 teamVisibility">
-                        Private
-                                    {' '}
-                                    <i className="fas fa-eye-slash" />
-                                </div>
-                            )
-                        }
-                    </Fragment>
-                )
-            }
+                </div>
+            </div>
+            <div className="col-3">
+                <div className="row float-right">
+                    {props.isAdmin()
+                        ? (
+                            <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
+                                <span>Remove&nbsp;</span>
+                                <i className="fas fa-trash-alt" />
+                            </button>
+                        ) : ''
+                    }
+                </div>
+            </div>
             <div className="col-sm-10">
                 {props.isAdmin()
                     ? (
