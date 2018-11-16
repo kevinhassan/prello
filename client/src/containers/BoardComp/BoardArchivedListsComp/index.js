@@ -20,6 +20,7 @@ class BoardArchivedListsComp extends React.Component {
 
     handleUnarchiveList(list) {
         this.props.archiveList(list, false);
+        document.getElementById('archivedLists').value = 'Archived lists';
     }
 
     render() {

@@ -20,6 +20,7 @@ class BoardArchivedCardsComp extends React.Component {
 
     handleUnarchiveCard(card) {
         this.props.archiveCard(card, false);
+        document.getElementById('archivedCards').value = 'Archived cards';
     }
 
     render() {
