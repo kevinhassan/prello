@@ -391,7 +391,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.putMemberAccess(req.params.teamId, req.params.memberId, req.body.isAdmin);
+                await teamController.putMemberAccess(req.params.teamId, req.user._id, req.params.memberId, req.body.isAdmin);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -399,7 +399,7 @@ module.exports = (router) => {
         })
         .delete('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.canEdit], async (req, res) => {
             try {
-                await teamController.deleteMember(req.params.teamId, req.params.memberId);
+                await teamController.deleteMember(req.params.teamId, req.user._id, req.params.memberId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
