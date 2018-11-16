@@ -1,13 +1,13 @@
 const resetPasswordMail = (email, token) => ({
     to: email,
     from: process.env.MAILJET_MAIL,
-    subject: 'Reset your password on Prello',
+    subject: 'Prello - Reset password',
     html: `
     <p>
         Hello,
     </p>
     <p>
-        You are receiving this email because you (or someone else) have requested the reset of the password for your account.
+        You are receiving this email because you (or someone else) has requested the reset of your password.
     </p>
     <p>
         Please click on the following link, or paste this into your browser to complete the process:
@@ -23,7 +23,7 @@ const resetPasswordMail = (email, token) => ({
 const confirmResetPasswordMail = email => ({
     to: email,
     from: process.env.MAILJET_MAIL,
-    subject: 'Your Prello app password has been changed',
+    subject: 'Prello - Password changed',
     html: `
     <p>
         Hello,
@@ -37,13 +37,13 @@ const confirmResetPasswordMail = email => ({
 const confirmAccountCreationMail = email => ({
     to: email,
     from: process.env.MAILJET_MAIL,
-    subject: 'Your account on Prello app has been created',
+    subject: 'Prello - Account created',
     text: `
     <p>
         Hello,
     </p>
     <p>
-        Your account has been created with the ${email}
+        Your Prello account has been successfully created using this email.
     </p>
     `
 });
