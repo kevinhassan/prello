@@ -91,7 +91,7 @@ class CardComp extends React.Component {
 
     /* ===== ARCHIVE ===== */
     handleArchiveCard() {
-        this.props.archiveCard(this.props.card);
+        this.props.archiveCard(this.props.card, true);
     }
 
     /* ===== DUE DATE ===== */

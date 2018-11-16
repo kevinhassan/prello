@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
-import { archiveList } from '../../../actions/lists';
+import { archiveCard } from '../../../actions/cards';
 
 // ===== Components / Containers
 import BoardArchivedCardsView from '../../../components/views/BoardView/BoardArchivedCardsView';
@@ -15,25 +15,25 @@ class BoardArchivedCardsComp extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleUnarchiveList = this.handleUnarchiveList.bind(this);
+        this.handleUnarchiveCard = this.handleUnarchiveCard.bind(this);
     }
 
-    handleUnarchiveList(list) {
-        this.props.archiveList(list, false);
+    handleUnarchiveCard(card) {
+        this.props.archiveCard(card, false);
     }
 
     render() {
         return (
             <BoardArchivedCardsView
                 board={this.props.board}
-                unarchiveList={this.handleUnarchiveList}
+                unarchiveCard={this.handleUnarchiveCard}
             />
         );
     }
 }
 BoardArchivedCardsComp.propTypes = {
     board: PropTypes.object.isRequired,
-    archiveList: PropTypes.func.isRequired,
+    archiveCard: PropTypes.func.isRequired,
 };
 BoardArchivedCardsComp.defaultProps = {
 };
@@ -56,7 +56,7 @@ const mapStateToProps = ({ currentBoard, auth }) => {
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
-        archiveList,
+        archiveCard,
     }, dispatch,
 );
 
