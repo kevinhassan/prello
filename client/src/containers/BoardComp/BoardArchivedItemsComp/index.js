@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
+import { archiveList } from '../../../actions/lists';
 
 // ===== Components / Containers
 import BoardArchivedItemsView from '../../../components/views/BoardView/BoardArchivedItemsView';
@@ -14,22 +15,25 @@ class BoardArchivedItemsComp extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            archivedLists: [],
-        };
+        this.handleUnarchiveList = this.handleUnarchiveList.bind(this);
+    }
+
+    handleUnarchiveList(list) {
+        this.props.archiveList(list, false);
     }
 
     render() {
         return (
             <BoardArchivedItemsView
-                archivedLists={this.state.archivedLists}
                 board={this.props.board}
+                unarchiveList={this.handleUnarchiveList}
             />
         );
     }
 }
 BoardArchivedItemsComp.propTypes = {
     board: PropTypes.object.isRequired,
+    archiveList: PropTypes.func.isRequired,
 };
 BoardArchivedItemsComp.defaultProps = {
 };
@@ -52,6 +56,7 @@ const mapStateToProps = ({ currentBoard, auth }) => {
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
+        archiveList,
     }, dispatch,
 );
 
