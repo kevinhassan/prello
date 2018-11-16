@@ -14,7 +14,6 @@ import BoardArchivedListsView from '../../../components/views/BoardView/BoardArc
 class BoardArchivedListsComp extends React.Component {
     constructor(props) {
         super(props);
-
         this.handleUnarchiveList = this.handleUnarchiveList.bind(this);
     }
 
@@ -24,27 +23,31 @@ class BoardArchivedListsComp extends React.Component {
     }
 
     render() {
-        return (
-            <BoardArchivedListsView
-                board={this.props.board}
-                unarchiveList={this.handleUnarchiveList}
-            />
-        );
+        if (this.props.lists.length > 0) {
+            return (
+                <BoardArchivedListsView
+                    lists={this.props.lists}
+                    unarchiveList={this.handleUnarchiveList}
+                />
+            );
+        }
+        return '';
     }
 }
 BoardArchivedListsComp.propTypes = {
-    board: PropTypes.object.isRequired,
+    lists: PropTypes.arrayOf(PropTypes.object),
     archiveList: PropTypes.func.isRequired,
 };
 BoardArchivedListsComp.defaultProps = {
+    lists: [],
 };
 
 // Put info from the store state in props
 const mapStateToProps = ({ currentBoard, auth }) => {
-    if (currentBoard.board) {
+    if (currentBoard.board && currentBoard.board.lists) {
         return {
             clientId: auth.clientId,
-            boardId: currentBoard.board._id,
+            lists: currentBoard.board.lists.filter(l => l.isArchived),
             boardAdmins: currentBoard.board.admins,
             members: currentBoard.board.members,
         };

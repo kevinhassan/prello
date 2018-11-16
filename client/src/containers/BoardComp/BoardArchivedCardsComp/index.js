@@ -24,16 +24,19 @@ class BoardArchivedCardsComp extends React.Component {
     }
 
     render() {
-        return (
-            <BoardArchivedCardsView
-                board={this.props.board}
-                unarchiveCard={this.handleUnarchiveCard}
-            />
-        );
+        if (this.props.cards.length > 0) {
+            return (
+                <BoardArchivedCardsView
+                    cards={this.props.cards}
+                    unarchiveCard={this.handleUnarchiveCard}
+                />
+            );
+        }
+        return '';
     }
 }
 BoardArchivedCardsComp.propTypes = {
-    board: PropTypes.object.isRequired,
+    cards: PropTypes.arrayOf(PropTypes.object).isRequired,
     archiveCard: PropTypes.func.isRequired,
 };
 BoardArchivedCardsComp.defaultProps = {
@@ -41,10 +44,10 @@ BoardArchivedCardsComp.defaultProps = {
 
 // Put info from the store state in props
 const mapStateToProps = ({ currentBoard, auth }) => {
-    if (currentBoard.board) {
+    if (currentBoard.board && currentBoard.board.lists) {
         return {
             clientId: auth.clientId,
-            boardId: currentBoard.board._id,
+            cards: currentBoard.board.lists.flatMap(l => l.cards.filter(c => c.isArchived)),
             boardAdmins: currentBoard.board.admins,
             members: currentBoard.board.members,
         };
