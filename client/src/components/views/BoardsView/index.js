@@ -17,20 +17,7 @@ const BoardsView = props => (
     <div className="boardsPanel">
         <h1 className="boards-h1" style={{ display: 'inline' }}>
             Boards
-            {' '}
         </h1>
-        <span style={{ fontSize: '1.5rem' }}>
-            <b>{props.boards.length}</b>
-            {' '}
-            boards (
-            {props.boards.reduce((sum, board) => {
-                if (board.isArchived) return sum + 1;
-                return sum;
-            }, 0)}
-            {' '}
-            archived)
-        </span>
-
         <div>
             <CreateBoard
                 createBoard={props.createBoard}
@@ -38,7 +25,7 @@ const BoardsView = props => (
                 displayCreateBoardForm={props.displayCreateBoardForm}
             />
             <ArchivedBoardsView
-                boards={props.boards}
+                boards={props.boards.filter(b => b.isArchived)}
                 updateIsArchived={props.updateIsArchived}
             />
         </div>

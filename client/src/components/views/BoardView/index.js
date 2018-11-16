@@ -47,13 +47,9 @@ const BoardView = props => (
                     boardId={props.board._id}
                 />
 
-                <BoardArchivedListsComp
-                    board={props.board}
-                />
+                <BoardArchivedListsComp />
 
-                <BoardArchivedCardsComp
-                    board={props.board}
-                />
+                <BoardArchivedCardsComp />
 
             </div>
         </div>
