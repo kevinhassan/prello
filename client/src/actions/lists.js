@@ -105,9 +105,8 @@ export const archiveList = (list, isArchived) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
         .then(() => {
             dispatch(archiveListSuccessAction(list, isArchived));
-            if (isArchived) {
-                dispatch(displaySuccessMessage('List archived'));
-            } else dispatch(displaySuccessMessage('List unarchived'));
+            if (isArchived) dispatch(displaySuccessMessage('List archived'));
+            else dispatch(displaySuccessMessage('List unarchived'));
         })
         .catch((error) => {
             dispatch(archiveListFailureAction());

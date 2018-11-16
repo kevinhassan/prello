@@ -224,9 +224,8 @@ export const archiveCard = (card, isArchived) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
         .then(() => {
             dispatch(archiveCardSuccessAction(card, isArchived));
-            if (isArchived) {
-                dispatch(displaySuccessMessage('Card archived'));
-            } else dispatch(displaySuccessMessage('Card unarchived'));
+            if (isArchived) dispatch(displaySuccessMessage('Card archived'));
+            else dispatch(displaySuccessMessage('Card unarchived'));
         })
         .catch((error) => {
             dispatch(archiveCardFailureAction());
