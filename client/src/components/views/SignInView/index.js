@@ -41,22 +41,23 @@ const SignInView = props => (
                         type="password"
                     />
                 </div>
+                <div style={{ width: '100%' }}>
+                    <button type="button" className="btn btn-link forgottenPassword float-right" onClick={() => (props.handleForgotPassword())}>Forgot password?</button>
+                </div>
             </div>
-            <div className="form-group text-right">
-                <button type="button" className="btn btn-secondary forgottenPassword" onClick={() => (props.handleForgotPassword())}>Forgotten password</button>
-            </div>
+
             <div className="form-group text-center">
                 <div className="button-group">
+                    <button type="submit" className="btn btn-primary">Sign in</button>
+
                     <a type="button" className="btn loginWithGHLink" href={`${process.env.REACT_APP_API_HOST}auth/github`}>
                         Sign with Github
                         {' '}
                         <i className="fab fa-github" />
                     </a>
-
-                    <button type="submit" className="btn btn-primary">Sign in</button>
                 </div>
             </div>
-            
+
             <p className="text-danger signInErrorMsg">{props.errorMessage}</p>
         </form>
     </div>
