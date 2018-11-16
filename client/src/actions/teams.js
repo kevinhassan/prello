@@ -62,6 +62,7 @@ export const addMemberToTeam = (teamId, username) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.POST)
         .then((res) => {
             dispatch(addMemberToTeamSuccessAction(res.data.team));
+            dispatch(displaySuccessMessage(`${username} added to the team.`));
         })
         .catch((error) => {
             dispatch(addMemberToTeamFailureAction());
@@ -95,6 +96,7 @@ export const createTeam = (name, isPublic) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { name, isVisible: isPublic }, APIFetch.POST)
         .then((res) => {
             dispatch(createTeamSuccessAction(res.data.team));
+            dispatch(displaySuccessMessage(`${name} team created.`));
         })
         .catch((error) => {
             dispatch(createTeamFailureAction());
@@ -124,9 +126,9 @@ export const changeVisibility = (teamId, visibility) => (dispatch) => {
     dispatch(changeVisibilityTeamStartedAction());
     dispatch(displayLoadingModal());
     const resource = 'teams'.concat(`/${teamId}/visibility`);
-    APIFetch.fetchPrelloAPI(resource, { isVisible: !visibility }, APIFetch.PUT)
+    APIFetch.fetchPrelloAPI(resource, { isVisible: visibility }, APIFetch.PUT)
         .then(() => {
-            dispatch(changeVisibilityTeamSuccessAction(!visibility));
+            dispatch(changeVisibilityTeamSuccessAction(visibility));
             dispatch(displaySuccessMessage('Team visibility updated'));
         })
         .catch((error) => {
@@ -155,12 +157,13 @@ export const changeNameTeamSuccessAction = name => ({
 });
 
 export const changeName = (teamId, name) => (dispatch) => {
-    dispatch(changeVisibilityTeamStartedAction());
+    dispatch(changeNameTeamStartedAction());
     dispatch(displayLoadingModal());
     const resource = 'teams'.concat(`/${teamId}/name`);
     APIFetch.fetchPrelloAPI(resource, { name }, APIFetch.PUT)
         .then(() => {
             dispatch(changeNameTeamSuccessAction(name));
+            dispatch(displaySuccessMessage('Team renamed.'));
         })
         .catch((error) => {
             dispatch(changeNameTeamFailureAction());
@@ -194,6 +197,7 @@ export const changeDescription = (teamId, description) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { description }, APIFetch.PUT)
         .then(() => {
             dispatch(changeDescriptionTeamSuccessAction(description));
+            dispatch(displaySuccessMessage('Description updated.'));
         })
         .catch((error) => {
             dispatch(changeDescriptionTeamFailureAction());
@@ -228,6 +232,7 @@ export const deleteTeam = team => (dispatch) => {
         .then(() => {
             dispatch(deleteTeamSuccessAction(team));
             dispatch(replace('/profile'));
+            dispatch(displaySuccessMessage(`${team.name} deleted.`));
         })
         .catch((error) => {
             dispatch(deleteTeamFailureAction());
@@ -261,6 +266,7 @@ export const deleteMember = (team, member) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
         .then(() => {
             dispatch(deleteMemberSuccessAction(member));
+            dispatch(displaySuccessMessage(`${member.fullName} removed from the team.`));
         })
         .catch((error) => {
             dispatch(deleteMemberFailureAction());
@@ -296,6 +302,7 @@ export const editMemberRight = (team, member) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { isAdmin: editedMember.isAdmin }, APIFetch.PUT)
         .then(() => {
             dispatch(editMemberRightSuccessAction(editedMember));
+            dispatch(displaySuccessMessage(`${member.fullName} right updated.`));
         })
         .catch((error) => {
             dispatch(editMemberRightFailureAction());

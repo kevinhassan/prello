@@ -72,7 +72,9 @@ export default function currentTeamReducer(state = initialState, action) {
                 ...state,
                 team: {
                     ...state.team,
-                    admins: editedMember.isAdmin ? state.team.admins.concat({ _id: editedMember._id, username: editedMember.username }) : state.team.admins.filter(admin => admin._id !== editedMember._id),
+                    admins: editedMember.isAdmin ? state.team.admins.concat({
+                        _id: editedMember._id, username: editedMember.username,
+                    }) : state.team.admins.filter(admin => admin._id !== editedMember._id),
                     members: state.team.members.map(member => (member._id.toString() === editedMember._id.toString() ? editedMember : member)),
                 },
             };

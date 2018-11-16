@@ -44,3 +44,7 @@
     text-align: left;
     white-space: pre-wrap;
 }
+
+.btn-group-sm > .editMember, .btn-group-sm > .removeMember {
+    border-radius: 0;
+}
