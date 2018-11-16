@@ -7,6 +7,7 @@
 .memberRow {
     padding: 5px;
     transition: 0.2s;
+    position: relative;
 }
 
 .memberRow:hover {
@@ -15,7 +16,35 @@
     cursor: pointer;
     transition: 0.2s;
 }
+.memberRow .badge:hover {
+    cursor: default;
+}
 
 .memberMe {
     background-color: #d3ffae;
+}
+
+.teamVisibility {
+    align-items: center;
+    text-align: center;
+    color: white;
+}
+
+.teamVisibility.click:hover {
+    cursor: pointer;
+}
+
+.memberButtons{
+    position: absolute; 
+    bottom: 0;
+    right: 0;  
+}
+
+.btnTeamDescription {
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.btn-group-sm > .editMember, .btn-group-sm > .removeMember {
+    border-radius: 0;
 }

@@ -49,15 +49,22 @@ exports.getTeam = async (teamId) => {
 // ======================== //
 // ===== Put functions ==== //
 // ======================== //
-/**
- * Change team's information
- */
-exports.putTeam = async (teamId, data) => {
+exports.putTeamName = async (teamId, name) => {
     try {
-        const team = await Team.findById(teamId);
-        team.name = data.name;
-        team.description = data.description;
-        const newTeam = await team.save();
+        const newTeam = await Team.findByIdAndUpdate(teamId, { name });
+        return newTeam;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+exports.putTeamDescription = async (teamId, description) => {
+    try {
+        const newTeam = await Team.findByIdAndUpdate(teamId, { description });
         return newTeam;
     } catch (err) {
         if (err.status) throw err;
@@ -69,12 +76,13 @@ exports.putTeam = async (teamId, data) => {
 };
 /**
  * Change team's member right access
+ * Protection: On member different than us
  */
-exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
+exports.putMemberAccess = async (teamId, userId, memberId, isAdmin) => {
     try {
+        if (userId.toString() === memberId) throw new MyError(403, 'Forbidden accces');
         const member = User.findById(memberId);
         if (!member) throw new MyError(404, 'Member not found');
-
         if (isAdmin) {
             // add to admin collection
             await Team.updateOne({ _id: teamId }, { $addToSet: { admins: memberId } });
@@ -84,6 +92,16 @@ exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
+    }
+};
+exports.putVisibility = async (teamId, isVisible) => {
+    try {
+        const team = Team.findById(teamId);
+        if (!team) throw new MyError(404, 'Team not found');
+        await Team.updateOne({ _id: teamId }, { isVisible });
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal Server Error');
     }
 };
 
@@ -158,10 +176,11 @@ exports.deleteBoard = async (teamId, boardId) => {
         throw new MyError(500, 'Internal server error');
     }
 };
-exports.deleteMember = async (teamId, memberId) => {
+exports.deleteMember = async (teamId, userId, memberId) => {
     try {
+        if (userId.toString() === memberId) throw new MyError(403, 'Forbidden access');
         // remove the member from the team
-        const newTeam = await Team.findByIdAndUpdate(teamId, { $pull: { members: { _id: memberId } } }, { new: true });
+        const newTeam = await Team.findByIdAndUpdate(teamId, { $pull: { members: memberId, admins: memberId } }, { new: true });
 
         // remove the team from the member
         await userController.leaveTeam(memberId, teamId);

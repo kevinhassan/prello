@@ -20,12 +20,20 @@ const teamController = require('../controllers/teams');
 *           canEdit:
 *               type: boolean
 *
-*   NewInformation:
+*   NewName:
 *       properties:
 *           name:
 *               type: string
+*
+*   NewDescription:
+*       properties:
 *           description:
 *               type: string
+
+*   NewVisibility:
+*       properties:
+*           isVisible:
+*               type: boolean
 *
 * /teams:
 *   post:
@@ -104,11 +112,13 @@ const teamController = require('../controllers/teams');
 *               description: Forbidden access
 *           500:
 *               description: Internal server error
+*
+* /teams/{teamId}/visibility:
 *   put:
 *       tags:
 *           - Team
-*       description: Change team's information
-*       summary: Change information
+*       description: Change team's visibility
+*       summary: Change visibility
 *       produces:
 *           - application/json
 *       parameters:
@@ -119,14 +129,76 @@ const teamController = require('../controllers/teams');
 *             required: true
 *             description: Team ID
 *           - name: body
-*             description: The information of the new team
+*             description: The new visibility of the team
 *             in: body
 *             required: true
 *             schema:
-*               $ref: '#/definitions/NewInformation'
+*               $ref: '#/definitions/NewVisibility'
 *       responses:
 *           204:
-*               description: Team successfully updated
+*               description: Team visibility successfully updated
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
+*
+* /teams/{teamId}/name:
+*   put:
+*       tags:
+*           - Team
+*       description: Change team's name
+*       summary: Change name
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*           - name: body
+*             description: The new name of the team
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewName'
+*       responses:
+*           204:
+*               description: Team name successfully updated
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           500:
+*               description: Internal server error
+*
+* /teams/{teamId}/description:
+*   put:
+*       tags:
+*           - Team
+*       description: Change team's description
+*       summary: Change description
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*           - name: body
+*             description: The new description of the team
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewDescription'
+*       responses:
+*           204:
+*               description: Team name successfully updated
 *           401:
 *               description: Unauthorized user
 *           403:
@@ -265,13 +337,37 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/teams/:teamId', Auth.isAuthenticated, [Team.canEdit], teamValidator.changeInformation, async (req, res) => {
+        .put('/teams/:teamId/name', Auth.isAuthenticated, [Team.canEdit], teamValidator.changeName, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.putTeam(req.params.teamId, req.body);
+                await teamController.putTeamName(req.params.teamId, req.body.name);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/teams/:teamId/description', Auth.isAuthenticated, [Team.canEdit], teamValidator.changeDescription, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                await teamController.putTeamDescription(req.params.teamId, req.body.description);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .put('/teams/:teamId/visibility', Auth.isAuthenticated, [Team.canEdit], teamValidator.changeVisibility, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).send({ error: 'Invalid form data' });
+            }
+            try {
+                await teamController.putVisibility(req.params.teamId, req.body.isVisible);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -295,7 +391,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.putMemberAccess(req.params.teamId, req.params.memberId, req.body.canEdit);
+                await teamController.putMemberAccess(req.params.teamId, req.user._id, req.params.memberId, req.body.isAdmin);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -303,7 +399,7 @@ module.exports = (router) => {
         })
         .delete('/teams/:teamId/members/:memberId', Auth.isAuthenticated, [Team.canEdit], async (req, res) => {
             try {
-                await teamController.deleteMember(req.params.teamId, req.params.memberId);
+                await teamController.deleteMember(req.params.teamId, req.user._id, req.params.memberId);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

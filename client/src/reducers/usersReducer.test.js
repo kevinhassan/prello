@@ -88,3 +88,23 @@ describe(teamActions.CREATE_TEAM_SUCCESS, () => {
         expect(finalState.profile.teams).toEqual(initState.profile.teams.concat(team));
     });
 });
+
+describe(teamActions.DELETE_TEAM_SUCCESS, () => {
+    it('should remove the team', () => {
+        const team = {
+            _id: 't1',
+            name: 'Team number one',
+        };
+        const initState = {
+            profile: {
+                teams: [{
+                    _id: 't1',
+                    name: 'Team number one',
+                }],
+            },
+        };
+        const action = teamActions.deleteTeamSuccessAction(team);
+        const finalState = usersReducer(initState, action);
+        expect(finalState.profile.teams).toEqual([]);
+    });
+});

@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { push, goBack } from 'connected-react-router';
-import { fetchTeam, addMemberToTeam } from '../../actions/teams';
+import {
+    fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam, deleteMember, editMemberRight,
+} from '../../actions/teams';
 
 // ===== Components / Containers
 import TeamView from '../../components/views/TeamView';
@@ -18,7 +20,21 @@ class TeamComp extends React.Component {
         this.handleOnBoardClick = this.handleOnBoardClick.bind(this);
         this.handleOnMemberClick = this.handleOnMemberClick.bind(this);
         this.handleOnTeamClick = this.handleOnTeamClick.bind(this);
+        this.handleChangeVisibility = this.handleChangeVisibility.bind(this);
         this.addMember = this.addMember.bind(this);
+        this.changeIsEditingName = this.changeIsEditingName.bind(this);
+        this.handleEditName = this.handleEditName.bind(this);
+        this.changeIsEditingDescription = this.changeIsEditingDescription.bind(this);
+        this.handleEditDescription = this.handleEditDescription.bind(this);
+        this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
+        this.handleDeleteMember = this.handleDeleteMember.bind(this);
+        this.handleEditMemberRight = this.handleEditMemberRight.bind(this);
+        this.isMember = this.isMember.bind(this);
+        this.isAdmin = this.isAdmin.bind(this);
+        this.state = {
+            isEditingName: false,
+            isEditingDescription: false,
+        };
     }
 
     componentWillMount() {
@@ -51,6 +67,58 @@ class TeamComp extends React.Component {
         this.props.goToTeam(teamId);
     }
 
+    handleChangeVisibility() {
+        this.props.changeVisibility(this.props.team._id, !this.props.team.isVisible);
+    }
+
+    /* ===== NAME ===== */
+    changeIsEditingName(value) {
+        this.setState({ isEditingName: value });
+    }
+
+    handleEditName(event) {
+        event.preventDefault();
+        const name = event.target.name.value;
+        this.props.changeName(this.props.team._id, name);
+        this.setState({ isEditingName: false });
+    }
+
+    /* ===== Description ===== */
+    changeIsEditingDescription(value) {
+        this.setState({ isEditingDescription: value });
+    }
+
+    handleEditDescription(event) {
+        event.preventDefault();
+        const description = event.target.description.value;
+        this.props.changeDescription(this.props.team._id, description);
+        this.setState({ isEditingDescription: false });
+    }
+
+    handleDeleteTeam() {
+        this.props.deleteTeam(this.props.team);
+    }
+
+    handleDeleteMember(member) {
+        this.props.deleteMember(this.props.team, member);
+    }
+
+    handleEditMemberRight(member) {
+        this.props.editMemberRight(this.props.team, member);
+    }
+
+    isMember() {
+        if (!this.props.clientId) return false;
+        const memberFound = this.props.team.members.find(member => member._id === this.props.clientId);
+        return memberFound !== undefined;
+    }
+
+    isAdmin() {
+        if (!this.props.clientId) return false;
+        const adminFound = this.props.team.admins.find(admin => admin._id === this.props.clientId);
+        return adminFound !== undefined;
+    }
+
     render() {
         const { clientId, team } = this.props;
         if (team) {
@@ -62,6 +130,22 @@ class TeamComp extends React.Component {
                     onBoardClick={this.handleOnBoardClick}
                     onMemberClick={this.handleOnMemberClick}
                     onTeamClick={this.handleOnTeamClick}
+                    changeVisibility={this.handleChangeVisibility}
+
+                    changeIsEditingName={this.changeIsEditingName}
+                    editName={this.handleEditName}
+                    isEditingName={this.state.isEditingName}
+
+                    changeIsEditingDescription={this.changeIsEditingDescription}
+                    editDescription={this.handleEditDescription}
+                    isEditingDescription={this.state.isEditingDescription}
+
+                    deleteTeam={this.handleDeleteTeam}
+                    deleteMember={this.handleDeleteMember}
+                    editMemberRight={this.handleEditMemberRight}
+
+
+                    isAdmin={this.isAdmin}
                 />
             );
         }
@@ -92,6 +176,12 @@ TeamComp.propTypes = {
     goToBoard: PropTypes.func.isRequired,
     goToMember: PropTypes.func.isRequired,
     goToTeam: PropTypes.func.isRequired,
+    changeVisibility: PropTypes.func.isRequired,
+    changeName: PropTypes.func.isRequired,
+    changeDescription: PropTypes.func.isRequired,
+    deleteTeam: PropTypes.func.isRequired,
+    deleteMember: PropTypes.func.isRequired,
+    editMemberRight: PropTypes.func.isRequired,
     match: PropTypes.shape({
         params: PropTypes.shape({
             teamId: PropTypes.string,
@@ -114,6 +204,12 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         addMemberToTeam,
         fetchTeam,
         goBack,
+        changeVisibility,
+        changeName,
+        changeDescription,
+        deleteTeam,
+        deleteMember,
+        editMemberRight,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),
