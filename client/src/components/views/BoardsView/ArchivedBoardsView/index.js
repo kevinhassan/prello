@@ -32,7 +32,7 @@ const ArchivedBoardsView = props => (
 );
 
 ArchivedBoardsView.propTypes = {
-    boards: PropTypes.object.isRequired,
+    boards: PropTypes.arrayOf(PropTypes.object).isRequired,
     updateIsArchived: PropTypes.func.isRequired,
 };
 ArchivedBoardsView.defaultProps = {
