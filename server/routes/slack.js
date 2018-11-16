@@ -3,7 +3,6 @@ const passport = require('passport');
 const slackController = require('../controllers/slack');
 const BoardController = require('../controllers/boards');
 const CardController = require('../controllers/cards');
-const util = require ('util');
 
 function parse(stringToParse) {
     const retour = {
@@ -135,20 +134,6 @@ module.exports = (router) => {
                 }).then().catch();
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
-            }
-        })
-        .get('/slack/login', async (req, res) => {
-            try {
-                console.log(req.param('code'));
-                console.log(req.query.code);
-                res.status(204).send();
-                const code = await req.param('code');
-                axios({
-                    url: 'https://slack.com/api/oauth.access?code='.concat(code).concat('&client_id=').concat('a').concat('&client_secret=').concat('b'),
-                    method: 'get',
-                }).then((e) => { console.log(util.inspect(e.data)); }).catch((e) => { console.log(e); });
-            } catch (e) {
-                res.status(e.data).send({ error: e.message });
             }
         })
         .get('/auth/slack', passport.authenticate('slack'))
