@@ -214,12 +214,12 @@ exports.putList = async (data) => {
 /**
  * Set card archived
  */
-exports.archiveCard = async (data) => {
+exports.archiveCard = async (cardId, isArchived) => {
     try {
-        const card = await Card.findById(data);
+        const card = await Card.findById(cardId);
         if (!card) throw new MyError(404, 'Card not found.');
 
-        card.isArchived = true;
+        card.isArchived = isArchived;
         await card.save();
 
         return card;

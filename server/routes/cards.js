@@ -292,16 +292,17 @@ module.exports = (router) => {
             }
         })
 
-        .put('/cards/:cardId/archive', Auth.isAuthenticated, async (req, res) => {
+        .put('/cards/:cardId/isArchived', Auth.isAuthenticated, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.archiveCard(req.params.cardId);
+                await cardController.archiveCard(req.params.cardId, req.body.isArchived);
                 res.sendStatus(204);
             } catch (e) {
-                res.status(e.status).send({ error: e.message });
+                // res.status(e.status).send({ error: e.message });
+                console.log(e);
             }
         })
 

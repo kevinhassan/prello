@@ -163,7 +163,7 @@ export default function currentBoardReducer(state = initialState, action) {
                             ? l
                             : {
                                 ...l,
-                                isArchived: true,
+                                isArchived: action.payload.isArchived,
                             }
                     )),
                 },
@@ -349,7 +349,7 @@ export default function currentBoardReducer(state = initialState, action) {
                                 cards: l.cards.map(card => (card._id === action.payload.card._id
                                     ? {
                                         ...card,
-                                        isArchived: true,
+                                        isArchived: action.payload.isArchived,
                                     }
                                     : card)),
                             }
