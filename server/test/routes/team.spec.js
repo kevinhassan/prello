@@ -163,7 +163,7 @@ describe('PUT /teams/:id/members/:id', () => {
 });
 describe('DELETE /teams/:id/members/:id', () => {
     before((done) => {
-        TeamController.putMemberAccess(newTeam.id, userNotAdmin._id, false).then(done());
+        TeamController.putMemberAccess(newTeam.id, userAdmin._id, userNotAdmin._id, false).then(done());
     });
     it('should return 401 ERROR', (done) => {
         request(app)

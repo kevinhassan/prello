@@ -76,9 +76,11 @@ exports.putTeamDescription = async (teamId, description) => {
 };
 /**
  * Change team's member right access
+ * Protection: On member different than us
  */
-exports.putMemberAccess = async (teamId, memberId, isAdmin) => {
+exports.putMemberAccess = async (teamId, userId, memberId, isAdmin) => {
     try {
+        if (userId.toString() === memberId) throw new MyError(403, 'Forbidden accces');
         const member = User.findById(memberId);
         if (!member) throw new MyError(404, 'Member not found');
         if (isAdmin) {
@@ -174,8 +176,9 @@ exports.deleteBoard = async (teamId, boardId) => {
         throw new MyError(500, 'Internal server error');
     }
 };
-exports.deleteMember = async (teamId, memberId) => {
+exports.deleteMember = async (teamId, userId, memberId) => {
     try {
+        if (userId.toString() === memberId) throw new MyError(403, 'Forbidden access');
         // remove the member from the team
         const newTeam = await Team.findByIdAndUpdate(teamId, { $pull: { members: memberId, admins: memberId } }, { new: true });
 
