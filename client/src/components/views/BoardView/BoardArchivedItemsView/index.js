@@ -16,7 +16,7 @@ const BoardArchivedItemsView = props => (
             {props.board.lists.filter(list => list.isArchived).length > 0
                 ? (
                     props.board.lists.filter(list => list.isArchived).map(list => (
-                        <option name={list.name}>{list.name}</option>))
+                        <option name={list._id} onClick={() => props.unarchiveList(list)}>{list.name}</option>))
                 ) : (
                     <span>0 archived list</span>
                 )
@@ -27,6 +27,7 @@ const BoardArchivedItemsView = props => (
 
 BoardArchivedItemsView.propTypes = {
     board: PropTypes.object.isRequired,
+    unarchiveList: PropTypes.func.isRequired,
 };
 BoardArchivedItemsView.defaultProps = {
 };
