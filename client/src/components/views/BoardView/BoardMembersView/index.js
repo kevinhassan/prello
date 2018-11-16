@@ -56,7 +56,7 @@ const BoardMembersView = props => (
                     </button>
                 </form>
             ) : (
-                displayAddMemberButton(props.isFormVisible, (
+                displayAddMemberButton(props.canAddMember, (
                     <button
                         className="btn btn-success addCard-btn boardSettingsBtn addMember-btn"
                         type="button"
