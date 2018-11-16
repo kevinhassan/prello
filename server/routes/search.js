@@ -2,7 +2,6 @@ const { validationResult } = require('express-validator/check');
 const { searchValidator } = require('../validators');
 const { Auth } = require('../middlewares');
 const userController = require('../controllers/users');
-const teamController = require('../controllers/teams');
 
 /**
 * @swagger
