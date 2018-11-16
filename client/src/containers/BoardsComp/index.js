@@ -40,6 +40,9 @@ class BoardsComp extends React.Component {
     handleUpdateIsArchived(event, boardId, isArchived) {
         event.stopPropagation();
         this.props.updateIsArchived(boardId, isArchived);
+        if (!isArchived) {
+            document.getElementById('archivedBoards').value = 'Archived boards';
+        }
     }
 
     handleOnBoardClick(boardId) {
