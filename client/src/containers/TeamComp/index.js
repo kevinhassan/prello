@@ -9,10 +9,16 @@ import {
     fetchTeam, addMemberToTeam, changeVisibility, changeName, changeDescription, deleteTeam, deleteMember, editMemberRight,
 } from '../../actions/teams';
 
+import {
+    memberSearch,
+} from '../../actions/search';
+
 // ===== Components / Containers
 import TeamView from '../../components/views/TeamView';
 
 // ===== Others
+import * as APIFetch from '../../helpers/APIFetch';
+
 
 class TeamComp extends React.Component {
     constructor(props) {
@@ -29,11 +35,17 @@ class TeamComp extends React.Component {
         this.handleDeleteTeam = this.handleDeleteTeam.bind(this);
         this.handleDeleteMember = this.handleDeleteMember.bind(this);
         this.handleEditMemberRight = this.handleEditMemberRight.bind(this);
+        this.handleOnMemberSearch = this.handleOnMemberSearch.bind(this);
+        this.handleSelectMemberSearch = this.handleSelectMemberSearch.bind(this);
         this.isMember = this.isMember.bind(this);
         this.isAdmin = this.isAdmin.bind(this);
         this.state = {
             isEditingName: false,
             isEditingDescription: false,
+            search: {
+                selectedMember: '',
+                members: [],
+            },
         };
     }
 
@@ -119,6 +131,39 @@ class TeamComp extends React.Component {
         return adminFound !== undefined;
     }
 
+    handleSelectMemberSearch(username) {
+        this.setState({
+            search: {
+                selectedMember: username,
+                members: [],
+            },
+        });
+    }
+
+    handleOnMemberSearch(event) {
+        const username = event.target.value;
+        const searchCopy = this.state.search;
+        searchCopy.selectedMember = username;
+        this.setState({
+            search: searchCopy,
+        });
+
+        if (username.trim() !== '') {
+            const resource = 'search/members'.concat(`?username=${username}`);
+            APIFetch.fetchPrelloAPI(resource, APIFetch.GET).then((res) => {
+                searchCopy.members = res.data.members;
+                this.setState({
+                    search: searchCopy,
+                });
+            });
+        } else {
+            searchCopy.members = [];
+            this.setState({
+                search: searchCopy,
+            });
+        }
+    }
+
     render() {
         const { clientId, team } = this.props;
         if (team) {
@@ -126,7 +171,9 @@ class TeamComp extends React.Component {
                 <TeamView
                     team={team}
                     clientId={clientId}
+                    search={this.state.search}
                     addMemberToTeam={this.addMember}
+                    onChangeMemberSearch={this.handleOnMemberSearch}
                     onBoardClick={this.handleOnBoardClick}
                     onMemberClick={this.handleOnMemberClick}
                     onTeamClick={this.handleOnTeamClick}
@@ -146,6 +193,7 @@ class TeamComp extends React.Component {
 
 
                     isAdmin={this.isAdmin}
+                    selectMemberSearch={this.handleSelectMemberSearch}
                 />
             );
         }
@@ -210,6 +258,7 @@ const mapDispatchToProps = dispatch => bindActionCreators(
         deleteTeam,
         deleteMember,
         editMemberRight,
+        memberSearch,
         goToBoard: boardId => push(`/boards/${boardId}`),
         goToMember: memberId => push(`/members/${memberId}`),
         goToTeam: teamId => push(`/teams/${teamId}`),

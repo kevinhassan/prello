@@ -3,12 +3,12 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './style.css';
-import spinner from '../../assets/spinner.gif';
+import spinner from '../../../assets/spinner.gif';
 
 // ===== Actions
-import { hideErrorMessage, hideSuccessMessage } from '../../actions/modal';
+import { hideErrorMessage, hideSuccessMessage } from '../../../actions/modal';
 
-class Modal extends React.Component {
+class DisplayModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = { hideMessageModal: false };
@@ -69,7 +69,7 @@ class Modal extends React.Component {
     }
 }
 
-Modal.propTypes = {
+DisplayModal.propTypes = {
     errorMessage: PropTypes.string.isRequired,
     hideErrorMessage: PropTypes.func.isRequired,
     hideSuccessMessage: PropTypes.func.isRequired,
@@ -96,4 +96,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(Modal);
+)(DisplayModal);

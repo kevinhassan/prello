@@ -246,6 +246,22 @@ exports.getGithubUser = async (githubId) => {
     }
 };
 
+/**
+ * Find 5 first members
+ * Different than actual user
+ */
+exports.findMembers = async (userId, username) => {
+    try {
+        const usernameQueried = escape(username);
+        const users = await User.find({ $and: [{ username: new RegExp(`.*${usernameQueried}.*`, 'i') }, { _id: { $ne: userId } }] })
+            .select(['username', 'email']).sort({ username: 1 }).limit(5);
+        return users;
+    } catch (err) {
+        console.log(err);
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
 // ======================== //
 // ===== Put functions ==== //
 // ======================== //
@@ -405,21 +421,10 @@ exports.leaveTeam = async (userId, teamId) => {
     try {
         const user = await User.findById(userId);
         if (!user) throw new MyError(404, 'User unknown');
-        
+
         await User.updateOne({ _id: userId },
             { $pull: { teams: teamId } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
-    } catch (err) {
-        if (err.status) throw err;
-        throw new MyError(500, 'Internal server error');
-    }
-};
-
-exports.foundMembers = async (username) => {
-    try {
-        const users = await User.find({ username: new RegExp(`.*${username}.*`, 'i') }).select(['username', 'email']);
-        return users;
-        // Do your action here..
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');

@@ -5,7 +5,7 @@ import GraphicalCharter from '../GraphicalCharter';
 import BoardComp from '../BoardComp';
 import BoardsComp from '../BoardsComp';
 import HomeComp from '../HomeComp';
-import Modal from '../../components/modal';
+import Modal from '../../components/Modal/DisplayModal/index';
 import Header from '../header';
 import MemberComp from '../MemberComp';
 import ProfileComp from '../ProfileComp';
