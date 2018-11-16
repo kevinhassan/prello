@@ -43,8 +43,6 @@ const BoardView = props => (
                     members={props.board.members}
                 />
 
-                <span className="boardSettingsSeparator" />
-
                 <GithubLinkBoardComp
                     boardId={props.board._id}
                 />
