@@ -30,7 +30,7 @@ export default function currentTeamReducer(state = initialState, action) {
                 ...state,
                 team: action.payload.team,
             };
-        case actions.CHANGE_VISIBILITY_TEAM_SUCCESS:
+        case actions.CHANGE_TEAM_VISIBILITY_SUCCESS:
             return {
                 ...state,
                 team: {
@@ -38,7 +38,7 @@ export default function currentTeamReducer(state = initialState, action) {
                     isVisible: action.payload.isVisible,
                 },
             };
-        case actions.CHANGE_NAME_TEAM_SUCCESS:
+        case actions.CHANGE_TEAM_NAME_SUCCESS:
             return {
                 ...state,
                 team: {
@@ -46,7 +46,7 @@ export default function currentTeamReducer(state = initialState, action) {
                     name: action.payload.name,
                 },
             };
-        case actions.CHANGE_DESCRIPTION_TEAM_SUCCESS:
+        case actions.CHANGE_TEAM_DESCRIPTION_SUCCESS:
             return {
                 ...state,
                 team: {
