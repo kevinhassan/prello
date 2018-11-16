@@ -287,12 +287,23 @@ describe(listActions.MOVE_CARD_FAILURE, () => {
 // Archive list
 describe(listActions.ARCHIVE_LIST_SUCCESS, () => {
     it('should set the list as "archived"', () => {
-        const action = listActions.archiveListSuccessAction(state.board.lists[0]);
+        const action = listActions.archiveListSuccessAction(state.board.lists[0], true);
         const finalState = currentBoardReducer(state, action);
 
         expect(
             finalState.board.lists[0].isArchived,
         ).toEqual(true);
+    });
+});
+
+describe(listActions.ARCHIVE_LIST_SUCCESS, () => {
+    it('should set the list as "not archived"', () => {
+        const action = listActions.archiveListSuccessAction(state.board.lists[0], false);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists[0].isArchived,
+        ).toEqual(false);
     });
 });
 
@@ -462,13 +473,25 @@ describe(cardActions.DELETE_LABEL_FAILURE, () => {
 // Archive card
 describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
     it('should set the card as "archived"', () => {
-        const action = cardActions.archiveCardSuccessAction(card3);
+        const action = cardActions.archiveCardSuccessAction(card3, true);
         const finalState = currentBoardReducer(state, action);
 
         expect(
             finalState.board.lists.find(l => l._id === card3.list._id)
                 .cards.find(c => c._id === card3._id).isArchived,
         ).toEqual(true);
+    });
+});
+
+describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
+    it('should set the card as "archived"', () => {
+        const action = cardActions.archiveCardSuccessAction(card3, false);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card3.list._id)
+                .cards.find(c => c._id === card3._id).isArchived,
+        ).toEqual(false);
     });
 });
 

@@ -301,8 +301,7 @@ module.exports = (router) => {
                 await cardController.archiveCard(req.params.cardId, req.body.isArchived);
                 res.sendStatus(204);
             } catch (e) {
-                // res.status(e.status).send({ error: e.message });
-                console.log(e);
+                res.status(e.status).send({ error: e.message });
             }
         })
 

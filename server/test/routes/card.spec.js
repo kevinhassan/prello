@@ -207,16 +207,18 @@ describe('DELETE /cards/:cardId/labels/:labelId', () => {
     });
 });
 
-describe('PUT /cards/:cardId/archive', () => {
+describe('PUT /cards/:cardId/isArchived', () => {
     it('should return 200 OK', (done) => {
         request(app)
-            .put(`/cards/${cardData.id}/archive`)
+            .put(`/cards/${cardData.id}/isArchived`)
+            .send({ isArchived: true })
             .set('Authorization', `Bearer ${tokenMember}`)
             .expect(204, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .put('/cards/123456/archive/')
+            .put('/cards/123456/isArchived/')
+            .send({ isArchived: true })
             .set('Authorization', `Bearer ${tokenMember}`)
             .expect(404, done);
     });
