@@ -24,7 +24,7 @@ const ProfileTab = props => (
                                     {team.isVisible ? <i className="fas fa-eye" /> : <i className="fas fa-eye-slash" />}
                                     {' '}
                                 </span>
-                                <Link to={`teams/${team._id}`}>
+                                <Link to={`/teams/${team._id}`}>
                                     {team.name}
                                 </Link>
                             </li>
@@ -37,7 +37,7 @@ const ProfileTab = props => (
         </div>
 
         <hr />
-        <div className="activityPanel">
+        <div>
 
             <h4 className="news">
                 <i className="far fa-newspaper teamIcon" />

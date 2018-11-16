@@ -4,6 +4,8 @@ import * as cardActions from '../actions/cards';
 
 export const initialState = {
     board: undefined,
+    errorMessage: '',
+    status: null,
 };
 
 export default function currentBoardReducer(state = initialState, action) {
@@ -14,10 +16,26 @@ export default function currentBoardReducer(state = initialState, action) {
 
         switch (action.type) {
         // ===== BOARD ACTIONS ===== //
+        case actions.FETCH_BOARD_STARTED:
+            return {
+                ...state,
+                board: undefined,
+                errorMessage: '',
+                status: null,
+            };
+
         case actions.FETCH_BOARD_SUCCESS:
             return {
                 ...state,
                 board: action.payload.board,
+            };
+
+        case actions.FETCH_BOARD_FAILURE:
+            return {
+                ...state,
+                board: null,
+                errorMessage: action.payload.message,
+                status: action.payload.status,
             };
 
         case actions.REMOVE_BOARD_FETCH_SUCCESS:
@@ -60,6 +78,39 @@ export default function currentBoardReducer(state = initialState, action) {
                 ...state,
             };
 
+        case actions.ADD_BOARD_MEMBER_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    members: state.board.members.concat(action.payload.user),
+                },
+            };
+
+        case actions.UPDATE_BOARD_GITHUB_STARTED:
+        case actions.UPDATE_BOARD_GITHUB_FAILURE:
+            if (action.payload.boardId === state.board._id) {
+                return {
+                    ...state,
+                    board: {
+                        ...state.board,
+                        githubRepo: action.payload.githubRepo,
+                    },
+                };
+            }
+            return {
+                ...state,
+            };
+
+        case actions.REMOVE_BOARD_GITHUB_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    githubRepo: {},
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
@@ -83,6 +134,23 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        // ===== Edit list name ===== //
+        case listActions.UPDATE_LIST_NAME_STARTED:
+        case listActions.UPDATE_LIST_NAME_FAILURE:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.listId
+                            ? l
+                            : {
+                                ...l,
+                                name: action.payload.name,
+                            }
+                    )),
+                },
+            };
 
         // ===== Archive List ===== //
         case listActions.ARCHIVE_LIST_SUCCESS:
@@ -95,7 +163,7 @@ export default function currentBoardReducer(state = initialState, action) {
                             ? l
                             : {
                                 ...l,
-                                isArchived: true,
+                                isArchived: action.payload.isArchived,
                             }
                     )),
                 },
@@ -281,7 +349,50 @@ export default function currentBoardReducer(state = initialState, action) {
                                 cards: l.cards.map(card => (card._id === action.payload.card._id
                                     ? {
                                         ...card,
-                                        isArchived: true,
+                                        isArchived: action.payload.isArchived,
+                                    }
+                                    : card)),
+                            }
+                    )),
+                },
+            };
+
+        // ===== Edit due date ===== //
+        case cardActions.EDIT_DATE_STARTED:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.map(card => (card._id === action.payload.card._id
+                                    ? {
+                                        ...card,
+                                        dueDate: action.payload.dueDate,
+                                    }
+                                    : card)),
+                            }
+                    )),
+                },
+            };
+
+        case cardActions.EDIT_DATE_FAILURE:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.map(card => (card._id === action.payload.card._id
+                                    ? {
+                                        ...card,
+                                        dueDate: action.payload.initialDate,
                                     }
                                     : card)),
                             }

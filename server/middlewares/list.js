@@ -6,7 +6,7 @@ const MyError = require('../util/error');
  */
 const canEdit = async (req, res, next) => {
     try {
-        if (!req.user) throw new MyError(401, 'Unauthorize user');
+        if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const list = await List.findById(req.params.listId).populate({
             path: 'board',
             select: 'members'
@@ -15,7 +15,7 @@ const canEdit = async (req, res, next) => {
             throw new MyError(404, 'List not found');
         }
         const member = list.board.members.find(member => member._id.toString() === req.user._id.toString());
-        if (!member) throw new MyError(403, 'Forbidden access');
+        if (!member) throw new MyError(403, 'Forbidden, you can not edit this list');
         next();
     } catch (e) {
         if (e.name === 'CastError') {

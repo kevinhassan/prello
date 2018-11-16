@@ -6,7 +6,7 @@ const MyError = require('../util/error');
  */
 const isMember = async (req, res, next) => {
     try {
-        if (!req.user) throw new MyError(401, 'Unauthorize user');
+        if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const team = await Team.findById(req.params.teamId).select('members');
         if (!team) {
             throw new MyError(404, 'Team not found');
@@ -29,7 +29,7 @@ const isMember = async (req, res, next) => {
 */
 const canEdit = async (req, res, next) => {
     try {
-        if (!req.user) throw new MyError(401, 'Unauthorize user');
+        if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const team = await Team.findById(req.params.teamId).select('admins');
 
         if (!team) {
@@ -53,9 +53,8 @@ const canEdit = async (req, res, next) => {
  */
 const canSee = async (req, res, next) => {
     try {
-        const team = await Team.findById(req.params.teamId).select('admins members');
+        const team = await Team.findById(req.params.teamId).select('isVisible admins members');
         if (!team) throw new MyError(404, 'Team not found');
-
         // User not logged in
         if (!req.user) {
             // Is the team visible ?
@@ -65,6 +64,7 @@ const canSee = async (req, res, next) => {
         // Is the user Admin or member ?
             const admin = team.admins.find(admin => req.user._id.toString() === admin._id.toString());
             const member = team.members.find(member => req.user._id.toString() === member._id.toString());
+
             if (member || admin) next();
             else {
             // Is the team visible ?

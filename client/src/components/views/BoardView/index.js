@@ -4,11 +4,15 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 // ===== Components
 import AddListForm from './AddListForm';
-import MemberPill from '../../MemberPill';
 
 // ===== Containers
 import ListComp from '../../../containers/ListComp';
 import BoardNameComp from '../../../containers/BoardComp/BoardNameComp';
+import BoardMembersComp from '../../../containers/BoardComp/BoardMembersComp';
+import GithubLinkBoardComp from '../../../containers/BoardComp/GithubLinkBoardComp';
+import BoardArchivedListsComp from '../../../containers/BoardComp/BoardArchivedListsComp';
+import BoardArchivedCardsComp from '../../../containers/BoardComp/BoardArchivedCardsComp';
+
 
 // ===== Others
 import './style.css';
@@ -17,25 +21,36 @@ import './style.css';
 
 const BoardView = props => (
     <div className="boardPanel container-fluid">
-        <div className="row">
+        <div className="row" style={{ height: '40px', marginBottom: '10px' }}>
             <div className="col-sm-12 boardSettingsBar">
                 <BoardNameComp
                     boardId={props.board._id}
                     name={props.board.name}
                 />
 
-                {' | '}
-                {props.board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
-                {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
-                {props.board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
-                {' '}
-                <span style={{ verticalAlign: 'sub' }}>{props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}</span>
-                {' | '}
-                <i className="fas fa-users" />
-                {' '}
-                {props.board.members.map(member => (
-                    <MemberPill key={member._id} member={member} />
-                ))}
+                <span className="boardSettingsSeparator" />
+
+                <span className="boardSettingsItem">
+                    {props.board.visibility === 'public' ? <i className="fas fa-globe" /> : ''}
+                    {props.board.visibility === 'private' ? <i className="fas fa-lock" /> : ''}
+                    {props.board.visibility === 'team' ? <i className="fas fa-user-friends" /> : ''}
+                    {' '}
+                    <span style={{ verticalAlign: 'sub' }}>{props.board.visibility[0].toUpperCase() + props.board.visibility.slice(1)}</span>
+                </span>
+                <span className="boardSettingsSeparator" />
+
+                <BoardMembersComp
+                    members={props.board.members}
+                />
+
+                <GithubLinkBoardComp
+                    boardId={props.board._id}
+                />
+
+                <BoardArchivedListsComp />
+
+                <BoardArchivedCardsComp />
+
             </div>
         </div>
         <div className="listsAndAddPanel">

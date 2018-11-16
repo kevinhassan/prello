@@ -6,6 +6,11 @@ const boardSchema = new mongoose.Schema({
     visibility: {
         type: String, enum: ['public', 'private', 'team'], required: true, default: 'public'
     },
+    githubRepo: {
+        name: String,
+        private: Boolean,
+        url: String,
+    },
     labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
     lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
     admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

@@ -1,4 +1,4 @@
-import authReducer, { initialState, getToken } from './authReducer';
+import authReducer, { initialState, getToken, parseJwtToId } from './authReducer';
 import * as actions from '../actions/auth';
 
 describe('Action not referenced', () => {
@@ -19,6 +19,19 @@ describe('Testing getToken function', () => {
     it('should return {} if token not found', () => {
         localStorage.removeItem('prello_token');
         expect(getToken()).toEqual(null);
+    });
+});
+
+describe('Testing parseJwtToId function', () => {
+    it('should return null if no token is provided', () => {
+        expect(parseJwtToId()).toEqual(null);
+    });
+    it('should return the id stored in the token', () => {
+        // JWT with id= 1234567890
+        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9';
+        token += '.eyJpZCI6IjEyMzQ1Njc4OTAiLCJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1MTYyMzkwMjJ9';
+        token += '.Wp55KRKfBmD9oafN8DRB0g0CWp7baHpij2stsEz5Gzw';
+        expect(parseJwtToId(token)).toEqual('1234567890');
     });
 });
 
@@ -60,10 +73,11 @@ describe(actions.CLASSIC_REGISTER_FAILURE, () => {
 });
 
 describe(actions.SIGN_OUT, () => {
-    it('should set isLoggedIn to false', () => {
+    it('should set isLoggedIn to false and clientId to null', () => {
         const action = actions.signOutAction();
         const finalState = authReducer({}, action);
 
         expect(finalState.isLoggedIn).toEqual(false);
+        expect(finalState.clientId).toEqual(null);
     });
 });

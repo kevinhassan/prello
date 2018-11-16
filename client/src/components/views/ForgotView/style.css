@@ -1,0 +1,30 @@
+.forgotTitle{
+    text-align: center;
+}
+
+.forgotForm{
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+}
+
+.forgotText{
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+}
+
+.inputEmail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.emailLabel{
+    margin-right: 20px; 
+}
+
+.emailInput{
+    margin-left: 20px; 
+}

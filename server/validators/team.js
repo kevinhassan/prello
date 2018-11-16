@@ -22,19 +22,29 @@ const changeAccess = [
         .escape()
         .isBoolean()
 ];
-const changeInformation = [
+const changeName = [
     check('name')
         .not().isEmpty()
         .escape()
-        .isString(),
+        .isString()
+];
+const changeDescription = [
     check('description')
         .escape()
         .isString()
+];
+const changeVisibility = [
+    check('isVisible')
+        .not().isEmpty()
+        .escape()
+        .isBoolean()
 ];
 module.exports = {
     addTeam,
     addMember,
     removeMember,
     changeAccess,
-    changeInformation
+    changeName,
+    changeDescription,
+    changeVisibility
 };

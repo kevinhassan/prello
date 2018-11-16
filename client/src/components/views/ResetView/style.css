@@ -1,0 +1,42 @@
+.resetTitle{
+    padding-top: 20px;
+    text-align: center;
+}
+
+.resetForm{
+    align-items: center;
+    text-align: center;
+}
+
+.resetText{
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+}
+
+.password{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.passwordLabel{
+    flex: 1;
+    text-align: left;
+    max-width: 250px;
+}
+
+.passwordInput{
+    flex: 4;
+    max-width: 350px;
+
+}
+
+.resetFormBtn{
+    margin-top: 15px;
+}
+
+.passwordWarning{
+    text-align: center;
+}

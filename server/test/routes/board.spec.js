@@ -114,7 +114,7 @@ describe('POST /boards', () => {
             });
     });
 });
-// TODO: integrate visibility on the GET
+
 describe('GET /boards/:id', () => {
     it('should return 404 OK', (done) => {
         request(app)
@@ -122,10 +122,18 @@ describe('GET /boards/:id', () => {
             .expect('Content-Type', /json/)
             .expect(404, done);
     });
-    it('should return 200 OK', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .get(`/boards/${boardData.id}`)
             .send(boardData)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 200 ERROR', (done) => {
+        request(app)
+            .get(`/boards/${boardData.id}`)
+            .send(boardData)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(200, done);
     });
@@ -288,6 +296,44 @@ describe('PUT /boards/:id/name/:name', () => {
     });
 });
 
+describe('PUT /boards/:id/githubRepo', () => {
+    const githubRepo = {
+        name: 'a repo',
+        url: 'http://anurl.com',
+        private: false,
+    };
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/githubRepo`)
+            .send(githubRepo)
+            .expect('Content-Type', /json/)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/githubRepo`)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .send(githubRepo)
+            .expect('Content-Type', /json/)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .put('/boards/1234BoardId48/githubRepo')
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .send(githubRepo)
+            .expect('Content-Type', /json/)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .put(`/boards/${boardData.id}/githubRepo`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .send(githubRepo)
+            .expect(204, done);
+    });
+});
+
 describe('POST /boards/:id/members', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
@@ -323,6 +369,13 @@ describe('POST /boards/:id/members', () => {
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(201, done);
     });
+    it('should return 409 error', (done) => {
+        request(app)
+            .post(`/boards/${boardData.id}/members`)
+            .send({ email: userData.userNotAdmin.email })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(409, done);
+    });
     it('should return 404 ERROR', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/members`)
@@ -353,7 +406,7 @@ describe('POST /boards/:boardId/labels', () => {
     it('should return 422 ERROR: invalid color', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/labels`)
-            .send({ name: 'a random lable', color: '#2y5689' })
+            .send({ name: 'a random label', color: '#2y5689' })
             .expect(422, done);
     });
     it('should return 404 ERROR', (done) => {
@@ -368,11 +421,14 @@ describe('GET /boards/:boardId/labels', () => {
     it('should return 200 OK', (done) => {
         request(app)
             .get(`/boards/${boardData.id}/labels`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect('Content-Type', /json/)
             .expect(200, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
-            .get('/boards/arandomboard/labels')
+            .get('/boards/dqoikdoadsq/labels')
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
     });
 });
@@ -488,6 +544,33 @@ describe('POST /boards/:id/teams', () => {
             .expect(204, done);
     });
 });
+
+describe('DELETE /boards/:id/githubRepo', () => {
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .delete(`/boards/${boardData.id}/githubRepo`)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .delete(`/boards/${boardData.id}/githubRepo`)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect(403, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .delete('/boards/aRandomBoardId123/githubRepo')
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(404, done);
+    });
+    it('should return 204 OK', (done) => {
+        request(app)
+            .delete(`/boards/${boardData.id}/githubRepo`)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(204, done);
+    });
+});
+
 describe('DELETE /boards/:id/teams/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
@@ -513,6 +596,7 @@ describe('DELETE /boards/:id/teams/:id', () => {
             .expect(204, done);
     });
 });
+
 describe('POST /boards/:id/lists', () => {
     /* it('should return 401 ERROR', (done) => {
         request(app)

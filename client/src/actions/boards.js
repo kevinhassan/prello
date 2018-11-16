@@ -45,7 +45,13 @@ export const FETCH_BOARD_FAILURE = 'board/FETCH_BOARD_FAILURE';
 export const FETCH_BOARD_SUCCESS = 'board/FETCH_BOARD_SUCCESS';
 
 export const fetchBoardStartedAction = () => ({ type: FETCH_BOARD_STARTED });
-export const fetchBoardFailureAction = () => ({ type: FETCH_BOARD_FAILURE });
+export const fetchBoardFailureAction = (message, status) => ({
+    type: FETCH_BOARD_FAILURE,
+    payload: {
+        message,
+        status,
+    },
+});
 export const fetchBoardSuccessAction = board => ({
     type: FETCH_BOARD_SUCCESS,
     payload: {
@@ -54,14 +60,13 @@ export const fetchBoardSuccessAction = board => ({
 });
 
 export const fetchBoard = boardId => (dispatch) => {
-    dispatch(fetchBoardStartedAction());
     dispatch(displayLoadingModal());
-
+    dispatch(fetchBoardStartedAction());
     // Set up socket
     APISocket.subscribeToBoard(boardId, (res) => {
         dispatch(fetchBoardSuccessAction(res.board));
+        dispatch(hideLoadingModal());
     });
-    dispatch(hideLoadingModal());
 };
 
 // ===== Remove board fetch =====
@@ -175,7 +180,8 @@ export const updateIsArchived = (boardId, isArchived) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { isArchived }, APIFetch.PUT)
         .then(() => {
             dispatch(updateIsArchivedSuccessAction(boardId, isArchived));
-            dispatch(displaySuccessMessage('Board archived'));
+            if (isArchived) dispatch(displaySuccessMessage('Board archived.'));
+            else dispatch(displaySuccessMessage('Board unarchived.'));
             dispatch(push('./boards'));
         })
         .catch((error) => {
@@ -219,6 +225,110 @@ export const updateBoardName = (boardId, name, oldName) => (dispatch) => {
         })
         .catch((error) => {
             dispatch(updateBoardNameFailureAction(boardId, oldName));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
+// ===== Update github link ======
+export const UPDATE_BOARD_GITHUB_STARTED = 'board/UPDATE_BOARD_GITHUB_STARTED';
+export const UPDATE_BOARD_GITHUB_FAILURE = 'board/UPDATE_BOARD_GITHUB_FAILURE';
+export const UPDATE_BOARD_GITHUB_SUCCESS = 'board/UPDATE_BOARD_GITHUB_SUCCESS';
+
+export const updateBoardGithubStartedAction = (boardId, githubRepo) => ({
+    type: UPDATE_BOARD_GITHUB_STARTED,
+    payload: {
+        boardId,
+        githubRepo,
+    },
+});
+export const updateBoardGithubFailureAction = (boardId, oldGithubRepo) => ({
+    type: UPDATE_BOARD_GITHUB_FAILURE,
+    payload: {
+        boardId,
+        githubRepo: oldGithubRepo,
+    },
+});
+export const updateBoardGithubSuccessAction = () => ({ type: UPDATE_BOARD_GITHUB_SUCCESS });
+
+export const updateBoardGithub = (boardId, githubRepo, oldGithubRepo) => (dispatch) => {
+    dispatch(updateBoardGithubStartedAction(boardId, githubRepo));
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/githubRepo/`;
+    APIFetch.fetchPrelloAPI(resource, githubRepo, APIFetch.PUT)
+        .then(() => {
+            dispatch(updateBoardGithubSuccessAction());
+            dispatch(displaySuccessMessage('Link to Github updated'));
+        })
+        .catch((error) => {
+            dispatch(updateBoardGithubFailureAction(boardId, oldGithubRepo));
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
+// ===== Remove github link ======
+export const REMOVE_BOARD_GITHUB_STARTED = 'board/REMOVE_BOARD_GITHUB_STARTED';
+export const REMOVE_BOARD_GITHUB_FAILURE = 'board/REMOVE_BOARD_GITHUB_FAILURE';
+export const REMOVE_BOARD_GITHUB_SUCCESS = 'board/REMOVE_BOARD_GITHUB_SUCCESS';
+
+export const removeBoardGithubStartedAction = () => ({ type: REMOVE_BOARD_GITHUB_STARTED });
+export const removeBoardGithubFailureAction = () => ({ type: REMOVE_BOARD_GITHUB_FAILURE });
+export const removeBoardGithubSuccessAction = boardId => ({
+    type: REMOVE_BOARD_GITHUB_SUCCESS,
+    action: {
+        boardId,
+    },
+});
+
+export const removeBoardGithub = boardId => (dispatch) => {
+    dispatch(removeBoardGithubStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/githubRepo/`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
+        .then(() => {
+            dispatch(removeBoardGithubSuccessAction());
+            dispatch(displaySuccessMessage('Link to Github removed'));
+        })
+        .catch((error) => {
+            dispatch(removeBoardGithubFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
+
+// ===== Add member ======
+export const ADD_BOARD_MEMBER_STARTED = 'board/ADD_BOARD_MEMBER_STARTED';
+export const ADD_BOARD_MEMBER_FAILURE = 'board/ADD_BOARD_MEMBER_FAILURE';
+export const ADD_BOARD_MEMBER_SUCCESS = 'board/ADD_BOARD_MEMBER_SUCCESS';
+
+export const addBoardMemberStartedAction = () => ({ type: ADD_BOARD_MEMBER_STARTED });
+export const addBoardMemberFailureAction = () => ({ type: ADD_BOARD_MEMBER_FAILURE });
+export const addBoardMemberSuccessAction = (boardId, user) => ({
+    type: ADD_BOARD_MEMBER_SUCCESS,
+    payload: {
+        boardId,
+        user,
+    },
+});
+export const addBoardMember = (boardId, username) => (dispatch) => {
+    dispatch(addBoardMemberStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/members`;
+    APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.POST)
+        .then((res) => {
+            dispatch(addBoardMemberSuccessAction(boardId, res.data.user));
+            dispatch(displaySuccessMessage(`${username} added to the board`));
+        })
+        .catch((error) => {
+            dispatch(addBoardMemberFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {

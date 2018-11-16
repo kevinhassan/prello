@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
+import { replace } from 'connected-react-router';
 
 // ===== Actions
 import { getUserInformation } from '../../actions/user';
@@ -14,6 +14,7 @@ import MemberView from '../../components/views/MemberView';
 // ===== Others
 
 class MemberComp extends React.Component {
+
     componentWillMount() {
         // Redirect user to his profile if he is looking for him.
         if (this.props.clientId === this.props.match.params.memberId) {
@@ -74,7 +75,7 @@ const mapStateToProps = ({ users, auth }) => ({
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         getUserInformation,
-        goToProfile: () => push('/profile'),
+        goToProfile: () => replace('/profile'),
     }, dispatch,
 );
 

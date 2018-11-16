@@ -33,13 +33,16 @@ class BoardsComp extends React.Component {
 
     handleCreateBoard(event) {
         event.preventDefault();
-        this.props.createBoard(String.trim(event.target.name.value), event.target.visibility.value);
+        this.props.createBoard(event.target.name.value.trim(), event.target.visibility.value);
         this.setState({ isCreateBoardFormVisible: false });
     }
 
     handleUpdateIsArchived(event, boardId, isArchived) {
         event.stopPropagation();
         this.props.updateIsArchived(boardId, isArchived);
+        if (!isArchived) {
+            document.getElementById('archivedBoards').value = 'Archived boards';
+        }
     }
 
     handleOnBoardClick(boardId) {

@@ -22,6 +22,7 @@ h1.signInTitle {
 .loginWithGH, .loginWithGHLink  {
     background-color: #444;
     color: #eee;
+    margin-top: 10px;
     padding: 6px;
 }
 
@@ -43,4 +44,9 @@ h1.signInTitle {
 }
 .button-group a{
     margin-bottom: 5px;
+}
+
+.forgottenPassword{
+    margin-bottom: 0x; 
+    margin-top: 0px; 
 }

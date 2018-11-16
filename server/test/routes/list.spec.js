@@ -182,3 +182,28 @@ describe('PUT /lists/:listId/isArchived', () => {
             .expect(404, done);
     });
 });
+
+describe('PUT /lists/:listId/name', () => {
+    it('should return 200 OK', (done) => {
+        request(app)
+            .put(`/lists/${listData.id}/name`)
+            .send({ name: 'a new list name' })
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(204, done);
+    });
+    it('should return 422 ERROR', (done) => {
+        request(app)
+            .put(`/lists/${listData.id}/name`)
+            .send({ name: ' ' })
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(422, done);
+    });
+    it('should return 404 ERROR', (done) => {
+        request(app)
+            .put('/cards/123456/name/')
+            .send({ name: 'new list name' })
+            .set('Authorization', `Bearer ${tokenMember}`)
+            .expect(404, done);
+    });
+});
+

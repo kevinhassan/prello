@@ -1,6 +1,8 @@
 const socketIo = require('socket.io');
 const boardController = require('../controllers/boards');
 const logger = require('../util/logger');
+const { canSeeViaSocket } = require('../middlewares/board');
+const { authRequestViaSocket } = require('../middlewares/auth');
 
 let io = null;
 
@@ -13,11 +15,23 @@ exports.initialize = (server) => {
     io.on('connection', (socket) => {
         logger.info('New client');
 
-        socket.on('subscribeToBoard', async (boardId) => {
-            logger.info(`Client subscribed to board ${boardId}`);
-            socket.join(boardId);
-            const boardFound = await boardController.getBoard(boardId);
-            io.sockets.connected[socket.id].emit('currentBoard', { board: boardFound });
+        socket.on('error', (err) => {
+            socket.emit('myError', { message: err.error, status: err.status });
+        });
+
+        socket.on('subscribeToBoard', async ({ boardId, Authorization }) => {
+            try {
+                const user = await authRequestViaSocket(Authorization);
+                const canSee = await canSeeViaSocket(boardId, user);
+                if (canSee) {
+                    logger.info(`Client subscribed to board ${boardId}`);
+                    socket.join(boardId);
+                    const boardFound = await boardController.getBoard(boardId);
+                    socket.emit('currentBoard', { board: boardFound });
+                }
+            } catch (error) {
+                socket.emit('error', { error: error.message, status: error.status });
+            }
         });
 
         socket.on('unsuscribeFromBoard', async (boardId) => {

@@ -12,9 +12,11 @@ import ProfileComp from '../ProfileComp';
 import RegisterComp from '../RegisterComp';
 import SignInComp from '../SignInComp';
 import TeamComp from '../TeamComp';
+import ForgotComp from '../ForgotComp';
+import ResetComp from '../ResetComp';
 
 import PrivateRoute from '../../components/PrivateRoute';
-import Page404 from '../../components/Page404';
+import ErrorPage from '../../components/ErrorPage';
 
 import './style.css';
 
@@ -28,17 +30,21 @@ const App = () => (
             <div className="whiteBackground">
                 <Switch>
                     <Route exact path="/" component={HomeComp} />
+                    <Route exact path="/boards/:boardId" component={BoardComp} />
                     <Route exact path="/graphical-charter" component={GraphicalCharter} />
+                    <Route exact path="/boards/:boardId" component={BoardComp} />
                     <Route exact path="/members/:memberId" component={MemberComp} />
                     <Route exact path="/register" component={RegisterComp} />
                     <Route exact path="/signin" component={SignInComp} />
+                    <Route exact path="/teams/:teamId" component={TeamComp} />
+                    <Route exact path="/forgot" component={ForgotComp} />
+                    <Route exact path="/reset/:token" component={ResetComp} />
 
-                    <PrivateRoute authed={isAuthenticated()} exact path="/boards/:boardId" component={BoardComp} />
+
                     <PrivateRoute authed={isAuthenticated()} exact path="/boards" component={BoardsComp} />
                     <PrivateRoute authed={isAuthenticated()} exact path="/profile" component={ProfileComp} />
-                    <PrivateRoute authed={isAuthenticated()} exact path="/teams/:teamId" component={TeamComp} />
 
-                    <Route component={Page404} />
+                    <Route component={ErrorPage} />
                 </Switch>
             </div>
         </main>

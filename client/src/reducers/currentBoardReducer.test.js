@@ -1,7 +1,7 @@
-import currentBoardReducer, { initialState } from './currentBoardReducer';
 import * as actions from '../actions/boards';
 import * as listActions from '../actions/lists';
 import * as cardActions from '../actions/cards';
+import currentBoardReducer, { initialState } from './currentBoardReducer';
 
 const labels = [
     { _id: 'lab1', name: 'label1' },
@@ -13,17 +13,20 @@ const card1 = {
     name: 'card1',
     labels: [labels[0], labels[1]],
     list: { _id: 'l1' },
+    dueDate: '2000-01-01',
 };
 const card2 = {
     _id: 'c2',
     name: 'card2',
     labels: [labels[0]],
+    dueDate: '2018-11-15',
 };
 const card3 = {
     _id: 'c3',
     name: 'card3',
     labels: [],
     list: { _id: 'l3' },
+    dueDate: '2019-01-19',
 };
 
 const state = {
@@ -61,6 +64,8 @@ const state = {
             _id: '623030303030303030303031',
         },
     },
+    errorMessage: '',
+    status: null,
 };
 
 describe('Action not referenced', () => {
@@ -73,6 +78,17 @@ describe('Action not referenced', () => {
 });
 
 // ===== BOARDS ACTIONS ===== //
+describe(actions.FETCH_BOARD_STARTED, () => {
+    it('should reinitialiaze the state (undefined or empty value)', () => {
+        const action = actions.fetchBoardStartedAction();
+        const finalState = currentBoardReducer(initialState, action);
+
+        expect(finalState.board).toEqual(undefined);
+        expect(finalState.errorMessage).toEqual('');
+        expect(finalState.status).toEqual(null);
+    });
+});
+
 describe(actions.FETCH_BOARD_SUCCESS, () => {
     it('should put the new board in state', () => {
         const newBoard = { _id: 'newBoardI', name: 'new board' };
@@ -80,6 +96,18 @@ describe(actions.FETCH_BOARD_SUCCESS, () => {
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board).toEqual(newBoard);
+    });
+});
+
+describe(actions.FETCH_BOARD_FAILURE, () => {
+    it('should set the board to null, set the errorMessage and status', () => {
+        const error = { message: 'an error', status: 404 };
+        const action = actions.fetchBoardFailureAction(error.message, error.status);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board).toEqual(null);
+        expect(finalState.errorMessage).toEqual(error.message);
+        expect(finalState.status).toEqual(error.status);
     });
 });
 
@@ -152,6 +180,16 @@ describe(actions.UPDATE_BOARD_NAME_FAILURE, () => {
     });
 });
 
+describe(actions.ADD_BOARD_MEMBER_SUCCESS, () => {
+    it('should add the member to the board', () => {
+        const username = 'a new member';
+        const action = actions.addBoardMemberSuccessAction(state.board._id, username);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.members.length).toEqual(state.board.members.length + 1);
+    });
+});
+
 describe(`${actions.UPDATE_BOARD_NAME_FAILURE}: not current board id`, () => {
     it('if the id provided is not the current board one, should do nothing and return the current state', () => {
         const name = 'an old board name';
@@ -161,6 +199,52 @@ describe(`${actions.UPDATE_BOARD_NAME_FAILURE}: not current board id`, () => {
     });
 });
 
+describe(`${actions.UPDATE_BOARD_GITHUB_STARTED}`, () => {
+    it('should add the github repo to the board', () => {
+        const githubRepo = {
+            name: 'My repo',
+            private: false,
+            url: 'http://localhost:1234',
+        };
+        const action = actions.updateBoardGithubStartedAction(state.board._id, githubRepo);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.githubRepo).toEqual(githubRepo);
+    });
+});
+
+describe(actions.UPDATE_BOARD_GITHUB_FAILURE, () => {
+    it('should add the github repo to the board', () => {
+        const githubRepo = {
+            name: 'My failure repo',
+            private: false,
+            url: 'http://locsalhost:1234',
+        };
+        const action = actions.updateBoardGithubFailureAction(state.board._id, githubRepo);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.githubRepo).toEqual(githubRepo);
+    });
+});
+
+describe(`${actions.UPDATE_BOARD_GITHUB_FAILURE}: incorrect board id`, () => {
+    it('should do nothing on the state', () => {
+        const githubRepo = {
+            name: 'My failure repo',
+            private: false,
+            url: 'http://locsalhost:1234',
+        };
+        const action = actions.updateBoardGithubFailureAction('aRandomId', githubRepo);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState).toEqual(state);
+    });
+});
+
+describe(actions.REMOVE_BOARD_GITHUB_SUCCESS, () => {
+    it('should remove the github repo from the board', () => {
+        const action = actions.removeBoardGithubSuccessAction(state.board._id);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.githubRepo).toEqual({});
+    });
+});
 
 // ===== LISTS ACTIONS ===== //
 
@@ -203,12 +287,23 @@ describe(listActions.MOVE_CARD_FAILURE, () => {
 // Archive list
 describe(listActions.ARCHIVE_LIST_SUCCESS, () => {
     it('should set the list as "archived"', () => {
-        const action = listActions.archiveListSuccessAction(state.board.lists[0]);
+        const action = listActions.archiveListSuccessAction(state.board.lists[0], true);
         const finalState = currentBoardReducer(state, action);
 
         expect(
             finalState.board.lists[0].isArchived,
         ).toEqual(true);
+    });
+});
+
+describe(listActions.ARCHIVE_LIST_SUCCESS, () => {
+    it('should set the list as "not archived"', () => {
+        const action = listActions.archiveListSuccessAction(state.board.lists[0], false);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists[0].isArchived,
+        ).toEqual(false);
     });
 });
 
@@ -225,6 +320,25 @@ describe(`${listActions.ARCHIVE_LIST_SUCCESS}: inexistant list given`, () => {
     });
 });
 
+// Update name
+describe(listActions.UPDATE_LIST_NAME_STARTED, () => {
+    it('should set the list name', () => {
+        const name = 'My tested list name';
+        const action = listActions.updateListNameStartedAction(state.board.lists[0]._id, name);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.lists[0].name).toEqual(name);
+    });
+});
+
+describe(listActions.UPDATE_LIST_NAME_FAILURE, () => {
+    it('should set the list name', () => {
+        const name = 'My tested list name';
+        const action = listActions.updateListNameFailureAction(state.board.lists[0]._id, name);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.lists[0].name).toEqual(name);
+    });
+});
 
 // ===== CARDS ACTIONS ===== //
 
@@ -359,13 +473,25 @@ describe(cardActions.DELETE_LABEL_FAILURE, () => {
 // Archive card
 describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
     it('should set the card as "archived"', () => {
-        const action = cardActions.archiveCardSuccessAction(card3);
+        const action = cardActions.archiveCardSuccessAction(card3, true);
         const finalState = currentBoardReducer(state, action);
 
         expect(
             finalState.board.lists.find(l => l._id === card3.list._id)
                 .cards.find(c => c._id === card3._id).isArchived,
         ).toEqual(true);
+    });
+});
+
+describe(cardActions.ARCHIVE_CARD_SUCCESS, () => {
+    it('should set the card as "archived"', () => {
+        const action = cardActions.archiveCardSuccessAction(card3, false);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card3.list._id)
+                .cards.find(c => c._id === card3._id).isArchived,
+        ).toEqual(false);
     });
 });
 
@@ -380,5 +506,32 @@ describe(`${cardActions.ARCHIVE_CARD_SUCCESS}: inexistant card given`, () => {
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState).toEqual(state);
+    });
+});
+
+// Edit due date
+describe(cardActions.EDIT_DUE_DATE_STARTED, () => {
+    it('should update the due date with the given one', () => {
+        const newDate = '2018-11-12';
+        const action = cardActions.editDateStartedAction(card1, newDate);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).dueDate,
+        ).toEqual(newDate);
+    });
+});
+
+describe(cardActions.EDIT_CARD_DESCRIPTION_FAILURE, () => {
+    it('should update the due date with the old one', () => {
+        const initialDate = '2000-01-01';
+        const action = cardActions.editDateFailureAction(card1, initialDate);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(
+            finalState.board.lists.find(l => l._id === card1.list._id)
+                .cards.find(c => c._id === card1._id).dueDate,
+        ).toEqual(initialDate);
     });
 });

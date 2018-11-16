@@ -9,12 +9,12 @@ import './style.css';
 // =====
 
 const ProfileTab = props => (
-    <div className="profilePanelsList">
-        <div className="teamsPanel">
-
+    <div className="bottomProfilePanel">
+        <div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                 <h4 className="teamsTitle">
                     <i className="fas fa-users teamIcon" />
+                    {' '}
                     My teams
                 </h4>
                 <CreateTeamForm
@@ -41,7 +41,7 @@ const ProfileTab = props => (
                                     {team.isVisible ? <i className="fas fa-eye" /> : <i className="fas fa-eye-slash" />}
                                     {' '}
                                 </span>
-                                <Link to={`teams/${team._id}`}>
+                                <Link to={`/teams/${team._id}`}>
                                     {team.name}
                                 </Link>
                             </li>
@@ -51,16 +51,6 @@ const ProfileTab = props => (
                     'You have no teams yet.'
                 )
             }
-        </div>
-
-        <hr />
-        <div className="activityPanel">
-
-            <h4 className="news">
-                <i className="far fa-newspaper teamIcon" />
-                    Activity
-            </h4>
-
         </div>
     </div>
 );

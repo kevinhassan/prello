@@ -20,7 +20,7 @@ exports.deleteMember = async (cardId, memberId) => {
         });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -105,7 +105,7 @@ exports.putMember = async (cardId, memberId) => {
         });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -180,7 +180,7 @@ exports.deleteLabel = async (data) => {
         });
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -214,17 +214,45 @@ exports.putList = async (data) => {
 /**
  * Set card archived
  */
-exports.archiveCard = async (data) => {
+exports.archiveCard = async (cardId, isArchived) => {
     try {
-        const card = await Card.findById(data);
+        const card = await Card.findById(cardId);
         if (!card) throw new MyError(404, 'Card not found.');
 
-        card.isArchived = true;
+        card.isArchived = isArchived;
         await card.save();
 
         return card;
     } catch (err) {
         if (err.status === 404) {
+            throw err;
+        }
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query.');
+        }
+        if (err.name === 'CastError') {
+            throw new MyError(404, 'Card not found.');
+        }
+        throw new MyError(500, 'Internal server error.');
+    }
+};
+
+
+/**
+ * Edit due date
+ */
+
+exports.editDate = async (cardId, dueDate) => {
+    try {
+        const card = await Card.findById(cardId);
+        if (!card) throw new MyError(404, 'Card not found.');
+
+        card.dueDate = dueDate;
+        await card.save();
+
+        return card;
+    } catch (err) {
+        if (err.status) {
             throw err;
         }
         if (err.name === 'ValidationError') {

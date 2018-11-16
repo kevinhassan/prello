@@ -1,15 +1,17 @@
 const { promisify } = require('util');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
+const axios = require('axios');
+
 const MyError = require('../util/error');
 const Auth = require('../auth');
-const { resetPasswordMail, confirmResetPasswordMail } = require('../mails/resetPassword');
+const { resetPasswordMail, confirmResetPasswordMail, confirmAccountCreationMail } = require('../mails');
 
 const boardController = require('../controllers/boards');
 const teamController = require('../controllers/teams');
 
 const randomBytesAsync = promisify(crypto.randomBytes);
 const User = require('../models/User');
+
 
 // ======================== //
 // ==== Post functions ==== //
@@ -20,9 +22,9 @@ const User = require('../models/User');
  */
 exports.postBoard = async (userId, boardId) => {
     try {
-        await User.updateOne({ _id: userId },
-            { $addToSet: { boards: { _id: boardId } } })
-            .catch(async () => { throw new MyError(404, 'User not found'); });
+        const user = await User.findOneAndUpdate({ _id: userId },
+            { $addToSet: { boards: { _id: boardId } } }, { new: true });
+        return user;
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
@@ -57,8 +59,8 @@ exports.login = async (email, password) => {
  */
 exports.signUp = async (data) => {
     try {
-        const findUser = await User.findOne({ email: data.email }).select('-_id email');
-        if (findUser) throw new MyError(409, 'An account already exists for this email.');
+        const isUserAlreadyExisting = await User.findOne({ email: data.email }).select('email');
+        if (isUserAlreadyExisting) throw new MyError(409, 'An account already exists for this email.');
         const user = new User({
             fullName: data.fullName,
             password: data.password,
@@ -67,6 +69,8 @@ exports.signUp = async (data) => {
             avatarUrl: data.avatarUrl,
         });
         const newUser = await user.save();
+
+        await confirmAccountCreationMail(newUser.email);
         return newUser;
     } catch (err) {
         if (err.status) throw err;
@@ -76,7 +80,7 @@ exports.signUp = async (data) => {
 /**
  * Create a random token, then the send user an email with a reset link.
  */
-exports.forgot = async (email, host) => {
+exports.forgot = async (email) => {
     try {
         let user = await User.findOne({ email });
         if (!user) throw new MyError(404, 'No user found');
@@ -85,14 +89,7 @@ exports.forgot = async (email, host) => {
         user = await user.save();
         if (!user) throw new MyError(500, 'Internal server error');
         const token = user.passwordResetToken;
-        const transporter = nodemailer.createTransport({
-            service: 'Mailjet',
-            auth: {
-                user: process.env.MAILJET_USER,
-                pass: process.env.MAILJET_PASSWORD
-            }
-        });
-        await transporter.sendMail(resetPasswordMail(email, host, token));
+        await resetPasswordMail(email, token);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
@@ -104,19 +101,12 @@ exports.forgot = async (email, host) => {
 exports.resetPassword = async (token, password) => {
     try {
         const user = await User.findOne({ passwordResetToken: token }).where('passwordResetExpires').gt(Date.now());
-        if (!user) throw new MyError(403, 'User can\'t reset his password');
+        if (!user) throw new MyError(403, 'This link is expired.');
         user.password = password;
         user.passwordResetToken = undefined;
         user.passwordResetExpires = undefined;
         await user.save();
-        const transporter = nodemailer.createTransport({
-            service: 'Mailjet',
-            auth: {
-                user: process.env.MAILJET_USER,
-                pass: process.env.MAILJET_PASSWORD
-            }
-        });
-        await transporter.sendMail(confirmResetPasswordMail(user.email));
+        await confirmResetPasswordMail(user.email);
     } catch (err) {
         if (err.status) throw err;
         throw new MyError(500, 'Internal server error');
@@ -140,7 +130,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
         await userCheck.save();
     } catch (err) {
         if (err.status) throw err;
-        throw new MyError(500, 'Internal Server Error');
+        throw new MyError(500, 'Internal server error');
     }
 };
 
@@ -153,7 +143,7 @@ exports.updatePassword = async (oldPassword, newPassword, user) => {
  */
 exports.getProfile = async (userId) => {
     try {
-        const userProfile = await User.findById(userId).select('-password').populate('teams');
+        const userProfile = await User.findById(userId).select('-password -github.token').populate('teams');
         return userProfile;
     } catch (err) {
         throw new MyError(500, 'Internal server error');
@@ -211,6 +201,24 @@ exports.getUser = async (userId) => {
     }
 };
 
+exports.getGithubUser = async (githubId) => {
+    try {
+        const user = await User.findOne({ 'github.id': githubId }).select('_id github');
+        const token = await Auth.generateToken(user);
+
+        // get all user repositories
+        const { data } = await axios.get(`https://api.github.com/user/repos?access_token=${user.github.token}`);
+        const repositories = data.map(repo => ({ name: repo.name, private: repo.private, url: repo.html_url }));
+        user.github = {
+            ...user.github,
+            repos: repositories
+        };
+        await user.save();
+        return { token, user };
+    } catch (err) {
+        throw new MyError(500, 'Internal server error');
+    }
+};
 
 // ======================== //
 // ===== Put functions ==== //
@@ -330,6 +338,18 @@ exports.findMemberWithMail = async (email) => {
     }
 };
 
+exports.findMemberWithUsername = async (username) => {
+    try {
+        const user = await User.findOne({ username });
+        if (!user) throw new MyError(404, 'User not found');
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+
 exports.removeBoard = async (userId, boardId) => {
     try {
         await User.updateOne({ _id: userId },
@@ -359,9 +379,9 @@ exports.leaveTeam = async (userId, teamId) => {
     try {
         const user = await User.findById(userId);
         if (!user) throw new MyError(404, 'User unknown');
-
+        
         await User.updateOne({ _id: userId },
-            { $pull: { teams: { _id: teamId } } })
+            { $pull: { teams: teamId } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });
     } catch (err) {
         if (err.status) throw err;

@@ -2,8 +2,6 @@ const { validationResult } = require('express-validator/check');
 const passport = require('passport');
 const userController = require('../controllers/users');
 const Auth = require('../middlewares/auth');
-const User = require('../models/User');
-const { generateToken } = require('../auth/index');
 const {
     registerValidator, loginValidator, accountValidator, profileValidator,
     forgotValidator, resetValidator, passwordValidator,
@@ -220,6 +218,32 @@ const {
 *               description: User password updated
 *           401:
 *               description: Unauthorized user
+*           409:
+*               description: Email already used
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
+* /account/password/:token :
+*    put:
+*       tags:
+*           - User
+*       description: User object that needs to change his password because he forget it
+*       summary: Update the user password
+*       produces:
+*           - application/json
+*       parameters:
+*           - name: body
+*             description: The user password to update
+*             in: body
+*             required: true
+*             schema:
+*               $ref: '#/definitions/AccountForm'
+*       responses:
+*           204:
+*               description: User password changed
+*           401:
+*               description: Expired token
 *           409:
 *               description: Email already used
 *           422:
@@ -446,19 +470,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/forgot', [forgotValidator], async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(422).json({ error: 'Invalid form data' });
-            }
-            try {
-                await userController.forgot(req.body.email, req.headers.host);
-                res.status(200).json({ message: 'Reset mail sent.' });
-            } catch (e) {
-                res.status(e.status).send({ error: e.message });
-            }
-        })
-        .post('/reset/:token', [resetValidator], async (req, res) => {
+        .put('/account/password/:token', [resetValidator], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Invalid form data' });
@@ -466,6 +478,18 @@ module.exports = (router) => {
             try {
                 await userController.resetPassword(req.params.token, req.body.password);
                 res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .post('/forgot', [forgotValidator], async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Invalid form data' });
+            }
+            try {
+                await userController.forgot(req.body.email);
+                res.status(200).json({ message: 'Reset mail sent.' });
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -489,8 +513,7 @@ module.exports = (router) => {
         })
         .get('/auth/github/callback', passport.authenticate('github', { session: false }), async (req, res) => {
             try {
-                const user = await User.findOne({ 'github.id': req.user.github.id });
-                const token = generateToken(user);
+                const { token, user } = await userController.getGithubUser(req.user.github.id);
                 res.redirect(`${process.env.CLIENT_URI}/signin?token=${token}&clientId=${user._id}`);
             } catch (e) {
                 res.status(500, 'Internal server error');

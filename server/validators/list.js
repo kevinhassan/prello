@@ -27,9 +27,18 @@ const archiveCard = [
         .isBoolean()
 ];
 
+const changeName = [
+    check('name')
+        .not().isEmpty()
+        .isString()
+        .trim()
+        .isLength({ min: 1 })
+];
+
 module.exports = {
     moveCard,
     addList,
     addCard,
-    archiveCard
+    archiveCard,
+    changeName
 };

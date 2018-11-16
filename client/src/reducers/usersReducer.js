@@ -43,6 +43,16 @@ export default function usersReducer(state = initialState, action) {
                 },
             };
         }
+        case teamActions.DELETE_TEAM_SUCCESS: {
+            const teamToRemove = action.payload.team;
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    teams: state.profile.teams.filter(team => team.id !== teamToRemove.id),
+                },
+            };
+        }
 
         default:
             return state;

@@ -28,7 +28,7 @@ class BoardNameComp extends React.Component {
     handleEditBoardName(event) {
         event.preventDefault();
         const name = event.target.name.value;
-        this.props.updateBoardName(this.props.boardId, String.trim(name), this.props.name);
+        this.props.updateBoardName(this.props.boardId, name.trim(), this.props.name);
         this.setState({ isFormVisible: false });
     }
 
@@ -50,9 +50,10 @@ BoardNameComp.propTypes = {
 };
 
 // Put info from the store state in props
-const mapStateToProps = ({ currentBoard }) => ({
-    name: currentBoard.board.name,
-});
+const mapStateToProps = ({ currentBoard }) => {
+    if (currentBoard.board) return { name: currentBoard.board.name };
+    return { name: '' };
+};
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(

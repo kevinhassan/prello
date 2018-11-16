@@ -10,6 +10,7 @@ import { createList, moveCard } from '../../actions/lists';
 // ===== Components / Containers
 import BoardView from '../../components/views/BoardView';
 import List from '../../models/List';
+import ErrorPage from '../../components/ErrorPage';
 
 // ===== Others
 
@@ -50,7 +51,7 @@ class BoardComp extends React.Component {
 
     handleListAdded(event) {
         event.preventDefault();
-        const name = event.target.listName.value;
+        const name = event.target.listName.value.trim();
         const newList = new List({
             name, board: this.props.board,
         });
@@ -118,7 +119,15 @@ class BoardComp extends React.Component {
     }
 
     render() {
-        const { board } = this.props;
+        const { board, errorMessage, status } = this.props;
+        if (errorMessage || status) {
+            return (
+                <ErrorPage
+                    status={status}
+                    message={errorMessage}
+                />
+            );
+        }
         if (board) {
             return (
                 <BoardView
@@ -146,14 +155,21 @@ BoardComp.propTypes = {
     moveCard: PropTypes.func.isRequired,
     removeBoardFetch: PropTypes.func.isRequired,
     updateListsIndexes: PropTypes.func.isRequired,
+
+    errorMessage: PropTypes.string,
+    status: PropTypes.number,
 };
 BoardComp.defaultProps = {
     board: undefined,
+    errorMessage: undefined,
+    status: undefined,
 };
 
 // Put info from the store state in props
 const mapStateToProps = ({ currentBoard }) => ({
     board: currentBoard.board,
+    status: currentBoard.status,
+    errorMessage: currentBoard.errorMessage,
 });
 
 // Put actions in props

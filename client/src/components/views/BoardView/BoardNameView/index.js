@@ -43,7 +43,9 @@ const BoardNameView = props => (
                     type="button"
                     onClick={() => props.displayForm(true)}
                     onKeyDown={() => props.displayForm(true)}
-                    style={{ verticalAlign: 'sub', display: 'inline-block', height: '100%' }}
+                    style={{
+                        verticalAlign: 'middle', display: 'inline-block', height: '100%', padding: 0,
+                    }}
                 >
                     <h1 className="boardName">
                         {props.name}

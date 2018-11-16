@@ -20,6 +20,7 @@
 
 .visibleIcon {
     margin-right: 15px;
+    vertical-align: middle;
 }
 
 .teamsList li.team {

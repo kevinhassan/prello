@@ -167,6 +167,38 @@ const { updateClientsOnBoard } = require('../socket');
 *               description: Incorrect query, data provided invalid
 *           500:
 *               description: Internal server error
+*
+* /cards/{cardId}/dueDate:
+*   put:
+*       tags:
+*           - Card
+*       description: Update the due date of the specified card.
+*       summary: Update due date
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: cardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Card ID
+*           - in: body
+*             name: dueDate
+*             description: new due date, can not be empty.
+*             required: true
+*             schema:
+*               $ref: '#/definitions/NewDueDate'
+*       responses:
+*           204:
+*               description: Card due date updated
+*           404:
+*               description: Card not found
+*           422:
+*               description: Incorrect query, data provided invalid
+*           500:
+*               description: Internal server error
+*
 */
 
 module.exports = (router) => {
@@ -260,13 +292,26 @@ module.exports = (router) => {
             }
         })
 
-        .put('/cards/:cardId/archive', Auth.isAuthenticated, async (req, res) => {
+        .put('/cards/:cardId/isArchived', Auth.isAuthenticated, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.archiveCard(req.params.cardId);
+                await cardController.archiveCard(req.params.cardId, req.body.isArchived);
+                res.sendStatus(204);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+
+        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, cardValidator.editDate, async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
+            }
+            try {
+                await cardController.editDate(req.params.cardId, req.body.dueDate);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

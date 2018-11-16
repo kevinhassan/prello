@@ -93,7 +93,7 @@ export const classicRegister = (fullName, email, password) => (dispatch) => {
     }, APIFetch.POST)
         .then(() => {
             dispatch(classicRegisterSuccessAction());
-            dispatch(displaySuccessMessage('You have been successfully registered!'));
+            dispatch(displaySuccessMessage(`Account registered: An email has been send to ${email}`));
             dispatch(push('/signin'));
         })
         .catch((error) => {
@@ -109,4 +109,71 @@ export const signOutAction = () => ({ type: SIGN_OUT });
 export const signOut = () => (dispatch) => {
     localStorage.removeItem('prello_token');
     dispatch(signOutAction());
+};
+
+// ===== Forgotten password ===== //
+export const FORGOTTEN_PASSWORD_STARTED = 'auth/FORGOTTEN_PASSWORD_STARTED';
+export const FORGOTTEN_PASSWORD_FAILURE = 'auth/FORGOTTEN_PASSWORD_FAILURE';
+export const FORGOTTEN_PASSWORD_SUCCESS = 'auth/FORGOTTEN_PASSWORD_SUCCESS';
+
+
+export const forgottenPasswordAction = () => ({ type: FORGOTTEN_PASSWORD_STARTED });
+
+export const forgottenPasswordSuccess = () => ({ type: FORGOTTEN_PASSWORD_SUCCESS });
+
+export const forgottenPasswordFailure = error => ({
+    type: FORGOTTEN_PASSWORD_FAILURE,
+    payload: {
+        error,
+    },
+});
+
+export const forgottenPassword = email => (dispatch) => {
+    dispatch(forgottenPasswordAction());
+    APIFetch.fetchPrelloAPI('forgot', {
+        email,
+    }, APIFetch.POST)
+        .then(() => {
+            dispatch(forgottenPasswordSuccess());
+            const messageSuccess = 'A email has been sent to '.concat(email).concat(' to reset your password');
+            dispatch(displaySuccessMessage(messageSuccess));
+            dispatch(push('/'));
+        })
+        .catch((error) => {
+            dispatch(forgottenPasswordFailure(error.response.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
+};
+
+// ===== Reset password ===== //
+export const RESET_USER_PASSWORD_STARTED = 'auth/RESET_USER_PASSWORD_STARTED';
+export const RESET_USER_PASSWORD_FAILURE = 'auth/RESET_USER_PASSWORD_FAILURE';
+export const RESET_USER_PASSWORD_SUCCESS = 'auth/RESET_USER_PASSWORD_SUCCESS';
+
+
+export const resetPasswordAction = () => ({ type: RESET_USER_PASSWORD_STARTED });
+
+export const resetPasswordSuccess = () => ({ type: RESET_USER_PASSWORD_SUCCESS });
+
+export const resetPasswordFailure = error => ({
+    type: RESET_USER_PASSWORD_FAILURE,
+    payload: {
+        error,
+    },
+});
+
+
+export const resetPassword = (password, resetToken) => (dispatch) => {
+    APIFetch.fetchPrelloAPI(`account/password/${resetToken}`, {
+        password,
+    }, APIFetch.PUT)
+        .then(() => {
+            dispatch(resetPasswordSuccess());
+            dispatch(displaySuccessMessage('Password well updated !'));
+            dispatch(push('/signin'));
+        })
+        .catch((error) => {
+            dispatch(resetPasswordFailure(error.res.data.error));
+            dispatch(displayErrorMessage(error.response.data.error));
+        });
 };

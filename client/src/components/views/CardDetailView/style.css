@@ -50,7 +50,7 @@
     margin-bottom: 5px;
 }
 
-.btnDescription {
+.btnDescription, .btnDueDate {
     background: none;
     border: none;
     height: 100%;
@@ -61,10 +61,10 @@
     color: #888;
 }
 
-.clickableDescription {
+.clickableDescription, .clickableDueDate {
     width: 100%;
 }
-.clickableDescription:hover {
+.clickableDescription:hover, .clickableDueDate:hover {
     background-color: #f4f4f4;
 }
 
