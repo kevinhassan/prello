@@ -298,8 +298,10 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.archiveCard(req.params.cardId, req.body.isArchived);
+                const card = await cardController.archiveCard(req.params.cardId, req.body.isArchived);
+                const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -311,8 +313,10 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                await cardController.editDate(req.params.cardId, req.body.dueDate);
+                const card = await cardController.editDate(req.params.cardId, req.body.dueDate);
+                const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
