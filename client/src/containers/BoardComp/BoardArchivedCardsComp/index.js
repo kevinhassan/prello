@@ -36,10 +36,11 @@ class BoardArchivedCardsComp extends React.Component {
     }
 }
 BoardArchivedCardsComp.propTypes = {
-    cards: PropTypes.arrayOf(PropTypes.object).isRequired,
+    cards: PropTypes.arrayOf(PropTypes.object),
     archiveCard: PropTypes.func.isRequired,
 };
 BoardArchivedCardsComp.defaultProps = {
+    cards: [],
 };
 
 // Put info from the store state in props

@@ -9,13 +9,25 @@ import './style.css';
 
 
 const ArchivedBoardsView = props => (
-    <span className="boardSettingsItem" style={{ display: 'inline-block' }}>
-        <select name="Archived Boards" defaultValue="Archived boards" id="archivedBoards" className="custom-select">
-            <option disabled>Archived boards</option>
-            {props.boards.filter(board => board.isArchived).map(board => (
-                <option name={board._id} onClick={event => props.updateIsArchived(event, board._id, false)}>{board.name}</option>
-            ))}
-        </select>
+    <span style={{ display: 'inline-block', marginLeft: '10px' }}>
+        {props.boards.length > 0
+            ? (
+                <select
+                    name="Archived Boards"
+                    value="default"
+                    id="archivedBoards"
+                    className="custom-select"
+                >
+                    <option value="default" disabled>
+                        {props.boards.length > 1 ? `${props.boards.length} boards archived` : `${props.boards.length} board archived`}
+                    </option>
+                    {props.boards.map(board => (
+                        <option name={board._id} onClick={event => props.updateIsArchived(event, board._id, false)}>{board.name}</option>
+                    ))}
+                </select>
+            ) : (
+                <p><i>No boards archived</i></p>
+            )}
     </span>
 );
 
