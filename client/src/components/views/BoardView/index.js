@@ -47,13 +47,9 @@ const BoardView = props => (
                     boardId={props.board._id}
                 />
 
-                <span className="boardSettingsSeparator" />
-
                 <BoardArchivedListsComp
                     board={props.board}
                 />
-
-                <span className="boardSettingsSeparator" />
 
                 <BoardArchivedCardsComp
                     board={props.board}

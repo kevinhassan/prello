@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 // ===== Components
@@ -9,22 +9,28 @@ import './style.css';
 
 
 const BoardArchivedListsView = props => (
-    <span className="boardSettingsItem" style={{ display: 'inline-block', verticalAlign: 'unset' }}>
-        <select
-            name="Archived lists"
-            defaultValue="Archived lists"
-            id="archivedLists"
-            className="custom-select  custom-select-sm"
-        >
-            <option disabled>Archived lists</option>
-            {props.board.lists.filter(list => list.isArchived).map(list => (
-                <option name={list._id} onClick={() => props.unarchiveList(list)}>{list.name}</option>))}
-        </select>
-    </span>
+    <Fragment>
+        <span className="boardSettingsSeparator" />
+        <span className="boardSettingsItem" style={{ display: 'inline-block', verticalAlign: 'unset' }}>
+            <select
+                name="Archived lists"
+                value="default"
+                id="archivedLists"
+                className="custom-select custom-select-sm"
+            >
+                <option value="default" disabled>
+                    {props.lists.length > 1 ? `${props.lists.length} lists archived` : `${props.lists.length} list archived`}
+                </option>
+                {props.lists.map(list => (
+                    <option key={list._id} name={list._id} onClick={() => props.unarchiveList(list)}>{list.name}</option>
+                ))}
+            </select>
+        </span>
+    </Fragment>
 );
 
 BoardArchivedListsView.propTypes = {
-    board: PropTypes.object.isRequired,
+    lists: PropTypes.arrayOf(PropTypes.object).isRequired,
     unarchiveList: PropTypes.func.isRequired,
 };
 BoardArchivedListsView.defaultProps = {
