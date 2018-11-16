@@ -10,7 +10,9 @@ import ListComp from '../../../containers/ListComp';
 import BoardNameComp from '../../../containers/BoardComp/BoardNameComp';
 import BoardMembersComp from '../../../containers/BoardComp/BoardMembersComp';
 import GithubLinkBoardComp from '../../../containers/BoardComp/GithubLinkBoardComp';
-import BoardArchivedItemsComp from '../../../containers/BoardComp/BoardArchivedItemsComp';
+import BoardArchivedListsComp from '../../../containers/BoardComp/BoardArchivedListsComp';
+import BoardArchivedCardsComp from '../../../containers/BoardComp/BoardArchivedCardsComp';
+
 
 // ===== Others
 import './style.css';
@@ -49,7 +51,13 @@ const BoardView = props => (
 
                 <span className="boardSettingsSeparator" />
 
-                <BoardArchivedItemsComp
+                <BoardArchivedListsComp
+                    board={props.board}
+                />
+
+                <span className="boardSettingsSeparator" />
+
+                <BoardArchivedCardsComp
                     board={props.board}
                 />
 

@@ -1,0 +1,11 @@
+.custom-select{
+    width: auto;
+    height: 10%;
+    background: transparent;
+    border: none;
+    padding: initial;
+}
+
+.custom-select:hover{
+    cursor: pointer;
+}

@@ -7,11 +7,11 @@ import { connect } from 'react-redux';
 import { archiveList } from '../../../actions/lists';
 
 // ===== Components / Containers
-import BoardArchivedItemsView from '../../../components/views/BoardView/BoardArchivedItemsView';
+import BoardArchivedListsView from '../../../components/views/BoardView/BoardArchivedListsView';
 
 // ===== Others
 
-class BoardArchivedItemsComp extends React.Component {
+class BoardArchivedListsComp extends React.Component {
     constructor(props) {
         super(props);
 
@@ -24,18 +24,18 @@ class BoardArchivedItemsComp extends React.Component {
 
     render() {
         return (
-            <BoardArchivedItemsView
+            <BoardArchivedListsView
                 board={this.props.board}
                 unarchiveList={this.handleUnarchiveList}
             />
         );
     }
 }
-BoardArchivedItemsComp.propTypes = {
+BoardArchivedListsComp.propTypes = {
     board: PropTypes.object.isRequired,
     archiveList: PropTypes.func.isRequired,
 };
-BoardArchivedItemsComp.defaultProps = {
+BoardArchivedListsComp.defaultProps = {
 };
 
 // Put info from the store state in props
@@ -63,4 +63,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(BoardArchivedItemsComp);
+)(BoardArchivedListsComp);
