@@ -38,5 +38,9 @@
     position: absolute; 
     bottom: 0;
     right: 0;  
+}
 
+.btnTeamDescription {
+    text-align: left;
+    white-space: pre-wrap;
 }
