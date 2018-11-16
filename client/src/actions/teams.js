@@ -1,7 +1,7 @@
 import { replace } from 'connected-react-router';
 import * as APIFetch from '../helpers/APIFetch';
 import {
-    displayLoadingModal, hideLoadingModal, displayErrorMessage,
+    displayLoadingModal, hideLoadingModal, displayErrorMessage, displaySuccessMessage,
 } from './modal';
 
 // ========================
@@ -127,6 +127,7 @@ export const changeVisibility = (teamId, visibility) => (dispatch) => {
     APIFetch.fetchPrelloAPI(resource, { isVisible: !visibility }, APIFetch.PUT)
         .then(() => {
             dispatch(changeVisibilityTeamSuccessAction(!visibility));
+            dispatch(displaySuccessMessage('Team visibility updated'));
         })
         .catch((error) => {
             dispatch(changeVisibilityTeamFailureAction());

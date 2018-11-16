@@ -13,7 +13,7 @@ import './style.css';
 const TeamView = props => (
     <div className="teamContent container-fluid">
         <div className="row">
-            <div className="col-9">
+            <div className="col-sm-12">
                 {props.isAdmin()
                     ? (
                         <Fragment>
@@ -54,7 +54,6 @@ const TeamView = props => (
                                     <button className="btn btnReseted" type="button" style={{ padding: 0 }} onClick={() => props.changeIsEditingName(true)}>
                                         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
                                     </button>
-
                                 )
                             }
                         </Fragment>
@@ -62,60 +61,64 @@ const TeamView = props => (
                         <h1 style={{ marginTop: 0 }}>{props.team.name}</h1>
                     )
                 }
-                <div className="row">
-                    {props.isAdmin()
-                        ? (
-                            <Fragment>
-                                {props.team.isVisible
-                                    ? (
-                                        <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                                            Public
-                                            {' '}
-                                            <i className="fas fa-eye" />
-                                        </div>
-                                    )
-                                    : (
-                                        <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                                            Private
-                                            {' '}
-                                            <i className="fas fa-eye-slash" />
-                                        </div>
-                                    )
-                                }
-                            </Fragment>
-                        ) : (
-                            <Fragment>
-                                {props.team.isVisible
-                                    ? (
-                                        <div className="col-sm-2 teamVisibility">
-                                            Public
-                                            {' '}
-                                            <i className="fas fa-eye" />
-                                        </div>
-                                    )
-                                    : (
-                                        <div className="col-sm-2 teamVisibility">
-                                            Private
-                                            {' '}
-                                            <i className="fas fa-eye-slash" />
-                                        </div>
-                                    )
-                                }
-                            </Fragment>
-                        )
-                    }
-                </div>
-            </div>
-            <div className="col-3 float-right">
                 {props.isAdmin()
                     ? (
-                        <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
-                            <span>Remove&nbsp;</span>
-                            <i className="fas fa-trash-alt" />
-                        </button>
+                        <span style={{ marginLeft: '10px' }}>
+                            <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
+                                <span>Remove&nbsp;</span>
+                                <i className="fas fa-trash-alt" />
+                            </button>
+                        </span>
                     ) : ''
                 }
             </div>
+        </div>
+        <div className="row">
+            <div className="col-sm-12">
+                {props.isAdmin()
+                    ? (
+                        <Fragment>
+                            {props.team.isVisible
+                                ? (
+                                    <button type="button" className="btn btn-primary teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
+                                            Public
+                                        {' '}
+                                        <i className="fas fa-eye" />
+                                    </button>
+                                )
+                                : (
+                                    <button type="button" className="btn btn-primary teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
+                                            Private
+                                        {' '}
+                                        <i className="fas fa-eye-slash" />
+                                    </button>
+                                )
+                            }
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            {props.team.isVisible
+                                ? (
+                                    <p className="text-dark">
+                                            Public
+                                        {' '}
+                                        <i className="fas fa-eye" />
+                                    </p>
+                                )
+                                : (
+                                    <p className="text-dark">
+                                            Private
+                                        {' '}
+                                        <i className="fas fa-eye-slash" />
+                                    </p>
+                                )
+                            }
+                        </Fragment>
+                    )
+                }
+            </div>
+
+
             <div className="col-sm-12">
                 {props.isAdmin()
                     ? (

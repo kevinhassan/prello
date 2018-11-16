@@ -23,17 +23,17 @@
 .memberMe {
     background-color: #d3ffae;
 }
+
 .teamVisibility {
     align-items: center;
     text-align: center;
-    margin-left: 15px;
-    border-radius: solid 20px;
-    background-color:rgb(0, 156, 221);
     color: white;
 }
+
 .teamVisibility.click:hover {
     cursor: pointer;
 }
+
 .memberButtons{
     position: absolute; 
     bottom: 0;
