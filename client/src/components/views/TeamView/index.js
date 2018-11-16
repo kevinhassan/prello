@@ -65,7 +65,7 @@ const TeamView = props => (
                     ? (
                         <span style={{ marginLeft: '10px' }}>
                             <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
-                                <span>Remove&nbsp;</span>
+                                <span>Delete&nbsp;</span>
                                 <i className="fas fa-trash-alt" />
                             </button>
                         </span>
@@ -117,8 +117,8 @@ const TeamView = props => (
                     )
                 }
             </div>
-
-
+        </div>
+        <div className="row">
             <div className="col-sm-12">
                 {props.isAdmin()
                     ? (
@@ -158,15 +158,27 @@ const TeamView = props => (
                                     <Fragment>
                                         {props.team.description
                                             ? (
-                                                <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btnReseted"
+                                                    style={{ padding: 0 }}
+                                                    onClick={() => props.changeIsEditingDescription(true)}
+                                                    onKeyPress={() => props.changeIsEditingDescription(true)}
+                                                >
                                                     <b>Description:</b>
                                                     {' '}
                                                     {props.team.description}
-                                                </div>
+                                                </button>
                                             ) : (
-                                                <div onClick={() => props.changeIsEditingDescription(true)} onKeyPress={() => props.changeIsEditingDescription(true)}>
+                                                <button
+                                                    type="button"
+                                                    className="btn btnReseted"
+                                                    style={{ padding: 0 }}
+                                                    onClick={() => props.changeIsEditingDescription(true)}
+                                                    onKeyPress={() => props.changeIsEditingDescription(true)}
+                                                >
                                                     <i>No description provided yet.</i>
-                                                </div>
+                                                </button>
                                             )
                                         }
                                     </Fragment>
