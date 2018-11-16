@@ -310,11 +310,11 @@ export const ADD_BOARD_MEMBER_SUCCESS = 'board/ADD_BOARD_MEMBER_SUCCESS';
 
 export const addBoardMemberStartedAction = () => ({ type: ADD_BOARD_MEMBER_STARTED });
 export const addBoardMemberFailureAction = () => ({ type: ADD_BOARD_MEMBER_FAILURE });
-export const addBoardMemberSuccessAction = (boardId, username) => ({
+export const addBoardMemberSuccessAction = (boardId, user) => ({
     type: ADD_BOARD_MEMBER_SUCCESS,
     payload: {
         boardId,
-        username,
+        user,
     },
 });
 export const addBoardMember = (boardId, username) => (dispatch) => {
@@ -323,7 +323,7 @@ export const addBoardMember = (boardId, username) => (dispatch) => {
     const resource = `boards/${boardId}/members`;
     APIFetch.fetchPrelloAPI(resource, { username }, APIFetch.POST)
         .then((res) => {
-            dispatch(addBoardMemberSuccessAction(boardId, res.user));
+            dispatch(addBoardMemberSuccessAction(boardId, res.data.user));
             dispatch(displaySuccessMessage(`${username} added to the board`));
         })
         .catch((error) => {
