@@ -69,14 +69,14 @@ const TeamView = props => (
                                 {props.team.isVisible
                                     ? (
                                         <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                        Public
+                                            Public
                                             {' '}
                                             <i className="fas fa-eye" />
                                         </div>
                                     )
                                     : (
                                         <div className="col-sm-2 teamVisibility click" onClick={props.changeVisibility} onKeyPress={props.changeVisibility}>
-                        Private
+                                            Private
                                             {' '}
                                             <i className="fas fa-eye-slash" />
                                         </div>
@@ -88,14 +88,14 @@ const TeamView = props => (
                                 {props.team.isVisible
                                     ? (
                                         <div className="col-sm-2 teamVisibility">
-                        Public
+                                            Public
                                             {' '}
                                             <i className="fas fa-eye" />
                                         </div>
                                     )
                                     : (
                                         <div className="col-sm-2 teamVisibility">
-                        Private
+                                            Private
                                             {' '}
                                             <i className="fas fa-eye-slash" />
                                         </div>
@@ -106,19 +106,17 @@ const TeamView = props => (
                     }
                 </div>
             </div>
-            <div className="col-3">
-                <div className="row float-right">
-                    {props.isAdmin()
-                        ? (
-                            <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
-                                <span>Remove&nbsp;</span>
-                                <i className="fas fa-trash-alt" />
-                            </button>
-                        ) : ''
-                    }
-                </div>
+            <div className="col-3 float-right">
+                {props.isAdmin()
+                    ? (
+                        <button className="btn btn-danger btn-large removeText" onClick={() => { props.deleteTeam(props.team); }} type="submit">
+                            <span>Remove&nbsp;</span>
+                            <i className="fas fa-trash-alt" />
+                        </button>
+                    ) : ''
+                }
             </div>
-            <div className="col-sm-10">
+            <div className="col-sm-12">
                 {props.isAdmin()
                     ? (
                         <Fragment>
