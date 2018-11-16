@@ -41,16 +41,17 @@ const ListName = props => (
             </div>
 
         ) : (
-            <button
+            <span
                 className="btn btnReseted"
                 type="submit"
                 onClick={() => props.displayForm(true)}
+                onKeyDown={() => props.displayForm(true)}
                 style={{ width: '100%' }}
             >
                 <h3 className="listName">
                     {props.name}
                 </h3>
-            </button>
+            </span>
         )}
     </div>
 );
