@@ -69,14 +69,17 @@ exports.signUp = async (data) => {
             avatarUrl: data.avatarUrl,
         });
         const newUser = await user.save();
-        const transporter = nodemailer.createTransport({
-            service: 'Mailjet',
-            auth: {
-                user: process.env.MAILJET_USER,
-                pass: process.env.MAILJET_PASSWORD
-            }
-        });
-        await transporter.sendMail(confirmAccountCreationMail(newUser.email));
+
+        if (process.env.MAILJET_USER && process.env.MAILJET_PASSWORD) {
+            const transporter = nodemailer.createTransport({
+                service: 'Mailjet',
+                auth: {
+                    user: process.env.MAILJET_USER,
+                    pass: process.env.MAILJET_PASSWORD
+                }
+            });
+            await transporter.sendMail(confirmAccountCreationMail(newUser.email));
+        }
         return newUser;
     } catch (err) {
         if (err.status) throw err;
