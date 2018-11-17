@@ -6,7 +6,7 @@ module.exports = (passport) => {
     passport.use(new GitHubStrategy({
         clientID: process.env.GITHUB_ID,
         clientSecret: process.env.GITHUB_SECRET,
-        callbackURL: '/auth/github/callback',
+        callbackURL: `${process.env.DOMAIN_URL}/auth/github/callback`,
         passReqToCallback: true
     }, ((async (req, accessToken, refreshToken, profile, done) => {
         try {
