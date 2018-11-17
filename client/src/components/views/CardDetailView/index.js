@@ -64,7 +64,12 @@ const CardDetailView = props => (
                                 className="cardDetailDate clickableDueDate"
                             >
                                 <div className="form-check">
-                                    <input className="form-check-input" type="checkbox" onChange={props.changeDueDateStatus} checked={!!props.card.dueDate.isDone} />
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        onChange={props.changeDueDateStatus}
+                                        checked={!!props.card.dueDate.isDone}
+                                    />
                                     <button
                                         className="btn btnDueDate"
                                         type="button"

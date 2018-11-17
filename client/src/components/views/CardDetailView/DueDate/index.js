@@ -11,19 +11,33 @@ const DueDate = props => (
             <form onSubmit={props.editDate} style={{ marginTop: '5px' }}>
                 <div className="row" style={{ marginBottom: '3px' }}>
                     <div className="col-sm-12">
-                        <input type="date" name="duedate" className="datepicker form-control form-control-sm" />
+                        <input
+                            type="date"
+                            name="duedate"
+                            className="datepicker form-control form-control-sm"
+                        />
                     </div>
                 </div>
                 <div className="row" style={{ marginBottom: '3px' }}>
                     <div className="col-sm-12">
-                        <input type="text" name="time" placeholder="12:00" className="timePicker form-control form-control-sm" />
+                        <input
+                            type="text"
+                            name="time"
+                            placeholder="hh:mm"
+                            className="timePicker form-control form-control-sm"
+                        />
                     </div>
                 </div>
                 <div className="btn-group">
                     <button type="submit" className="btn btn-sm btn-success">
                         <i className="fas fa-check" />
                     </button>
-                    <button className="btn btn-secondary btn-sm" type="reset" onClick={() => props.changeIsEditingDueDate(false)} onKeyPress={() => props.changeIsEditingDueDate(false)}>
+                    <button
+                        className="btn btn-secondary btn-sm"
+                        type="reset"
+                        onClick={() => props.changeIsEditingDueDate(false)}
+                        onKeyPress={() => props.changeIsEditingDueDate(false)}
+                    >
                         <i className="fas fa-times updateIcon" />
                     </button>
 
@@ -37,7 +51,7 @@ const DueDate = props => (
                 type="button"
                 onClick={() => props.changeIsEditingDueDate(true)}
             >
-    Add a due date...
+            Add a due date...
             </button>
         )
 );
