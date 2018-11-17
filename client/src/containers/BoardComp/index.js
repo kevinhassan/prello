@@ -2,6 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as fileDownload from 'js-file-download';
+
 
 // ===== Actions
 import { fetchBoard, updateListsIndexes, removeBoardFetch } from '../../actions/boards';
@@ -24,6 +26,7 @@ class BoardComp extends React.Component {
         this.handleAddList = this.handleAddList.bind(this);
         this.reorder = this.reorder.bind(this);
         this.handleListAdded = this.handleListAdded.bind(this);
+        this.handleExportDataFile = this.handleExportDataFile.bind(this);
     }
 
     componentWillMount() {
@@ -118,6 +121,13 @@ class BoardComp extends React.Component {
         }
     }
 
+    handleExportDataFile() {
+        const file = {};
+        file.board = this.props.board;
+        fileDownload(JSON.stringify(file), 'data '.concat(this.props.board.name).concat('_board.json'));
+    }
+
+
     render() {
         const { board, errorMessage, status } = this.props;
         if (errorMessage || status) {
@@ -136,6 +146,7 @@ class BoardComp extends React.Component {
                     onDragEnd={this.handleOnDragEnd}
                     displayAddListForm={this.handleAddList}
                     onListAdded={this.handleListAdded}
+                    handleExportDataFile={this.handleExportDataFile}
                 />
             );
         }
