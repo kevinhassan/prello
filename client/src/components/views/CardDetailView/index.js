@@ -58,17 +58,18 @@ const CardDetailView = props => (
                             Due date
                     </h2>
 
-                    {props.card.dueDate && !(props.isEditingDueDate)
+                    {props.card.dueDate && props.card.dueDate.date && !(props.isEditingDueDate)
                         ? (
                             <div
                                 className="cardDetailDate clickableDueDate"
                             >
+                                <input className="form-check-input" value={props.card.dueDate.isDone} type="checkbox" onChange={props.changeDueDateStatus} checked={!!props.card.dueDate.isDone} />
                                 <button
                                     className="btn btnDueDate"
                                     type="button"
                                     onClick={() => props.changeIsEditingDueDate(true)}
                                 >
-                                    {new Date(props.card.dueDate).toLocaleDateString('en-GB',
+                                    {new Date(props.card.dueDate.date).toLocaleDateString('en-GB',
                                         {
                                             day: 'numeric',
                                             month: 'numeric',
@@ -143,6 +144,7 @@ CardDetailView.propTypes = {
     isEditingDueDate: PropTypes.bool,
     changeIsEditingDueDate: PropTypes.func.isRequired,
     editDate: PropTypes.func.isRequired,
+    changeDueDateStatus: PropTypes.func.isRequired,
 };
 
 CardDetailView.defaultProps = {

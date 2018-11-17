@@ -40,8 +40,10 @@ const updateCardName = [
 ];
 
 const editDate = [
-    check('dueDate')
+    check('date')
         .isString(),
+    check('isDone')
+        .isBoolean(),
 ];
 
 module.exports = {

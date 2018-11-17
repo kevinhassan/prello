@@ -313,7 +313,7 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                const card = await cardController.editDate(req.params.cardId, req.body.dueDate);
+                const card = await cardController.editDate(req.params.cardId, req.body.date, req.body.isDone);
                 const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
                 updateClientsOnBoard(list.board._id);
