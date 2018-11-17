@@ -1,6 +1,5 @@
 const axios = require('axios');
 const passport = require('passport');
-// const slackController = require('../controllers/slack');
 const Slack = require('../middlewares/slack');
 const Board = require('../models/Board');
 const BoardController = require('../controllers/boards');
@@ -31,6 +30,9 @@ function parse(stringToParse) {
 }
 
 async function addCard(params, board, listParam) {
+    if (params.list === '') {
+        return 'You have to choose a list : addCard #boardName %listName $cardName';
+    }
     if (params.cards.length !== 0) {
         if (!listParam && !params.keyword.includes('-R')) {
             return `The list ${params.list} does not exist.`;
@@ -47,15 +49,18 @@ async function addCard(params, board, listParam) {
         });
         return `You have add the cards ${params.cards.toString()} to ${params.list}.`;
     }
-    return 'You have to choose a card.';
+    return 'You have to choose a card : addCard #boardName %listName $cardName';
 }
 
 async function addLabel(params, board, listParam) {
+    if (params.list === '') {
+        return 'You have to choose a list : addLabel #boardName %listName $cardName &labelName';
+    }
     if (params.cards.length === 0) {
-        return 'You have to choose at least a card.';
+        return 'You have to choose at least a card : addLabel #boardName %listName $cardName &labelName';
     }
     if (params.labels.length === 0) {
-        return 'You have to choose at least a label.';
+        return 'You have to choose at least a label : addLabel #boardName %listName $cardName &labelName';
     }
     if (!listParam) {
         return `The list ${params.list} does not exist.`;
@@ -96,8 +101,11 @@ function getInfo(params, board, listParam) {
 }
 
 async function removeCard(params, board, listParam) {
+    if (params.list === '') {
+        return 'You have to choose a list : removeCard #boardName %listName $cardName';
+    }
     if (params.cards.length === 0) {
-        return 'You have to choose at least a card to archive.';
+        return 'You have to choose at least a card to archive : removeCard #boardName %listName $cardName';
     }
     if (!listParam) {
         return `The list ${params.list} does not exist.`;
@@ -112,11 +120,14 @@ async function removeCard(params, board, listParam) {
 }
 
 async function removeLabel(params, board, listParam) {
+    if (params.list === '') {
+        return 'You have to choose a list : removeLabel #boardName %listName $cardName &labelName';
+    }
     if (params.cards.length === 0) {
-        return 'You have to choose at least a card.';
+        return 'You have to choose at least a card : removeLabel #boardName %listName $cardName &labelName';
     }
     if (params.labels.length === 0) {
-        return 'You have to choose at least a label.';
+        return 'You have to choose at least a label : removeLabel #boardName %listName $cardName &labelName';
     }
     if (!listParam) {
         return `The list ${params.list} does not exist.`;
