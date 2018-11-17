@@ -39,6 +39,7 @@ class CardComp extends React.Component {
 
         this.changeIsEditingDueDate = this.changeIsEditingDueDate.bind(this);
         this.handleEditDate = this.handleEditDate.bind(this);
+
         this.handleChangeDueDateStatus = this.handleChangeDueDateStatus.bind(this);
     }
 
@@ -102,12 +103,12 @@ class CardComp extends React.Component {
 
     handleEditDate(event) {
         event.preventDefault();
-        const date = event.target.duedate.value;
+        const date = event.target.duedate.value.trim();
         const time = event.target.time.value;
-        let dueDate = { date: '', isDone: false };
+        let dueDate = { date: null };
         if (!date && !time) {
-            dueDate = {};
-        } else if (dueDate) {
+            dueDate = { date: null };
+        } else if (date) {
             if (time) {
                 dueDate.date = new Date(`${date} ${time}`);
             } else {
@@ -120,7 +121,8 @@ class CardComp extends React.Component {
             dueDate.date = new Date();
             dueDate.date.setHours(hour, minute);
         }
-        this.props.editDate(this.props.card, dueDate, this.props.card.dueDate);
+        // if the due date is different then update it
+        if (dueDate.date !== this.props.card.dueDate.date) this.props.editDate(this.props.card, dueDate, this.props.card.dueDate);
         this.changeIsEditingDueDate(false);
     }
 

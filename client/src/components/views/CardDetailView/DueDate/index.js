@@ -19,9 +19,15 @@ const DueDate = props => (
                         <input type="text" name="time" placeholder="12:00" className="timePicker form-control form-control-sm" />
                     </div>
                 </div>
-                <button type="submit" className="btn btn-sm btn-success">
-                    <i className="fas fa-check" />
-                </button>
+                <div className="btn-group">
+                    <button type="submit" className="btn btn-sm btn-success">
+                        <i className="fas fa-check" />
+                    </button>
+                    <button className="btn btn-secondary btn-sm" type="reset" onClick={() => props.changeIsEditingDueDate(false)} onKeyPress={() => props.changeIsEditingDueDate(false)}>
+                        <i className="fas fa-times updateIcon" />
+                    </button>
+
+                </div>
                 <small><i className="text-secondary float-right"> 24h format</i></small>
             </form>
         )

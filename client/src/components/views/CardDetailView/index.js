@@ -63,21 +63,23 @@ const CardDetailView = props => (
                             <div
                                 className="cardDetailDate clickableDueDate"
                             >
-                                <input className="form-check-input" value={props.card.dueDate.isDone} type="checkbox" onChange={props.changeDueDateStatus} checked={!!props.card.dueDate.isDone} />
-                                <button
-                                    className="btn btnDueDate"
-                                    type="button"
-                                    onClick={() => props.changeIsEditingDueDate(true)}
-                                >
-                                    {new Date(props.card.dueDate.date).toLocaleDateString('en-GB',
-                                        {
-                                            day: 'numeric',
-                                            month: 'numeric',
-                                            year: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                        })}
-                                </button>
+                                <div className="form-check">
+                                    <input className="form-check-input" type="checkbox" onChange={props.changeDueDateStatus} checked={!!props.card.dueDate.isDone} />
+                                    <button
+                                        className="btn btnDueDate"
+                                        type="button"
+                                        onClick={() => props.changeIsEditingDueDate(true)}
+                                    >
+                                        {new Date(props.card.dueDate.date).toLocaleDateString('en-GB',
+                                            {
+                                                day: 'numeric',
+                                                month: 'numeric',
+                                                year: 'numeric',
+                                                hour: 'numeric',
+                                                minute: 'numeric',
+                                            })}
+                                    </button>
+                                </div>
                             </div>
                         )
                         : (

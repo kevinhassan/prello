@@ -67,7 +67,10 @@
 .clickableDescription:hover, .clickableDueDate:hover {
     background-color: #f4f4f4;
 }
-
+.cardDetailDate.clickableDueDate .form-check{
+    display: flex;
+    align-items: center;
+}
 .btnDescription:hover {
     cursor: pointer;
 }
