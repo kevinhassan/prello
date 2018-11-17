@@ -32,7 +32,7 @@ class ListComp extends React.Component {
         event.preventDefault();
         const name = event.target.cardName.value.trim();
         const newCard = new Card({
-            name, list: this.props.listId,
+            name, list: { _id: this.props.listId },
         });
         this.props.createCard(newCard);
         this.setState({ isInputVisible: false });
