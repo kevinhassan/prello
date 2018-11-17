@@ -48,7 +48,7 @@ const mapStateToProps = ({ currentBoard, auth }) => {
     if (currentBoard.board && currentBoard.board.lists) {
         return {
             clientId: auth.clientId,
-            cards: currentBoard.board.lists.flatMap(l => l.cards.filter(c => c.isArchived)),
+            cards: currentBoard.board.lists.flatMap(l => (l.cards ? l.cards.filter(c => c.isArchived) : [])),
             boardAdmins: currentBoard.board.admins,
             members: currentBoard.board.members,
         };

@@ -10,7 +10,8 @@ const cardSchema = new mongoose.Schema({
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     labels: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Label'
+        ref: 'Label',
+        default: []
     }],
     list: {
         type: mongoose.Schema.Types.ObjectId,
