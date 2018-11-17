@@ -127,7 +127,6 @@ class BoardComp extends React.Component {
         fileDownload(JSON.stringify(file), 'data '.concat(this.props.board.name).concat('_board.json'));
     }
 
-
     render() {
         const { board, errorMessage, status } = this.props;
         if (errorMessage || status) {

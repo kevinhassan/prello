@@ -74,3 +74,8 @@
     overflow-y: hidden;
 }
 
+
+.exportJsonBtn {
+    float: right;
+    height: 40px;
+}

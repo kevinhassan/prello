@@ -379,7 +379,7 @@ exports.leaveTeam = async (userId, teamId) => {
     try {
         const user = await User.findById(userId);
         if (!user) throw new MyError(404, 'User unknown');
-        
+
         await User.updateOne({ _id: userId },
             { $pull: { teams: teamId } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });

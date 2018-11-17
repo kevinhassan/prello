@@ -51,8 +51,12 @@ const BoardView = props => (
 
                 <BoardArchivedCardsComp />
             </div>
-            <div className="col-sm-2 boardExportBtn">
-                <button type="button" className="btn btn-primary exportJsonBtn" onClick={() => props.handleExportDataFile()}>Export json</button>
+            <div className="col-sm-2 boardExportBtn" style={{ paddingRight: 0 }}>
+                <button type="button" className="btn btn-dark exportJsonBtn" onClick={() => props.handleExportDataFile()}>
+                    <i className="fas fa-file-download" />
+                    {' '}
+                    JSON
+                </button>
             </div>
         </div>
         <div className="listsAndAddPanel">
