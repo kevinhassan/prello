@@ -57,8 +57,27 @@ module.exports = (router) => {
                         }
                         return 'You have to choose a user.';
                     }
-                    if (params.keyword[0] === 'duedate') {
-                        return 'The next task to do are : .';
+                    if (params.keyword[0] === 'getInfo') {
+                        let returnString = '';
+                        if (listParam && params.cards.length !== 0) {
+                            params.cards.forEach((card) => {
+                                const findCard = listParam.cards.filter(listCard => listCard.name === card);
+                                findCard.forEach((findedCard) => {
+                                    returnString += `The card ${findedCard.name} description is ${findedCard.description} \n`;
+                                });
+                            });
+                        } else if (!listParam) {
+                            returnString += `The board ${board.name} have ${board.lists.length} list`;
+                            board.lists.forEach((list) => {
+                                returnString += ` \n-${list.name}`;
+                            });
+                        } else {
+                            returnString += `The list ${listParam.name} have ${listParam.cards.length} cards`;
+                            listParam.cards.forEach((card) => {
+                                returnString += ` \n-${card.name}`;
+                            });
+                        }
+                        return returnString;
                     }
                     if (params.keyword[0] === 'removeCard') {
                         if (params.cards.length === 0) {
@@ -117,7 +136,7 @@ module.exports = (router) => {
                         });
                         return `You have remove the labels ${params.labels.toString()} from the cards ${params.cards.toString()}.`;
                     }
-                    return 'No valid key-word found. \nValid key-word are add, remove, duedate.';
+                    return 'No valid key-word found. \nValid key-word are add, remove, getinfo, addLabel, removeLabel.';
                 };
                 const result = await message(params);
 
