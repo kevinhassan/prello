@@ -27,7 +27,17 @@ export default function currentBoardReducer(state = initialState, action) {
         case actions.FETCH_BOARD_SUCCESS:
             return {
                 ...state,
-                board: action.payload.board,
+                board: {
+                    ...action.payload.board,
+                    lists:
+                        action.payload.board.lists.sort((l1, l2) => l1.isArchived > l2.isArchived)
+                            .map(l => (
+                                {
+                                    ...l,
+                                    cards: l.cards.sort((c1, c2) => c1.isArchived > c2.isArchived),
+                                }
+                            )),
+                },
             };
 
         case actions.FETCH_BOARD_FAILURE:
@@ -158,14 +168,15 @@ export default function currentBoardReducer(state = initialState, action) {
                 ...state,
                 board: {
                     ...state.board,
-                    lists: state.board.lists.map(l => (
-                        l._id !== action.payload.list._id
-                            ? l
-                            : {
-                                ...l,
-                                isArchived: action.payload.isArchived,
-                            }
-                    )),
+                    lists: state.board.lists.sort((l1, l2) => l1.isArchived > l2.isArchived)
+                        .map(l => (
+                            l._id !== action.payload.list._id
+                                ? l
+                                : {
+                                    ...l,
+                                    isArchived: action.payload.isArchived,
+                                }
+                        )),
                 },
             };
 
@@ -362,12 +373,13 @@ export default function currentBoardReducer(state = initialState, action) {
                             ? l
                             : {
                                 ...l,
-                                cards: l.cards.map(card => (card._id === action.payload.card._id
-                                    ? {
-                                        ...card,
-                                        isArchived: action.payload.isArchived,
-                                    }
-                                    : card)),
+                                cards: l.cards.sort((c1, c2) => c1.isArchived > c2.isArchived)
+                                    .map(card => (card._id === action.payload.card._id
+                                        ? {
+                                            ...card,
+                                            isArchived: action.payload.isArchived,
+                                        }
+                                        : card)),
                             }
                     )),
                 },
