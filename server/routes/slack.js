@@ -149,9 +149,7 @@ module.exports = (router) => {
         .post('/slack/', Slack.isTokenValid, async (req, res) => {
             try {
                 res.status(204).send();
-                console.log(req.param('token'));
                 const params = parse(req.param('text'));
-                console.log(params.board);
                 const message = async (params) => {
                     const boardId = await Board.findOne({ name: params.board });
                     const board = await BoardController.getBoard(boardId);
@@ -165,10 +163,6 @@ module.exports = (router) => {
                     if (!board) {
                         return 'Board not found.';
                     }
-                    /* if (params.list === '') {
-                        return 'You have to choose a list';
-                    } */
-                    console.log(params.keyword[0]);
                     const listParam = board.lists.find(list => list.name === params.list && list.isArchived === false);
                     if (params.keyword[0] === 'addCard') {
                         return addCard(params, board, listParam);
