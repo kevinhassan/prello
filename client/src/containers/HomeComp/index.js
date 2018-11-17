@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { push } from 'connected-react-router';
 
 // ===== Others
-import IGLogo from '../../assets/ig_logo.png'
-import PolytechLogo from '../../assets/polytech_montpellier_logo.png'
+import IGLogo from '../../assets/ig_logo.png';
+import PolytechLogo from '../../assets/polytech_montpellier_logo.png';
 
 class HomeComp extends React.Component {
     render() {
