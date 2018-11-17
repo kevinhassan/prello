@@ -42,12 +42,11 @@ exports.postCard = async (listId, name) => {
         if (!list) throw new MyError(404, 'List not found');
 
         const newCard = await cardController.createCard(name, listId);
-        const newList = await List.findOneAndUpdate({ _id: listId },
+        await List.findOneAndUpdate({ _id: listId },
             { $addToSet: { cards: { _id: newCard._id } } },
             { new: true });
 
-        socket.updateClientsOnBoard(newList.board._id);
-        return newList;
+        return newCard;
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'CastError') {

@@ -232,8 +232,10 @@ module.exports = (router) => {
                 const cardCreated = await cardController.postCard({
                     name: req.body.name, list: req.body.list,
                 });
+                const list = await listController.getList(cardCreated.list._id);
 
-                res.status(201).send({ message: 'Card successfully created', card: cardCreated._id });
+                res.status(201).send({ message: 'Card successfully created', card: cardCreated });
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

@@ -170,6 +170,22 @@ export default function currentBoardReducer(state = initialState, action) {
             };
 
         // ===== CARDS ACTIONS ===== //
+        case cardActions.CREATE_CARD_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    lists: state.board.lists.map(l => (
+                        l._id !== action.payload.card.list._id
+                            ? l
+                            : {
+                                ...l,
+                                cards: l.cards.concat(action.payload.card),
+                            }
+                    )),
+                },
+            };
+
         // ===== Description ===== //
         // With started: action.payload.description is the new description.
         // With failure: action.payload.description is the old description.
