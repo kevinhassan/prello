@@ -187,7 +187,7 @@ export default function currentBoardReducer(state = initialState, action) {
                 board: {
                     ...state.board,
                     lists: state.board.lists.map(l => (
-                        l._id !== action.payload.card.list._id
+                        l._id !== action.payload.card.list
                             ? l
                             : {
                                 ...l,

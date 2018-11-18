@@ -1,4 +1,3 @@
-const socket = require('../socket');
 const MyError = require('../util/error');
 
 const List = require('../models/List');
@@ -45,7 +44,6 @@ exports.postCard = async (listId, name) => {
         await List.findOneAndUpdate({ _id: listId },
             { $addToSet: { cards: { _id: newCard._id } } },
             { new: true });
-
         return newCard;
     } catch (err) {
         if (err.status) throw err;

@@ -22,7 +22,7 @@ export const createCardSuccessAction = card => ({
 export const createCard = card => (dispatch) => {
     dispatch(createCardStartedAction());
     dispatch(displayLoadingModal());
-    const resource = `lists/${card.list}/cards/`;
+    const resource = `lists/${card.list._id}/cards/`;
     APIFetch.fetchPrelloAPI(resource, { name: card.name }, APIFetch.POST)
         .then((res) => {
             dispatch(createCardSuccessAction(res.data.card));

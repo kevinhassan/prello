@@ -91,7 +91,7 @@ describe(actions.FETCH_BOARD_STARTED, () => {
 
 describe(actions.FETCH_BOARD_SUCCESS, () => {
     it('should put the new board in state', () => {
-        const newBoard = { _id: 'newBoardI', name: 'new board' };
+        const newBoard = { _id: 'newBoardI', name: 'new board', lists: [] };
         const action = actions.fetchBoardSuccessAction(newBoard);
         const finalState = currentBoardReducer(state, action);
 
