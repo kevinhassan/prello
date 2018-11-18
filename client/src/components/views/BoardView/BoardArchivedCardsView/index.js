@@ -15,6 +15,7 @@ const BoardArchivedCardsView = props => (
             <select
                 name="Archived Cards"
                 value="default"
+                onChange={() => {}}
                 id="archivedCards"
                 className="custom-select custom-select-sm"
             >

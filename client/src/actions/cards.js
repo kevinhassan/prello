@@ -263,7 +263,7 @@ export const editDate = (card, dueDate, initialDate) => (dispatch) => {
     dispatch(editDateStartedAction(card, dueDate));
     dispatch(displayLoadingModal());
     const resource = `cards/${card._id}/dueDate`;
-    APIFetch.fetchPrelloAPI(resource, { dueDate, initialDate }, APIFetch.PUT)
+    APIFetch.fetchPrelloAPI(resource, { date: dueDate.date, isDone: dueDate.isDone }, APIFetch.PUT)
         .then(() => {
             dispatch(editDateSuccessAction());
             dispatch(displaySuccessMessage('Due date updated'));
