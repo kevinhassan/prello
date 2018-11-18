@@ -17,12 +17,20 @@ const BoardArchivedListsView = props => (
                 value="default"
                 id="archivedLists"
                 className="custom-select custom-select-sm"
+                style={{ maxWidth: '12vw' }}
             >
                 <option value="default" disabled>
                     {props.lists.length > 1 ? `${props.lists.length} lists archived` : `${props.lists.length} list archived`}
                 </option>
                 {props.lists.map(list => (
-                    <option key={list._id} name={list._id} onClick={() => props.unarchiveList(list)}>{list.name}</option>
+                    <option
+                        key={list._id}
+                        name={list._id}
+                        onClick={() => props.unarchiveList(list)}
+                        style={{overflow: 'hidden'}}
+                    >
+                        {list.name}
+                    </option>
                 ))}
             </select>
         </span>
