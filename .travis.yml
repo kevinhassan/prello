@@ -36,7 +36,6 @@ before_script:
 - cd $TEST_DIR
 - npm install
 - npm test
-- sonar-scanner
 
 notifications:
   email: false
