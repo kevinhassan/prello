@@ -15,6 +15,7 @@ cache:
 addons:
   sonarcloud:
     organization: "kevinhassan-github"
+    branch: - master-sonar-scanner
     token:
       secure: "YTnMdPnt4cH84iID9HaoN4Rb
 WgQyLSMrTODeefE9RuFkwljL253F/UvimbC
@@ -36,6 +37,7 @@ before_script:
 - cd $TEST_DIR
 - npm install
 - npm test
+- sonar-scanner
 
 notifications:
   email: false
