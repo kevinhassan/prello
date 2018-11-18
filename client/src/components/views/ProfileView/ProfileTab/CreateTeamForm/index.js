@@ -24,6 +24,7 @@ const CreateTeamForm = props => (
                             placeholder="Enter team name"
                             required
                             type="text"
+                            pattern="\s*(\S\s*){1,}"
                         />
                         <div className="form-check" style={{ margin: '0 10px' }}>
                             <input

@@ -44,7 +44,7 @@ class ProfileComp extends React.Component {
 
     handleCreateTeam(event) {
         event.preventDefault();
-        this.props.createTeam(event.target.name.value, event.target.isPublic.checked);
+        this.props.createTeam(event.target.name.value.trim(), event.target.isPublic.checked);
         this.setState({ isCreateTeamFormVisible: false });
     }
 

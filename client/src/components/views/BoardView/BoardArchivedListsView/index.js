@@ -27,7 +27,6 @@ const BoardArchivedListsView = props => (
                         key={list._id}
                         name={list._id}
                         onClick={() => props.unarchiveList(list)}
-                        style={{overflow: 'hidden'}}
                     >
                         {list.name}
                     </option>
