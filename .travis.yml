@@ -15,7 +15,7 @@ cache:
 addons:
   sonarcloud:
     organization: "kevinhassan-github"
-    branch: - master-sonar-scanner
+    branches: - master-sonar-scanner
     token:
       secure: "YTnMdPnt4cH84iID9HaoN4Rb
 WgQyLSMrTODeefE9RuFkwljL253F/UvimbC
