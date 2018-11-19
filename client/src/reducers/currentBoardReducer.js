@@ -158,6 +158,15 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        case actions.ADD_BOARD_TEAM_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    teams: state.board.teams.concat(action.payload.teamId),
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
