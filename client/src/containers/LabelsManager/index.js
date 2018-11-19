@@ -38,6 +38,7 @@ class LabelsManager extends React.Component {
         this.handleAddLabel = this.handleAddLabel.bind(this);
         this.handleDeleteBoardLabel = this.handleDeleteBoardLabel.bind(this);
         this.editDisplayDeleteConfirmationModal = this.editDisplayDeleteConfirmationModal.bind(this);
+        this.canManageLabels = this.canManageLabels.bind(this);
     }
 
     // Update the labels if something changed
@@ -84,6 +85,11 @@ class LabelsManager extends React.Component {
         });
     }
 
+    canManageLabels() {
+        if (!this.props.clientId) return false;
+        return this.props.boardAdmins.includes(a => a._id === this.props.clientId);
+    }
+
     render() {
         return (
             <div className="labelsManagerModal">
@@ -101,7 +107,7 @@ class LabelsManager extends React.Component {
                                 label={label}
                                 isActive={label.isActive}
                                 onClick={this.handleClickOnLabel}
-                                isDeletableFromBoard
+                                isDeletableFromBoard={this.canManageLabels()}
                                 editDisplayDeleteConfirmationModal={this.editDisplayDeleteConfirmationModal}
                             />
                             {this.state.isDisplayingDeleteConfirmationModal
@@ -136,10 +142,14 @@ class LabelsManager extends React.Component {
 
                 </ul>
 
-
-                <AddLabelForm
-                    addLabel={this.handleAddLabel}
-                />
+                {this.canManageLabels()
+                    ? (
+                        <AddLabelForm
+                            addLabel={this.handleAddLabel}
+                        />
+                    ) : (
+                        ''
+                    )}
 
             </div>
         );
@@ -148,8 +158,10 @@ class LabelsManager extends React.Component {
 
 LabelsManager.propTypes = {
     activeLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
+    boardAdmins: PropTypes.arrayOf(PropTypes.object),
     addLabel: PropTypes.func.isRequired,
     boardId: PropTypes.string.isRequired,
+    clientId: PropTypes.string,
     createLabel: PropTypes.func.isRequired,
     deleteBoardLabel: PropTypes.func.isRequired,
     deleteLabel: PropTypes.func.isRequired,
@@ -157,15 +169,23 @@ LabelsManager.propTypes = {
     cardId: PropTypes.string.isRequired,
     onClickClose: PropTypes.func.isRequired,
 };
+LabelsManager.defaultProps = {
+    boardAdmins: [],
+    clientId: undefined,
+};
 
 // Put info from the store state in props (None)
-const mapStateToProps = ({ currentBoard }) => {
+const mapStateToProps = ({ auth, currentBoard }) => {
     if (currentBoard.board) {
         return {
+            clientId: (auth.clientId ? auth.clientId : undefined),
             boardId: currentBoard.board._id,
+            boardAdmins: currentBoard.board.admins,
         };
     }
-    return {};
+    return {
+        clientId: (auth.clientId ? auth.clientId : undefined),
+    };
 };
 
 // Put actions in props
