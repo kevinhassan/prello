@@ -2,5 +2,5 @@ projectKey=prello_api
 serverUrl=http://localhost:9000
 serverVersion=7.1.0.11001
 dashboardUrl=http://localhost:9000/dashboard/index/prello_api
-ceTaskId=AWcq_ftel1Os8unjI4aU
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWcq_ftel1Os8unjI4aU
+ceTaskId=AWcrV6E7l1Os8unjI4aY
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWcrV6E7l1Os8unjI4aY
