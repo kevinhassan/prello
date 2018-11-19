@@ -376,6 +376,39 @@ const { updateClientsOnBoard } = require('../socket');
 *               description: Internal server error
 *
 * /boards/{boardId}/teams/{teamId}:
+*   post:
+*       tags:
+*           - Board
+*       description: Add a team to a board. Add also all the members of the team to the board.
+*       summary: Add a team to a board.
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*       responses:
+*           204:
+*               description: Team successfully added to the board
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Team or board not found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 *   delete:
 *       tags:
 *           - Board
@@ -622,7 +655,8 @@ module.exports = (router) => {
                         // ignore error, we don't care if the member is already on the board
                     }
                 }));
-                res.sendStatus(204);
+                const board = boardController.getBoard(req.params.boardId);
+                res.sendStatus(200, { board });
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
