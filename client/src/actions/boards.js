@@ -335,3 +335,37 @@ export const addBoardMember = (boardId, username) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ====== Create Label ======
+export const CREATE_LABEL_STARTED = 'board/CREATE_LABEL_STARTED';
+export const CREATE_LABEL_FAILURE = 'board/CREATE_LABEL_FAILURE';
+export const CREATE_LABEL_SUCCESS = 'board/CREATE_LABEL_SUCCESS';
+
+export const createLabelStartedAction = () => ({ type: CREATE_LABEL_STARTED });
+export const createLabelFailureAction = () => ({ type: CREATE_LABEL_FAILURE });
+export const createLabelSuccessAction = (boardId, label) => ({
+    type: CREATE_LABEL_SUCCESS,
+    payload: {
+        label,
+        boardId,
+    },
+});
+
+export const createLabel = (boardId, label) => (dispatch) => {
+    dispatch(createLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/labels`;
+    APIFetch.fetchPrelloAPI(resource, { label }, APIFetch.POST)
+        .then((res) => {
+            const boardCreated = res.data.board;
+            dispatch(displaySuccessMessage('Label added to the board'));
+            dispatch(createLabelSuccessAction(boardCreated));
+        })
+        .catch((error) => {
+            dispatch(createLabelFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

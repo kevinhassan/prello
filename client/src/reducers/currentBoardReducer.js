@@ -121,6 +121,15 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        case actions.CREATE_LABEL_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    labels: state.board.labels.concat(action.payload.label),
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {

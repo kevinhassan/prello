@@ -246,6 +246,20 @@ describe(actions.REMOVE_BOARD_GITHUB_SUCCESS, () => {
     });
 });
 
+describe(actions.CREATE_LABEL_SUCCESS, () => {
+    it('should add the label to the board', () => {
+        const label = {
+            name: 'a new label',
+            color: '#005243',
+        };
+        const action = actions.createLabelSuccessAction(state.board._id, label);
+        const finalState = currentBoardReducer(state, action);
+
+        expect(finalState.board.labels.length).toEqual(state.board.labels.length + 1);
+        expect(finalState.board.labels.find(l => l.name === label.name));
+    });
+});
+
 // ===== LISTS ACTIONS ===== //
 
 // Create list
