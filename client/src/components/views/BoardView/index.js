@@ -12,7 +12,7 @@ import BoardMembersComp from '../../../containers/BoardComp/BoardMembersComp';
 import GithubLinkBoardComp from '../../../containers/BoardComp/GithubLinkBoardComp';
 import BoardArchivedListsComp from '../../../containers/BoardComp/BoardArchivedListsComp';
 import BoardArchivedCardsComp from '../../../containers/BoardComp/BoardArchivedCardsComp';
-
+import BoardTeamsComp from '../../../containers/BoardComp/BoardTeamsComp';
 
 // ===== Others
 import './style.css';
@@ -50,6 +50,8 @@ const BoardView = props => (
                 <BoardArchivedListsComp />
 
                 <BoardArchivedCardsComp />
+
+                <BoardTeamsComp />
             </div>
             <div className="col-sm-2 boardExportBtn" style={{ paddingRight: 0 }}>
                 <button type="button" className="btn btn-dark exportJsonBtn" onClick={() => props.handleExportDataFile()}>

@@ -606,13 +606,13 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/teams', Auth.isAuthenticated, [Board.canManage], boardValidator.addTeam, async (req, res) => {
+        .post('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, [Board.canManage], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await boardController.postTeam(req.params.boardId, req.body.team);
+                await boardController.postTeam(req.params.boardId, req.params.teamId);
                 res.sendStatus(204);
 
                 updateClientsOnBoard(req.params.boardId);
