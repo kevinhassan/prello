@@ -93,7 +93,7 @@ export const classicRegister = (fullName, email, password) => (dispatch) => {
     }, APIFetch.POST)
         .then(() => {
             dispatch(classicRegisterSuccessAction());
-            dispatch(displaySuccessMessage(`Account registered: An email has been send to ${email}`));
+            dispatch(displaySuccessMessage(`Account registered: an email has been sent to ${email}.`));
             dispatch(push('/signin'));
         })
         .catch((error) => {
@@ -135,7 +135,7 @@ export const forgottenPassword = email => (dispatch) => {
     }, APIFetch.POST)
         .then(() => {
             dispatch(forgottenPasswordSuccess());
-            const messageSuccess = 'A email has been sent to '.concat(email).concat(' to reset your password');
+            const messageSuccess = 'An email has been sent to '.concat(email).concat(' to reset your password');
             dispatch(displaySuccessMessage(messageSuccess));
             dispatch(push('/'));
         })
@@ -169,7 +169,7 @@ export const resetPassword = (password, resetToken) => (dispatch) => {
     }, APIFetch.PUT)
         .then(() => {
             dispatch(resetPasswordSuccess());
-            dispatch(displaySuccessMessage('Password well updated !'));
+            dispatch(displaySuccessMessage('Password well updated!'));
             dispatch(push('/signin'));
         })
         .catch((error) => {
