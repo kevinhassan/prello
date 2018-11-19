@@ -437,21 +437,21 @@ describe('PUT /boards/:id/members/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .put(`/boards/${boardData.id}/members/test`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .expect('Content-Type', /json/)
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
             .put(`/boards/${boardData.id}/members/${userAdmin._id}`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
             .expect(403, done);
     });
     it('should return 422 ERROR', (done) => {
         const wrongAccessRight = {
-            isAdmin: 'unknown'
+            canEdit: 'unknown'
         };
         request(app)
             .put(`/boards/${boardData.id}/members/${userNotAdmin._id}`)
@@ -463,13 +463,13 @@ describe('PUT /boards/:id/members/:id', () => {
     it('should return 404 ERROR', (done) => {
         request(app)
             .put(`/boards/test1234/members/${userNotAdmin._id}`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404);
         request(app)
             .put(`/boards/${boardData.id}/members/unknown`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404, done);
@@ -477,7 +477,7 @@ describe('PUT /boards/:id/members/:id', () => {
     it('should return 204 OK', (done) => {
         request(app)
             .put(`/boards/${boardData.id}/members/${userNotAdmin._id}`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });

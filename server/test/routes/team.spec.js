@@ -122,21 +122,21 @@ describe('PUT /teams/:id/members/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .put(`/teams/${newTeam.id}/members/test`)
-            .send({ isAdmin: true })
+            .send({ canEdit: true })
             .expect('Content-Type', /json/)
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
             .put(`/teams/${newTeam.id}/members/${userAdmin._id}`)
-            .send({ isAdmin: true })
+            .send({ canEdit: true })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
             .expect(403, done);
     });
     it('should return 422 ERROR', (done) => {
         const wrongAccessRight = {
-            isAdmin: 'unknown'
+            canEdit: 'unknown'
         };
         request(app)
             .put(`/teams/${newTeam.id}/members/${userNotAdmin._id}`)
@@ -148,7 +148,7 @@ describe('PUT /teams/:id/members/:id', () => {
     it('should return 404 OK', (done) => {
         request(app)
             .put('/teams/test1234/members/test')
-            .send({ isAdmin: true })
+            .send({ canEdit: true })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404, done);
@@ -156,7 +156,7 @@ describe('PUT /teams/:id/members/:id', () => {
     it('should return 204 OK', (done) => {
         request(app)
             .put(`/teams/${newTeam.id}/members/${userNotAdmin._id}`)
-            .send({ isAdmin: true })
+            .send({ canEdit: true })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });

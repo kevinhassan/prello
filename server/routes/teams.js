@@ -391,7 +391,7 @@ module.exports = (router) => {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await teamController.putMemberAccess(req.params.teamId, req.user._id, req.params.memberId, req.body.isAdmin);
+                await teamController.putMemberAccess(req.params.teamId, req.user._id, req.params.memberId, req.body.canEdit);
                 res.sendStatus(204);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });

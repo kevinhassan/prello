@@ -17,7 +17,7 @@ const removeMember = [
         .isString(),
 ];
 const changeAccess = [
-    check('isAdmin')
+    check('canEdit')
         .not().isEmpty()
         .trim()
         .escape()

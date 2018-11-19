@@ -78,12 +78,12 @@ exports.putTeamDescription = async (teamId, description) => {
  * Change team's member right access
  * Protection: On member different than us
  */
-exports.putMemberAccess = async (teamId, userId, memberId, isAdmin) => {
+exports.putMemberAccess = async (teamId, userId, memberId, canEdit) => {
     try {
         if (userId.toString() === memberId) throw new MyError(403, 'Forbidden accces');
         const member = User.findById(memberId);
         if (!member) throw new MyError(404, 'Member not found');
-        if (isAdmin) {
+        if (canEdit) {
             // add to admin collection
             await Team.updateOne({ _id: teamId }, { $addToSet: { admins: memberId } });
         } else {

@@ -17,7 +17,7 @@ const isMember = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Board not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -27,7 +27,7 @@ const isMember = async (req, res, next) => {
 /**
 * Check if the user is member of the board and admin
 */
-const isAdmin = async (req, res, next) => {
+const canEdit = async (req, res, next) => {
     try {
         if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const board = await Board.findById(req.params.boardId).select('admins');
@@ -41,7 +41,7 @@ const isAdmin = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Board not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -99,7 +99,7 @@ const canSee = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Board not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -149,7 +149,7 @@ const canSeeViaSocket = async (boardId, user) => {
     } catch (e) {
         if (e.name === 'CastError') {
             throw new MyError(404, 'Board not found');
-        } if (e.status) {
+        } else if (e.status) {
             throw e;
         }
         throw new MyError(500, 'Internal server error');
@@ -157,5 +157,5 @@ const canSeeViaSocket = async (boardId, user) => {
 };
 
 module.exports = {
-    canSee, isMember, isAdmin, canSeeViaSocket
+    canSee, isMember, canEdit, canSeeViaSocket
 };

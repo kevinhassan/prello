@@ -134,11 +134,11 @@ exports.putLists = async (boardId, lists) => {
  * Change admin access of the member
  * TODO: check if at least 1 admin before remove access right
  */
-exports.putAccess = async (boardId, memberId, isAdmin) => {
+exports.putAccess = async (boardId, memberId, canEdit) => {
     try {
         const memberFound = User.findById(memberId);
         if (!memberFound) throw new MyError(404, 'Member not found');
-        if (isAdmin) {
+        if (canEdit) {
             // add to admin collection
             await Board.updateOne({ _id: boardId }, { $addToSet: { admins: memberId } });
         } else {
