@@ -370,30 +370,30 @@ export const createLabel = (labelName, labelColor, boardId) => (dispatch) => {
 };
 
 // ====== Delete Label ======
-export const DELETE_LABEL_STARTED = 'board/DELETE_LABEL_STARTED';
-export const DELETE_LABEL_FAILURE = 'board/DELETE_LABEL_FAILURE';
-export const DELETE_LABEL_SUCCESS = 'board/DELETE_LABEL_SUCCESS';
+export const DELETE_BOARD_LABEL_STARTED = 'board/DELETE_BOARD_LABEL_STARTED';
+export const DELETE_BOARD_LABEL_FAILURE = 'board/DELETE_BOARD_LABEL_FAILURE';
+export const DELETE_BOARD_LABEL_SUCCESS = 'board/DELETE_BOARD_LABEL_SUCCESS';
 
-export const deleteLabelStartedAction = () => ({ type: DELETE_LABEL_STARTED });
-export const deleteLabelFailureAction = () => ({ type: DELETE_LABEL_FAILURE });
-export const deleteLabelSuccessAction = labelId => ({
-    type: DELETE_LABEL_SUCCESS,
+export const deleteBoardLabelStartedAction = () => ({ type: DELETE_BOARD_LABEL_STARTED });
+export const deleteBoardLabelFailureAction = () => ({ type: DELETE_BOARD_LABEL_FAILURE });
+export const deleteBoardLabelSuccessAction = labelId => ({
+    type: DELETE_BOARD_LABEL_SUCCESS,
     payload: {
         labelId,
     },
 });
 
-export const deleteLabel = (labelId, boardId) => (dispatch) => {
-    dispatch(deleteLabelStartedAction());
+export const deleteBoardLabel = (labelId, boardId) => (dispatch) => {
+    dispatch(deleteBoardLabelStartedAction());
     dispatch(displayLoadingModal());
     const resource = `boards/${boardId}/labels/${labelId}`;
     APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
         .then(() => {
             dispatch(displaySuccessMessage('Label removed from the board.'));
-            dispatch(deleteLabelSuccessAction(labelId));
+            dispatch(deleteBoardLabelSuccessAction(labelId));
         })
         .catch((error) => {
-            dispatch(deleteLabelFailureAction());
+            dispatch(deleteBoardLabelFailureAction());
             dispatch(displayErrorMessage(error.response.data.error));
         })
         .finally(() => {

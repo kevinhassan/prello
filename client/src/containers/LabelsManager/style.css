@@ -1,5 +1,5 @@
 .labelsManagerModal {
-    background-color: #ddd;
+    background-color: #efefef;
     box-shadow: 1px 2px 4px black;
     padding: 10px;
     position: absolute;
@@ -14,4 +14,13 @@
 .closeLabelManager-icon:hover {
     color: #555;
     cursor: pointer;
+}
+
+.deleteLabelModal {
+    background-color: #ddd;
+    box-shadow: 0 0 3px #444;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    width: 100%;
 }
