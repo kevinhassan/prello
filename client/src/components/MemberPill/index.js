@@ -65,12 +65,23 @@ const MemberPill = props => (
             onClick={event => event.stopPropagation()}
         >
             {props.member.initials}
+            {props.isAdmin
+                ? (
+                    <i className="fas fa-crown isAdminMemberCrown" />
+                ) : (
+                    ''
+                )
+            }
         </Link>
     </span>
 );
 
 MemberPill.propTypes = {
     member: PropTypes.object.isRequired,
+    isAdmin: PropTypes.bool,
+};
+MemberPill.defaultProps = {
+    isAdmin: false,
 };
 
 export default MemberPill;

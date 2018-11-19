@@ -23,7 +23,7 @@ const BoardMembersView = props => (
                 <ul className="boardMemberLists">
                     {props.members.sort((a, b) => a.initials > b.initials).map(member => (
                         <li key={member._id} style={{ display: 'inline-block' }}>
-                            <MemberPill key={member._id} member={member} />
+                            <MemberPill key={member._id} member={member} isAdmin={props.boardAdmins.some(a => member._id === a._id)} />
                         </li>
                     ))}
                 </ul>
@@ -81,6 +81,7 @@ const BoardMembersView = props => (
 
 BoardMembersView.propTypes = {
     members: PropTypes.arrayOf(PropTypes.object).isRequired,
+    boardAdmins: PropTypes.arrayOf(PropTypes.object).isRequired,
     isFormVisible: PropTypes.bool,
     addMember: PropTypes.func.isRequired,
     displayForm: PropTypes.func.isRequired,
