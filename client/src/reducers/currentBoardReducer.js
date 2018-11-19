@@ -8,7 +8,7 @@ export const initialState = {
     status: null,
 };
 
-export default function currentBoardReducer(state = initialState, action) {
+export default function currentBoardReducer(action, state = initialState) {
     if (action) {
         let newCards;
         let newLabel;

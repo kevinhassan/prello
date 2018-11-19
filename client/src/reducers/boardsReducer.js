@@ -4,7 +4,7 @@ export const initialState = {
     userBoards: undefined,
 };
 
-export default function boardsReducer(state = initialState, action) {
+export default function boardsReducer(action, state = initialState) {
     if (action) {
         switch (action.type) {
         case actions.FETCH_BOARDS_SUCCESS:

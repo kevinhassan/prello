@@ -5,7 +5,7 @@ describe('Action not referenced', () => {
     it('should return the current state', () => {
         const finalState = currentTeamReducer();
         expect(finalState).toEqual(initialState);
-        const finalState2 = currentTeamReducer(initialState, { type: 'notReferencedAction ' });
+        const finalState2 = currentTeamReducer({ type: 'notReferencedAction ' }, initialState);
         expect(finalState2).toEqual(initialState);
     });
 });
@@ -18,7 +18,7 @@ describe(actions.FETCH_TEAM_SUCCESS, () => {
             description: 'this is a team',
         };
         const action = actions.fetchTeamSuccessAction(team);
-        const finalState = currentTeamReducer({}, action);
+        const finalState = currentTeamReducer(action, {});
 
         expect(finalState.team).toEqual(team);
     });
@@ -27,7 +27,7 @@ describe(actions.FETCH_TEAM_SUCCESS, () => {
 describe(actions.FETCH_TEAM_FAILURE, () => {
     it('should set the team to null', () => {
         const action = actions.fetchTeamFailureAction();
-        const finalState = currentTeamReducer({}, action);
+        const finalState = currentTeamReducer(action, {});
 
         expect(finalState.team).toEqual(null);
     });
@@ -36,7 +36,7 @@ describe(actions.FETCH_TEAM_FAILURE, () => {
 describe(actions.FETCH_TEAM_STARTED, () => {
     it('should set the team to undefined', () => {
         const action = actions.fetchTeamStartedAction();
-        const finalState = currentTeamReducer({}, action);
+        const finalState = currentTeamReducer(action, {});
 
         expect(finalState.team).toEqual(undefined);
     });
@@ -50,7 +50,7 @@ describe(actions.ADD_MEMBER_TO_TEAM_SUCCESS, () => {
             description: 'this is a team',
         };
         const action = actions.addMemberToTeamSuccessAction(team);
-        const finalState = currentTeamReducer({}, action);
+        const finalState = currentTeamReducer(action, {});
 
         expect(finalState.team).toEqual(team);
     });
@@ -64,7 +64,7 @@ describe(actions.CHANGE_TEAM_VISIBILITY_SUCCESS, () => {
             visibility: true,
         };
         const action = actions.changeTeamVisibilitySuccessAction(!team.visibility);
-        const finalState = currentTeamReducer({}, action);
+        const finalState = currentTeamReducer(action, {});
 
         expect(finalState.team.isVisible).not.toEqual(team.isVisible);
     });
@@ -88,7 +88,7 @@ describe(actions.DELETE_MEMBER_SUCCESS, () => {
             },
         };
         const action = actions.deleteMemberSuccessAction(members[1]);
-        const finalState = currentTeamReducer(state, action);
+        const finalState = currentTeamReducer(action, state);
         expect(finalState.team.members).not.toEqual(members);
     });
 
@@ -113,7 +113,7 @@ describe(actions.DELETE_MEMBER_SUCCESS, () => {
             },
         };
         const action = actions.deleteMemberSuccessAction(members[1]);
-        const finalState = currentTeamReducer(state, action);
+        const finalState = currentTeamReducer(action, state);
         expect(finalState.team.members).not.toEqual(members);
         expect(finalState.team.admins).not.toEqual(admins);
     });
@@ -133,7 +133,7 @@ describe(actions.CHANGE_TEAM_NAME_SUCCESS, () => {
         };
         const newName = 'A new team name';
         const action = actions.changeTeamNameSuccessAction(newName);
-        const finalState = currentTeamReducer(state, action);
+        const finalState = currentTeamReducer(action, state);
 
         expect(finalState.team.name).toEqual(newName);
     });
@@ -152,7 +152,7 @@ describe(actions.CHANGE_TEAM_DESCRIPTION_SUCCESS, () => {
         };
         const newDescription = 'A new description';
         const action = actions.changeTeamDescriptionSuccessAction(newDescription);
-        const finalState = currentTeamReducer(state, action);
+        const finalState = currentTeamReducer(action, state);
 
         expect(finalState.team.description).toEqual(newDescription);
     });
@@ -180,7 +180,7 @@ describe(actions.EDIT_MEMBER_RIGHT_SUCCESS, () => {
             },
         };
         const action = actions.editMemberRightSuccessAction(members[0]);
-        const finalState = currentTeamReducer(state, action);
+        const finalState = currentTeamReducer(action, state);
 
         expect(finalState.team.admins.some(a => a._id === members[0]._id));
         expect(finalState.team.members[0].isAdmin);
@@ -207,7 +207,7 @@ describe(actions.EDIT_MEMBER_RIGHT_SUCCESS, () => {
             },
         };
         const action = actions.editMemberRightSuccessAction(members[1]);
-        const finalState = currentTeamReducer(state, action);
+        const finalState = currentTeamReducer(action, state);
 
         expect(!finalState.team.admins.some(a => a._id === members[1]._id));
         expect(!finalState.team.members[1].isAdmin);

@@ -6,7 +6,7 @@ export const initialState = {
     user: undefined,
 };
 
-export default function usersReducer(state = initialState, action) {
+export default function usersReducer(action, state = initialState) {
     if (action) {
         switch (action.type) {
         case actions.GET_PROFILE_SUCCESS:

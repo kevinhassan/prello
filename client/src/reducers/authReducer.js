@@ -32,7 +32,7 @@ export const initialState = {
     clientId: parseJwtToId(getToken()),
 };
 
-export default function authReducer(state = initialState, action) {
+export default function authReducer(action, state = initialState) {
     if (action) {
         switch (action.type) {
         case actions.GITHUB_SIGN_IN_SUCCESS:

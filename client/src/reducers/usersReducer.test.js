@@ -6,7 +6,7 @@ describe('Action not referenced', () => {
     it('should return the current state', () => {
         const finalState = usersReducer();
         expect(finalState).toEqual(initialState);
-        const finalState2 = usersReducer({}, { type: 'notReferencedAction ' });
+        const finalState2 = usersReducer({ type: 'notReferencedAction ' }, {});
         expect(finalState2).toEqual(initialState);
     });
 });
@@ -21,7 +21,7 @@ describe(actions.GET_PROFILE_SUCCESS, () => {
             username: 'kevintest1',
         };
         const action = actions.getProfileSuccessAction(profile);
-        const finalState = usersReducer({}, action);
+        const finalState = usersReducer(action, {});
 
         expect(finalState.profile).toEqual(profile);
     });
@@ -35,7 +35,7 @@ describe(actions.UPDATE_USER_INFORMATION_STARTED, () => {
             initials: 'KT',
         };
         const action = actions.updateUserInformationStartedAction(profile.fullName, profile.initials, profile.biography);
-        const finalState = usersReducer({}, action);
+        const finalState = usersReducer(action, {});
 
         expect(finalState.profile).toEqual(profile);
     });
@@ -49,7 +49,7 @@ describe(actions.UPDATE_USER_INFORMATION_FAILURE, () => {
             initials: 'KT',
         };
         const action = actions.updateUserInformationFailureAction(profile.fullName, profile.initials, profile.biography);
-        const finalState = usersReducer({}, action);
+        const finalState = usersReducer(action, {});
 
         expect(finalState.profile).toEqual(profile);
     });
@@ -63,7 +63,7 @@ describe(actions.GET_USER_INFORMATION_SUCCESS, () => {
             initials: 'KT',
         };
         const action = actions.getUserInformationSuccessAction(user);
-        const finalState = usersReducer({}, action);
+        const finalState = usersReducer(action, {});
 
         expect(finalState.user).toEqual(user);
     });
@@ -84,7 +84,7 @@ describe(teamActions.CREATE_TEAM_SUCCESS, () => {
             },
         };
         const action = teamActions.createTeamSuccessAction(team);
-        const finalState = usersReducer(initState, action);
+        const finalState = usersReducer(action, initState);
         expect(finalState.profile.teams).toEqual(initState.profile.teams.concat(team));
     });
 });
@@ -104,7 +104,7 @@ describe(teamActions.DELETE_TEAM_SUCCESS, () => {
             },
         };
         const action = teamActions.deleteTeamSuccessAction(team);
-        const finalState = usersReducer(initState, action);
+        const finalState = usersReducer(action, initState);
         expect(finalState.profile.teams).toEqual([]);
     });
 });

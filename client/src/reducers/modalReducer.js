@@ -6,7 +6,7 @@ export const initialState = {
     successMessage: '',
 };
 
-export default function modalReducer(state = initialState, action) {
+export default function modalReducer(action, state = initialState) {
     if (action) {
         switch (action.type) {
         case actions.DISPLAY_LOADING_MODAL:

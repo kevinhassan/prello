@@ -5,7 +5,7 @@ describe('Action not referenced', () => {
     it('should return the current state', () => {
         const finalState = boardsReducer();
         expect(finalState).toEqual(initialState);
-        const finalState2 = boardsReducer(initialState, { type: 'notReferencedAction ' });
+        const finalState2 = boardsReducer({ type: 'notReferencedAction ' }, initialState);
         expect(finalState2).toEqual(initialState);
     });
 });
@@ -25,7 +25,7 @@ describe(actions.FETCH_BOARDS_SUCCESS, () => {
             ],
         };
         const action = actions.fetchBoardsSuccessAction(boards);
-        const finalState = boardsReducer({}, action);
+        const finalState = boardsReducer(action, {});
 
         expect(finalState).toEqual({ userBoards: boards });
     });
@@ -46,7 +46,7 @@ describe(actions.FETCH_BOARDS_FAILURE, () => {
             ],
         };
         const action = actions.fetchBoardsFailureAction();
-        const finalState = boardsReducer({ userBoards: boards }, action);
+        const finalState = boardsReducer(action, { userBoards: boards });
 
         expect(finalState).toEqual({ userBoards: boards });
     });
@@ -55,7 +55,7 @@ describe(actions.FETCH_BOARDS_FAILURE, () => {
 describe(actions.UPDATE_IS_ARCHIVED_SUCCESS, () => {
     it('should update the board isArchived property', () => {
         const action = actions.updateIsArchivedSuccessAction('b1', true);
-        const finalState = boardsReducer({ userBoards: [{ _id: 'b1', isArchived: false }] }, action);
+        const finalState = boardsReducer(action, { userBoards: [{ _id: 'b1', isArchived: false }] });
         expect(finalState.userBoards[0].isArchived).toEqual(true);
     });
 });
@@ -63,7 +63,7 @@ describe(actions.UPDATE_IS_ARCHIVED_SUCCESS, () => {
 describe(`${actions.UPDATE_IS_ARCHIVED_SUCCESS}: inexisting board`, () => {
     it('should return the previous state (nothing changed)', () => {
         const action = actions.updateIsArchivedSuccessAction('falseBoardId123', true);
-        const finalState = boardsReducer({ userBoards: [{ _id: 'b1', isArchived: false }] }, action);
+        const finalState = boardsReducer(action, { userBoards: [{ _id: 'b1', isArchived: false }] });
         expect(finalState.userBoards[0].isArchived).toEqual(false);
     });
 });
@@ -78,7 +78,7 @@ describe(actions.CREATE_BOARD_SUCCESS, () => {
             lists: [],
         };
         const action = actions.createBoardSuccessAction(newBoard);
-        const finalState = boardsReducer({ userBoards: [{ _id: 'b1', isArchived: false }] }, action);
+        const finalState = boardsReducer(action, { userBoards: [{ _id: 'b1', isArchived: false }] });
 
         expect(finalState.userBoards.length).toEqual(2);
     });
