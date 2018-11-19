@@ -22,7 +22,7 @@ import './style.css';
 const BoardView = props => (
     <div className="boardPanel container-fluid">
         <div className="row" style={{ height: '40px', marginBottom: '10px' }}>
-            <div className="col-sm-10 boardSettingsBar">
+            <div className="col-sm-11 boardSettingsBar">
                 <BoardNameComp
                     boardId={props.board._id}
                     name={props.board.name}
@@ -51,7 +51,7 @@ const BoardView = props => (
 
                 <BoardArchivedCardsComp />
             </div>
-            <div className="col-sm-2 boardExportBtn" style={{ paddingRight: 0 }}>
+            <div className="col-sm-1 boardExportBtn" style={{ paddingRight: 0 }}>
                 <button type="button" className="btn btn-dark exportJsonBtn" onClick={() => props.handleExportDataFile()}>
                     <i className="fas fa-file-download" />
                     {' '}
