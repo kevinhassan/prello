@@ -15,16 +15,6 @@ import BoardTeamsView from '../../../components/views/BoardView/BoardTeamsView';
 class BoardTeamsComp extends React.Component {
     constructor(props) {
         super(props);
-        let canAddTeam = false;
-
-        // Check if client is admin
-        if (props.clientId) {
-            canAddTeam = props.boardAdmins.some(a => a._id === props.clientId);
-        }
-        this.state = {
-            canAddTeam,
-        };
-
         this.handleAddBoardTeam = this.handleAddBoardTeam.bind(this);
     }
 
@@ -41,9 +31,8 @@ class BoardTeamsComp extends React.Component {
             <BoardTeamsView
                 boardAdmins={this.props.boardAdmins}
                 teams={this.props.teams}
-                isFormVisible={this.state.isFormVisible}
                 addBoardTeam={this.handleAddBoardTeam}
-                canAddTeam={this.state.canAddTeam}
+                canAddTeam={this.props.boardAdmins.some(a => a._id === this.props.clientId)}
                 currentBoardTeams={this.props.currentBoardTeams}
             />
         );
