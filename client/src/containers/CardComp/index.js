@@ -105,10 +105,8 @@ class CardComp extends React.Component {
         event.preventDefault();
         const date = event.target.duedate.value.trim();
         const time = event.target.time.value;
-        let dueDate = { date: null };
-        if (!date && !time) {
-            dueDate = { date: null };
-        } else if (date) {
+        const dueDate = { date: null };
+        if (date) {
             if (time) {
                 dueDate.date = new Date(`${date} ${time}`);
             } else {
