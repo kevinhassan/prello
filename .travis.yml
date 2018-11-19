@@ -36,6 +36,9 @@ before_script:
 - cd $TEST_DIR
 - npm install
 
+after_success:
+- sonar-scanner
+
 notifications:
   email: false
   slack:
