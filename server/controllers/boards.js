@@ -408,25 +408,6 @@ exports.deleteGithubRepo = async (boardId) => {
 };
 
 /**
- * Add list to the boaard
- */
-exports.addList = async (boardId, listId) => {
-    try {
-        const board = await Board.findById(boardId).select('lists');
-        if (!board) throw new MyError(404, 'Board not found');
-        const newBoard = await board.updateOne({ $addToSet: { lists: listId } }, { new: true });
-        return newBoard;
-    } catch (err) {
-        if (err.status) throw err;
-        else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect query');
-        } else if (err.name === 'CastError') {
-            throw new MyError(404, 'Board not found');
-        }
-        throw new MyError(500, 'Internal server error');
-    }
-};
-/**
  * Remove member of the board
  */
 exports.removeMember = async (boardId, memberId) => {

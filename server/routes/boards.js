@@ -738,7 +738,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/labels/:labelId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
+        .delete('/boards/:boardId/labels/:labelId', Auth.isAuthenticated, [Board.canManage], async (req, res) => {
             try {
                 await boardController.deleteLabel(req.params.boardId, req.params.labelId);
                 res.sendStatus(204);
