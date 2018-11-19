@@ -87,7 +87,7 @@ class LabelsManager extends React.Component {
 
     canManageLabels() {
         if (!this.props.clientId) return false;
-        return this.props.boardAdmins.some(a => a._id === this.props.clientId);
+        return this.props.boardMembers.some(a => a._id === this.props.clientId);
     }
 
     render() {
@@ -158,7 +158,7 @@ class LabelsManager extends React.Component {
 
 LabelsManager.propTypes = {
     activeLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
-    boardAdmins: PropTypes.arrayOf(PropTypes.object),
+    boardMembers: PropTypes.arrayOf(PropTypes.object),
     addLabel: PropTypes.func.isRequired,
     boardId: PropTypes.string.isRequired,
     clientId: PropTypes.string,
@@ -170,7 +170,7 @@ LabelsManager.propTypes = {
     onClickClose: PropTypes.func.isRequired,
 };
 LabelsManager.defaultProps = {
-    boardAdmins: [],
+    boardMembers: [],
     clientId: undefined,
 };
 
@@ -180,7 +180,7 @@ const mapStateToProps = ({ auth, currentBoard }) => {
         return {
             clientId: (auth.clientId ? auth.clientId : undefined),
             boardId: currentBoard.board._id,
-            boardAdmins: currentBoard.board.admins,
+            boardMembers: currentBoard.board.members,
         };
     }
     return {
