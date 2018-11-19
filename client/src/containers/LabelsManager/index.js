@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 
 // ===== Actions
 import { addLabel, deleteLabel } from '../../actions/cards';
+import { createLabel } from '../../actions/boards';
 
 // ===== Components
 import Label from '../../components/views/CardDetailView/Labels/Label';
+import AddLabelForm from '../../components/views/CardDetailView/Labels/AddLabelForm';
 
 // ===== Others
 import './style.css';
@@ -30,6 +32,7 @@ class LabelsManager extends React.Component {
         this.state = { labels };
 
         this.handleClickOnLabel = this.handleClickOnLabel.bind(this);
+        this.handleAddLabel = this.handleAddLabel.bind(this);
     }
 
     // Update the labels if something changed
@@ -60,6 +63,11 @@ class LabelsManager extends React.Component {
         }
     }
 
+    handleAddLabel(event) {
+        event.preventDefault();
+        this.props.createLabel(event.target.labelName.value, event.target.labelColor.value, this.props.boardId);
+    }
+
     render() {
         return (
             <div className="labelsManagerModal">
@@ -80,6 +88,9 @@ class LabelsManager extends React.Component {
                         />
                     ))}
                 </ul>
+                <AddLabelForm
+                    addLabel={this.handleAddLabel}
+                />
 
             </div>
         );
@@ -89,6 +100,8 @@ class LabelsManager extends React.Component {
 LabelsManager.propTypes = {
     activeLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     addLabel: PropTypes.func.isRequired,
+    boardId: PropTypes.string.isRequired,
+    createLabel: PropTypes.func.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     cardId: PropTypes.string.isRequired,
@@ -96,13 +109,20 @@ LabelsManager.propTypes = {
 };
 
 // Put info from the store state in props (None)
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ currentBoard }) => {
+    if (currentBoard.board) {
+        return {
+            boardId: currentBoard.board._id,
+        };
+    }
+};
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         addLabel,
         deleteLabel,
+        createLabel,
     }, dispatch,
 );
 

@@ -148,6 +148,7 @@ CardDetailView.propTypes = {
     deleteLabel: PropTypes.func.isRequired,
     isEditingLabels: PropTypes.bool,
     archiveCard: PropTypes.func.isRequired,
+
     isEditingDueDate: PropTypes.bool,
     changeIsEditingDueDate: PropTypes.func.isRequired,
     editDate: PropTypes.func.isRequired,

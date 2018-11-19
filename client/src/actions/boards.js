@@ -343,23 +343,22 @@ export const CREATE_LABEL_SUCCESS = 'board/CREATE_LABEL_SUCCESS';
 
 export const createLabelStartedAction = () => ({ type: CREATE_LABEL_STARTED });
 export const createLabelFailureAction = () => ({ type: CREATE_LABEL_FAILURE });
-export const createLabelSuccessAction = (boardId, label) => ({
+export const createLabelSuccessAction = label => ({
     type: CREATE_LABEL_SUCCESS,
     payload: {
         label,
-        boardId,
     },
 });
 
-export const createLabel = (boardId, label) => (dispatch) => {
+export const createLabel = (labelName, labelColor, boardId) => (dispatch) => {
     dispatch(createLabelStartedAction());
     dispatch(displayLoadingModal());
     const resource = `boards/${boardId}/labels`;
-    APIFetch.fetchPrelloAPI(resource, { label }, APIFetch.POST)
+    APIFetch.fetchPrelloAPI(resource, { name: labelName, color: labelColor }, APIFetch.POST)
         .then((res) => {
-            const boardCreated = res.data.board;
-            dispatch(displaySuccessMessage('Label added to the board'));
-            dispatch(createLabelSuccessAction(boardCreated));
+            const { label } = res.data;
+            dispatch(displaySuccessMessage('Label added to the board.'));
+            dispatch(createLabelSuccessAction(label));
         })
         .catch((error) => {
             dispatch(createLabelFailureAction());

@@ -252,7 +252,7 @@ describe(actions.CREATE_LABEL_SUCCESS, () => {
             name: 'a new label',
             color: '#005243',
         };
-        const action = actions.createLabelSuccessAction(state.board._id, label);
+        const action = actions.createLabelSuccessAction(label.name, label.color, state.board._id);
         const finalState = currentBoardReducer(state, action);
 
         expect(finalState.board.labels.length).toEqual(state.board.labels.length + 1);

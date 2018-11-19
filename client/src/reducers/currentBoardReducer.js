@@ -126,7 +126,11 @@ export default function currentBoardReducer(state = initialState, action) {
                 ...state,
                 board: {
                     ...state.board,
-                    labels: state.board.labels.concat(action.payload.label),
+                    labels: state.board.labels.concat({
+                        _id: action.payload.label._id,
+                        name: action.payload.label.name,
+                        color: action.payload.label.color,
+                    }),
                 },
             };
 
