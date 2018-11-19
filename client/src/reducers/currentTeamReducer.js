@@ -12,7 +12,7 @@ export default function currentTeamReducer(action, state = initialState) {
                 ...state,
                 team: undefined,
             };
-
+        case actions.ADD_MEMBER_TO_TEAM_SUCCESS:
         case actions.FETCH_TEAM_SUCCESS:
             return {
                 ...state,
@@ -23,12 +23,6 @@ export default function currentTeamReducer(action, state = initialState) {
             return {
                 ...state,
                 team: null,
-            };
-
-        case actions.ADD_MEMBER_TO_TEAM_SUCCESS:
-            return {
-                ...state,
-                team: action.payload.team,
             };
         case actions.CHANGE_TEAM_VISIBILITY_SUCCESS:
             return {

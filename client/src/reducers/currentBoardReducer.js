@@ -56,23 +56,7 @@ export default function currentBoardReducer(action, state = initialState) {
 
 
         case actions.UPDATE_LISTS_INDEXES_STARTED:
-            return {
-                ...state,
-                board: {
-                    ...state.board,
-                    lists: action.payload.lists,
-                },
-            };
-
         case actions.UPDATE_LISTS_INDEXES_FAILURE:
-            return {
-                ...state,
-                board: {
-                    ...state.board,
-                    lists: action.payload.lists,
-                },
-            };
-
         case actions.UPDATE_BOARD_NAME_STARTED:
         case actions.UPDATE_BOARD_NAME_FAILURE:
             if (action.payload.boardId === state.board._id) {
@@ -247,7 +231,6 @@ export default function currentBoardReducer(action, state = initialState) {
                 },
             };
 
-        // ===== Add label ===== //
         case cardActions.ADD_LABEL_STARTED:
             newLabel = state.board.labels.find(lab => lab._id === action.payload.labelId);
 
@@ -276,36 +259,8 @@ export default function currentBoardReducer(action, state = initialState) {
                 },
             };
 
+
         case cardActions.ADD_LABEL_FAILURE:
-            newLabel = state.board.labels.find(lab => lab._id === action.payload.labelId);
-
-            newLists = state.board.lists.map((list) => {
-                newCards = list.cards.map((card) => {
-                    if (card._id === action.payload.cardId) {
-                        return {
-                            ...card,
-                            labels: card.labels.filter(label => label._id !== newLabel._id),
-                        };
-                    }
-                    return card;
-                });
-
-                return {
-                    ...list,
-                    cards: newCards,
-                };
-            });
-
-            return {
-                ...state,
-                board: {
-                    ...state.board,
-                    lists: newLists,
-                },
-            };
-
-
-        // ===== Delete label ===== //
         case cardActions.DELETE_LABEL_STARTED:
             newLabel = state.board.labels.find(lab => lab._id === action.payload.labelId);
 
