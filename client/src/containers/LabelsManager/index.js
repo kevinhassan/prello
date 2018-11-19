@@ -115,6 +115,7 @@ const mapStateToProps = ({ currentBoard }) => {
             boardId: currentBoard.board._id,
         };
     }
+    return {};
 };
 
 // Put actions in props

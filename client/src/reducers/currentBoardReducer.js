@@ -130,6 +130,9 @@ export default function currentBoardReducer(state = initialState, action) {
                         _id: action.payload.label._id,
                         name: action.payload.label.name,
                         color: action.payload.label.color,
+                        board: {
+                            _id: action.payload.label.board._id,
+                        },
                     }),
                 },
             };

@@ -485,3 +485,20 @@ exports.removeTeam = async (boardId, teamId) => {
         throw new MyError(500, 'Internal server error');
     }
 };
+
+exports.deleteLabel = async (boardId, labelId) => {
+    try {
+        const newBoard = await Board.findOneAndUpdate({ _id: boardId },
+            { $pull: { labels: labelId } }, { new: true });
+        if (!newBoard) throw new MyError(404, 'Board not found');
+        return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        } else if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};

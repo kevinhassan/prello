@@ -737,5 +737,14 @@ module.exports = (router) => {
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
+        })
+        .delete('/boards/:boardId/labels/:labelId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
+            try {
+                await boardController.deleteLabel(req.params.boardId, req.params.labelId);
+                res.sendStatus(204);
+                updateClientsOnBoard(req.params.boardId);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
         });
 };

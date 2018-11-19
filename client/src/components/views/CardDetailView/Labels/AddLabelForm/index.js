@@ -7,7 +7,7 @@ import './style.css';
 // ==================================
 
 const AddLabelForm = props => (
-    <form onSubmit={props.addLabel} style={{ maxWidth: '20vw' }}>
+    <form onSubmit={props.addLabel} style={{ maxWidth: '15vw' }}>
         <hr />
         <b>
             Add a board label
