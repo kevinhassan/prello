@@ -8,25 +8,28 @@ const cardController = require('../controllers/cards');
 // ==== Get functions ===== //
 // ======================== //
 
-
-/**
- * DELETE
- */
-exports.removeCard = async (data) => {
+exports.getList = async (listId) => {
     try {
-        const list = await List.findById(data.listId);
-        const cardsUpdated = list.cards.filter(card => card._id.toString() !== data.cardId.toString());
-        list.cards = cardsUpdated;
-
-        await list.save();
-
+        const list = await List.findById(listId);
+        if (!list) throw new MyError(404, 'List not found');
         return list;
     } catch (err) {
-        if (err.name === 'ValidationError') {
+        if (err.status) throw err;
+        else if (err.name === 'CastError') {
             throw new MyError(422, 'Incorrect query');
         }
-        if (err.status) {
-            throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+exports.getListByBoardId = async (boardId) => {
+    try {
+        const lists = await List.find({ 'board._id': boardId }).populate('cards');
+        return lists;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'CastError') {
+            throw new MyError(422, 'Incorrect query');
         }
         throw new MyError(500, 'Internal server error');
     }
@@ -96,20 +99,6 @@ exports.createList = async (boardId, name) => {
     }
 };
 
-exports.getList = async (listId) => {
-    try {
-        const list = await List.findById(listId);
-        if (!list) throw new MyError(404, 'List not found');
-        return list;
-    } catch (err) {
-        if (err.status) throw err;
-        else if (err.name === 'CastError') {
-            throw new MyError(422, 'Incorrect query');
-        }
-        throw new MyError(500, 'Internal server error');
-    }
-};
-
 
 // ======================= //
 // ==== Put functions ==== //
@@ -156,5 +145,28 @@ exports.putName = async (listId, name) => {
             throw new MyError(404, 'List not found.');
         }
         throw new MyError(500, 'Internal server error.');
+    }
+};
+
+// ========================== //
+// ==== Delete functions ==== //
+// ========================== //
+exports.removeCard = async (data) => {
+    try {
+        const list = await List.findById(data.listId);
+        const cardsUpdated = list.cards.filter(card => card._id.toString() !== data.cardId.toString());
+        list.cards = cardsUpdated;
+
+        await list.save();
+
+        return list;
+    } catch (err) {
+        if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        }
+        if (err.status) {
+            throw err;
+        }
+        throw new MyError(500, 'Internal server error');
     }
 };

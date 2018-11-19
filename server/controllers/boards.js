@@ -486,12 +486,22 @@ exports.removeTeam = async (boardId, teamId) => {
     }
 };
 
+/**
+ * Delete a label from a board (and from all his cards)
+ */
 exports.deleteLabel = async (boardId, labelId) => {
     try {
         const newBoard = await Board.findOneAndUpdate({ _id: boardId },
             { $pull: { labels: labelId } }, { new: true });
+
+        const lists = await listController.getListByBoardId(boardId);
+        lists.map(l => l.cards.map(async (card) => {
+            await cardController.deleteLabel({ card: card._id, label: labelId });
+        }));
+
+        await Label.deleteOne({ _id: labelId });
+
         if (!newBoard) throw new MyError(404, 'Board not found');
-        return newBoard;
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {

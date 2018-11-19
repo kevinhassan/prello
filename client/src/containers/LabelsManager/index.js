@@ -75,6 +75,7 @@ class LabelsManager extends React.Component {
 
     handleDeleteBoardLabel(labelId) {
         this.props.deleteBoardLabel(labelId, this.props.boardId);
+        this.editDisplayDeleteConfirmationModal(false);
     }
 
     editDisplayDeleteConfirmationModal(value) {
@@ -95,13 +96,11 @@ class LabelsManager extends React.Component {
                 <h4 style={{ color: '#004a75' }}>Labels</h4>
                 <ul style={{ padding: 0, position: 'relative' }}>
                     {this.state.labels.map(label => (
-                        <Fragment>
+                        <Fragment key={label._id}>
                             <Label
-                                key={label._id}
                                 label={label}
                                 isActive={label.isActive}
                                 onClick={this.handleClickOnLabel}
-                                onDeleteFromBoardClick={this.handleDeleteBoardLabel}
                                 isDeletableFromBoard
                                 editDisplayDeleteConfirmationModal={this.editDisplayDeleteConfirmationModal}
                             />
@@ -115,7 +114,7 @@ class LabelsManager extends React.Component {
                                         <button
                                             className="btn btn-danger btn-sm"
                                             type="submit"
-                                            onClick={() => this.onDeleteFromBoardClick(label._id)}
+                                            onClick={() => this.handleDeleteBoardLabel(label._id)}
                                         >
                                             Delete from board
                                         </button>
