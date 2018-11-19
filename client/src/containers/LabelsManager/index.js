@@ -87,7 +87,7 @@ class LabelsManager extends React.Component {
 
     canManageLabels() {
         if (!this.props.clientId) return false;
-        return this.props.boardAdmins.includes(a => a._id === this.props.clientId);
+        return this.props.boardAdmins.some(a => a._id === this.props.clientId);
     }
 
     render() {
