@@ -37,9 +37,8 @@ class BoardsComp extends React.Component {
         this.setState({ isCreateBoardFormVisible: false });
     }
 
-    handleUpdateIsArchived(event, boardId, isArchived) {
-        event.stopPropagation();
-        this.props.updateIsArchived(boardId, isArchived);
+    handleUpdateIsArchived(event, isArchived) {
+        this.props.updateIsArchived(event.target.value, isArchived);
         if (!isArchived) {
             document.getElementById('archivedBoards').value = 'Archived boards';
         }
