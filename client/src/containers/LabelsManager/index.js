@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 // ===== Actions
 import { addLabel, deleteLabel } from '../../actions/cards';
+import { createLabel, deleteBoardLabel } from '../../actions/boards';
 
 // ===== Components
 import Label from '../../components/views/CardDetailView/Labels/Label';
+import AddLabelForm from '../../components/views/CardDetailView/Labels/AddLabelForm';
 
 // ===== Others
 import './style.css';
@@ -27,9 +29,16 @@ class LabelsManager extends React.Component {
             return label;
         });
         labels.sort((a, b) => a.name > b.name);
-        this.state = { labels };
+        this.state = {
+            labels,
+            isDisplayingDeleteConfirmationModal: false,
+        };
 
         this.handleClickOnLabel = this.handleClickOnLabel.bind(this);
+        this.handleAddLabel = this.handleAddLabel.bind(this);
+        this.handleDeleteBoardLabel = this.handleDeleteBoardLabel.bind(this);
+        this.editDisplayDeleteConfirmationModal = this.editDisplayDeleteConfirmationModal.bind(this);
+        this.canManageLabels = this.canManageLabels.bind(this);
     }
 
     // Update the labels if something changed
@@ -60,6 +69,27 @@ class LabelsManager extends React.Component {
         }
     }
 
+    handleAddLabel(event) {
+        event.preventDefault();
+        this.props.createLabel(event.target.labelName.value, event.target.labelColor.value, this.props.boardId);
+    }
+
+    handleDeleteBoardLabel(labelId) {
+        this.props.deleteBoardLabel(labelId, this.props.boardId);
+        this.editDisplayDeleteConfirmationModal(false);
+    }
+
+    editDisplayDeleteConfirmationModal(value) {
+        this.setState({
+            isDisplayingDeleteConfirmationModal: value,
+        });
+    }
+
+    canManageLabels() {
+        if (!this.props.clientId) return false;
+        return this.props.boardMembers.some(a => a._id === this.props.clientId);
+    }
+
     render() {
         return (
             <div className="labelsManagerModal">
@@ -70,16 +100,56 @@ class LabelsManager extends React.Component {
                 />
 
                 <h4 style={{ color: '#004a75' }}>Labels</h4>
-                <ul style={{ padding: 0 }}>
+                <ul style={{ padding: 0, position: 'relative' }}>
                     {this.state.labels.map(label => (
-                        <Label
-                            key={label._id}
-                            label={label}
-                            isActive={label.isActive}
-                            onClick={this.handleClickOnLabel}
-                        />
+                        <Fragment key={label._id}>
+                            <Label
+                                label={label}
+                                isActive={label.isActive}
+                                onClick={this.handleClickOnLabel}
+                                isDeletableFromBoard={this.canManageLabels()}
+                                editDisplayDeleteConfirmationModal={this.editDisplayDeleteConfirmationModal}
+                            />
+                            {this.state.isDisplayingDeleteConfirmationModal
+                                ? (
+                                    <div className="deleteLabelModal">
+                                        <p className="text-danger" style={{ whiteSpace: 'pre-line' }}>
+                                            Are you sure? It will delete the label from all the cards.
+                                        </p>
+
+                                        <button
+                                            className="btn btn-danger btn-sm"
+                                            type="submit"
+                                            onClick={() => this.handleDeleteBoardLabel(label._id)}
+                                        >
+                                            Delete from board
+                                        </button>
+
+                                        <button
+                                            className="btn btn-secondary btn-sm float-right"
+                                            type="submit"
+                                            onClick={() => this.editDisplayDeleteConfirmationModal(false)}
+                                        >
+                                            <i className="fas fa-times" />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    ''
+                                )
+                            }
+                        </Fragment>
                     ))}
+
                 </ul>
+
+                {this.canManageLabels()
+                    ? (
+                        <AddLabelForm
+                            addLabel={this.handleAddLabel}
+                        />
+                    ) : (
+                        ''
+                    )}
 
             </div>
         );
@@ -88,21 +158,43 @@ class LabelsManager extends React.Component {
 
 LabelsManager.propTypes = {
     activeLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
+    boardMembers: PropTypes.arrayOf(PropTypes.object),
     addLabel: PropTypes.func.isRequired,
+    boardId: PropTypes.string.isRequired,
+    clientId: PropTypes.string,
+    createLabel: PropTypes.func.isRequired,
+    deleteBoardLabel: PropTypes.func.isRequired,
     deleteLabel: PropTypes.func.isRequired,
     boardLabels: PropTypes.arrayOf(PropTypes.object).isRequired,
     cardId: PropTypes.string.isRequired,
     onClickClose: PropTypes.func.isRequired,
 };
+LabelsManager.defaultProps = {
+    boardMembers: [],
+    clientId: undefined,
+};
 
 // Put info from the store state in props (None)
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ auth, currentBoard }) => {
+    if (currentBoard.board) {
+        return {
+            clientId: (auth.clientId ? auth.clientId : undefined),
+            boardId: currentBoard.board._id,
+            boardMembers: currentBoard.board.members,
+        };
+    }
+    return {
+        clientId: (auth.clientId ? auth.clientId : undefined),
+    };
+};
 
 // Put actions in props
 const mapDispatchToProps = dispatch => bindActionCreators(
     {
         addLabel,
+        deleteBoardLabel,
         deleteLabel,
+        createLabel,
     }, dispatch,
 );
 

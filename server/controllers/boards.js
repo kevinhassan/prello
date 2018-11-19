@@ -408,25 +408,6 @@ exports.deleteGithubRepo = async (boardId) => {
 };
 
 /**
- * Add list to the boaard
- */
-exports.addList = async (boardId, listId) => {
-    try {
-        const board = await Board.findById(boardId).select('lists');
-        if (!board) throw new MyError(404, 'Board not found');
-        const newBoard = await board.updateOne({ $addToSet: { lists: listId } }, { new: true });
-        return newBoard;
-    } catch (err) {
-        if (err.status) throw err;
-        else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect query');
-        } else if (err.name === 'CastError') {
-            throw new MyError(404, 'Board not found');
-        }
-        throw new MyError(500, 'Internal server error');
-    }
-};
-/**
  * Remove member of the board
  */
 exports.removeMember = async (boardId, memberId) => {
@@ -475,6 +456,33 @@ exports.removeTeam = async (boardId, teamId) => {
             { $pull: { teams: teamId } }, { new: true });
         if (!newBoard) throw new MyError(404, 'Board not found');
         return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        } else if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+/**
+ * Delete a label from a board (and from all his cards)
+ */
+exports.deleteLabel = async (boardId, labelId) => {
+    try {
+        const newBoard = await Board.findOneAndUpdate({ _id: boardId },
+            { $pull: { labels: labelId } }, { new: true });
+
+        const lists = await listController.getListByBoardId(boardId);
+        lists.map(l => l.cards.map(async (card) => {
+            await cardController.deleteLabel({ card: card._id, label: labelId });
+        }));
+
+        await Label.deleteOne({ _id: labelId });
+
+        if (!newBoard) throw new MyError(404, 'Board not found');
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {

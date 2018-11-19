@@ -121,6 +121,43 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        case actions.CREATE_LABEL_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    labels: state.board.labels.concat({
+                        _id: action.payload.label._id,
+                        name: action.payload.label.name,
+                        color: action.payload.label.color,
+                        board: {
+                            _id: state.board._id,
+                        },
+                    }),
+                },
+            };
+
+        case actions.DELETE_BOARD_LABEL_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    labels: state.board.labels.filter(boardLabel => boardLabel._id !== action.payload.labelId),
+                    lists: state.board.lists.map(l => (
+                        {
+                            ...l,
+                            cards: l.cards.map(card => (
+                                {
+                                    ...card,
+                                    labels:
+                                            card.labels.filter(label => label._id === action.payload.labelId),
+                                }
+                            )),
+                        }
+                    )),
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
