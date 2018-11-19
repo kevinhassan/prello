@@ -319,6 +319,25 @@ exports.postMemberWithUsername = async (boardId, username) => {
     }
 };
 
+/**
+ * Add member to the board with id.
+ */
+exports.postMember = async (boardId, userId) => {
+    try {
+        const board = await this.getBoard(boardId);
+
+        if (board.members.some(m => m._id.toString() === userId.toString())) {
+            throw new MyError(409, 'User is already on the board.');
+        }
+        const user = await userController.postBoard(userId, boardId);
+        await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: userId } } });
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 
 /**
  * Create a new label.

@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
+const teamController = require('../controllers/teams');
 const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
 const { updateClientsOnBoard } = require('../socket');
@@ -613,8 +614,15 @@ module.exports = (router) => {
             }
             try {
                 await boardController.postTeam(req.params.boardId, req.params.teamId);
+                const team = await teamController.getTeam(req.params.teamId);
+                await Promise.all(team.members.map(async (m) => {
+                    try {
+                        await boardController.postMember(req.params.boardId, m._id);
+                    } catch (e) {
+                        // ignore error, we don't care if the member is already on the board
+                    }
+                }));
                 res.sendStatus(204);
-
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
