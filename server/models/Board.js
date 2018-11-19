@@ -11,12 +11,12 @@ const boardSchema = new mongoose.Schema({
         private: Boolean,
         url: String,
     },
-    labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label' }],
-    lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List' }],
-    admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    labels: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Label', default: [] }],
+    lists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'List', default: [] }],
+    admins: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
     owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team' }],
+    teams: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Team', default: [] }],
 }, { timestamps: true });
 
 /**

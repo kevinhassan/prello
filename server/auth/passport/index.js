@@ -8,7 +8,7 @@ module.exports = (passport) => {
         clientSecret: process.env.GITHUB_SECRET,
         callbackURL: `${process.env.DOMAIN_URL}/auth/github/callback`,
         passReqToCallback: true
-    }, ((async (req, accessToken, refreshToken, profile, done) => {
+    }, (async (req, accessToken, refreshToken, profile, done) => {
         try {
             if (req.user) {
                 const existingUser = await User.findOne({ 'github.id': profile.id });
@@ -35,5 +35,5 @@ module.exports = (passport) => {
         } catch (err) {
             return done(err, null);
         }
-    }))));
+    })));
 };

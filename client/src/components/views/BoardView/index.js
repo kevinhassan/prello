@@ -22,7 +22,7 @@ import './style.css';
 const BoardView = props => (
     <div className="boardPanel container-fluid">
         <div className="row" style={{ height: '40px', marginBottom: '10px' }}>
-            <div className="col-sm-12 boardSettingsBar">
+            <div className="col-sm-10 boardSettingsBar">
                 <BoardNameComp
                     boardId={props.board._id}
                     name={props.board.name}
@@ -50,7 +50,13 @@ const BoardView = props => (
                 <BoardArchivedListsComp />
 
                 <BoardArchivedCardsComp />
-
+            </div>
+            <div className="col-sm-2 boardExportBtn" style={{ paddingRight: 0 }}>
+                <button type="button" className="btn btn-dark exportJsonBtn" onClick={() => props.handleExportDataFile()}>
+                    <i className="fas fa-file-download" />
+                    {' '}
+                    JSON
+                </button>
             </div>
         </div>
         <div className="listsAndAddPanel">
@@ -103,6 +109,7 @@ BoardView.propTypes = {
     isAddListInputVisible: PropTypes.bool.isRequired,
     onDragEnd: PropTypes.func.isRequired,
     displayAddListForm: PropTypes.func.isRequired,
+    handleExportDataFile: PropTypes.func.isRequired,
 };
 
 export default BoardView;

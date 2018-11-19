@@ -73,7 +73,10 @@ const BoardItem = props => (
             <ul className="membersInitialsList">
                 {props.board.members.map(member => (
                     <li key={member._id}>
-                        <MemberPill member={member} />
+                        <MemberPill
+                            isAdmin={props.board.admins.some(a => a._id === member._id)}
+                            member={member}
+                        />
                     </li>
                 ))}
             </ul>

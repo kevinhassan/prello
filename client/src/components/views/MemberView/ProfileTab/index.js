@@ -7,7 +7,7 @@ import './style.css';
 // =====
 
 const ProfileTab = props => (
-    <div className="profilePanelsList">
+    <div className="bottomProfilePanel">
         <div className="teamsPanel">
 
             <h4 className="teams">

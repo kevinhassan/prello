@@ -27,7 +27,17 @@ export default function currentBoardReducer(state = initialState, action) {
         case actions.FETCH_BOARD_SUCCESS:
             return {
                 ...state,
-                board: action.payload.board,
+                board: {
+                    ...action.payload.board,
+                    lists:
+                        action.payload.board.lists.sort((l1, l2) => l1.isArchived > l2.isArchived)
+                            .map(l => (
+                                {
+                                    ...l,
+                                    cards: l.cards.sort((c1, c2) => c1.isArchived > c2.isArchived),
+                                }
+                            )),
+                },
             };
 
         case actions.FETCH_BOARD_FAILURE:
@@ -111,6 +121,43 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
+        case actions.CREATE_LABEL_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    labels: state.board.labels.concat({
+                        _id: action.payload.label._id,
+                        name: action.payload.label.name,
+                        color: action.payload.label.color,
+                        board: {
+                            _id: state.board._id,
+                        },
+                    }),
+                },
+            };
+
+        case actions.DELETE_BOARD_LABEL_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
+                    labels: state.board.labels.filter(boardLabel => boardLabel._id !== action.payload.labelId),
+                    lists: state.board.lists.map(l => (
+                        {
+                            ...l,
+                            cards: l.cards.map(card => (
+                                {
+                                    ...card,
+                                    labels:
+                                            card.labels.filter(label => label._id === action.payload.labelId),
+                                }
+                            )),
+                        }
+                    )),
+                },
+            };
+
         // ===== LISTS ACTIONS ===== //
         case listActions.CREATE_LIST_SUCCESS:
             return {
@@ -158,18 +205,35 @@ export default function currentBoardReducer(state = initialState, action) {
                 ...state,
                 board: {
                     ...state.board,
+                    lists: state.board.lists.sort((l1, l2) => l1.isArchived > l2.isArchived)
+                        .map(l => (
+                            l._id !== action.payload.list._id
+                                ? l
+                                : {
+                                    ...l,
+                                    isArchived: action.payload.isArchived,
+                                }
+                        )),
+                },
+            };
+
+        // ===== CARDS ACTIONS ===== //
+        case cardActions.CREATE_CARD_SUCCESS:
+            return {
+                ...state,
+                board: {
+                    ...state.board,
                     lists: state.board.lists.map(l => (
-                        l._id !== action.payload.list._id
+                        l._id !== action.payload.card.list
                             ? l
                             : {
                                 ...l,
-                                isArchived: action.payload.isArchived,
+                                cards: l.cards.concat(action.payload.card),
                             }
                     )),
                 },
             };
 
-        // ===== CARDS ACTIONS ===== //
         // ===== Description ===== //
         // With started: action.payload.description is the new description.
         // With failure: action.payload.description is the old description.
@@ -346,12 +410,13 @@ export default function currentBoardReducer(state = initialState, action) {
                             ? l
                             : {
                                 ...l,
-                                cards: l.cards.map(card => (card._id === action.payload.card._id
-                                    ? {
-                                        ...card,
-                                        isArchived: action.payload.isArchived,
-                                    }
-                                    : card)),
+                                cards: l.cards.sort((c1, c2) => c1.isArchived > c2.isArchived)
+                                    .map(card => (card._id === action.payload.card._id
+                                        ? {
+                                            ...card,
+                                            isArchived: action.payload.isArchived,
+                                        }
+                                        : card)),
                             }
                     )),
                 },

@@ -22,11 +22,10 @@ export const createCardSuccessAction = card => ({
 export const createCard = card => (dispatch) => {
     dispatch(createCardStartedAction());
     dispatch(displayLoadingModal());
-    const resource = 'lists/'.concat(card.list).concat('/cards/');
+    const resource = `lists/${card.list._id}/cards/`;
     APIFetch.fetchPrelloAPI(resource, { name: card.name }, APIFetch.POST)
         .then((res) => {
-            const cardCreated = res.data.card;
-            dispatch(createCardSuccessAction(cardCreated));
+            dispatch(createCardSuccessAction(res.data.card));
             dispatch(displaySuccessMessage(res.data.message));
         })
         .catch((error) => {
@@ -264,7 +263,7 @@ export const editDate = (card, dueDate, initialDate) => (dispatch) => {
     dispatch(editDateStartedAction(card, dueDate));
     dispatch(displayLoadingModal());
     const resource = `cards/${card._id}/dueDate`;
-    APIFetch.fetchPrelloAPI(resource, { dueDate, initialDate }, APIFetch.PUT)
+    APIFetch.fetchPrelloAPI(resource, { date: dueDate.date, isDone: dueDate.isDone }, APIFetch.PUT)
         .then(() => {
             dispatch(editDateSuccessAction());
             dispatch(displaySuccessMessage('Due date updated'));

@@ -12,7 +12,7 @@
     margin: 0;
     overflow-y: auto;
     vertical-align: middle;
-    max-width: 20vw;
+    max-width: 25vw;
     scroll-snap-type: proximity;
     scroll-snap-points-y: repeat(40px);
 }

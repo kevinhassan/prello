@@ -391,29 +391,46 @@ const newLabel = {
 };
 
 describe('POST /boards/:boardId/labels', () => {
-    it('should return 201 OK', (done) => {
-        request(app)
-            .post(`/boards/${boardData.id}/labels`)
-            .send(newLabel)
-            .expect(201, done);
-    });
     it('should return 422 ERROR: no color and name provided', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/labels`)
             .send({ name: '' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(422, done);
     });
     it('should return 422 ERROR: invalid color', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/labels`)
             .send({ name: 'a random label', color: '#2y5689' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(422, done);
     });
     it('should return 404 ERROR', (done) => {
         request(app)
             .post('/boards/b12345678912/labels')
             .send({ name: 'ok', color: '#123456' })
+            .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(404, done);
+    });
+    it('should return 401 ERROR', (done) => {
+        request(app)
+            .post(`/boards/${boardData.id}/labels`)
+            .send(newLabel)
+            .expect(401, done);
+    });
+    it('should return 403 ERROR', (done) => {
+        request(app)
+            .post(`/boards/${boardData.id}/labels`)
+            .send(newLabel)
+            .set('Authorization', `Bearer ${tokenNotAdmin}`)
+            .expect(403, done);
+    });
+    it('should return 201 OK', (done) => {
+        request(app)
+            .post(`/boards/${boardData.id}/labels`)
+            .send(newLabel)
+            .set('Authorization', `Bearer ${tokenAdmin}`)
+            .expect(201, done);
     });
 });
 
@@ -437,21 +454,21 @@ describe('PUT /boards/:id/members/:id', () => {
     it('should return 401 ERROR', (done) => {
         request(app)
             .put(`/boards/${boardData.id}/members/test`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .expect('Content-Type', /json/)
             .expect(401, done);
     });
     it('should return 403 ERROR', (done) => {
         request(app)
             .put(`/boards/${boardData.id}/members/${userAdmin._id}`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
             .expect(403, done);
     });
     it('should return 422 ERROR', (done) => {
         const wrongAccessRight = {
-            isAdmin: 'unknown'
+            canEdit: 'unknown'
         };
         request(app)
             .put(`/boards/${boardData.id}/members/${userNotAdmin._id}`)
@@ -463,13 +480,13 @@ describe('PUT /boards/:id/members/:id', () => {
     it('should return 404 ERROR', (done) => {
         request(app)
             .put(`/boards/test1234/members/${userNotAdmin._id}`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404);
         request(app)
             .put(`/boards/${boardData.id}/members/unknown`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect('Content-Type', /json/)
             .expect(404, done);
@@ -477,7 +494,7 @@ describe('PUT /boards/:id/members/:id', () => {
     it('should return 204 OK', (done) => {
         request(app)
             .put(`/boards/${boardData.id}/members/${userNotAdmin._id}`)
-            .send({ isAdmin: false })
+            .send({ canEdit: false })
             .set('Authorization', `Bearer ${tokenAdmin}`)
             .expect(204, done);
     });
@@ -598,13 +615,13 @@ describe('DELETE /boards/:id/teams/:id', () => {
 });
 
 describe('POST /boards/:id/lists', () => {
-    /* it('should return 401 ERROR', (done) => {
+    it('should return 401 ERROR', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/lists`)
             .send(listData)
             .expect('Content-Type', /json/)
             .expect(401, done);
-    }); */
+    });
     it('should return 422 ERROR', (done) => {
         const wrongList = {
             name: ''
@@ -616,14 +633,14 @@ describe('POST /boards/:id/lists', () => {
             .expect('Content-Type', /json/)
             .expect(422, done);
     });
-    /* it('should return 403 ERROR', (done) => {
+    it('should return 403 ERROR', (done) => {
         request(app)
             .post(`/boards/${boardData.id}/lists`)
             .send(listData)
             .set('Authorization', `Bearer ${tokenNotAdmin}`)
             .expect('Content-Type', /json/)
             .expect(403, done);
-    }); */
+    });
     it('should return 404 ERROR', (done) => {
         request(app)
             .post('/boards/unknown/lists')

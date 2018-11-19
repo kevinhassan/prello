@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
     description: String,
-    dueDate: Date,
+    dueDate: {
+        date: Date,
+        isDone: { type: Boolean, default: false },
+    },
     isArchived: { type: Boolean, required: true, default: false },
     name: { type: String, required: true },
     attachments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attachment' }],
@@ -10,7 +13,8 @@ const cardSchema = new mongoose.Schema({
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
     labels: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Label'
+        ref: 'Label',
+        default: []
     }],
     list: {
         type: mongoose.Schema.Types.ObjectId,

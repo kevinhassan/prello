@@ -39,16 +39,10 @@ const updateCardName = [
         .isLength({ min: 1 }),
 ];
 
-const editDate = [
-    check('dueDate')
-        .isString(),
-];
-
 module.exports = {
     addCard,
     addLabel,
     deleteLabel,
     updateCardDescription,
     updateCardName,
-    editDate,
 };

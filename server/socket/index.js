@@ -52,5 +52,5 @@ exports.initialize = (server) => {
  */
 module.exports.updateClientsOnBoard = async (boardId) => {
     const newBoard = await boardController.getBoard(boardId);
-    io.to(newBoard._id).emit('currentBoard', { board: newBoard });
+    if (process.env.NODE_ENV !== 'test') io.to(newBoard._id).emit('currentBoard', { board: newBoard });
 };

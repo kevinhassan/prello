@@ -71,7 +71,6 @@ class GraphicalCharter extends React.Component {
                 <hr />
 
                 <h3>Logos</h3>
-                <p>TODO: clean them or make another one.</p>
                 <br />
                 <div className="row">
                     <div className="col-sm-8">

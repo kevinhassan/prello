@@ -91,7 +91,7 @@ describe(actions.FETCH_BOARD_STARTED, () => {
 
 describe(actions.FETCH_BOARD_SUCCESS, () => {
     it('should put the new board in state', () => {
-        const newBoard = { _id: 'newBoardI', name: 'new board' };
+        const newBoard = { _id: 'newBoardI', name: 'new board', lists: [] };
         const action = actions.fetchBoardSuccessAction(newBoard);
         const finalState = currentBoardReducer(state, action);
 
@@ -232,6 +232,7 @@ describe(`${actions.UPDATE_BOARD_GITHUB_FAILURE}: incorrect board id`, () => {
             private: false,
             url: 'http://locsalhost:1234',
         };
+
         const action = actions.updateBoardGithubFailureAction('aRandomId', githubRepo);
         const finalState = currentBoardReducer(state, action);
         expect(finalState).toEqual(state);
@@ -243,6 +244,36 @@ describe(actions.REMOVE_BOARD_GITHUB_SUCCESS, () => {
         const action = actions.removeBoardGithubSuccessAction(state.board._id);
         const finalState = currentBoardReducer(state, action);
         expect(finalState.board.githubRepo).toEqual({});
+    });
+});
+
+describe(actions.CREATE_LABEL_SUCCESS, () => {
+    it('should add the label to the board', () => {
+        const label = {
+            name: 'a new label',
+            color: '#005243',
+        };
+        const action = actions.createLabelSuccessAction(label.name, label.color, state.board._id);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.labels.length).toEqual(state.board.labels.length + 1);
+        expect(finalState.board.labels.find(l => l.name === label.name));
+    });
+});
+
+describe(actions.DELETE_BOARD_LABEL_SUCCESS, () => {
+    it('should delete the label from the board', () => {
+        const labelToRemove = state.board.labels[0];
+        const action = actions.deleteBoardLabelSuccessAction(labelToRemove._id);
+        const finalState = currentBoardReducer(state, action);
+
+        const finalCards = finalState.board.lists.map(l => l.cards.map(c => c));
+
+        const finalCardsFlat = [].concat(...finalCards);
+        const finalLabels = finalCardsFlat.map(card => card.labels.map(l => l));
+
+        expect(finalState.board.labels.length).toEqual(state.board.labels.length - 1);
+        expect(finalState.board.labels.find(l => l._id === labelToRemove._id)).toEqual(undefined);
+        expect(!finalLabels.includes(labelToRemove._id));
     });
 });
 

@@ -17,12 +17,19 @@ const ArchivedBoardsView = props => (
                     value="default"
                     id="archivedBoards"
                     className="custom-select"
+                    onChange={event => props.updateIsArchived(event, false)}
                 >
                     <option value="default" disabled>
                         {props.boards.length > 1 ? `${props.boards.length} boards archived` : `${props.boards.length} board archived`}
                     </option>
                     {props.boards.map(board => (
-                        <option name={board._id} onClick={event => props.updateIsArchived(event, board._id, false)}>{board.name}</option>
+                        <option
+                            key={board._id}
+                            name={board.name}
+                            value={board._id}
+                        >
+                            {board.name}
+                        </option>
                     ))}
                 </select>
             ) : (

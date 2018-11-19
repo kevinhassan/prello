@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-const resetPasswordMail = async (email, token) => {
+exports.resetPasswordMail = async (email, token) => {
     try {
         if (process.env.MAILJET_USER && process.env.MAILJET_MAIL && process.env.MAILJET_PASSWORD && process.env.ENVIRONMENT === 'production') {
             logger.info('Sending reset password mail');
@@ -38,10 +38,11 @@ const resetPasswordMail = async (email, token) => {
             };
         }
     } catch (err) {
+        logger.error(err);
         throw err;
     }
 };
-const confirmResetPasswordMail = async (email) => {
+exports.confirmResetPasswordMail = async (email) => {
     try {
         if (process.env.MAILJET_USER && process.env.MAILJET_MAIL && process.env.MAILJET_PASSWORD && process.env.ENVIRONMENT === 'production') {
             logger.info('Sending confirmation reset password mail');
@@ -60,11 +61,12 @@ const confirmResetPasswordMail = async (email) => {
             };
         }
     } catch (err) {
+        logger.error(err);
         throw err;
     }
 };
 
-const confirmAccountCreationMail = async (email) => {
+exports.confirmAccountCreationMail = async (email) => {
     if (process.env.MAILJET_USER && process.env.MAILJET_MAIL && process.env.MAILJET_PASSWORD && process.env.ENVIRONMENT === 'production') {
         logger.info('Sending register confirmation mail');
         try {
@@ -82,9 +84,8 @@ const confirmAccountCreationMail = async (email) => {
                 `
             });
         } catch (err) {
+            logger.error(err);
             throw err;
         }
     }
 };
-
-module.exports = { resetPasswordMail, confirmResetPasswordMail, confirmAccountCreationMail };

@@ -335,3 +335,68 @@ export const addBoardMember = (boardId, username) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ====== Create Label ======
+export const CREATE_LABEL_STARTED = 'board/CREATE_LABEL_STARTED';
+export const CREATE_LABEL_FAILURE = 'board/CREATE_LABEL_FAILURE';
+export const CREATE_LABEL_SUCCESS = 'board/CREATE_LABEL_SUCCESS';
+
+export const createLabelStartedAction = () => ({ type: CREATE_LABEL_STARTED });
+export const createLabelFailureAction = () => ({ type: CREATE_LABEL_FAILURE });
+export const createLabelSuccessAction = label => ({
+    type: CREATE_LABEL_SUCCESS,
+    payload: {
+        label,
+    },
+});
+
+export const createLabel = (labelName, labelColor, boardId) => (dispatch) => {
+    dispatch(createLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/labels`;
+    APIFetch.fetchPrelloAPI(resource, { name: labelName, color: labelColor }, APIFetch.POST)
+        .then((res) => {
+            const { label } = res.data;
+            dispatch(displaySuccessMessage('Label added to the board.'));
+            dispatch(createLabelSuccessAction(label));
+        })
+        .catch((error) => {
+            dispatch(createLabelFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};
+
+// ====== Delete Label ======
+export const DELETE_BOARD_LABEL_STARTED = 'board/DELETE_BOARD_LABEL_STARTED';
+export const DELETE_BOARD_LABEL_FAILURE = 'board/DELETE_BOARD_LABEL_FAILURE';
+export const DELETE_BOARD_LABEL_SUCCESS = 'board/DELETE_BOARD_LABEL_SUCCESS';
+
+export const deleteBoardLabelStartedAction = () => ({ type: DELETE_BOARD_LABEL_STARTED });
+export const deleteBoardLabelFailureAction = () => ({ type: DELETE_BOARD_LABEL_FAILURE });
+export const deleteBoardLabelSuccessAction = labelId => ({
+    type: DELETE_BOARD_LABEL_SUCCESS,
+    payload: {
+        labelId,
+    },
+});
+
+export const deleteBoardLabel = (labelId, boardId) => (dispatch) => {
+    dispatch(deleteBoardLabelStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/labels/${labelId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.DELETE)
+        .then(() => {
+            dispatch(displaySuccessMessage('Label removed from the board.'));
+            dispatch(deleteBoardLabelSuccessAction(labelId));
+        })
+        .catch((error) => {
+            dispatch(deleteBoardLabelFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

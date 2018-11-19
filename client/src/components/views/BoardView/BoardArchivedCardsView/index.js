@@ -15,14 +15,22 @@ const BoardArchivedCardsView = props => (
             <select
                 name="Archived Cards"
                 value="default"
+                onChange={() => {}}
                 id="archivedCards"
                 className="custom-select custom-select-sm"
+                style={{ maxWidth: '12vw' }}
             >
                 <option value="default" disabled>
                     {props.cards.length > 1 ? `${props.cards.length} cards archived` : `${props.cards.length} card archived`}
                 </option>
                 {props.cards.map(card => (
-                    <option key={card._id} name={card._id} onClick={() => props.unarchiveCard(card)}>{card.name}</option>
+                    <option
+                        key={card._id}
+                        name={card._id}
+                        onClick={() => props.unarchiveCard(card)}
+                    >
+                        {card.name}
+                    </option>
                 ))}
             </select>
         </span>

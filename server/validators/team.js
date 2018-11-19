@@ -2,6 +2,7 @@ const { check } = require('express-validator/check');
 
 const addTeam = [
     check('name')
+        .trim()
         .not().isEmpty()
         .isString()
 ];
@@ -16,7 +17,7 @@ const removeMember = [
         .isString(),
 ];
 const changeAccess = [
-    check('isAdmin')
+    check('canEdit')
         .not().isEmpty()
         .trim()
         .escape()

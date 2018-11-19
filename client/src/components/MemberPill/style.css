@@ -21,3 +21,11 @@
 .memberLink:hover:before {
     display: none;
 }
+
+.isAdminMemberCrown {
+    color: rgb(226, 223, 24);
+    font-size: 0.8rem;
+    padding: 0 2px;
+    text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black;
+    vertical-align: baseline;
+}
