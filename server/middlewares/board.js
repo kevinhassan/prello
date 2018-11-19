@@ -12,8 +12,7 @@ const canEdit = async (req, res, next) => {
             throw new MyError(404, 'Board not found');
         }
         const member = board.members.find(member => req.user._id.toString() === member._id.toString());
-        const admin = board.admins.find(admin => req.user._id.toString() === admin._id.toString());
-        if (!member && !admin) throw new MyError(403, 'Forbidden, you can not edit this board');
+        if (!member) throw new MyError(403, 'Forbidden, you can not edit this board');
         next();
     } catch (e) {
         if (e.name === 'CastError') {
