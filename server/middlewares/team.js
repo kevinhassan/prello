@@ -17,7 +17,7 @@ const isMember = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Team not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -41,7 +41,7 @@ const canEdit = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Team not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -77,7 +77,7 @@ const canSee = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Team not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });

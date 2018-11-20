@@ -232,8 +232,10 @@ module.exports = (router) => {
                 const cardCreated = await cardController.postCard({
                     name: req.body.name, list: req.body.list,
                 });
+                const list = await listController.getList(cardCreated.list._id);
 
-                res.status(201).send({ message: 'Card successfully created', card: cardCreated._id });
+                res.status(201).send({ message: 'Card successfully created', card: cardCreated });
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }
@@ -307,13 +309,13 @@ module.exports = (router) => {
             }
         })
 
-        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, cardValidator.editDate, async (req, res) => {
+        .put('/cards/:cardId/dueDate', Auth.isAuthenticated, Card.canEdit, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                const card = await cardController.editDate(req.params.cardId, req.body.dueDate);
+                const card = await cardController.editDate(req.params.cardId, req.body.date, req.body.isDone);
                 const list = await listController.getList(card.list._id);
                 res.sendStatus(204);
                 updateClientsOnBoard(list.board._id);

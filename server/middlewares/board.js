@@ -2,12 +2,12 @@ const Board = require('../models/Board');
 const MyError = require('../util/error');
 
 /**
- * Check if the user is member of the board
+ * Check if the user can edit the board
  */
-const isMember = async (req, res, next) => {
+const canEdit = async (req, res, next) => {
     try {
         if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
-        const board = await Board.findById(req.params.boardId).select('members');
+        const board = await Board.findById(req.params.boardId).select('members admins');
         if (!board) {
             throw new MyError(404, 'Board not found');
         }
@@ -17,7 +17,7 @@ const isMember = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Board not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -25,9 +25,9 @@ const isMember = async (req, res, next) => {
 };
 
 /**
-* Check if the user is member of the board and admin
+* Check if the user can manage the board and admin
 */
-const isAdmin = async (req, res, next) => {
+const canManage = async (req, res, next) => {
     try {
         if (!req.user) throw new MyError(401, 'Unauthorized, you need to be authenticated');
         const board = await Board.findById(req.params.boardId).select('admins');
@@ -36,12 +36,12 @@ const isAdmin = async (req, res, next) => {
             throw new MyError(404, 'Board not found');
         }
         const member = board.admins.find(admin => req.user._id.toString() === admin._id.toString());
-        if (!member) throw new MyError(403, 'Forbidden, you can not edit this board');
+        if (!member) throw new MyError(403, 'Forbidden, you can not manage this board');
         next();
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Board not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -99,7 +99,7 @@ const canSee = async (req, res, next) => {
     } catch (e) {
         if (e.name === 'CastError') {
             return res.status(404).send({ error: 'Board not found' });
-        } if (e.status) {
+        } else if (e.status) {
             return res.status(e.status).send({ error: e.message });
         }
         return res.status(500).send({ error: 'Internal server error' });
@@ -149,7 +149,7 @@ const canSeeViaSocket = async (boardId, user) => {
     } catch (e) {
         if (e.name === 'CastError') {
             throw new MyError(404, 'Board not found');
-        } if (e.status) {
+        } else if (e.status) {
             throw e;
         }
         throw new MyError(500, 'Internal server error');
@@ -157,5 +157,5 @@ const canSeeViaSocket = async (boardId, user) => {
 };
 
 module.exports = {
-    canSee, isMember, isAdmin, canSeeViaSocket
+    canSee, canEdit, canManage, canSeeViaSocket
 };

@@ -17,21 +17,24 @@ const determineTextColorFromBackground = (backgroundColor) => {
         parseInt(result[3], 16) / 255,
     ] : null;
 
+    if (colors) {
     // Cast colors to Luminosity
-    const lum = [];
-    /* eslint-disable no-param-reassign */
-    colors.forEach((c) => {
-        if (c <= 0.03928) {
-            lum.push(c / 12.92);
-        } else {
-            lum.push(((c + 0.055) / 1.055) ** 2.4);
-        }
-    });
-    /* eslint-enable no-param-reassign */
+        const lum = [];
+        /* eslint-disable no-param-reassign */
+        colors.forEach((c) => {
+            if (c <= 0.03928) {
+                lum.push(c / 12.92);
+            } else {
+                lum.push(((c + 0.055) / 1.055) ** 2.4);
+            }
+        });
+        /* eslint-enable no-param-reassign */
 
-    const L = 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
-    if (L > 0.179) return '#000000';
-    return '#ffffff';
+        const L = 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
+        if (L > 0.179) return '#000000';
+        return '#ffffff';
+    }
+    return '#000000';
 };
 
 const Label = props => (
@@ -48,6 +51,16 @@ const Label = props => (
             {' '}
             <span className="labelName">{props.label.name}</span>
         </button>
+        {props.isDeletableFromBoard
+            ? (
+                <span style={{ marginLeft: '10px' }}>
+                    <button className="btn btn-danger btn-sm" type="button" onClick={() => props.editDisplayDeleteConfirmationModal(true)}>
+                        <i className="fas fa-trash-alt" />
+                    </button>
+                </span>
+            ) : (
+                ''
+            )}
     </li>
 );
 
@@ -55,9 +68,13 @@ Label.propTypes = {
     isActive: PropTypes.bool,
     label: PropTypes.object.isRequired,
     onClick: PropTypes.func,
+    editDisplayDeleteConfirmationModal: PropTypes.func,
+    isDeletableFromBoard: PropTypes.bool,
 };
 Label.defaultProps = {
+    editDisplayDeleteConfirmationModal: () => {},
     isActive: undefined,
+    isDeletableFromBoard: false,
     onClick: () => {},
 };
 

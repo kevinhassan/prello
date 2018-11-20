@@ -242,12 +242,11 @@ exports.archiveCard = async (cardId, isArchived) => {
  * Edit due date
  */
 
-exports.editDate = async (cardId, dueDate) => {
+exports.editDate = async (cardId, date, isDone) => {
     try {
         const card = await Card.findById(cardId);
         if (!card) throw new MyError(404, 'Card not found.');
-
-        card.dueDate = dueDate;
+        card.dueDate = { date, isDone };
         await card.save();
 
         return card;

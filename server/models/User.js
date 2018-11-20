@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt-nodejs');
 const mongoose = require('mongoose');
+const logger = require('../util/logger');
 
 const userSchema = new mongoose.Schema({
     avatarUrl: String,
@@ -69,6 +70,7 @@ userSchema.pre('save', async function save() {
         }
         return this;
     } catch (err) {
+        logger.error(err);
         throw err;
     }
 });

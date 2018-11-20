@@ -134,11 +134,11 @@ exports.putLists = async (boardId, lists) => {
  * Change admin access of the member
  * TODO: check if at least 1 admin before remove access right
  */
-exports.putAccess = async (boardId, memberId, isAdmin) => {
+exports.putAccess = async (boardId, memberId, canEdit) => {
     try {
         const memberFound = User.findById(memberId);
         if (!memberFound) throw new MyError(404, 'Member not found');
-        if (isAdmin) {
+        if (canEdit) {
             // add to admin collection
             await Board.updateOne({ _id: boardId }, { $addToSet: { admins: memberId } });
         } else {
@@ -319,6 +319,25 @@ exports.postMemberWithUsername = async (boardId, username) => {
     }
 };
 
+/**
+ * Add member to the board with id.
+ */
+exports.postMember = async (boardId, userId) => {
+    try {
+        const board = await this.getBoard(boardId);
+
+        if (board.members.some(m => m._id.toString() === userId.toString())) {
+            throw new MyError(409, 'User is already on the board.');
+        }
+        const user = await userController.postBoard(userId, boardId);
+        await Board.updateOne({ _id: boardId }, { $addToSet: { members: { _id: userId } } });
+        return user;
+    } catch (err) {
+        if (err.status) throw err;
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
 
 /**
  * Create a new label.
@@ -408,25 +427,6 @@ exports.deleteGithubRepo = async (boardId) => {
 };
 
 /**
- * Add list to the boaard
- */
-exports.addList = async (boardId, listId) => {
-    try {
-        const board = await Board.findById(boardId).select('lists');
-        if (!board) throw new MyError(404, 'Board not found');
-        const newBoard = await board.updateOne({ $addToSet: { lists: listId } }, { new: true });
-        return newBoard;
-    } catch (err) {
-        if (err.status) throw err;
-        else if (err.name === 'ValidationError') {
-            throw new MyError(422, 'Incorrect query');
-        } else if (err.name === 'CastError') {
-            throw new MyError(404, 'Board not found');
-        }
-        throw new MyError(500, 'Internal server error');
-    }
-};
-/**
  * Remove member of the board
  */
 exports.removeMember = async (boardId, memberId) => {
@@ -475,6 +475,33 @@ exports.removeTeam = async (boardId, teamId) => {
             { $pull: { teams: teamId } }, { new: true });
         if (!newBoard) throw new MyError(404, 'Board not found');
         return newBoard;
+    } catch (err) {
+        if (err.status) throw err;
+        else if (err.name === 'ValidationError') {
+            throw new MyError(422, 'Incorrect query');
+        } else if (err.name === 'CastError') {
+            throw new MyError(404, 'Board not found');
+        }
+        throw new MyError(500, 'Internal server error');
+    }
+};
+
+/**
+ * Delete a label from a board (and from all his cards)
+ */
+exports.deleteLabel = async (boardId, labelId) => {
+    try {
+        const newBoard = await Board.findOneAndUpdate({ _id: boardId },
+            { $pull: { labels: labelId } }, { new: true });
+
+        const lists = await listController.getListByBoardId(boardId);
+        lists.map(l => l.cards.map(async (card) => {
+            await cardController.deleteLabel({ card: card._id, label: labelId });
+        }));
+
+        await Label.deleteOne({ _id: labelId });
+
+        if (!newBoard) throw new MyError(404, 'Board not found');
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'ValidationError') {

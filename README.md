@@ -22,7 +22,7 @@ Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Appli
 ### Launch :rocket:
 
 - Dependancies installation: `npm install` in both /client and /server folders.
-- Set a .env or your environment variables accordingly to the *.env.example* & *.model.env* files.
+- Set your environment variables accordingly to the *.env.example* & *.model.env* files.
 - In localhost, you can use `npm start` for the client and `npm run watch` for the server.
 
 ### Deployment 

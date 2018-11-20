@@ -35,7 +35,9 @@ env:
 before_script:
 - cd $TEST_DIR
 - npm install
-- npm test
+
+after_success:
+- sonar-scanner
 
 notifications:
   email: false

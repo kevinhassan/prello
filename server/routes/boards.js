@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator/check');
 const boardController = require('../controllers/boards');
+const teamController = require('../controllers/teams');
 const { boardValidator, listValidator } = require('../validators');
 const { Auth, Board } = require('../middlewares');
 const { updateClientsOnBoard } = require('../socket');
@@ -52,7 +53,7 @@ const { updateClientsOnBoard } = require('../socket');
 *               type: string
 *   ChangeAccessForm:
 *       properties:
-*           isAdmin:
+*           canEdit:
 *               type: boolean
 *   NewList:
 *       properties:
@@ -375,6 +376,39 @@ const { updateClientsOnBoard } = require('../socket');
 *               description: Internal server error
 *
 * /boards/{boardId}/teams/{teamId}:
+*   post:
+*       tags:
+*           - Board
+*       description: Add a team to a board. Add also all the members of the team to the board.
+*       summary: Add a team to a board.
+*       produces:
+*           - application/json
+*       parameters:
+*           - in: path
+*             name: boardId
+*             schema:
+*               type: string
+*             required: true
+*             description: Board ID
+*           - in: path
+*             name: teamId
+*             schema:
+*               type: string
+*             required: true
+*             description: Team ID
+*       responses:
+*           204:
+*               description: Team successfully added to the board
+*           401:
+*               description: Unauthorized user
+*           403:
+*               description: Forbidden access
+*           404:
+*               description: Team or board not found
+*           422:
+*               description: Invalid form data
+*           500:
+*               description: Internal server error
 *   delete:
 *       tags:
 *           - Board
@@ -558,7 +592,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/members', Auth.isAuthenticated, Board.isAdmin, boardValidator.addMember, async (req, res) => {
+        .post('/boards/:boardId/members', Auth.isAuthenticated, Board.canEdit, boardValidator.addMember, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -574,7 +608,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/labels', boardValidator.createLabel, async (req, res) => {
+        .post('/boards/:boardId/labels', Auth.isAuthenticated, [Board.canManage], boardValidator.createLabel, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -592,7 +626,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, listValidator.addList, async (req, res) => {
+        .post('/boards/:boardId/lists', Auth.isAuthenticated, [Board.canEdit], listValidator.addList, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -606,15 +640,23 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .post('/boards/:boardId/teams', Auth.isAuthenticated, Board.isAdmin, boardValidator.addTeam, async (req, res) => {
+        .post('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, [Board.canManage], async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
             }
             try {
-                await boardController.postTeam(req.params.boardId, req.body.team);
-                res.sendStatus(204);
-
+                await boardController.postTeam(req.params.boardId, req.params.teamId);
+                const team = await teamController.getTeam(req.params.teamId);
+                await Promise.all(team.members.map(async (m) => {
+                    try {
+                        await boardController.postMember(req.params.boardId, m._id);
+                    } catch (e) {
+                        // ignore error, we don't care if the member is already on the board
+                    }
+                }));
+                const board = boardController.getBoard(req.params.boardId);
+                res.sendStatus(200, { board });
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
@@ -622,7 +664,7 @@ module.exports = (router) => {
         })
 
         // ===== PUT ===== //
-        .put('/boards/:boardId/lists', Auth.isAuthenticated, Board.isMember, boardValidator.updateBoardLists, async (req, res) => {
+        .put('/boards/:boardId/lists', Auth.isAuthenticated, [Board.canEdit], boardValidator.updateBoardLists, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -636,7 +678,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/visibility', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeVisibility, async (req, res) => {
+        .put('/boards/:boardId/visibility', Auth.isAuthenticated, [Board.canManage], boardValidator.changeVisibility, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -650,7 +692,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/isArchived', Auth.isAuthenticated, Board.isMember, boardValidator.changeIsArchived, async (req, res) => {
+        .put('/boards/:boardId/isArchived', Auth.isAuthenticated, [Board.canManage], boardValidator.changeIsArchived, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -664,7 +706,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeAccess, async (req, res) => {
+        .put('/boards/:boardId/members/:memberId', Auth.isAuthenticated, [Board.canManage], boardValidator.changeAccess, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -672,7 +714,7 @@ module.exports = (router) => {
             try {
                 await boardController.putAccess(req.params.boardId,
                     req.params.memberId,
-                    req.body.isAdmin);
+                    req.body.canEdit);
                 res.sendStatus(204);
 
                 updateClientsOnBoard(req.params.boardId);
@@ -680,7 +722,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/name/:boardName', Auth.isAuthenticated, Board.isMember, boardValidator.changeName, async (req, res) => {
+        .put('/boards/:boardId/name/:boardName', Auth.isAuthenticated, [Board.canManage], boardValidator.changeName, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -694,7 +736,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .put('/boards/:boardId/githubRepo/', Auth.isAuthenticated, Board.isAdmin, boardValidator.changeGithubRepo, async (req, res) => {
+        .put('/boards/:boardId/githubRepo/', Auth.isAuthenticated, [Board.canManage], boardValidator.changeGithubRepo, async (req, res) => {
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(422).send({ error: 'Invalid form data' });
@@ -709,7 +751,7 @@ module.exports = (router) => {
         })
 
         // ===== DELETE ===== //
-        .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
+        .delete('/boards/:boardId/teams/:teamId', Auth.isAuthenticated, [Board.canManage], async (req, res) => {
             try {
                 await boardController.deleteTeam(req.params.boardId, req.params.teamId);
                 res.sendStatus(204);
@@ -719,7 +761,7 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
+        .delete('/boards/:boardId/members/:memberId', Auth.isAuthenticated, [Board.canManage], async (req, res) => {
             try {
                 await boardController.deleteMember(req.params.boardId, req.params.memberId);
                 res.sendStatus(204);
@@ -729,9 +771,18 @@ module.exports = (router) => {
                 res.status(e.status).send({ error: e.message });
             }
         })
-        .delete('/boards/:boardId/githubRepo/', Auth.isAuthenticated, Board.isAdmin, async (req, res) => {
+        .delete('/boards/:boardId/githubRepo/', Auth.isAuthenticated, [Board.canManage], async (req, res) => {
             try {
                 await boardController.deleteGithubRepo(req.params.boardId);
+                res.sendStatus(204);
+                updateClientsOnBoard(req.params.boardId);
+            } catch (e) {
+                res.status(e.status).send({ error: e.message });
+            }
+        })
+        .delete('/boards/:boardId/labels/:labelId', Auth.isAuthenticated, [Board.canEdit], async (req, res) => {
+            try {
+                await boardController.deleteLabel(req.params.boardId, req.params.labelId);
                 res.sendStatus(204);
                 updateClientsOnBoard(req.params.boardId);
             } catch (e) {

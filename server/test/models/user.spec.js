@@ -42,7 +42,7 @@ describe('User Model', () => {
     });
 
     it('should not create a user with the unique email', (done) => {
-        const UserMock = sinon.mock(User({ email: 'test@gmail.com', password: 'root' }));
+        const UserMock = sinon.mock(new User({ email: 'test@gmail.com', password: 'root' }));
         const user = UserMock.object;
         const expectedError = {
             name: 'MongoError',

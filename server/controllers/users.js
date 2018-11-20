@@ -293,7 +293,7 @@ exports.putBoard = async (data) => {
     try {
         const user = await User.findById(data.userId);
         user.boards.push(data.board);
-        user.save();
+        await user.save();
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'MongoError' && err.code === 11000) {
@@ -394,7 +394,7 @@ exports.leaveTeam = async (userId, teamId) => {
     try {
         const user = await User.findById(userId);
         if (!user) throw new MyError(404, 'User unknown');
-        
+
         await User.updateOne({ _id: userId },
             { $pull: { teams: teamId } })
             .catch(async () => { throw new MyError(404, 'Team not found'); });

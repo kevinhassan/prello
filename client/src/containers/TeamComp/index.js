@@ -184,7 +184,6 @@ class TeamComp extends React.Component {
                     deleteMember={this.handleDeleteMember}
                     editMemberRight={this.handleEditMemberRight}
 
-
                     isAdmin={this.isAdmin}
                 />
             );

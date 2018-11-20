@@ -32,6 +32,12 @@
     cursor: pointer;
 }
 
+.boardExportBtn {
+    background-color: rgba(255,255,255, 0.7);
+    height: 40px;
+    line-height: 40px;
+}
+
 .starBtn:hover {
     color: rgb(227, 227, 79)
 }
@@ -68,3 +74,8 @@
     overflow-y: hidden;
 }
 
+
+.exportJsonBtn {
+    float: right;
+    height: 40px;
+}

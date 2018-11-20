@@ -43,6 +43,7 @@ class BoardMembersComp extends React.Component {
     render() {
         return (
             <BoardMembersView
+                boardAdmins={this.props.boardAdmins}
                 members={this.props.members}
                 isFormVisible={this.state.isFormVisible}
                 addMember={this.handleAddMember}

@@ -165,10 +165,11 @@ module.exports = (router) => {
                 return res.status(422).json({ error: 'Incorrect query, data provided invalid' });
             }
             try {
-                const newList = await listController.postCard(req.params.listId, req.body.name);
-                res.status(201).send({ message: 'Card successfully created', list: newList });
+                const newCard = await listController.postCard(req.params.listId, req.body.name);
+                res.status(201).send({ message: 'Card successfully created', card: newCard });
 
-                updateClientsOnBoard(newList.board._id);
+                const list = await listController.getList(req.params.listId);
+                updateClientsOnBoard(list.board._id);
             } catch (e) {
                 res.status(e.status).send({ error: e.message });
             }

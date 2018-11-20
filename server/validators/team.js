@@ -2,6 +2,7 @@ const { check } = require('express-validator/check');
 
 const addTeam = [
     check('name')
+        .trim()
         .not().isEmpty()
         .isString()
 ];
