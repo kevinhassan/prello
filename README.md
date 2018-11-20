@@ -45,7 +45,7 @@ You can run the tests in /client and /server folder by using the following comma
 * **Hugo FAZIO** - [HugoMeatBoy](https://github.com/HugoMeatBoy)
 * **Kévin HASSAN** - [kevinhassan](https://github.com/kevinhassan)
 * **Cyprien LEGRAND** - [Cyp-Leg](https://github.com/Cyp-Leg)
-* **HClément LOUBIERE** - [cle-loubiere](https://github.com/cle-loubiere)
+* **Clément LOUBIERE** - [cle-loubiere](https://github.com/cle-loubiere)
 * **Clément ROIG** - [Clm-Roig](https://github.com/Clm-Roig)
 
 ## License
