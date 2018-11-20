@@ -10,6 +10,8 @@
 
 **Online API website: https://prello22api.igpolytech.fr**
 
+**Online dashboard website: https://prello22dashboard.igpolytech.fr/**
+
 Project managing tool using MERN stack (Mongo - Express - React - NodeJS). Application developed during our 5th year of CS & Management formation at Polytech Montpellier.
 
 ## Getting Started
