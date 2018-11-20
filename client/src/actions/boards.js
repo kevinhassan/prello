@@ -400,3 +400,35 @@ export const deleteBoardLabel = (labelId, boardId) => (dispatch) => {
             dispatch(hideLoadingModal());
         });
 };
+
+// ===== Add team ======
+export const ADD_BOARD_TEAM_STARTED = 'board/ADD_BOARD_TEAM_STARTED';
+export const ADD_BOARD_TEAM_FAILURE = 'board/ADD_BOARD_TEAM_FAILURE';
+export const ADD_BOARD_TEAM_SUCCESS = 'board/ADD_BOARD_TEAM_SUCCESS';
+
+export const addBoardTeamStartedAction = () => ({ type: ADD_BOARD_TEAM_STARTED });
+export const addBoardTeamFailureAction = () => ({ type: ADD_BOARD_TEAM_FAILURE });
+export const addBoardTeamSuccessAction = (boardId, teamId) => ({
+    type: ADD_BOARD_TEAM_SUCCESS,
+    payload: {
+        boardId,
+        teamId,
+    },
+});
+export const addBoardTeam = (boardId, teamId) => (dispatch) => {
+    dispatch(addBoardTeamStartedAction());
+    dispatch(displayLoadingModal());
+    const resource = `boards/${boardId}/teams/${teamId}`;
+    APIFetch.fetchPrelloAPI(resource, {}, APIFetch.POST)
+        .then((res) => {
+            dispatch(addBoardTeamSuccessAction(boardId, res.data.team));
+            dispatch(displaySuccessMessage(`${res.data.team.name} team (and all its members) added to the board.`));
+        })
+        .catch((error) => {
+            dispatch(addBoardTeamFailureAction());
+            dispatch(displayErrorMessage(error.response.data.error));
+        })
+        .finally(() => {
+            dispatch(hideLoadingModal());
+        });
+};

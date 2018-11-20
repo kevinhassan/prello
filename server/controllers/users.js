@@ -278,7 +278,7 @@ exports.putBoard = async (data) => {
     try {
         const user = await User.findById(data.userId);
         user.boards.push(data.board);
-        user.save();
+        await user.save();
     } catch (err) {
         if (err.status) throw err;
         else if (err.name === 'MongoError' && err.code === 11000) {
