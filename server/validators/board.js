@@ -55,14 +55,6 @@ const addMember = oneOf([
         .isString(),
 ]);
 
-const addTeam = [
-    check('team')
-        .not().isEmpty()
-        .trim()
-        .escape()
-        .isString()
-];
-
 const changeAccess = [
     check('canEdit')
         .not().isEmpty()
@@ -97,7 +89,6 @@ const changeGithubRepo = [
 module.exports = {
     addBoard,
     addMember,
-    addTeam,
     changeAccess,
     changeGithubRepo,
     changeIsArchived,

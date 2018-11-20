@@ -247,6 +247,18 @@ describe(actions.REMOVE_BOARD_GITHUB_SUCCESS, () => {
     });
 });
 
+describe(actions.ADD_BOARD_TEAM_SUCCESS, () => {
+    it('should add the team to the board', () => {
+        const team = {
+            _id: 'newTeamId',
+        };
+        const action = actions.addBoardTeamSuccessAction(state.board._id, team._id);
+        const finalState = currentBoardReducer(state, action);
+        expect(finalState.board.teams.some(t => t._id === team._id));
+    });
+});
+
+
 describe(actions.CREATE_LABEL_SUCCESS, () => {
     it('should add the label to the board', () => {
         const label = {

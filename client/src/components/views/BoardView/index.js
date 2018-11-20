@@ -12,7 +12,7 @@ import BoardMembersComp from '../../../containers/BoardComp/BoardMembersComp';
 import GithubLinkBoardComp from '../../../containers/BoardComp/GithubLinkBoardComp';
 import BoardArchivedListsComp from '../../../containers/BoardComp/BoardArchivedListsComp';
 import BoardArchivedCardsComp from '../../../containers/BoardComp/BoardArchivedCardsComp';
-
+import BoardTeamsComp from '../../../containers/BoardComp/BoardTeamsComp';
 
 // ===== Others
 import './style.css';
@@ -22,7 +22,7 @@ import './style.css';
 const BoardView = props => (
     <div className="boardPanel container-fluid">
         <div className="row" style={{ height: '40px', marginBottom: '10px' }}>
-            <div className="col-sm-10 boardSettingsBar">
+            <div className="col-sm-11 boardSettingsBar">
                 <BoardNameComp
                     boardId={props.board._id}
                     name={props.board.name}
@@ -50,8 +50,10 @@ const BoardView = props => (
                 <BoardArchivedListsComp />
 
                 <BoardArchivedCardsComp />
+
+                <BoardTeamsComp />
             </div>
-            <div className="col-sm-2 boardExportBtn" style={{ paddingRight: 0 }}>
+            <div className="col-sm-1 boardExportBtn" style={{ paddingRight: 0 }}>
                 <button type="button" className="btn btn-dark exportJsonBtn" onClick={() => props.handleExportDataFile()}>
                     <i className="fas fa-file-download" />
                     {' '}
