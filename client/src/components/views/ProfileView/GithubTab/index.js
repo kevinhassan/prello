@@ -81,9 +81,10 @@ const GithubTab = props => (
 );
 
 GithubTab.propTypes = {
-    github: PropTypes.object.isRequired,
+    github: PropTypes.object,
 };
 GithubTab.defaultProps = {
+    github: undefined,
 };
 
 export default GithubTab;
