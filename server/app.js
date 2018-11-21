@@ -14,6 +14,7 @@ const swaggerSpec = require('./config/swagger');
 
 const app = express();
 require('./auth/passport')(passport);
+
 /**
  * Create Express server.
  */
