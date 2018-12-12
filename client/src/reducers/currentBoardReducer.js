@@ -474,7 +474,6 @@ export default function currentBoardReducer(state = initialState, action) {
                 },
             };
 
-
         default:
             return state;
         }
